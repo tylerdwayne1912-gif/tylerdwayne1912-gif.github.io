@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlRoot">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
+<title>NextTrade — App</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0ECB81">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NextTrade">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+/* Detect mobile/touch and force full-screen mode before CSS paints */
+(function(){
+  var isMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry/i.test(navigator.userAgent)
+                 || ('ontouchstart' in window && window.innerWidth < 1024)
+                 || window.matchMedia('(pointer: coarse)').matches;
+  if(isMobile) document.documentElement.classList.add('is-mobile');
+})();
+</script>
+<style>
+:root{
+  --green:#0ECB81;--green-dk:#0BB574;--green-lt:#E7F9F1;
+  --red:#F6465D;--red-lt:#FEF0F0;
+  --orange:#FA8C16;--orange-lt:#FFF7E6;
+  --blue:#1890FF;--blue-lt:#E6F4FF;
+  --purple:#722ED1;--purple-lt:#F3E8FF;
+  --bg:#F5F6F8;--card:#fff;
+  --text:#1E2329;--text2:#707A8A;--text3:#B7BDC6;--line:#EAECEF;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;background:#0b0e11;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Inter",sans-serif;color:var(--text);
+  display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden;}
+
+/* Desktop: floating phone frame mockup */
+.phone{
+  width:390px;
+  height:844px;
+  max-height:100dvh;
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+/* ---- MOBILE: fill the screen fully ---- */
+html.is-mobile,
+html.is-mobile body{
+  background:var(--bg);
+  overflow:hidden;
+  height:100%;
+}
+html.is-mobile body{
+  display:block;
+  min-height:0;
+  padding:0;
+  margin:0;
+}
+html.is-mobile .phone{
+  width:100vw;
+  width:100dvw;
+  height:100vh;
+  height:100dvh;
+  max-height:none;
+  box-shadow:none;
+  border-radius:0;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+html.is-mobile .bottomnav{
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Fallback: catch narrow screens without JS */
+@media(max-width:820px){
+  body{display:block;min-height:0;overflow:hidden;background:var(--bg);}
+  .phone{
+    width:100vw;
+    width:100dvw;
+    height:100vh;
+    height:100dvh;
+    max-height:none;
+    box-shadow:none;
+    border-radius:0;
+  }
+}
+@media(max-width:820px) and (orientation:landscape){
+  .phone{width:100dvw;height:100dvh;max-width:none;}
+}
+@supports(padding: max(0px)){
+  .phone{
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  .bottomnav{
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
+.screen.active{display:flex;}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
+.scroll::-webkit-scrollbar{width:0;}
+
+.topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
+  background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);}
+.avatar{width:34px;height:34px;border-radius:50%;background:#fff;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);cursor:pointer;
+  font-size:13px;font-weight:800;color:var(--green-dk);position:relative;}
+.avatar .status{position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;
+  background:var(--green);border:2px solid #fff;display:none;}
+.avatar.logged-in .status{display:block;}
+.search{flex:1;height:36px;border-radius:18px;background:#fff;display:flex;align-items:center;
+  gap:8px;padding:0 14px;font-size:14px;color:var(--text2);border:1px solid rgba(0,0,0,.03);min-width:0;}
+.search span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;cursor:pointer;border:1px solid rgba(0,0,0,.03);position:relative;}
+.icon-btn:active{background:#f0f0f0;}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;
+  background:var(--red);border-radius:50%;border:1.5px solid #fff;display:none;}
+.icon-btn .dot.show{display:block;}
+
+.mode-pill{display:inline-flex;background:#F5F6F8;border-radius:20px;padding:3px;
+  font-size:11px;font-weight:700;}
+.mode-pill .m{padding:4px 12px;border-radius:16px;cursor:pointer;color:var(--text2);transition:.15s;}
+.mode-pill .m.on-demo{background:var(--orange);color:#fff;}
+.mode-pill .m.on-real{background:var(--green);color:#fff;}
+
+.mode-banner{display:none;background:linear-gradient(120deg,#FA8C16,#D46B08);color:#fff;
+  font-size:11.5px;font-weight:600;padding:6px 14px;text-align:center;letter-spacing:.3px;}
+.mode-banner.on{display:block;}
+
+.hero{padding:22px 20px 10px;text-align:center;background:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);}
+.hero .art{height:140px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
+.hero h2{font-size:19px;margin:8px 0 18px;font-weight:700;}
+.btn-primary{display:block;width:100%;height:48px;border:none;border-radius:24px;
+  background:var(--green);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;}
+.btn-primary:active{background:var(--green-dk);transform:scale(.985);}
+.btn-primary.wide{max-width:340px;margin:0 auto;}
+
+.hero-in{padding:18px 20px 12px;background:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);}
+.hero-in .row1{display:flex;align-items:center;gap:12px;}
+.hero-in .hi-av{width:52px;height:52px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);
+  font-size:20px;font-weight:800;color:var(--green-dk);overflow:hidden;flex-shrink:0;}
+.hero-in .greet{flex:1;min-width:0;}
+.hero-in .greet .hi{font-size:12px;color:var(--text2);}
+.hero-in .greet .nm{font-size:18px;font-weight:800;letter-spacing:-.3px;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hero-in .greet .uid{font-size:11px;color:var(--text3);margin-top:2px;}
+.hero-in .balance{margin-top:16px;padding:14px 16px;background:#fff;border-radius:12px;
+  border:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.hero-in .balance .lbl{font-size:11.5px;color:var(--text2);}
+.hero-in .balance .val{font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;
+  letter-spacing:-.5px;}
+.hero-in .balance .eye{cursor:pointer;color:var(--text2);}
+.hero-in .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
+.hero-in .qa{background:#fff;border-radius:10px;padding:12px 6px;display:flex;
+  flex-direction:column;align-items:center;gap:7px;font-size:11px;font-weight:600;
+  cursor:pointer;border:1px solid var(--line);transition:.15s;}
+.hero-in .qa:active{background:#fafafa;}
+.hero-in .qa .qi{width:34px;height:34px;border-radius:10px;background:var(--green-lt);
+  display:flex;align-items:center;justify-content:center;color:var(--green-dk);}
+
+.promo-row{display:flex;gap:10px;margin:10px 14px;}
+.promo-big{flex:1;border-radius:12px;padding:14px;
+  background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 60%,#0b6b46 100%);
+  color:#fff;position:relative;overflow:hidden;min-height:118px;}
+.promo-big .brand{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.1;text-shadow:0 1px 2px rgba(0,0,0,.15);}
+.promo-big .tag{display:inline-block;background:#111;color:#fff;font-size:9px;padding:3px 7px;border-radius:4px;margin-top:6px;font-weight:600;}
+.promo-big .sub{font-size:11px;margin-top:8px;opacity:.95;line-height:1.5;}
+.promo-big .sub b{color:#FFD75E;}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;
+  font-size:16px;font-weight:700;}
+.sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
+
+.asset-class{display:flex;gap:8px;padding:10px 14px 4px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.asset-class::-webkit-scrollbar{display:none;}
+.ac-pill{flex-shrink:0;padding:7px 14px;border-radius:18px;font-size:12.5px;font-weight:600;
+  background:#fff;color:var(--text2);border:1px solid var(--line);cursor:pointer;transition:.15s;}
+.ac-pill.on{background:var(--green);color:#fff;border-color:var(--green);}
+
+.coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
+.coin-card{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--line);
+  position:relative;cursor:pointer;}
+.coin-card:active{transform:scale(.98);}
+.coin-card .pair{font-size:13px;font-weight:600;}
+.coin-card .price{font-size:17px;font-weight:700;margin-top:8px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
+.coin-card .chg{font-size:13px;margin-top:4px;font-weight:600;}
+.coin-card .check{position:absolute;right:10px;bottom:10px;width:20px;height:20px;border-radius:6px;
+  background:var(--green);display:flex;align-items:center;justify-content:center;}
+.up{color:var(--green);}.down{color:var(--red);}
+
+.thead{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:8px 16px;font-size:11px;
+  color:var(--text3);gap:4px;}
+.thead .r{justify-content:flex-end;}
+.trow{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:12px 16px;font-size:13px;
+  gap:4px;align-items:center;cursor:pointer;}
+.trow .name{font-weight:600;line-height:1.25;}
+.trow .name small{display:block;color:var(--text3);font-size:11px;font-weight:400;}
+.trow .px,.trow .vol{text-align:right;font-variant-numeric:tabular-nums;}
+.trow .px small{display:block;color:var(--text3);font-size:11px;}
+.chg-pill{justify-self:end;min-width:62px;text-align:center;padding:7px 6px;border-radius:6px;
+  color:#fff;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;}
+.chg-pill.up{background:var(--green);}
+.chg-pill.down{background:var(--red);}
+
+.pulse{display:flex;gap:10px;padding:4px 14px 14px;overflow-x:auto;scrollbar-width:none;}
+.pulse::-webkit-scrollbar{display:none;}
+.pulse .p{flex-shrink:0;width:118px;background:#fff;border-radius:10px;padding:11px;border:1px solid var(--line);}
+.pulse .p .top{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
+.pulse .p .val{font-size:17px;font-weight:700;margin:8px 0 3px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
+.pulse .p .pc{font-size:12px;font-weight:600;}
+
+.news-strip{margin:14px;background:#fff;border-radius:12px;border:1px solid var(--line);
+  padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
+  display:flex;align-items:center;justify-content:center;color:var(--green-dk);flex-shrink:0;}
+.news-strip .nt{flex:1;min-width:0;}
+.news-strip .nt .h{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.news-strip .nt .s{font-size:11px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.news-strip .nd{font-size:10.5px;color:var(--text3);flex-shrink:0;}
+
+.wallet-hero{background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 100%);color:#fff;
+  padding:22px 20px;text-align:center;flex-shrink:0;}
+.wallet-hero .lab{font-size:12px;opacity:.9;margin-bottom:6px;}
+.wallet-hero .bal{font-size:32px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;}
+.wallet-hero .usd{font-size:13px;opacity:.85;margin-top:4px;}
+.addr-card{background:#fff;margin:14px;border-radius:14px;padding:18px;border:1px solid var(--line);}
+.addr-card .label{font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600;}
+.addr-card .addr-row{display:flex;align-items:center;gap:8px;background:#F5F6F8;
+  border-radius:10px;padding:12px 14px;font-family:'Courier New',monospace;
+  font-size:11.5px;word-break:break-all;color:var(--green-dk);line-height:1.4;}
+.addr-card .addr-row .copy{margin-left:auto;color:var(--text2);cursor:pointer;
+  font-family:inherit;font-size:11px;font-weight:700;background:#fff;padding:5px 10px;
+  border-radius:6px;flex-shrink:0;}
+.addr-card .qr-wrap{background:#fff;border-radius:12px;padding:16px;
+  display:flex;justify-content:center;margin:14px 0;}
+.addr-card .qr-wrap canvas{width:160px;height:160px;}
+.addr-card .hint-line{font-size:11.5px;color:var(--text2);line-height:1.6;margin-top:8px;}
+.addr-card .warn-hint{background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;
+  padding:10px 12px;font-size:11.5px;color:#7A5C00;line-height:1.6;margin-top:10px;}
+.asset-list{margin:0 14px 14px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line);}
+.asset-row{display:flex;align-items:center;gap:12px;padding:14px 16px;
+  border-bottom:1px solid var(--line);}
+.asset-row:last-child{border-bottom:none;}
+.asset-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;}
+.asset-row .info{flex:1;min-width:0;}
+.asset-row .sym{font-size:14px;font-weight:600;}
+.asset-row .nm{font-size:11px;color:var(--text3);margin-top:2px;}
+.asset-row .amount{text-align:right;}
+.asset-row .amount .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
+.asset-row .amount .usd{font-size:11px;color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums;}
+
+.trade-head{display:flex;align-items:center;gap:14px;padding:10px 14px;background:#fff;
+  flex-shrink:0;border-bottom:1px solid var(--line);}
+.trade-head .sym{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;}
+.trade-head .sym .caret{font-size:10px;color:var(--text3);}
+.trade-head .chg{font-size:12px;font-weight:600;margin-top:1px;}
+.trade-head .acts{margin-left:auto;display:flex;gap:14px;}
+
+.chart-wrap{background:#fff;margin:0 14px 10px;border-radius:10px;border:1px solid var(--line);
+  overflow:hidden;position:relative;}
+.tv-slot{width:100%;height:clamp(240px, 38vh, 340px);position:relative;overflow:hidden;
+  transition:height .2s ease;background:#fff;}
+.tv-slot.compact{height:140px;}
+.tv-slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
+.tv-slot canvas{width:100%;height:100%;display:block;}
+
+.levels-strip{display:none;margin:-6px 14px 8px;padding:6px 12px;background:#fff;
+  border:1px solid var(--line);border-radius:8px;
+  font-family:'Courier New',monospace;font-size:11px;font-variant-numeric:tabular-nums;}
+.levels-strip.on{display:block;}
+.levels-strip .row{display:flex;align-items:center;gap:8px;height:16px;}
+.levels-strip .dash{flex:0 0 30px;border-top:2px dashed;}
+.levels-strip .dash.entry{border-color:var(--text2);}
+.levels-strip .dash.sl{border-color:var(--red);}
+.levels-strip .dash.tp{border-color:var(--green);}
+.levels-strip .lbl{color:var(--text2);font-family:inherit;}
+.levels-strip .val{margin-left:auto;font-weight:700;}
+
+.buysell{display:flex;padding:0 14px;gap:10px;margin-top:8px;flex-shrink:0;}
+.buysell .bs{flex:1;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;background:#fff;color:var(--text2);border:1px solid var(--line);cursor:pointer;}
+.buysell .bs.buy.on{background:var(--green);color:#fff;border-color:var(--green);}
+.buysell .bs.sell.on{background:var(--red);color:#fff;border-color:var(--red);}
+
+.otype-tabs{display:flex;padding:8px 14px 0;flex-shrink:0;}
+.otype-tabs .ot{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;
+  color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;}
+.otype-tabs .ot.on{color:var(--green-dk);border-bottom-color:var(--green);}
+
+.trade-body{display:flex;gap:10px;padding:12px 14px;align-items:flex-start;}
+.order-form{flex:1.25;min-width:0;}
+.order-form .row{display:flex;align-items:center;background:#fff;border:1px solid var(--line);
+  border-radius:8px;height:40px;padding:0 10px;margin-bottom:9px;font-size:13px;}
+.order-form .row .lbl{color:var(--text2);flex:1;}
+.order-form .row .suf{color:var(--text2);font-size:12px;}
+.order-form .row input{border:none;outline:none;font-size:14px;width:100%;background:transparent;
+  font-variant-numeric:tabular-nums;color:var(--text);}
+.order-form .row input::placeholder{color:var(--text3);}
+.order-form .row .tag2{font-size:10px;background:var(--green-lt);color:var(--green-dk);
+  padding:2px 6px;border-radius:4px;font-weight:700;margin-right:6px;}
+.order-form .row .tag2.tp{background:var(--blue-lt);color:var(--blue);}
+.est{font-size:12px;color:var(--text2);display:flex;justify-content:space-between;margin:8px 0 4px;}
+.est b{color:var(--text);font-weight:600;}
+
+.order-book{flex:1;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
+.ob-head{display:flex;justify-content:space-between;color:var(--text3);margin-bottom:5px;font-size:10px;}
+.ob-row{display:flex;justify-content:space-between;height:19px;align-items:center;position:relative;}
+.ob-row .bg{position:absolute;top:0;bottom:0;right:0;opacity:.09;}
+.ob-row span{position:relative;z-index:1;}
+.ob-mid{text-align:center;padding:6px 0;font-size:16px;font-weight:700;color:var(--green);}
+.ob-mid small{display:block;font-size:10px;color:var(--text3);font-weight:400;}
+
+.action-btn{display:block;width:calc(100% - 28px);margin:6px 14px;height:48px;border:none;
+  border-radius:24px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;}
+.action-btn.buy{background:var(--green);}
+.action-btn.sell{background:var(--red);}
+
+.live-trade{background:#fff;border-radius:10px;border:1px solid var(--line);padding:10px 12px;margin:8px 14px;}
+.live-trade .lt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.live-trade .lt-head .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulseDot 1.2s infinite;}
+@keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.live-trade .lt-head .t{font-size:12.5px;font-weight:700;flex:1;line-height:1.2;}
+.live-trade .lt-head .side{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;
+  background:var(--green-lt);color:var(--green-dk);}
+.live-trade .lt-head .demo-tag{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:800;
+  background:var(--orange-lt);color:var(--orange);letter-spacing:.4px;}
+.live-trade .lt-row{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-top:4px;}
+.live-trade .lt-row .lbl{color:var(--text2);}
+.live-trade .lt-row .val{font-weight:800;font-variant-numeric:tabular-nums;}
+.live-trade .lt-kpis{display:flex;gap:6px;margin-top:8px;}
+.live-trade .lt-kpis .kpi{flex:1;background:#F5F6F8;border-radius:6px;padding:5px 8px;font-size:10px;}
+.live-trade .lt-kpis .kpi .k{color:var(--text2);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
+.live-trade .lt-kpis .kpi .v{font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:1px;}
+.live-trade .lt-close{margin-top:8px;width:100%;height:34px;border-radius:8px;border:none;
+  background:var(--red);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+
+.ins-group{padding:6px 0 10px;}
+.ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;
+  padding:8px 4px 6px;font-weight:700;}
+.ins-row{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
+.ins-row:last-child{border-bottom:none;}
+.ins-row .sym{font-size:14px;font-weight:700;}
+.ins-row .nm{font-size:11px;color:var(--text2);margin-top:2px;}
+.ins-row .px{text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+.ins-row .pc{font-size:11px;font-weight:600;text-align:right;margin-top:2px;}
+
+.asset-hero{background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);
+  padding:8px 20px 18px;flex-shrink:0;}
+.asset-hero .lbl{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.asset-hero .big{font-size:28px;font-weight:800;letter-spacing:-1px;margin:6px 0 4px;font-variant-numeric:tabular-nums;}
+.asset-hero .usd{font-size:13px;color:var(--text2);}
+.asset-hero .mode-tag{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:800;letter-spacing:.5px;}
+.asset-hero .mode-tag.demo{background:var(--orange-lt);color:var(--orange);}
+.asset-hero .mode-tag.real{background:var(--green-lt);color:var(--green-dk);}
+.asset-acts{display:flex;justify-content:space-around;margin-top:18px;}
+.asset-acts .a{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;cursor:pointer;}
+.asset-acts .a .c{width:48px;height:48px;border-radius:50%;background:var(--green);
+  display:flex;align-items:center;justify-content:center;}
+.acct-row{display:flex;align-items:center;gap:12px;background:#fff;padding:16px;
+  border-bottom:1px solid var(--line);cursor:pointer;}
+.acct-row .ic{width:34px;height:34px;border-radius:9px;background:#F0FBF6;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.acct-row .tx{flex:1;min-width:0;}
+.acct-row .tx .n{font-size:14px;font-weight:600;}
+.acct-row .tx .v{font-size:13px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
+.acct-row .arrow{color:var(--text3);}
+
+.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;
+  max-width:430px;margin:0 auto;}
+.overlay.active{display:flex;}
+.ov-head{display:flex;align-items:center;padding:14px 16px;flex-shrink:0;}
+.ov-head .x{font-size:22px;line-height:1;cursor:pointer;width:30px;}
+.ov-head .title{font-size:17px;font-weight:700;flex:1;text-align:center;margin-right:30px;}
+.prof-user{display:flex;align-items:center;gap:12px;padding:6px 18px 16px;}
+.prof-user .av{width:52px;height:52px;border-radius:50%;background:#fff;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--green-dk);}
+.prof-user .addr{font-size:13px;font-weight:600;word-break:break-all;line-height:1.3;}
+.prof-user .uid{font-size:12px;color:var(--text3);margin-top:3px;}
+.invite-banner{margin:0 16px 14px;border-radius:12px;padding:16px;
+  background:linear-gradient(120deg,#12b76a,#0a9e63);color:#fff;
+  display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.invite-banner .t1{font-size:15px;font-weight:700;color:#FFE9A8;}
+.invite-banner .t2{font-size:12px;margin-top:5px;opacity:.95;}
+.invite-banner .gift{font-size:38px;}
+.menu-row{display:flex;align-items:center;gap:12px;background:#fff;padding:15px 16px;
+  border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;}
+.menu-row .mi{width:22px;display:flex;justify-content:center;color:var(--green);}
+.menu-row .mt{flex:1;}
+.menu-row .arrow{color:var(--text3);}
+.logout{margin:20px 16px;height:48px;border-radius:8px;background:var(--red);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;}
+
+.bottomnav{display:flex;background:#fff;border-top:1px solid var(--line);flex-shrink:0;z-index:40;
+  width:100%;box-sizing:border-box;}
+.bottomnav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;
+  font-size:11px;color:var(--text2);cursor:pointer;user-select:none;}
+.bottomnav .nb.on{color:var(--green);}
+
+.hint{font-size:11px;color:var(--text3);text-align:center;padding:8px;}
+.logo{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;
+  justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;}
+
+.generic-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1700;
+  display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
+.generic-modal.on{display:flex;}
+.generic-sheet{background:#fff;width:100%;max-width:430px;border-radius:20px 20px 0 0;
+  max-height:88%;overflow-y:auto;animation:slideUp .28s ease-out;}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.generic-head{display:flex;align-items:center;padding:18px 20px 10px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:20px 20px 0 0;}
+.generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;}
+.generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
+.generic-body{padding:16px 20px 20px;}
+
+.auth-screen{position:absolute;inset:0;background:var(--bg);z-index:2000;display:none;flex-direction:column;}
+.auth-screen.active{display:flex;}
+.auth-header{padding:20px 20px 8px;display:flex;align-items:center;gap:12px;}
+.auth-header .back{width:36px;height:36px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);}
+.auth-header .logo-mini{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;}
+.auth-header .logo-mini .mk{width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,#0ECB81,#0a9e63);display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:900;color:#04160f;}
+.auth-body{flex:1;overflow-y:auto;padding:16px 22px 30px;}
+.auth-title{font-size:24px;font-weight:800;letter-spacing:-.6px;margin:0 0 6px;}
+.auth-sub{font-size:13px;color:var(--text2);line-height:1.6;margin:0 0 22px;}
+.auth-tabs{display:flex;background:#F5F6F8;border-radius:12px;padding:4px;margin-bottom:20px;}
+.auth-tabs .at{flex:1;text-align:center;padding:10px;font-size:13.5px;font-weight:600;
+  border-radius:9px;cursor:pointer;color:var(--text2);}
+.auth-tabs .at.on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+.auth-field{margin-bottom:14px;}
+.auth-field label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600;}
+.auth-field .wrap{position:relative;}
+.auth-field input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:13px 44px 13px 14px;
+  font-size:14.5px;font-family:inherit;outline:none;background:#fff;color:var(--text);}
+.auth-field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(14,203,129,.12);}
+.auth-field .eye-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);}
+.auth-field .err{font-size:11px;color:var(--red);margin-top:5px;display:none;}
+.auth-field .err.show{display:block;}
+.pw-strength{display:flex;gap:4px;margin-top:8px;}
+.pw-strength .seg{flex:1;height:4px;border-radius:2px;background:#EAECEF;transition:.2s;}
+.pw-strength .seg.on-1{background:var(--red);}
+.pw-strength .seg.on-2{background:#FA8C16;}
+.pw-strength .seg.on-3{background:#F5C542;}
+.pw-strength .seg.on-4{background:var(--green);}
+.auth-check{display:flex;align-items:flex-start;gap:10px;margin:14px 0;}
+.auth-check input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
+.auth-check label{font-size:12.5px;color:var(--text2);line-height:1.55;cursor:pointer;}
+.auth-row{display:flex;align-items:center;justify-content:space-between;margin:10px 0 18px;}
+.auth-row .remember{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2);cursor:pointer;}
+.auth-row .remember input{width:16px;height:16px;accent-color:var(--green);}
+.auth-row .forgot{font-size:12.5px;color:var(--green-dk);font-weight:600;cursor:pointer;}
+.auth-submit{width:100%;height:50px;border-radius:14px;background:var(--green);color:#fff;
+  font-size:15.5px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.auth-switch{text-align:center;font-size:13px;color:var(--text2);margin-top:22px;}
+.auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
+.auth-banner{background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 100%);color:#fff;
+  border-radius:14px;padding:14px 16px;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.auth-banner .gift{font-size:30px;flex-shrink:0;}
+.auth-banner .t1{font-size:13.5px;font-weight:700;color:#FFE9A8;}
+.auth-banner .t2{font-size:11.5px;margin-top:4px;opacity:.95;line-height:1.45;}
+
+.ct-card{background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin:0 14px 12px;}
+.ct-card .ct-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.ct-card .ct-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0;}
+.ct-card .ct-trader{font-size:14px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.ct-card .ct-trader .verified{background:var(--blue-lt);color:var(--blue);font-size:9px;padding:1px 6px;border-radius:3px;font-weight:700;}
+.ct-card .ct-sym{font-size:12.5px;color:var(--text2);margin-top:3px;}
+.ct-card .ct-msg{font-size:12.5px;color:var(--text2);line-height:1.55;margin:12px 0;}
+.ct-card .ct-actions{display:flex;gap:10px;}
+.ct-card .ct-actions .btn2{flex:1;height:38px;border-radius:8px;border:1px solid var(--line);
+  background:#fff;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.ct-card .ct-actions .btn2.pri{background:var(--green);color:#fff;border-color:var(--green);}
+
+.tf-fromto{display:flex;gap:8px;align-items:center;margin:8px 0 14px;}
+.tf-fromto .box{flex:1;background:#F5F6F8;border-radius:10px;padding:12px;}
+.tf-fromto .box .k{font-size:11px;color:var(--text2);}
+.tf-fromto .box .v{font-size:14px;font-weight:700;margin-top:3px;}
+.tf-fromto .arrow{color:var(--text3);font-size:20px;}
+
+.kyc-up{background:#F5F6F8;border:1.5px dashed var(--line);border-radius:10px;padding:20px;
+  text-align:center;cursor:pointer;transition:.15s;}
+.kyc-up .ic{width:36px;height:36px;border-radius:10px;background:#fff;margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center;}
+.kyc-up .t{font-size:12.5px;font-weight:600;color:var(--text);}
+.kyc-up .s{font-size:11px;color:var(--text3);margin-top:3px;}
+.kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
+.kyc-up.has .t{color:var(--green-dk);}
+
+#toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
+  background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
+  opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;
+  max-width:80%;overflow:hidden;text-overflow:ellipsis;}
+#toast.on{opacity:1;transform:translate(-50%,0);}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- AUTH LOGIN -->
+<section class="auth-screen" id="authLogin">
+  <div class="auth-header">
+    <div class="back" onclick="closeAuth()">←</div>
+    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
+  </div>
+  <div class="auth-body">
+    <h1 class="auth-title">Welcome back</h1>
+    <p class="auth-sub">Sign in to access your account and start trading.</p>
+    <div class="auth-tabs">
+      <div class="at on" onclick="switchAuth('login')">Log In</div>
+      <div class="at" onclick="switchAuth('signup')">Sign Up</div>
+    </div>
+    <div class="auth-field">
+      <label>Email or Username</label>
+      <div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div>
+      <div class="err" id="loginEmailErr"></div>
+    </div>
+    <div class="auth-field">
+      <label>Password</label>
+      <div class="wrap">
+        <input id="loginPw" type="password" placeholder="••••••••">
+        <div class="eye-btn" onclick="togglePw('loginPw')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
+        </div>
+      </div>
+      <div class="err" id="loginPwErr"></div>
+    </div>
+    <div class="auth-row">
+      <label class="remember"><input type="checkbox" id="loginRemember" checked> Remember me</label>
+      <div class="forgot" onclick="forgotPassword()">Forgot password?</div>
+    </div>
+    <button class="auth-submit" onclick="doLogin()">Log In</button>
+    <div class="auth-switch">Don't have an account? <a onclick="switchAuth('signup')">Sign Up</a></div>
+  </div>
+</section>
+
+<!-- AUTH SIGNUP -->
+<section class="auth-screen" id="authSignup">
+  <div class="auth-header">
+    <div class="back" onclick="closeAuth()">←</div>
+    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
+  </div>
+  <div class="auth-body">
+    <h1 class="auth-title">Create your account</h1>
+    <p class="auth-sub">Join millions of traders worldwide. Free to sign up.</p>
+    <div class="auth-banner">
+      <div class="gift">🎁</div>
+      <div>
+        <div class="t1">Get up to $50 in trading credit</div>
+        <div class="t2">Complete identity verification and make your first deposit to unlock your bonus.</div>
+      </div>
+    </div>
+    <div class="auth-tabs">
+      <div class="at" onclick="switchAuth('login')">Log In</div>
+      <div class="at on" onclick="switchAuth('signup')">Sign Up</div>
+    </div>
+    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="trader_john" oninput="checkUsername()"></div><div class="err" id="suUsernameErr"></div></div>
+    <div class="auth-field"><label>Email</label><div class="wrap"><input id="suEmail" type="email" placeholder="you@example.com"></div><div class="err" id="suEmailErr"></div></div>
+    <div class="auth-field">
+      <label>Password</label>
+      <div class="wrap">
+        <input id="suPw" type="password" placeholder="Min 8 characters" oninput="scorePw()">
+        <div class="eye-btn" onclick="togglePw('suPw')">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
+        </div>
+      </div>
+      <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+      <div class="err" id="suPwErr"></div>
+    </div>
+    <div class="auth-field"><label>Confirm Password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Repeat password"></div><div class="err" id="suPw2Err"></div></div>
+    <div class="auth-field"><label>Referral Code (optional)</label><div class="wrap"><input id="suReferral" type="text" placeholder="NEXT194X"></div></div>
+    <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label></div>
+    <button class="auth-submit" onclick="doSignup()">Create Account</button>
+    <div class="auth-switch">Already have an account? <a onclick="switchAuth('login')">Log In</a></div>
+  </div>
+</section>
+
+<!-- HOME -->
+<section class="screen active" id="s-home">
+  <div class="topbar">
+    <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#B7BDC6" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="#B7BDC6" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>BTC&USDT</span>
+    </div>
+    <div class="icon-btn" onclick="openNews()">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="#1E2329" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="#1E2329" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </div>
+    <div class="icon-btn" onclick="openCopyTrading()">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="#1E2329" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span class="dot" id="notifDot"></span>
+    </div>
+  </div>
+
+  <div class="mode-banner" id="modeBanner">🎮 Demo Mode — you're trading with virtual funds</div>
+
+  <div class="scroll" id="homeScroll">
+    <div id="heroLoggedOut">
+      <div class="hero">
+        <div class="art">
+          <svg width="200" height="140" viewBox="0 0 200 140">
+            <ellipse cx="100" cy="122" rx="66" ry="10" fill="#000" opacity=".07"/>
+            <g transform="rotate(-8 100 70)">
+              <rect x="62" y="34" width="76" height="60" rx="8" fill="#2FD3C0"/>
+              <rect x="58" y="28" width="76" height="14" rx="7" fill="#14B8A6"/>
+              <rect x="88" y="20" width="30" height="40" rx="6" fill="#e9f7f4"/>
+            </g>
+            <circle cx="132" cy="46" r="15" fill="#F5C542"/>
+            <circle cx="150" cy="70" r="11" fill="#7ED957"/>
+          </svg>
+        </div>
+        <h2>Register now and claim rich rewards</h2>
+        <button class="btn-primary wide" onclick="openAuth('signup')">Login / Register</button>
+      </div>
+    </div>
+
+    <div id="heroLoggedIn" style="display:none">
+      <div class="hero-in">
+        <div class="row1">
+          <div class="hi-av" id="heroAvatar">U</div>
+          <div class="greet">
+            <div class="hi">Welcome back</div>
+            <div class="nm" id="heroName">—</div>
+            <div class="uid" id="heroUid">UID: —</div>
+          </div>
+        </div>
+        <div class="balance">
+          <div style="flex:1;min-width:0;">
+            <div class="lbl" id="heroBalanceLabel">Total Balance</div>
+            <div class="val" id="heroBalance">$0.00</div>
+          </div>
+          <div class="mode-pill" id="modePill">
+            <div class="m" data-mode="demo" onclick="setMode('demo')">DEMO</div>
+            <div class="m on-real" data-mode="real" onclick="setMode('real')">REAL</div>
+          </div>
+          <div class="eye" onclick="toggleHeroMask()">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
+          </div>
+        </div>
+        <div class="quick-actions">
+          <div class="qa" onclick="openDeposit('deposit')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Deposit</span></div>
+          <div class="qa" onclick="openDeposit('withdraw')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Withdraw</span></div>
+          <div class="qa" onclick="go('s-spot')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 17l5-6 4 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Trade</span></div>
+          <div class="qa" onclick="go('s-wallet')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v12H3zM3 11h18" stroke="currentColor" stroke-width="2"/></svg></div><span>Wallet</span></div>
+          <div class="qa" onclick="openInvite()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span>Invite</span></div>
+          <div class="qa" onclick="openNews()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><span>News</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="news-strip" onclick="openNews()">
+      <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="nt">
+        <div class="h" id="newsHeadline">Loading market news…</div>
+        <div class="s" id="newsSub">Fetching from CoinDesk…</div>
+      </div>
+      <div class="nd" id="newsTime">now</div>
+    </div>
+
+    <div class="promo-row">
+      <div class="promo-big">
+        <div class="brand">NextTrade</div>
+        <div class="tag">Your Secure Crypto Platform</div>
+        <div class="sub">Instant fills · <b>Low fees</b><br>24/7 support</div>
+      </div>
+    </div>
+
+    <div class="sec-head">Recommended Coins <span class="more" onclick="go('s-markets')">More ›</span></div>
+    <div class="pulse" id="homePulse"></div>
+    <div class="sec-head">Markets <span class="more" onclick="go('s-markets')">View all ›</span></div>
+    <div style="background:#fff;border-radius:12px;margin:0 14px 14px;overflow:hidden"><div id="homeList"></div></div>
+    <div class="hint">— Live prices update in real time —</div>
+  </div>
+
+  <nav class="bottomnav" id="homeNav"></nav>
+</section>
+
+<!-- MARKETS -->
+<section class="screen" id="s-markets">
+  <div class="asset-class" id="assetClassBar">
+    <div class="ac-pill on" data-class="crypto">Crypto</div>
+    <div class="ac-pill" data-class="forex">Forex</div>
+    <div class="ac-pill" data-class="commodities">Commodities</div>
+    <div class="ac-pill" data-class="stocks">Stocks</div>
+  </div>
+  <div class="scroll">
+    <div class="sec-head" style="padding-top:4px">You may be interested</div>
+    <div class="coin-grid" id="coinGrid"></div>
+    <div class="sec-head">All Markets</div>
+    <div class="thead"><span>Name</span><span class="r">24h Vol</span><span class="r">Price</span><span class="r">Change</span></div>
+    <div id="mktTable"></div>
+  </div>
+  <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- SPOT -->
+<section class="screen" id="s-spot">
+  <div class="trade-head">
+    <div>
+      <div class="sym" onclick="openInstrumentPicker()">
+        <span id="spotSym">BTC/USDT</span>
+        <span class="caret">▼</span>
+      </div>
+      <div class="chg up" id="spotChg">+0.00%</div>
+    </div>
+    <div class="acts">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8L12 3z" stroke="#1E2329" stroke-width="1.6"/></svg>
+    </div>
+  </div>
+  <div class="chart-wrap"><div class="tv-slot" id="tv-mini-chart"></div></div>
+
+  <div class="levels-strip" id="levelsStrip">
+    <div class="row"><span class="dash entry"></span><span class="lbl">Entry</span><span class="val" id="lvlEntry">—</span></div>
+    <div class="row"><span class="dash sl"></span><span class="lbl">Stop Loss</span><span class="val" id="lvlSL" style="color:var(--red)">—</span></div>
+    <div class="row"><span class="dash tp"></span><span class="lbl">Take Profit</span><span class="val" id="lvlTP" style="color:var(--green)">—</span></div>
+  </div>
+
+  <div id="liveTradeSlot"></div>
+
+  <div class="buysell">
+    <div class="bs buy on" id="bsBuy" onclick="setSide('buy')">Buy</div>
+    <div class="bs sell" id="bsSell" onclick="setSide('sell')">Sell</div>
+  </div>
+  <div class="otype-tabs" id="otypeTabs">
+    <div class="ot on" data-otype="market">Market</div>
+    <div class="ot" data-otype="limit">Limit</div>
+    <div class="ot" data-otype="stop">Stop-Limit</div>
+  </div>
+  <div class="scroll" style="padding-top:2px">
+    <div class="trade-body">
+      <div class="order-form">
+        <div class="row"><input id="fLimitPrice" placeholder="Price" inputmode="decimal"><span class="suf">USDT</span></div>
+        <div class="row"><input id="fAmt" placeholder="Quantity" inputmode="decimal"><span class="suf" id="fAmtSuf">BTC</span></div>
+        <div class="row"><span class="tag2">SL</span><input id="fSL" placeholder="Stop Loss price" inputmode="decimal"><span class="suf">USDT</span></div>
+        <div class="row"><span class="tag2 tp">TP</span><input id="fTP" placeholder="Take Profit price" inputmode="decimal"><span class="suf">USDT</span></div>
+        <div class="est"><span>Estimated total</span><b id="estAmt">0.00 USDT</b></div>
+        <div class="est"><span>Available</span><b id="estAvail">0.00 USDT</b></div>
+      </div>
+      <div class="order-book">
+        <div class="ob-head"><span>Price</span><span>Qty</span></div>
+        <div id="asks"></div>
+        <div class="ob-mid" id="obMid">—</div>
+        <div id="bids"></div>
+      </div>
+    </div>
+    <button class="action-btn buy" id="placeBtn" onclick="placeOrder()">Buy BTC</button>
+  </div>
+  <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- WALLET -->
+<section class="screen" id="s-wallet">
+  <div class="wallet-hero">
+    <div class="lab">Total Balance</div>
+    <div class="bal" id="walletBalance">$0.00</div>
+    <div class="usd" id="walletUsd">≈ 0.00 ETH</div>
+  </div>
+  <div class="scroll">
+    <div class="addr-card">
+      <div class="label">Your unique deposit address</div>
+      <div class="addr-row">
+        <span id="myEthAddress">Log in to see your address</span>
+        <span class="copy" onclick="copyMyAddr()">Copy</span>
+      </div>
+      <div class="qr-wrap"><canvas id="myQrCanvas"></canvas></div>
+      <div class="hint-line">Send only ETH or ERC-20 tokens (USDT, USDC) to this address. This address is uniquely yours — derived from your account index via HD wallet.</div>
+      <div class="warn-hint" id="xpubWarn" style="display:none;"><b>No address yet.</b> Open the admin panel → XPUB Config → paste your ETH XPUB and save.</div>
+    </div>
+    <div class="sec-head" style="padding:0 16px 8px;"><span>My Assets</span><span class="more" onclick="refreshMyBalance()">Refresh</span></div>
+    <div class="asset-list" id="myAssetList">
+      <div class="asset-row"><div class="logo" style="background:#627EEA">Ξ</div><div class="info"><div class="sym">Ethereum</div><div class="nm">ETH</div></div><div class="amount"><div class="amt" id="myEthBal">0.000000</div><div class="usd">≈ $0.00</div></div></div>
+      <div class="asset-row"><div class="logo" style="background:#26A69A">T</div><div class="info"><div class="sym">Tether</div><div class="nm">USDT (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
+      <div class="asset-row"><div class="logo" style="background:#2775CA">U</div><div class="info"><div class="sym">USD Coin</div><div class="nm">USDC (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
+    </div>
+  </div>
+  <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- ASSETS -->
+<section class="screen" id="s-assets">
+  <div class="scroll">
+    <div class="asset-hero">
+      <div class="lbl">
+        <span>Total Asset Value</span>
+        <span class="mode-tag real" id="assetModeTag">REAL</span>
+        <span style="background:var(--green-lt);color:var(--green-dk);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600">Insured</span>
+      </div>
+      <div class="big" id="totalAssets">0.00</div>
+      <div class="usd">≈$0.00</div>
+      <div class="asset-acts">
+        <div class="a" onclick="openDeposit('deposit')"><div class="c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Deposit</div>
+        <div class="a" onclick="openDeposit('withdraw')"><div class="c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Withdraw</div>
+        <div class="a" onclick="openTransfer()"><div class="c"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Transfer</div>
+      </div>
+    </div>
+    <div class="sec-head">My Accounts</div>
+    <div id="acctList"></div>
+  </div>
+  <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- PROFILE -->
+<div class="overlay" id="profile">
+  <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
+  <div class="scroll" style="padding-bottom:20px">
+    <div class="prof-user">
+      <div class="av" id="profileAvatar">U</div>
+      <div>
+        <div class="addr" id="profileAddr">Not signed in</div>
+        <div class="uid">UID: — · <span id="profKycBadge" style="color:var(--red)">Not Verified</span></div>
+      </div>
+    </div>
+    <div class="invite-banner" onclick="openInvite()">
+      <div><div class="t1">Invite & Earn</div><div class="t2">Earn 20% of every trade fee</div></div>
+      <div class="gift">🎁</div>
+    </div>
+    <div id="profileMenu"></div>
+    <div class="logout" onclick="doLogout()">Log Out</div>
+  </div>
+</div>
+
+<!-- NEWS OVERLAY -->
+<div class="overlay" id="newsPanel">
+  <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
+  <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
+</div>
+
+<!-- COPY TRADING OVERLAY -->
+<div class="overlay" id="copyPanel">
+  <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
+  <div class="scroll" id="copyList" style="padding:0 0 20px;"></div>
+</div>
+
+<!-- TRANSACTION HISTORY OVERLAY -->
+<div class="overlay" id="txPanel">
+  <div class="ov-head"><div class="x" onclick="closeTxHistory()">✕</div><div class="title">Transaction History</div></div>
+  <div class="scroll" id="txList" style="padding:0 14px 20px;"></div>
+</div>
+
+<!-- GENERIC MODAL -->
+<div class="generic-modal" id="genericModal">
+  <div class="generic-sheet">
+    <div class="generic-head"><h3 id="genericTitle">Title</h3><div class="x" onclick="closeGeneric()">✕</div></div>
+    <div class="generic-body" id="genericBody"></div>
+  </div>
+</div>
+
+<!-- DEPOSIT MODAL -->
+<div class="generic-modal" id="dmModal">
+  <div class="generic-sheet">
+    <div class="generic-head"><h3 id="dmTitle">Deposit</h3><div class="x" onclick="closeDeposit()">✕</div></div>
+    <div class="generic-body"><div id="dmBody"></div></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- INSTALL APP BANNER -->
+<div id="installBanner" style="display:none; position:fixed; bottom:80px; left:14px; right:14px;
+  background:#1E2329; color:#fff; border-radius:12px; padding:12px 14px; z-index:9999;
+  box-shadow:0 8px 24px rgba(0,0,0,.4); align-items:center; gap:12px;">
+  <div style="width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#0ECB81,#0a9e63);
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#04160f;flex-shrink:0;">N</div>
+  <div style="flex:1;min-width:0;">
+    <div style="font-size:13px;font-weight:700;">Install NextTrade</div>
+    <div style="font-size:11px;color:#B7BDC6;margin-top:2px;">Add to your home screen for the best experience</div>
+  </div>
+  <button id="installBtn" style="background:#0ECB81;color:#fff;border:none;border-radius:8px;
+    padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Install</button>
+  <div id="installClose" style="color:#707A8A;font-size:18px;cursor:pointer;padding:0 4px;">✕</div>
+</div>
+</div>
+
+<script>
+let toastTimer = null;
+
+const ADMIN_KEY = 'nexttrade_admin_wallet_v1';
+const APPS_KEY = 'nexttrade_accounts_v1';
+const SESSION_KEY = 'nexttrade_session_v1';
+const TX_KEY = 'nexttrade_tx_v1';
+const COPY_KEY = 'nexttrade_copytrade_v1';
+const POS_KEY = 'nexttrade_positions_v1';
+const PARTS_KEY = 'nexttrade_copytrade_participants_v1';
+const DEMO_SEED = 10000;
+
+function getAdminState(){ try { return JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"config":{},"clients":[]}'); } catch(e){ return {config:{},clients:[]}; } }
+function saveAdminState(s){ try { localStorage.setItem(ADMIN_KEY, JSON.stringify(s)); } catch(e){} }
+function deriveEthAddress(xpub, index){
+  try {
+    if(!xpub || typeof ethers === 'undefined') return null;
+    const hd = ethers.HDNodeWallet.fromExtendedKey(xpub);
+    return hd.deriveChild(index).address;
+  } catch(e){ return null; }
+}
+function getParticipants(){ try { return JSON.parse(localStorage.getItem(PARTS_KEY) || '{}'); } catch(e){ return {}; } }
+function saveParticipants(p){ try { localStorage.setItem(PARTS_KEY, JSON.stringify(p)); } catch(e){} }
+function recordParticipant(alertId, user, amountUsdt){
+  if(!user || !alertId) return;
+  const all = getParticipants();
+  all[alertId] = all[alertId] || [];
+  all[alertId].unshift({ username: user.username, uid: user.uid, email: user.email, amountUsdt, mode: currentMode, time: Date.now() });
+  if(all[alertId].length > 100) all[alertId].length = 100;
+  saveParticipants(all);
+}
+
+let currentMode = 'real';
+function setMode(mode){
+  if(!currentUser) return;
+  if(mode !== 'demo' && mode !== 'real') return;
+  currentMode = mode;
+  currentUser.mode = mode;
+  if(mode === 'demo'){
+    if(typeof currentUser.demoFunding !== 'number') currentUser.demoFunding = DEMO_SEED;
+    if(typeof currentUser.demoSpot !== 'number') currentUser.demoSpot = 0;
+  }
+  const accs = getAccounts();
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+  applyUserToUI();
+  renderWalletScreen();
+  renderAccounts();
+  renderLiveTradeCard();
+  renderTradingViewChart();
+  updateModeUI();
+  toast(mode === 'demo' ? 'Switched to Demo mode' : 'Switched to Real mode');
+}
+function updateModeUI(){
+  document.querySelectorAll('#modePill .m').forEach(el => {
+    el.classList.remove('on-demo','on-real');
+    if(el.dataset.mode === currentMode){
+      el.classList.add(currentMode === 'demo' ? 'on-demo' : 'on-real');
+    }
+  });
+  const banner = document.getElementById('modeBanner');
+  if(banner) banner.classList.toggle('on', currentMode === 'demo');
+  const lbl = document.getElementById('heroBalanceLabel');
+  if(lbl) lbl.textContent = currentMode === 'demo' ? 'Demo Balance' : 'Total Balance';
+  const assetTag = document.getElementById('assetModeTag');
+  if(assetTag){
+    assetTag.className = 'mode-tag ' + (currentMode === 'demo' ? 'demo' : 'real');
+    assetTag.textContent = currentMode === 'demo' ? 'DEMO' : 'REAL';
+  }
+}
+function activeBalance(field){
+  if(!currentUser) return 0;
+  return currentMode === 'demo'
+    ? (currentUser['demo' + field.charAt(0).toUpperCase() + field.slice(1)] || 0)
+    : (currentUser[field] || 0);
+}
+function setActiveBalance(field, value){
+  if(!currentUser) return;
+  const key = currentMode === 'demo' ? 'demo' + field.charAt(0).toUpperCase() + field.slice(1) : field;
+  currentUser[key] = value;
+  const accs = getAccounts();
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+}
+
+function getAllTx(){ try { return JSON.parse(localStorage.getItem(TX_KEY) || '{}'); } catch(e){ return {}; } }
+function saveAllTx(t){ try { localStorage.setItem(TX_KEY, JSON.stringify(t)); } catch(e){} }
+function recordTx(type, detail){
+  if(!currentUser) return;
+  const all = getAllTx();
+  const email = currentUser.email;
+  all[email] = all[email] || [];
+  all[email].unshift({ id: 'tx' + Date.now() + Math.random().toString(36).slice(2,6), type, detail, time: Date.now(), mode: currentMode });
+  if(all[email].length > 200) all[email].length = 200;
+  saveAllTx(all);
+}
+function renderTxHistory(){
+  if(!currentUser){ document.getElementById('txList').innerHTML = '<div class="hint">Log in to view history</div>'; return; }
+  const list = (getAllTx()[currentUser.email] || []).filter(t => (t.mode || 'real') === currentMode);
+  if(!list.length){
+    document.getElementById('txList').innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px;font-size:13px;">No transactions yet</div>';
+    return;
+  }
+  document.getElementById('txList').innerHTML = list.map(t => {
+    const icon = { deposit:'M12 4v12M7 11l5 5 5-5M4 20h16', withdraw:'M12 20V8M7 13l5-5 5 5M4 4h16',
+      trade:'M4 17l5-6 4 3 7-8', transfer:'M4 8h13l-3-3M20 16H7l3 3', copy:'M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z' }[t.type] || 'M12 3v18M3 12h18';
+    const color = { deposit:'var(--green)', withdraw:'var(--red)', trade:'var(--blue)', transfer:'var(--orange)', copy:'var(--purple)' }[t.type] || 'var(--text2)';
+    return `<div style="background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;">
+      <div style="width:36px;height:36px;border-radius:10px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="${icon}" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13.5px;font-weight:700;text-transform:capitalize;">${t.type}</div>
+        <div style="font-size:11.5px;color:var(--text2);margin-top:3px;">${t.detail}</div>
+        <div style="font-size:10.5px;color:var(--text3);margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openTxHistory(){ renderTxHistory(); document.getElementById('txPanel').classList.add('active'); }
+function closeTxHistory(){ document.getElementById('txPanel').classList.remove('active'); }
+
+function getAllPositions(){ try { return JSON.parse(localStorage.getItem(POS_KEY) || '{}'); } catch(e){ return {}; } }
+function saveAllPositions(p){ try { localStorage.setItem(POS_KEY, JSON.stringify(p)); } catch(e){} }
+function getMyPosition(){
+  if(!currentUser) return null;
+  const raw = getAllPositions()[currentUser.email];
+  if(!raw) return null;
+  if((raw.mode || 'real') !== currentMode) return null;
+  return raw;
+}
+function saveMyPosition(pos){
+  if(!currentUser) return;
+  const all = getAllPositions();
+  if(pos){ pos.mode = currentMode; all[currentUser.email] = pos; }
+  else delete all[currentUser.email];
+  saveAllPositions(all);
+}
+
+function getCopyTrades(){ try { return JSON.parse(localStorage.getItem(COPY_KEY) || '[]'); } catch(e){ return []; } }
+function saveCopyTrades(list){ try { localStorage.setItem(COPY_KEY, JSON.stringify(list)); } catch(e){} }
+function openCopyTrading(){ renderCopyTrades(); document.getElementById('copyPanel').classList.add('active'); }
+function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
+function renderCopyTrades(){
+  const list = getCopyTrades();
+  const el = document.getElementById('copyList');
+  if(!list.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px;font-size:13px;">No copy-trade alerts yet</div>';
+    return;
+  }
+  el.innerHTML = list.map(ct => {
+    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
+    const trader = ct.traderName || 'Brian';
+    const initial = trader[0].toUpperCase();
+    return `<div class="ct-card">
+      <div class="ct-top">
+        <div class="ct-av">${initial}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="ct-trader">${trader} <span class="verified">VERIFIED TRADER</span></div>
+          <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
+        </div>
+      </div>
+      <div class="ct-msg">${ct.message || ''}</div>
+      <div class="ct-actions">
+        <button class="btn2" onclick="dismissCopy('${ct.id}')">Dismiss</button>
+        <button class="btn2 pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function dismissCopy(id){
+  saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
+  renderCopyTrades();
+  updateNotifDot();
+}
+function updateNotifDot(){
+  const dot = document.getElementById('notifDot');
+  if(!dot) return;
+  dot.classList.toggle('show', getCopyTrades().length > 0);
+}
+
+function openCopyConfirm(alertId){
+  if(!currentUser){ openAuth('login'); return; }
+  const ct = getCopyTrades().find(x => x.id === alertId);
+  if(!ct) return;
+  const trader = ct.traderName || 'Brian';
+  const isDemo = currentMode === 'demo';
+  document.getElementById('genericTitle').textContent = 'Copy ' + trader + "'s Trade";
+  document.getElementById('genericBody').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
+        display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px;">${trader[0].toUpperCase()}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:14px;font-weight:700;">${trader}</div>
+        <div style="font-size:11.5px;color:var(--text2);margin-top:2px;">Copying ${ct.sym}/USDT signal</div>
+      </div>
+      ${isDemo ? '<span style="font-size:10px;background:var(--orange-lt);color:var(--orange);padding:3px 8px;border-radius:4px;font-weight:800;">DEMO</span>' : ''}
+    </div>
+    <div style="background:#F5F6F8;border-radius:12px;padding:14px;">
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;"><span style="color:var(--text2);">Instrument</span><b>${ct.sym}/USDT</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;"><span style="color:var(--text2);">Stop Loss</span><b style="color:var(--red);">-2%</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;"><span style="color:var(--text2);">Take Profit</span><b style="color:var(--green);">+4%</b></div>
+      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-top:1px solid var(--line);margin-top:6px;padding-top:10px;"><span style="color:var(--text2);">Source</span><b>${isDemo ? 'Demo Spot' : 'Real Spot'}</b></div>
+    </div>
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin:16px 0 6px;">Amount (USDT)</label>
+    <div style="display:flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
+      <input id="ctAmt" type="text" inputmode="decimal" value="100" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;font-variant-numeric:tabular-nums;">
+      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
+    </div>
+    <button class="auth-submit" style="margin-top:16px;${isDemo?'background:var(--orange);':''}" onclick="confirmCopyTrade('${ct.id}')">Place Copy Trade</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+
+function confirmCopyTrade(alertId){
+  const ct = getCopyTrades().find(x => x.id === alertId);
+  if(!ct) return;
+  const amt = parseFloat(document.getElementById('ctAmt').value || '0');
+  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
+  const m = findMarket(ct.sym);
+  if(!m){ toast('Instrument unavailable'); return; }
+  const spotBal = activeBalance('spot');
+  if(spotBal < amt){ toast('Insufficient ' + (currentMode === 'demo' ? 'Demo ' : '') + 'Spot balance'); return; }
+  setActiveBalance('spot', spotBal - amt);
+  currentUser = getAccounts()[currentUser.email];
+
+  const entry = m.price;
+  const pos = {
+    alertId: ct.id, traderName: ct.traderName || 'Brian', sym: ct.sym, side: 'long',
+    amountUsdt: amt, entry, qty: amt/entry,
+    slPrice: entry * 0.98, tpPrice: entry * 1.04,
+    openedAt: Date.now(), status: 'open'
+  };
+  saveMyPosition(pos);
+  recordTx('copy', `Copy ${pos.traderName} · BUY ${(amt/entry).toFixed(6)} ${ct.sym} @ ${fmt(entry)} · $${amt}`);
+  recordParticipant(ct.id, currentUser, amt);
+  dismissCopy(ct.id);
+  closeGeneric();
+  go('s-spot');
+  setSpotSymbol(ct.sym);
+  renderLiveTradeCard();
+  applyUserToUI();
+  toast('Trade opened — watching live');
+}
+
+function renderLiveTradeCard(){
+  const slot = document.getElementById('liveTradeSlot');
+  const strip = document.getElementById('levelsStrip');
+  const chart = document.querySelector('.tv-slot');
+  if(!slot) return;
+  const pos = getMyPosition();
+  if(!pos || pos.status !== 'open'){
+    slot.innerHTML = '';
+    if(strip) strip.classList.remove('on');
+    if(chart) chart.classList.remove('compact');
+    return;
+  }
+  const m = findMarket(pos.sym) || {price:pos.entry};
+  const cur = m.price;
+  const pnl = (cur - pos.entry) * pos.qty;
+  const pnlPct = ((cur - pos.entry) / pos.entry) * 100;
+  const pnlCls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+  const pnlSign = pnl >= 0 ? '+' : '';
+  const isDemo = (pos.mode || 'real') === 'demo';
+
+  slot.innerHTML = `
+    <div class="live-trade">
+      <div class="lt-head">
+        <div class="pulse"></div>
+        <div class="t">Live · ${pos.traderName}</div>
+        ${isDemo ? '<div class="demo-tag">DEMO</div>' : ''}
+        <div class="side">LONG</div>
+      </div>
+      <div class="lt-row">
+        <span class="lbl">${pos.sym}/USDT · ${pos.qty.toFixed(6)}</span>
+        <span class="val" style="color:${pnlCls};">${pnlSign}$${pnl.toFixed(2)} (${pnlSign}${pnlPct.toFixed(2)}%)</span>
+      </div>
+      <div class="lt-kpis">
+        <div class="kpi"><div class="k">Entry</div><div class="v">${fmt(pos.entry)}</div></div>
+        <div class="kpi"><div class="k">SL</div><div class="v" style="color:var(--red);">${fmt(pos.slPrice)}</div></div>
+        <div class="kpi"><div class="k">TP</div><div class="v" style="color:var(--green);">${fmt(pos.tpPrice)}</div></div>
+      </div>
+      <button class="lt-close" onclick="closePosition('manual')">Close Position</button>
+    </div>
+  `;
+  if(strip){
+    document.getElementById('lvlEntry').textContent = fmt(pos.entry);
+    document.getElementById('lvlSL').textContent = fmt(pos.slPrice);
+    document.getElementById('lvlTP').textContent = fmt(pos.tpPrice);
+    strip.classList.add('on');
+  }
+  if(chart) chart.classList.add('compact');
+}
+function checkSlTp(){
+  const pos = getMyPosition();
+  if(!pos || pos.status !== 'open') return;
+  const m = findMarket(pos.sym);
+  if(!m) return;
+  if(m.price <= pos.slPrice){ closePosition('sl'); }
+  else if(m.price >= pos.tpPrice){ closePosition('tp'); }
+}
+function closePosition(reason){
+  const pos = getMyPosition();
+  if(!pos) return;
+  const m = findMarket(pos.sym) || {price:pos.entry};
+  const exit = m.price;
+  const pnl = (exit - pos.entry) * pos.qty;
+  const returned = pos.amountUsdt + pnl;
+  const savedMode = currentMode;
+  currentMode = pos.mode || 'real';
+  const bal = activeBalance('spot');
+  setActiveBalance('spot', bal + Math.max(0, returned));
+  currentMode = savedMode;
+  currentUser = getAccounts()[currentUser.email];
+  const pnlTxt = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2);
+  const reasonTxt = reason === 'tp' ? 'Take Profit hit' : reason === 'sl' ? 'Stop Loss hit' : 'Manual close';
+  recordTx('copy', `CLOSE ${pos.sym} @ ${fmt(exit)} · ${pnlTxt} (${reasonTxt})`);
+  saveMyPosition(null);
+  renderLiveTradeCard();
+  applyUserToUI();
+  toast(reasonTxt + ' — ' + pnlTxt);
+}
+
+let liveNews = [];
+async function fetchLiveNews(){
+  try {
+    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
+    const data = await r.json();
+    const arr = (data && (data.Data || data.data || data.articles)) || [];
+    if(Array.isArray(arr) && arr.length){
+      liveNews = arr.map(a => ({
+        title: a.TITLE || a.title || '',
+        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
+        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
+        source: 'CoinDesk'
+      })).filter(x => x.title);
+      return true;
+    }
+  } catch(e){}
+  return false;
+}
+function buildGeneratedNews(){
+  const items = [];
+  Object.keys(MARKETS).forEach(cls => {
+    MARKETS[cls].forEach(m => {
+      const c = m.chg || 0;
+      items.push({ title: `${m.name} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(2)}% — now ${fmt(m.price)}`,
+        body: `${m.name} (${m.sym}) trading at ${fmt(m.price)} USDT, ${c>=0?'up':'down'} ${Math.abs(c).toFixed(2)}% in the last 24h.`,
+        source: 'NextTrade', ts: Date.now() });
+    });
+  });
+  items.sort((a,b) => Math.abs(b.chg || 0) - Math.abs(a.chg || 0));
+  return items.slice(0, 10);
+}
+function refreshNewsStrip(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  if(!list.length) return;
+  const top = list[0];
+  document.getElementById('newsHeadline').textContent = top.title;
+  document.getElementById('newsSub').textContent = (top.body || '').slice(0, 100) + '…';
+  document.getElementById('newsTime').textContent = top.source || 'now';
+}
+function openNews(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  document.getElementById('newsList').innerHTML = list.map(n => `
+    <div style="background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
+      <div style="font-size:13.5px;font-weight:700;line-height:1.4;">${n.title}</div>
+      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}${(n.body || '').length > 220 ? '…' : ''}</div>
+      <div style="font-size:10.5px;color:var(--text3);margin-top:10px;">${n.source || 'NextTrade'} · ${new Date(n.ts).toLocaleString()}</div>
+    </div>
+  `).join('');
+  document.getElementById('newsPanel').classList.add('active');
+}
+function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
+
+const MARKETS = {
+  crypto: [
+    {sym:'BTC', price:77845, base:77845, chg:0, color:'#F7931A', vol:'$2.8B', name:'Bitcoin', tv:'BINANCE:BTCUSDT'},
+    {sym:'ETH', price:2446, base:2446, chg:0, color:'#627EEA', vol:'$1.4B', name:'Ethereum', tv:'BINANCE:ETHUSDT'},
+    {sym:'SOL', price:101.5, base:101.5, chg:0, color:'#9945FF', vol:'$760M', name:'Solana', tv:'BINANCE:SOLUSDT'},
+    {sym:'XRP', price:1.38, base:1.38, chg:0, color:'#23292F', vol:'$1.1B', name:'XRP', tv:'BINANCE:XRPUSDT'},
+    {sym:'BNB', price:717.5, base:717.5, chg:0, color:'#F3BA2F', vol:'$980M', name:'BNB', tv:'BINANCE:BNBUSDT'},
+    {sym:'USDT', price:1, base:1, chg:0, color:'#26A69A', vol:'$3.2B', name:'Tether', tv:'BINANCE:USDTUSD'},
+    {sym:'USDC', price:1, base:1, chg:0, color:'#2775CA', vol:'$2.4B', name:'USD Coin', tv:'BINANCE:USDCUSD'},
+    {sym:'DOGE', price:0.165, base:0.165, chg:0, color:'#C2A633', vol:'$640M', name:'Dogecoin', tv:'BINANCE:DOGEUSDT'},
+  ],
+  forex: [
+    {sym:'EURUSD', price:1.1652, base:1.1652, chg:0, color:'#3B82F6', vol:'$180B', name:'EUR/USD', tv:'FX:EURUSD'},
+    {sym:'GBPUSD', price:1.2734, base:1.2734, chg:0, color:'#EF4444', vol:'$98B', name:'GBP/USD', tv:'FX:GBPUSD'},
+    {sym:'USDJPY', price:151.2, base:151.2, chg:0, color:'#10B981', vol:'$120B', name:'USD/JPY', tv:'FX:USDJPY'},
+  ],
+  commodities: [
+    {sym:'XAUUSD', price:4395.82, base:4395.82, chg:0, color:'#F59E0B', vol:'$88B', name:'Gold', tv:'OANDA:XAUUSD'},
+    {sym:'WTI', price:96.05, base:96.05, chg:0, color:'#1F2937', vol:'$64B', name:'Crude Oil', tv:'TVC:USOIL'},
+    {sym:'XAGUSD', price:52.4, base:52.4, chg:0, color:'#9CA3AF', vol:'$18B', name:'Silver', tv:'OANDA:XAGUSD'},
+  ],
+  stocks: [
+    {sym:'AAPL', price:224.18, base:224.18, chg:0, color:'#111827', vol:'$9.2B', name:'Apple', tv:'NASDAQ:AAPL'},
+    {sym:'TSLA', price:242.65, base:242.65, chg:0, color:'#DC2626', vol:'$14.8B', name:'Tesla', tv:'NASDAQ:TSLA'},
+    {sym:'NVDA', price:138.9, base:138.9, chg:0, color:'#16A34A', vol:'$22.1B', name:'NVIDIA', tv:'NASDAQ:NVDA'},
+  ]
+};
+function findMarket(sym){
+  for(const k in MARKETS){ const f = MARKETS[k].find(x=>x.sym===sym); if(f) return f; }
+  return null;
+}
+function fmt(n){
+  if(n>=1000) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  if(n>=1) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4});
+  return n.toFixed(4);
+}
+const chgCls = c => c>=0 ? 'up' : 'down';
+const chgSign = c => (c>=0?'+':'') + c.toFixed(2) + '%';
+function symLogo(sym, sz=22){
+  const m = findMarket(sym);
+  const col = m ? m.color : '#0ECB81';
+  const dark = col === '#F3BA2F' || col === '#9CA3AF' || col === '#C2A633';
+  return `<span class="logo" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*0.5)}px;background:${col};${dark?'color:#000;':''}">${sym[0]}</span>`;
+}
+
+/* LIVE PRICE ENGINE — sim always runs, Binance overwrites on arrival */
+let lastBinanceTick = 0;
+function startBinanceStream(){
+  if(typeof WebSocket === 'undefined') return;
+  try {
+    const ws = new WebSocket('wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker/solusdt@ticker/xrpusdt@ticker/bnbusdt@ticker/dogeusdt@ticker');
+    ws.onmessage = ev => {
+      try {
+        const msg = JSON.parse(ev.data); const d = msg.data; if(!d || !d.s) return;
+        const sym = d.s.replace('USDT','');
+        const m = MARKETS.crypto.find(x => x.sym === sym); if(!m) return;
+        const p = parseFloat(d.c), o = parseFloat(d.o);
+        if(!isFinite(p) || p <= 0) return;
+        m.price = p;
+        m.chg = o ? ((p-o)/o)*100 : 0;
+        m.vol = '$' + (parseFloat(d.q)/1e6).toFixed(1) + 'M';
+        lastBinanceTick = Date.now();
+      } catch(e){}
+    };
+  } catch(e){}
+}
+let simTimer = null;
+function startSimulation(){
+  if(simTimer) return;
+  simTimer = setInterval(() => {
+    Object.keys(MARKETS).forEach(cls => {
+      MARKETS[cls].forEach(m => {
+        if(m.sym === 'USDT' || m.sym === 'USDC'){ m.chg = 0; return; }
+        const drift = (Math.random() - 0.5) * m.base * 0.0025;
+        m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
+        m.chg = ((m.price - m.base) / m.base) * 100;
+      });
+    });
+  }, 1500);
+}
+function renderAllPrices(){
+  renderHomePulse();
+  renderHomeList();
+  renderMarketsForClass();
+  updateSpotHeader();
+  refreshNewsStrip();
+  renderLiveTradeCard();
+  checkSlTp();
+}
+setInterval(renderAllPrices, 1500);
+
+let currentUser = null;
+function getAccounts(){ try { return JSON.parse(localStorage.getItem(APPS_KEY) || '{}'); } catch(e){ return {}; } }
+function saveAccounts(accs){ try { localStorage.setItem(APPS_KEY, JSON.stringify(accs)); } catch(e){} }
+function hashPassword(pw){
+  let h = 5381;
+  for(let i=0;i<pw.length;i++) h = ((h<<5)+h+pw.charCodeAt(i)) & 0xFFFFFFFF;
+  return 'h' + Math.abs(h).toString(36);
+}
+function generateUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
+function openAuth(mode){
+  document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(mode === 'signup' ? 'authSignup' : 'authLogin').classList.add('active');
+  ['loginEmailErr','loginPwErr','suUsernameErr','suEmailErr','suPwErr','suPw2Err'].forEach(id=>{
+    const el = document.getElementById(id); if(el){ el.textContent = ''; el.classList.remove('show'); }
+  });
+}
+function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
+function switchAuth(mode){ openAuth(mode); }
+function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
+function checkUsername(){
+  const v = document.getElementById('suUsername').value.trim();
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(v)) return;
+  const accs = getAccounts();
+  if(accs[v.toLowerCase()]) showErr('suUsername','suUsernameErr','Username taken');
+  else clearErr('suUsername','suUsernameErr');
+}
+function scorePw(){
+  const v = document.getElementById('suPw').value;
+  const segs = document.querySelectorAll('#pwStrength .seg');
+  let s = 0;
+  if(v.length >= 8) s++;
+  if(/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
+  if(/\d/.test(v)) s++;
+  if(/[^a-zA-Z0-9]/.test(v)) s++;
+  segs.forEach((seg,i)=>{ seg.className='seg'; if(i<s) seg.classList.add('on-'+s); });
+}
+function showErr(f,e,m){
+  document.getElementById(f).style.borderColor = 'var(--red)';
+  document.getElementById(e).textContent = m;
+  document.getElementById(e).classList.add('show');
+}
+function clearErr(f,e){
+  document.getElementById(f).style.borderColor = '';
+  document.getElementById(e).classList.remove('show');
+}
+function doLogin(){
+  const id = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pw = document.getElementById('loginPw').value;
+  if(!id) return showErr('loginEmail','loginEmailErr','Enter email or username');
+  if(!pw) return showErr('loginPw','loginPwErr','Enter password');
+  const accs = getAccounts();
+  const user = Object.values(accs).find(a => a.email.toLowerCase() === id || a.username.toLowerCase() === id);
+  if(!user || user.pwHash !== hashPassword(pw)) return showErr('loginPw','loginPwErr','Incorrect credentials');
+  currentUser = user;
+  if(typeof currentUser.demoFunding !== 'number') currentUser.demoFunding = DEMO_SEED;
+  if(typeof currentUser.demoSpot !== 'number') currentUser.demoSpot = 0;
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+  currentMode = user.mode === 'demo' ? 'demo' : 'real';
+  localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email}));
+  applyUserToUI();
+  updateModeUI();
+  closeAuth();
+  renderLiveTradeCard();
+  toast('Welcome back!');
+}
+function doSignup(){
+  const username = document.getElementById('suUsername').value.trim();
+  const email = document.getElementById('suEmail').value.trim().toLowerCase();
+  const pw = document.getElementById('suPw').value;
+  const pw2 = document.getElementById('suPw2').value;
+  const ref = document.getElementById('suReferral').value.trim();
+  const terms = document.getElementById('suTerms').checked;
+
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3-20 chars, letters/numbers/_');
+  const accs = getAccounts();
+  if(accs[username.toLowerCase()]) return showErr('suUsername','suUsernameErr','Username taken');
+  if(accs[email]) return showErr('suEmail','suEmailErr','Email already registered');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
+  if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
+  if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
+  if(!terms) return toast('Agree to terms to continue');
+
+  const user = {
+    username, email, pwHash: hashPassword(pw), uid: generateUID(),
+    referralCode: 'NT' + Math.floor(100000 + Math.random()*900000),
+    referredBy: ref || null, createdAt: Date.now(),
+    balance: 0, funding: 0, spot: 0,
+    demoFunding: DEMO_SEED, demoSpot: 0, mode: 'real', kycStatus: 'none'
+  };
+  accs[email] = user;
+  saveAccounts(accs);
+
+  const admin = getAdminState();
+  admin.clients = admin.clients || [];
+  const used = admin.clients.map(c => c.derivationIndex);
+  let nextIndex = 0; while(used.includes(nextIndex)) nextIndex++;
+  const client = { id:'c'+Date.now()+Math.random().toString(36).slice(2,6),
+    name: username, email, derivationIndex: nextIndex, addresses:{}, createdAt: Date.now() };
+  if(admin.config && admin.config.ethXpub) client.addresses.eth = deriveEthAddress(admin.config.ethXpub, nextIndex);
+  admin.clients.push(client);
+  saveAdminState(admin);
+
+  currentUser = user;
+  currentMode = 'real';
+  localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email}));
+  applyUserToUI();
+  updateModeUI();
+  closeAuth();
+  toast('Account created! Demo: $10,000 USDT ready');
+}
+function doLogout(){
+  currentUser = null; currentMode = 'real';
+  localStorage.removeItem(SESSION_KEY);
+  applyUserToUI();
+  closeProfile();
+  renderLiveTradeCard();
+  toast('Logged out');
+}
+function forgotPassword(){
+  document.getElementById('genericTitle').textContent = 'Reset Password';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6;">Enter your email and we'll send you a reset link.</div>
+    <input id="forgotEmail" type="email" placeholder="you@example.com" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
+    <button class="auth-submit" style="margin-top:14px;" onclick="toast('Reset link sent'); closeGeneric();">Send Reset Link</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function closeGeneric(){ document.querySelectorAll('.generic-modal').forEach(m => m.classList.remove('on')); }
+
+let heroMasked = false;
+function toggleHeroMask(){
+  heroMasked = !heroMasked;
+  const el = document.getElementById('heroBalance');
+  const bal = activeBalance('funding') + activeBalance('spot') + (currentUser && currentUser.balance || 0);
+  el.textContent = heroMasked ? '••••••' : ('$' + fmt(bal));
+  toast(heroMasked ? 'Balance hidden' : 'Balance shown');
+}
+function applyUserToUI(){
+  const loggedIn = !!currentUser;
+  document.getElementById('heroLoggedOut').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('heroLoggedIn').style.display = loggedIn ? 'block' : 'none';
+  const av = document.getElementById('homeAvatar');
+  if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
+  else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
+  if(loggedIn){
+    document.getElementById('heroAvatar').textContent = currentUser.username[0].toUpperCase();
+    document.getElementById('heroName').textContent = currentUser.username;
+    document.getElementById('heroUid').textContent = 'UID: ' + currentUser.uid;
+    const bal = activeBalance('funding') + activeBalance('spot') + (currentUser.balance || 0);
+    document.getElementById('heroBalance').textContent = heroMasked ? '••••••' : ('$' + fmt(bal));
+    document.getElementById('profileAvatar').textContent = currentUser.username[0].toUpperCase();
+    document.getElementById('profileAddr').textContent = currentUser.email;
+  } else {
+    document.getElementById('profileAvatar').textContent = 'U';
+    document.getElementById('profileAddr').textContent = 'Not signed in';
+  }
+  renderWalletScreen();
+  renderAccounts();
+  updateNotifDot();
+  updateKycBadge();
+  updateModeUI();
+}
+
+function getMyAddress(){
+  if(!currentUser) return null;
+  const admin = getAdminState();
+  if(!admin.config || !admin.config.ethXpub) return null;
+  let client = (admin.clients || []).find(c =>
+    c.name.toLowerCase() === currentUser.username.toLowerCase() ||
+    (c.email && c.email.toLowerCase() === currentUser.email.toLowerCase()));
+  if(!client){
+    const used = (admin.clients || []).map(c => c.derivationIndex);
+    let nextIndex = 0; while(used.includes(nextIndex)) nextIndex++;
+    client = { id:'c'+Date.now(), name:currentUser.username, email:currentUser.email,
+      derivationIndex:nextIndex, addresses:{}, createdAt:Date.now() };
+    admin.clients = admin.clients || []; admin.clients.push(client);
+  }
+  if(!client.addresses.eth) client.addresses.eth = deriveEthAddress(admin.config.ethXpub, client.derivationIndex);
+  saveAdminState(admin);
+  return client.addresses.eth;
+}
+function renderWalletScreen(){
+  const warn = document.getElementById('xpubWarn');
+  if(!currentUser){
+    document.getElementById('myEthAddress').textContent = 'Log in to see your address';
+    document.getElementById('myQrCanvas').style.display = 'none';
+    if(warn) warn.style.display = 'none';
+    return;
+  }
+  const addr = getMyAddress();
+  const addrEl = document.getElementById('myEthAddress');
+  const qrCanvas = document.getElementById('myQrCanvas');
+  if(addr){ addrEl.textContent = addr; qrCanvas.style.display = 'block'; drawQR(addr, qrCanvas); if(warn) warn.style.display = 'none'; }
+  else { addrEl.textContent = 'Admin has not configured XPUB yet'; qrCanvas.style.display = 'none'; if(warn) warn.style.display = 'block'; }
+}
+function copyMyAddr(){
+  const addr = getMyAddress();
+  if(!addr) return toast('No address yet');
+  if(navigator.clipboard) navigator.clipboard.writeText(addr);
+  toast('Address copied');
+}
+async function refreshMyBalance(){
+  if(!currentUser) return toast('Log in first');
+  const addr = getMyAddress();
+  if(!addr) return toast('No address configured');
+  toast('Refreshing...');
+  const admin = getAdminState();
+  const rpcUrl = (admin.config && admin.config.rpcUrl) || 'https://eth.llamarpc.com';
+  try {
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const bal = await provider.getBalance(addr);
+    const eth = parseFloat(ethers.formatEther(bal)).toFixed(6);
+    document.getElementById('myEthBal').textContent = eth;
+    document.getElementById('walletUsd').textContent = '≈ ' + eth + ' ETH';
+    document.getElementById('walletBalance').textContent = '$' + (parseFloat(eth) * 2446).toFixed(2);
+    toast('Balance updated');
+  } catch(e){ toast('RPC failed'); }
+}
+function drawQR(text, canvas){
+  if(!canvas) return;
+  const size = 160; canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const grid = 21; const cell = size / grid;
+  ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+  let h = 0;
+  for(let i = 0; i < text.length; i++) h = ((h<<5)-h+text.charCodeAt(i))|0;
+  function finder(x,y){
+    ctx.fillStyle = '#000'; ctx.fillRect(x*cell,y*cell,7*cell,7*cell);
+    ctx.fillStyle = '#fff'; ctx.fillRect((x+1)*cell,(y+1)*cell,5*cell,5*cell);
+    ctx.fillStyle = '#000'; ctx.fillRect((x+2)*cell,(y+2)*cell,3*cell,3*cell);
+  }
+  finder(0,0); finder(14,0); finder(0,14);
+  let seed = Math.abs(h);
+  for(let y=0;y<grid;y++) for(let x=0;x<grid;x++){
+    if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12)) continue;
+    seed = (seed*1103515245+12345)&0x7fffffff;
+    if(seed%100<45){ ctx.fillStyle='#000'; ctx.fillRect(x*cell,y*cell,cell,cell); }
+  }
+}
+
+const NAV = [
+  {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
+  {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
+  {id:'s-spot', label:'Spot', icon:'M12 4v16M6 9l6-5 6 5'},
+  {id:'s-wallet', label:'Wallet', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
+  {id:'s-assets', label:'Assets', icon:'M3 7h18v12H3zM3 11h18'}
+];
+function navIcon(d,on){return `<svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="${d}" stroke="${on?'#0ECB81':'#707A8A'}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
+function buildNav(el, active){
+  el.innerHTML = NAV.map(n => `<div class="nb ${n.id===active?'on':''}" onclick="go('${n.id}')">${navIcon(n.icon, n.id===active)}<span>${n.label}</span></div>`).join('');
+}
+document.querySelectorAll('[data-nav]').forEach(nav => buildNav(nav, nav.closest('.screen').id));
+buildNav(document.getElementById('homeNav'), 's-home');
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id===id));
+  document.querySelectorAll('[data-nav]').forEach(nav => { const s = nav.closest('.screen'); if(s) buildNav(nav, s.id); });
+  buildNav(document.getElementById('homeNav'), id);
+  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
+  if(id === 's-wallet') renderWalletScreen();
+  if(id === 's-spot'){ renderLiveTradeCard(); renderTradingViewChart(); }
+}
+function openProfile(){ document.getElementById('profile').classList.add('active'); }
+function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
+
+function openInvite(){
+  if(!currentUser){ openAuth('login'); return; }
+  const code = currentUser.referralCode || ('NT' + currentUser.uid.slice(-6));
+  document.getElementById('genericTitle').textContent = 'Invite & Earn';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="text-align:center;padding:4px 0 6px;">
+      <div style="font-size:40px;">🎁</div>
+      <div style="font-size:14px;font-weight:700;margin-top:8px;">Your unique referral code</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px;">Share it and earn 20% of every trade fee</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;border-radius:12px;padding:20px;text-align:center;margin:14px 0;">
+      <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:3px;">${code}</div>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="auth-submit" style="flex:1;" onclick="copyInvite('${code}')">Copy Code</button>
+      <button class="auth-submit" style="flex:1;background:#fff;color:var(--text);border:1.5px solid var(--line);" onclick="shareInvite('${code}')">Share</button>
+    </div>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Code copied'); }
+function shareInvite(code){
+  const txt = 'Join NextTrade with my code ' + code + '.';
+  if(navigator.share) navigator.share({title:'NextTrade', text:txt}).catch(()=>{});
+  else { if(navigator.clipboard) navigator.clipboard.writeText(txt); toast('Copied'); }
+}
+
+function renderHomePulse(){
+  document.getElementById('homePulse').innerHTML = ['BTC','ETH','SOL'].map(s => {
+    const m = findMarket(s);
+    return `<div class="p"><div class="top">${symLogo(s,16)} ${s}/USDT</div><div class="val">${fmt(m.price)}</div><div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div></div>`;
+  }).join('');
+}
+function renderHomeList(){
+  document.getElementById('homeList').innerHTML = ['BTC','ETH','SOL','XRP','BNB'].map(s => {
+    const m = findMarket(s);
+    return `<div class="trow" onclick="go('s-spot');setSpotSymbol('${s}')">
+      <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(s,22)}<span>${s}<small>${m.name}</small></span></div>
+      <div class="px" style="grid-column:2/4">${fmt(m.price)}</div>
+      <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+    </div>`;
+  }).join('');
+}
+let currentClass = 'crypto';
+function renderMarketsForClass(){
+  const list = MARKETS[currentClass];
+  document.getElementById('coinGrid').innerHTML = list.slice(0,8).map(m => `
+    <div class="coin-card" onclick="openInstrumentFromMarket('${m.sym}')">
+      <div class="pair">${m.sym}</div>
+      <div class="price">${fmt(m.price)}</div>
+      <div class="chg ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+      <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    </div>
+  `).join('');
+  document.getElementById('mktTable').innerHTML = list.map(m => `
+    <div class="trow" onclick="openInstrumentFromMarket('${m.sym}')">
+      <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(m.sym,26)}<span>${m.sym}<small>${m.name}</small></span></div>
+      <div class="vol">${m.vol}</div>
+      <div class="px">${fmt(m.price)}</div>
+      <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+    </div>
+  `).join('');
+}
+function openInstrumentFromMarket(sym){
+  go('s-spot');
+  setSpotSymbol(sym);
+}
+const acb = document.getElementById('assetClassBar');
+if(acb) acb.addEventListener('click', e => {
+  const p = e.target.closest('.ac-pill'); if(!p) return;
+  document.querySelectorAll('.ac-pill').forEach(x => x.classList.remove('on'));
+  p.classList.add('on');
+  currentClass = p.dataset.class;
+  renderMarketsForClass();
+});
+
+let tvWidget = null;
+let tvRetryCount = 0;
+function renderTradingViewChart(){
+  const slot = document.getElementById('tv-mini-chart');
+  if(!slot) return;
+  const m = findMarket(spotSymbol);
+  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
+  slot.innerHTML = '';
+  if(typeof TradingView === 'undefined' || !TradingView.widget){
+    tvRetryCount++;
+    if(tvRetryCount < 5) setTimeout(renderTradingViewChart, 600);
+    drawFallbackChart(slot, m);
+    return;
+  }
+  try {
+    tvWidget = new TradingView.widget({
+      container_id: 'tv-mini-chart', autosize: true, symbol: tvSym,
+      interval: '15', timezone: 'Etc/UTC', theme: 'light', style: '1', locale: 'en',
+      toolbar_bg: '#ffffff', enable_publishing: false, allow_symbol_change: false,
+      hide_side_toolbar: true, hide_top_toolbar: true, save_image: false, withdateranges: false
+    });
+    setTimeout(() => {
+      const iframe = slot.querySelector('iframe');
+      if(!iframe || iframe.offsetHeight < 40) drawFallbackChart(slot, m);
+    }, 3000);
+  } catch(e){ drawFallbackChart(slot, m); }
+}
+function drawFallbackChart(slot, marketInfo){
+  const oldCanvas = slot.querySelector('canvas.fallback');
+  if(oldCanvas) oldCanvas.remove();
+  const c = document.createElement('canvas');
+  c.className = 'fallback';
+  slot.appendChild(c);
+  setTimeout(() => {
+    const w = slot.clientWidth || 360;
+    const h = slot.clientHeight || 240;
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    const mid = (marketInfo && marketInfo.price) || 77845;
+    const isUp = ((marketInfo && marketInfo.chg) || 0) >= 0;
+    const lineColor = isUp ? '#0ECB81' : '#F6465D';
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(234,236,239,0.9)';
+    ctx.lineWidth = 1;
+    for(let i = 1; i < 4; i++){
+      const y = (h / 4) * i;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    let p = mid * 0.99;
+    const pts = [];
+    for(let i = 0; i < 60; i++){ p += (Math.random()-0.48)*mid*0.003; pts.push(p); }
+    pts[pts.length-1] = mid;
+    const min = Math.min(...pts), max = Math.max(...pts), range = max-min || 1;
+    ctx.strokeStyle = lineColor; ctx.lineWidth = 2;
+    ctx.beginPath();
+    pts.forEach((v, i) => {
+      const x = (i/(pts.length-1)) * w;
+      const y = 8 + (h-16) * (1 - (v-min)/range);
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    });
+    ctx.stroke();
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, isUp ? 'rgba(14,203,129,0.25)' : 'rgba(246,70,93,0.25)');
+    grad.addColorStop(1, isUp ? 'rgba(14,203,129,0)' : 'rgba(246,70,93,0)');
+    ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(6, 6, 96, 20);
+    ctx.strokeStyle = 'rgba(234,236,239,1)'; ctx.strokeRect(6.5, 6.5, 95, 19);
+    ctx.fillStyle = lineColor;
+    ctx.font = 'bold 12px -apple-system,sans-serif';
+    ctx.fillText('$' + fmt(mid), 12, 20);
+  }, 30);
+}
+
+let spotSymbol = 'BTC';
+function setSpotSymbol(sym){
+  spotSymbol = sym;
+  const m = findMarket(sym); if(!m) return;
+  document.getElementById('spotSym').textContent = sym + '/USDT';
+  document.getElementById('fLimitPrice').value = fmt(m.price);
+  document.getElementById('fAmtSuf').textContent = sym;
+  document.getElementById('placeBtn').textContent = (currentSide === 'buy' ? 'Buy ' : 'Sell ') + sym;
+  updateSpotHeader();
+  tvRetryCount = 0;
+  renderTradingViewChart();
+  renderOrderBook();
+}
+function updateSpotHeader(){
+  const m = findMarket(spotSymbol); if(!m) return;
+  const el = document.getElementById('spotChg');
+  el.className = 'chg ' + chgCls(m.chg);
+  el.textContent = chgSign(m.chg);
+}
+let currentSide = 'buy';
+function setSide(side){
+  currentSide = side;
+  document.getElementById('bsBuy').classList.toggle('on', side === 'buy');
+  document.getElementById('bsSell').classList.toggle('on', side === 'sell');
+  const btn = document.getElementById('placeBtn');
+  btn.className = 'action-btn ' + (side === 'buy' ? 'buy' : 'sell');
+  btn.textContent = (side === 'buy' ? 'Buy ' : 'Sell ') + spotSymbol;
+}
+const ot = document.getElementById('otypeTabs');
+if(ot) ot.addEventListener('click', e => {
+  const t = e.target.closest('.ot'); if(!t) return;
+  document.querySelectorAll('.ot').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+});
+
+function openInstrumentPicker(){
+  const groups = [
+    {key:'crypto', label:'Crypto'},
+    {key:'forex', label:'Forex'},
+    {key:'commodities', label:'Commodities'},
+    {key:'stocks', label:'Stocks'}
+  ];
+  document.getElementById('genericTitle').textContent = 'Choose Instrument';
+  document.getElementById('genericBody').innerHTML = groups.map(g => `
+    <div class="ins-group">
+      <div class="ins-group-title">${g.label}</div>
+      ${MARKETS[g.key].map(m => `
+        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
+          ${symLogo(m.sym, 30)}
+          <div style="flex:1;min-width:0;">
+            <div class="sym">${m.sym}/USDT</div>
+            <div class="nm">${m.name}</div>
+          </div>
+          <div>
+            <div class="px">${fmt(m.price)}</div>
+            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  document.getElementById('genericModal').classList.add('on');
+}
+function pickInstrument(sym){ closeGeneric(); setSpotSymbol(sym); toast('Switched to ' + sym); }
+
+function renderOrderBook(){
+  const m = findMarket(spotSymbol) || {price:77845};
+  const mid = m.price;
+  const asks = [], bids = [];
+  for(let i = 0; i < 5; i++){
+    asks.push({p: mid * (1 + (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
+    bids.push({p: mid * (1 - (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
+  }
+  document.getElementById('asks').innerHTML = asks.map(r => `<div class="ob-row"><span class="down">${fmt(r.p)}</span><span>${r.q}</span></div>`).join('');
+  document.getElementById('bids').innerHTML = bids.map(r => `<div class="ob-row"><span class="up">${fmt(r.p)}</span><span>${r.q}</span></div>`).join('');
+  document.getElementById('obMid').innerHTML = `${fmt(mid)}<small>≈ $${fmt(mid)}</small>`;
+}
+setInterval(renderOrderBook, 2500);
+
+function placeOrder(){
+  if(!currentUser){ openAuth('login'); return; }
+  const amt = document.getElementById('fAmt').value.trim();
+  const px = document.getElementById('fLimitPrice').value.trim();
+  const sl = document.getElementById('fSL').value.trim();
+  const tp = document.getElementById('fTP').value.trim();
+  if(!amt || parseFloat(amt) <= 0){ toast('Enter a quantity'); return; }
+  const detail = `${currentSide.toUpperCase()} ${amt} ${spotSymbol} @ ${px || 'market'}${sl ? ' · SL ' + sl : ''}${tp ? ' · TP ' + tp : ''}`;
+  recordTx('trade', detail);
+  document.getElementById('fAmt').value = '';
+  document.getElementById('fSL').value = '';
+  document.getElementById('fTP').value = '';
+  toast('Order placed');
+}
+
+function openTransfer(){
+  if(!currentUser){ openAuth('login'); return; }
+  const funding = activeBalance('funding');
+  const spot = activeBalance('spot');
+  const tag = currentMode === 'demo' ? ' (Demo)' : '';
+  document.getElementById('genericTitle').textContent = 'Transfer' + tag;
+  document.getElementById('genericBody').innerHTML = `
+    <div class="tf-fromto">
+      <div class="box"><div class="k">From</div>
+        <select id="tfFrom" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
+          <option value="funding">Funding (${funding.toFixed(2)} USDT)</option>
+          <option value="spot">Spot (${spot.toFixed(2)} USDT)</option>
+        </select>
+      </div>
+      <div class="arrow">⇄</div>
+      <div class="box"><div class="k">To</div>
+        <select id="tfTo" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
+          <option value="spot">Spot</option>
+          <option value="funding">Funding</option>
+        </select>
+      </div>
+    </div>
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Amount</label>
+    <div style="display:flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
+      <input id="tfAmt" type="text" inputmode="decimal" placeholder="0.00" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;">
+      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
+    </div>
+    <button class="auth-submit" style="margin-top:16px;" onclick="doTransfer()">Confirm Transfer</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function doTransfer(){
+  const from = document.getElementById('tfFrom').value;
+  const to = document.getElementById('tfTo').value;
+  const amt = parseFloat(document.getElementById('tfAmt').value || '0');
+  if(from === to){ toast('Choose different accounts'); return; }
+  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
+  if(activeBalance(from) < amt){ toast('Insufficient balance'); return; }
+  setActiveBalance(from, activeBalance(from) - amt);
+  setActiveBalance(to, activeBalance(to) + amt);
+  currentUser = getAccounts()[currentUser.email];
+  recordTx('transfer', `${amt.toFixed(2)} USDT from ${from} → ${to}`);
+  closeGeneric();
+  renderAccounts();
+  applyUserToUI();
+  toast('Transfer complete');
+}
+
+function openDeposit(mode){
+  if(!currentUser){ openAuth('login'); return; }
+  const addr = getMyAddress();
+  document.getElementById('dmTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
+  document.getElementById('dmBody').innerHTML = `
+    <div style="background:#F5F6F8;border-radius:10px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Your ${mode === 'withdraw' ? 'withdrawal' : 'deposit'} address</div>
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:var(--green-dk);word-break:break-all;">${addr || 'Admin has not configured XPUB'}</div>
+    </div>
+    ${mode === 'deposit' ? `
+      <div style="text-align:center;"><canvas id="dmQr" style="width:160px;height:160px;"></canvas></div>
+      <div style="background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#7A5C00;margin-top:12px;line-height:1.6;">
+        Send only ETH or ERC-20 tokens (USDT, USDC). Deposits credited after confirmation.
+      </div>
+    ` : `
+      <div style="margin-top:12px;">
+        <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:6px;">Destination address</label>
+        <input id="wdAddr" type="text" placeholder="0x..." style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
+        <label style="font-size:12px;color:var(--text2);display:block;margin:12px 0 6px;">Amount</label>
+        <input id="wdAmt" type="text" placeholder="0.00" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
+        <button class="auth-submit" style="margin-top:14px;" onclick="submitWithdraw()">Request Withdrawal</button>
+      </div>
+    `}
+  `;
+  document.getElementById('dmModal').classList.add('on');
+  if(mode === 'deposit' && addr) setTimeout(() => drawQR(addr, document.getElementById('dmQr')), 50);
+}
+function submitWithdraw(){
+  const addr = document.getElementById('wdAddr').value.trim();
+  const amt = document.getElementById('wdAmt').value.trim();
+  if(!addr || !amt){ toast('Fill all fields'); return; }
+  recordTx('withdraw', `${amt} to ${addr.slice(0,10)}…`);
+  toast('Withdrawal requested');
+  closeDeposit();
+}
+function closeDeposit(){ document.getElementById('dmModal').classList.remove('on'); }
+
+function renderAccounts(){
+  const funding = activeBalance('funding').toFixed(2);
+  const spot = activeBalance('spot').toFixed(2);
+  const accts = [
+    {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
+    {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
+  ];
+  document.getElementById('acctList').innerHTML = accts.map(a => `
+    <div class="acct-row" onclick="openTransfer()">
+      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
+      <div class="arrow">›</div>
+    </div>
+  `).join('');
+}
+
+function renderProfileMenu(){
+  const items = [
+    {l:'Identity Verification', sub:'Not verified', action:'openKyc()'},
+    {l:'Transaction History', action:'openTxHistory()'},
+    {l:'Copy Trading', action:'openCopyTrading()'},
+    {l:'Reset Demo Balance', action:'resetDemo()'},
+    {l:'Referral Program', action:'openInvite()'},
+    {l:'Security Center', action:"toast('Security')"},
+    {l:'Price Alerts', action:"toast('Alerts')"},
+    {l:'Fee Schedule', action:"toast('Fees')"},
+    {l:'Contact Us', action:"toast('Contact')"},
+    {l:'About Us', action:"toast('About')"}
+  ];
+  document.getElementById('profileMenu').innerHTML = items.map(it => `
+    <div class="menu-row" onclick="${it.action}">
+      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
+      <div class="mt">${it.l}</div>
+      ${it.sub ? `<div style="font-size:11px;color:var(--orange);font-weight:600;">${it.sub}</div>` : ''}
+      <div class="arrow">›</div>
+    </div>
+  `).join('');
+}
+
+function resetDemo(){
+  if(!currentUser){ openAuth('login'); return; }
+  currentUser.demoFunding = DEMO_SEED;
+  currentUser.demoSpot = 0;
+  const accs = getAccounts();
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+  const all = getAllPositions();
+  if(all[currentUser.email] && (all[currentUser.email].mode === 'demo')){
+    delete all[currentUser.email];
+    saveAllPositions(all);
+  }
+  applyUserToUI();
+  renderLiveTradeCard();
+  toast('Demo reset — $' + DEMO_SEED.toLocaleString() + ' USDT');
+}
+
+let kycUploads = {front:null, back:null, selfie:null};
+function openKyc(){
+  if(!currentUser){ openAuth('login'); return; }
+  kycUploads = {front:null, back:null, selfie:null};
+  document.getElementById('genericTitle').textContent = 'Identity Verification';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="font-size:12.5px;color:var(--text2);line-height:1.6;margin-bottom:16px;">Complete the form below. Your data is stored locally and reviewed by our team.</div>
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Full legal name</label>
+    <input id="kycName" type="text" placeholder="John Doe" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Date of birth</label>
+    <input id="kycDob" type="date" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Country</label>
+    <input id="kycCountry" type="text" placeholder="United States" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">ID type</label>
+    <select id="kycIdType" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;margin-bottom:12px;font-family:inherit;background:#fff;">
+      <option value="passport">Passport</option>
+      <option value="national_id">National ID</option>
+      <option value="drivers_license">Driver's License</option>
+    </select>
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">ID number</label>
+    <input id="kycIdNum" type="text" placeholder="XXXX-XXXX-XXXX" style="width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;margin-bottom:14px;font-family:inherit;">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">ID — Front</label>
+    <div class="kyc-up" id="upFront" onclick="document.getElementById('kycFront').click()"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="t">Tap to upload front</div><div class="s">JPG or PNG · max 5MB</div></div>
+    <input type="file" id="kycFront" accept="image/*" style="display:none;" onchange="handleKycFile('front', this)">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin:14px 0 6px;">ID — Back</label>
+    <div class="kyc-up" id="upBack" onclick="document.getElementById('kycBack').click()"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="t">Tap to upload back</div><div class="s">JPG or PNG · max 5MB</div></div>
+    <input type="file" id="kycBack" accept="image/*" style="display:none;" onchange="handleKycFile('back', this)">
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin:14px 0 6px;">Selfie with ID</label>
+    <div class="kyc-up" id="upSelfie" onclick="document.getElementById('kycSelfie').click()"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#0ECB81" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="#0ECB81" stroke-width="2" stroke-linecap="round"/></svg></div><div class="t">Tap to upload selfie</div><div class="s">Hold your ID next to your face</div></div>
+    <input type="file" id="kycSelfie" accept="image/*" style="display:none;" onchange="handleKycFile('selfie', this)">
+    <button class="auth-submit" style="margin-top:18px;" onclick="submitKyc()">Submit for Review</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function handleKycFile(slot, input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024){ toast('File too large (max 5MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    kycUploads[slot] = e.target.result;
+    const box = document.getElementById('up' + slot.charAt(0).toUpperCase() + slot.slice(1));
+    if(box){ box.classList.add('has'); box.querySelector('.t').textContent = file.name; box.querySelector('.s').textContent = 'Uploaded — tap to change'; }
+  };
+  reader.readAsDataURL(file);
+}
+function submitKyc(){
+  const name = document.getElementById('kycName').value.trim();
+  const dob = document.getElementById('kycDob').value;
+  const country = document.getElementById('kycCountry').value.trim();
+  const idType = document.getElementById('kycIdType').value;
+  const idNum = document.getElementById('kycIdNum').value.trim();
+  if(!name || !dob || !country || !idNum){ toast('Fill all fields'); return; }
+  if(!kycUploads.front || !kycUploads.back || !kycUploads.selfie){ toast('Upload all three images'); return; }
+  currentUser.kycStatus = 'pending';
+  currentUser.kycData = { fullName:name, dob, country, idType, idNumber:idNum,
+    front:kycUploads.front, back:kycUploads.back, selfie:kycUploads.selfie, submittedAt: Date.now() };
+  const accs = getAccounts();
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+  closeGeneric();
+  toast('KYC submitted — pending review');
+  updateKycBadge();
+}
+function updateKycBadge(){
+  const el = document.getElementById('profKycBadge');
+  if(!el || !currentUser) return;
+  const s = currentUser.kycStatus || 'none';
+  if(s === 'verified'){ el.textContent = 'Verified'; el.style.color = 'var(--green)'; }
+  else if(s === 'pending'){ el.textContent = 'Pending Review'; el.style.color = 'var(--orange)'; }
+  else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
+  else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
+}
+
+function toast(msg){
+  const el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+  });
+}
+
+let deferredPrompt = null;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+const installClose = document.getElementById('installClose');
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches ||
+                     window.navigator.standalone === true;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!isStandalone && localStorage.getItem('installBannerDismissed') !== '1') {
+    setTimeout(() => { installBanner.style.display = 'flex'; }, 2500);
+  }
+});
+
+if (isIOS && !isStandalone && localStorage.getItem('installBannerDismissed') !== '1') {
+  setTimeout(() => {
+    installBanner.style.display = 'flex';
+    if(installBtn) installBtn.textContent = 'How?';
+  }, 2500);
+}
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') installBanner.style.display = 'none';
+      deferredPrompt = null;
+    } else if (isIOS) {
+      alert('To install on iPhone/iPad:\n\n1. Tap the Share button (box with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"');
+    }
+  });
+}
+
+if (installClose) {
+  installClose.addEventListener('click', () => {
+    installBanner.style.display = 'none';
+    localStorage.setItem('installBannerDismissed', '1');
+  });
+}
+
+window.addEventListener('appinstalled', () => {
+  installBanner.style.display = 'none';
+});
+
+(function boot(){
+  try {
+    const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if(s){
+      const accs = getAccounts();
+      if(accs[s.email]){
+        currentUser = accs[s.email];
+        currentMode = currentUser.mode === 'demo' ? 'demo' : 'real';
+      }
+    }
+  } catch(e){}
+
+  if(currentUser){
+    let dirty = false;
+    if(typeof currentUser.demoFunding !== 'number'){ currentUser.demoFunding = DEMO_SEED; dirty = true; }
+    if(typeof currentUser.demoSpot !== 'number'){ currentUser.demoSpot = 0; dirty = true; }
+    if(dirty){
+      const accs = getAccounts();
+      accs[currentUser.email] = currentUser;
+      saveAccounts(accs);
+    }
+  }
+
+  renderHomePulse();
+  renderHomeList();
+  renderMarketsForClass();
+  renderAccounts();
+  renderProfileMenu();
+  applyUserToUI();
+  updateKycBadge();
+  updateModeUI();
+  refreshNewsStrip();
+  updateNotifDot();
+  setSpotSymbol('BTC');
+  renderLiveTradeCard();
+
+  startBinanceStream();
+  startSimulation();
+  renderOrderBook();
+
+  fetchLiveNews().then(() => refreshNewsStrip());
+  setInterval(async () => { await fetchLiveNews(); refreshNewsStrip(); }, 60000);
+
+  setInterval(() => {
+    updateNotifDot();
+    if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
+  }, 3000);
+})();
+</script>
+</body>
+</html>
