@@ -1,8 +1,8 @@
 {
   "name": "NextTrade",
   "short_name": "NextTrade",
-  "description": "Crypto, forex, commodities, and stock trading platform",
-  "start_url": "/index.html",
+  "description": "Trade crypto, forex, commodities and stocks. Copy top traders. Secure HD wallet. Low fees.",
+  "start_url": "/app.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
