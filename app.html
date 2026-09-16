@@ -64,13 +64,10 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
 .scroll::-webkit-scrollbar{width:0;}
 
-/* ============================
-   STEP INDICATOR (registration flow)
-   ============================ */
 .step-progress{
   display:flex;align-items:center;justify-content:center;
   padding:22px 20px 14px;background:#fff;
-  border-bottom:1px solid var(--line);flex-shrink:0;gap:0;
+  border-bottom:1px solid var(--line);flex-shrink:0;
 }
 .step-progress .step{
   display:flex;flex-direction:column;align-items:center;gap:8px;
@@ -97,61 +94,35 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 }
 .step-progress .line.done{background:var(--green);}
 
-/* ============================
-   AUTH / REGISTRATION CARDS
-   ============================ */
 .auth-screen{position:absolute;inset:0;background:#fff;z-index:2000;display:none;flex-direction:column;}
 .auth-screen.active{display:flex;}
-.auth-header{
-  padding:16px 20px 8px;display:flex;align-items:center;gap:12px;flex-shrink:0;
-}
-.auth-header .back{
-  width:36px;height:36px;border-radius:50%;background:#fff;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  border:1px solid var(--line);
-}
-.auth-header .logo-mini{
-  display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;
-}
-.auth-header .logo-mini .mk{
-  width:26px;height:26px;border-radius:7px;
-  background:linear-gradient(135deg,#0ECB81,#0a9e63);
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:900;color:#04160f;
-}
+.auth-header{padding:16px 20px 8px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.auth-header .back{width:36px;height:36px;border-radius:50%;background:#fff;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);}
+.auth-header .logo-mini{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;}
+.auth-header .logo-mini .mk{width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,#0ECB81,#0a9e63);display:flex;align-items:center;
+  justify-content:center;font-size:13px;font-weight:900;color:#04160f;}
 .auth-body{flex:1;overflow-y:auto;padding:20px 22px 40px;}
 .auth-title{font-size:26px;font-weight:800;letter-spacing:-.7px;margin:0 0 6px;color:var(--text);}
 .auth-sub{font-size:13.5px;color:var(--text2);line-height:1.6;margin:0 0 22px;}
 
-/* Email/Mobile toggle */
-.auth-method-toggle{
-  display:flex;background:#F5F6F8;border-radius:10px;padding:4px;margin-bottom:22px;
-}
-.auth-method-toggle .mt{
-  flex:1;text-align:center;padding:11px;font-size:14px;font-weight:600;
-  border-radius:8px;cursor:pointer;color:var(--text2);transition:.15s;
-}
+.auth-method-toggle{display:flex;background:#F5F6F8;border-radius:10px;padding:4px;margin-bottom:22px;}
+.auth-method-toggle .mt{flex:1;text-align:center;padding:11px;font-size:14px;font-weight:600;
+  border-radius:8px;cursor:pointer;color:var(--text2);transition:.15s;}
 .auth-method-toggle .mt.on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 .auth-method-toggle .mt.disabled{color:var(--text3);cursor:not-allowed;opacity:.55;}
 
 .auth-field{margin-bottom:16px;}
-.auth-field label{
-  display:block;font-size:13px;color:var(--text);margin-bottom:8px;font-weight:600;
-}
+.auth-field label{display:block;font-size:13px;color:var(--text);margin-bottom:8px;font-weight:600;}
 .auth-field .wrap{position:relative;}
-.auth-field input{
-  width:100%;border:1.5px solid var(--line);border-radius:10px;
-  padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;
-  background:#fff;color:var(--text);transition:.15s;
-}
+.auth-field input{width:100%;border:1.5px solid var(--line);border-radius:10px;
+  padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:#fff;color:var(--text);transition:.15s;}
 .auth-field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(14,203,129,.12);}
 .auth-field input::placeholder{color:var(--text3);}
-.auth-field .eye-btn{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:26px;height:26px;border-radius:6px;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text2);
-}
+.auth-field .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text2);}
 .auth-field .err{font-size:11.5px;color:var(--red);margin-top:6px;display:none;}
 .auth-field .err.show{display:block;}
 
@@ -167,41 +138,26 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .auth-check label{font-size:12.5px;color:var(--text2);line-height:1.55;cursor:pointer;}
 .auth-check a{color:var(--green-dk);font-weight:600;}
 
-.auth-submit{
-  width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
-  font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;
-  transition:.15s;margin-top:6px;
-}
+.auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
+  font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
 .auth-submit:hover{background:var(--green-dk);}
-.auth-submit:disabled{opacity:.5;cursor:not-allowed;}
 
 .auth-switch{text-align:center;font-size:13.5px;color:var(--text2);margin-top:22px;}
 .auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
 
-.skip-link{
-  display:block;text-align:center;margin-top:16px;
-  font-size:13px;color:var(--text2);cursor:pointer;
-}
+.skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
 .skip-link:hover{color:var(--text);}
 
-/* KYC form */
-.kyc-up{
-  background:#FAFBFC;border:1.5px dashed var(--line);border-radius:12px;
-  padding:22px;text-align:center;cursor:pointer;transition:.15s;
-}
+.kyc-up{background:#FAFBFC;border:1.5px dashed var(--line);border-radius:12px;
+  padding:22px;text-align:center;cursor:pointer;transition:.15s;}
 .kyc-up:hover{background:#F5F6F8;border-color:var(--text3);}
-.kyc-up .ic{
-  width:40px;height:40px;border-radius:10px;background:#fff;margin:0 auto 10px;
-  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);
-}
+.kyc-up .ic{width:40px;height:40px;border-radius:10px;background:#fff;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
 .kyc-up .t{font-size:13px;font-weight:600;color:var(--text);}
 .kyc-up .s{font-size:11.5px;color:var(--text3);margin-top:4px;}
 .kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
 .kyc-up.has .t{color:var(--green-dk);}
 
-/* ============================
-   MAIN APP SCREENS (unchanged)
-   ============================ */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);}
 .avatar{width:34px;height:34px;border-radius:50%;background:#fff;flex-shrink:0;
@@ -220,8 +176,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   background:var(--red);border-radius:50%;border:1.5px solid #fff;display:none;}
 .icon-btn .dot.show{display:block;}
 
-.mode-pill{display:inline-flex;background:#F5F6F8;border-radius:20px;padding:3px;
-  font-size:11px;font-weight:700;}
+.mode-pill{display:inline-flex;background:#F5F6F8;border-radius:20px;padding:3px;font-size:11px;font-weight:700;}
 .mode-pill .m{padding:4px 12px;border-radius:16px;cursor:pointer;color:var(--text2);transition:.15s;}
 .mode-pill .m.on-demo{background:var(--orange);color:#fff;}
 .mode-pill .m.on-real{background:var(--green);color:#fff;}
@@ -230,10 +185,8 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   font-size:11.5px;font-weight:600;padding:6px 14px;text-align:center;letter-spacing:.3px;}
 .mode-banner.on{display:block;}
 
-.kyc-pending-banner{
-  display:none;background:#FFF7E6;color:#7A5C00;border-bottom:1px solid #FFE9A8;
-  font-size:12px;font-weight:600;padding:8px 14px;text-align:center;
-}
+.kyc-pending-banner{display:none;background:#FFF7E6;color:#7A5C00;border-bottom:1px solid #FFE9A8;
+  font-size:12px;font-weight:600;padding:8px 14px;text-align:center;}
 .kyc-pending-banner.on{display:block;}
 
 .hero{padding:22px 20px 10px;text-align:center;background:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);}
@@ -257,8 +210,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .hero-in .balance{margin-top:16px;padding:14px 16px;background:#fff;border-radius:12px;
   border:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;}
 .hero-in .balance .lbl{font-size:11.5px;color:var(--text2);}
-.hero-in .balance .val{font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;
-  letter-spacing:-.5px;}
+.hero-in .balance .val{font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
 .hero-in .balance .eye{cursor:pointer;color:var(--text2);}
 .hero-in .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
 .hero-in .qa{background:#fff;border-radius:10px;padding:12px 6px;display:flex;
@@ -277,8 +229,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .promo-big .sub{font-size:11px;margin-top:8px;opacity:.95;line-height:1.5;}
 .promo-big .sub b{color:#FFD75E;}
 
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;
-  font-size:16px;font-weight:700;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;font-size:16px;font-weight:700;}
 .sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
 
 .asset-class{display:flex;gap:8px;padding:10px 14px 4px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
@@ -288,8 +239,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .ac-pill.on{background:var(--green);color:#fff;border-color:var(--green);}
 
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
-.coin-card{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--line);
-  position:relative;cursor:pointer;}
+.coin-card{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--line);position:relative;cursor:pointer;}
 .coin-card:active{transform:scale(.98);}
 .coin-card .pair{font-size:13px;font-weight:600;}
 .coin-card .price{font-size:17px;font-weight:700;margin-top:8px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
@@ -298,11 +248,9 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   background:var(--green);display:flex;align-items:center;justify-content:center;}
 .up{color:var(--green);}.down{color:var(--red);}
 
-.thead{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:8px 16px;font-size:11px;
-  color:var(--text3);gap:4px;}
+.thead{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:8px 16px;font-size:11px;color:var(--text3);gap:4px;}
 .thead .r{justify-content:flex-end;}
-.trow{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:12px 16px;font-size:13px;
-  gap:4px;align-items:center;cursor:pointer;}
+.trow{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:12px 16px;font-size:13px;gap:4px;align-items:center;cursor:pointer;}
 .trow .name{font-weight:600;line-height:1.25;}
 .trow .name small{display:block;color:var(--text3);font-size:11px;font-weight:400;}
 .trow .px,.trow .vol{text-align:right;font-variant-numeric:tabular-nums;}
@@ -339,17 +287,14 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   border-radius:10px;padding:12px 14px;font-family:'Courier New',monospace;
   font-size:11.5px;word-break:break-all;color:var(--green-dk);line-height:1.4;}
 .addr-card .addr-row .copy{margin-left:auto;color:var(--text2);cursor:pointer;
-  font-family:inherit;font-size:11px;font-weight:700;background:#fff;padding:5px 10px;
-  border-radius:6px;flex-shrink:0;}
-.addr-card .qr-wrap{background:#fff;border-radius:12px;padding:16px;
-  display:flex;justify-content:center;margin:14px 0;}
+  font-family:inherit;font-size:11px;font-weight:700;background:#fff;padding:5px 10px;border-radius:6px;flex-shrink:0;}
+.addr-card .qr-wrap{background:#fff;border-radius:12px;padding:16px;display:flex;justify-content:center;margin:14px 0;}
 .addr-card .qr-wrap canvas{width:160px;height:160px;}
 .addr-card .hint-line{font-size:11.5px;color:var(--text2);line-height:1.6;margin-top:8px;}
 .addr-card .warn-hint{background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;
   padding:10px 12px;font-size:11.5px;color:#7A5C00;line-height:1.6;margin-top:10px;}
 .asset-list{margin:0 14px 14px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line);}
-.asset-row{display:flex;align-items:center;gap:12px;padding:14px 16px;
-  border-bottom:1px solid var(--line);}
+.asset-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);}
 .asset-row:last-child{border-bottom:none;}
 .asset-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;}
@@ -360,24 +305,20 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .asset-row .amount .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 .asset-row .amount .usd{font-size:11px;color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums;}
 
-.trade-head{display:flex;align-items:center;gap:14px;padding:10px 14px;background:#fff;
-  flex-shrink:0;border-bottom:1px solid var(--line);}
+.trade-head{display:flex;align-items:center;gap:14px;padding:10px 14px;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
 .trade-head .sym{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;}
 .trade-head .sym .caret{font-size:10px;color:var(--text3);}
 .trade-head .chg{font-size:12px;font-weight:600;margin-top:1px;}
 .trade-head .acts{margin-left:auto;display:flex;gap:14px;}
 
-.chart-wrap{background:#fff;margin:0 14px 10px;border-radius:10px;border:1px solid var(--line);
-  overflow:hidden;position:relative;}
-.tv-slot{width:100%;height:clamp(240px, 38vh, 340px);position:relative;overflow:hidden;
-  transition:height .2s ease;background:#fff;}
+.chart-wrap{background:#fff;margin:0 14px 10px;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative;}
+.tv-slot{width:100%;height:clamp(240px, 38vh, 340px);position:relative;overflow:hidden;transition:height .2s ease;background:#fff;}
 .tv-slot.compact{height:140px;}
 .tv-slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
 .tv-slot canvas{width:100%;height:100%;display:block;}
 
 .levels-strip{display:none;margin:-6px 14px 8px;padding:6px 12px;background:#fff;
-  border:1px solid var(--line);border-radius:8px;
-  font-family:'Courier New',monospace;font-size:11px;font-variant-numeric:tabular-nums;}
+  border:1px solid var(--line);border-radius:8px;font-family:'Courier New',monospace;font-size:11px;font-variant-numeric:tabular-nums;}
 .levels-strip.on{display:block;}
 .levels-strip .row{display:flex;align-items:center;gap:8px;height:16px;}
 .levels-strip .dash{flex:0 0 30px;border-top:2px dashed;}
@@ -431,10 +372,8 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .live-trade .lt-head .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulseDot 1.2s infinite;}
 @keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
 .live-trade .lt-head .t{font-size:12.5px;font-weight:700;flex:1;line-height:1.2;}
-.live-trade .lt-head .side{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;
-  background:var(--green-lt);color:var(--green-dk);}
-.live-trade .lt-head .demo-tag{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:800;
-  background:var(--orange-lt);color:var(--orange);letter-spacing:.4px;}
+.live-trade .lt-head .side{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;background:var(--green-lt);color:var(--green-dk);}
+.live-trade .lt-head .demo-tag{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:800;background:var(--orange-lt);color:var(--orange);letter-spacing:.4px;}
 .live-trade .lt-row{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-top:4px;}
 .live-trade .lt-row .lbl{color:var(--text2);}
 .live-trade .lt-row .val{font-weight:800;font-variant-numeric:tabular-nums;}
@@ -446,8 +385,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   background:var(--red);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
 
 .ins-group{padding:6px 0 10px;}
-.ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;
-  padding:8px 4px 6px;font-weight:700;}
+.ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:8px 4px 6px;font-weight:700;}
 .ins-row{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
 .ins-row:last-child{border-bottom:none;}
 .ins-row .sym{font-size:14px;font-weight:700;}
@@ -455,8 +393,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .ins-row .px{text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
 .ins-row .pc{font-size:11px;font-weight:600;text-align:right;margin-top:2px;}
 
-.asset-hero{background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);
-  padding:8px 20px 18px;flex-shrink:0;}
+.asset-hero{background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);padding:8px 20px 18px;flex-shrink:0;}
 .asset-hero .lbl{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .asset-hero .big{font-size:28px;font-weight:800;letter-spacing:-1px;margin:6px 0 4px;font-variant-numeric:tabular-nums;}
 .asset-hero .usd{font-size:13px;color:var(--text2);}
@@ -467,8 +404,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .asset-acts .a{display:flex;flex-direction:column;align-items:center;gap:7px;font-size:12px;cursor:pointer;}
 .asset-acts .a .c{width:48px;height:48px;border-radius:50%;background:var(--green);
   display:flex;align-items:center;justify-content:center;}
-.acct-row{display:flex;align-items:center;gap:12px;background:#fff;padding:16px;
-  border-bottom:1px solid var(--line);cursor:pointer;}
+.acct-row{display:flex;align-items:center;gap:12px;background:#fff;padding:16px;border-bottom:1px solid var(--line);cursor:pointer;}
 .acct-row .ic{width:34px;height:34px;border-radius:9px;background:#F0FBF6;
   display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .acct-row .tx{flex:1;min-width:0;}
@@ -476,8 +412,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .acct-row .tx .v{font-size:13px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
 .acct-row .arrow{color:var(--text3);}
 
-.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;
-  max-width:430px;margin:0 auto;}
+.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;max-width:430px;margin:0 auto;}
 .overlay.active{display:flex;}
 .ov-head{display:flex;align-items:center;padding:14px 16px;flex-shrink:0;}
 .ov-head .x{font-size:22px;line-height:1;cursor:pointer;width:30px;}
@@ -493,16 +428,14 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .invite-banner .t1{font-size:15px;font-weight:700;color:#FFE9A8;}
 .invite-banner .t2{font-size:12px;margin-top:5px;opacity:.95;}
 .invite-banner .gift{font-size:38px;}
-.menu-row{display:flex;align-items:center;gap:12px;background:#fff;padding:15px 16px;
-  border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;}
+.menu-row{display:flex;align-items:center;gap:12px;background:#fff;padding:15px 16px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;}
 .menu-row .mi{width:22px;display:flex;justify-content:center;color:var(--green);}
 .menu-row .mt{flex:1;}
 .menu-row .arrow{color:var(--text3);}
 .logout{margin:20px 16px;height:48px;border-radius:8px;background:var(--red);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;}
 
-.bottomnav{display:flex;background:#fff;border-top:1px solid var(--line);flex-shrink:0;z-index:40;
-  width:100%;box-sizing:border-box;}
+.bottomnav{display:flex;background:#fff;border-top:1px solid var(--line);flex-shrink:0;z-index:40;width:100%;box-sizing:border-box;}
 .bottomnav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;
   font-size:11px;color:var(--text2);cursor:pointer;user-select:none;}
 .bottomnav .nb.on{color:var(--green);}
@@ -514,11 +447,9 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .generic-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1700;
   display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
 .generic-modal.on{display:flex;}
-.generic-sheet{background:#fff;width:100%;max-width:430px;border-radius:20px 20px 0 0;
-  max-height:88%;overflow-y:auto;animation:slideUp .28s ease-out;}
+.generic-sheet{background:#fff;width:100%;max-width:430px;border-radius:20px 20px 0 0;max-height:88%;overflow-y:auto;animation:slideUp .28s ease-out;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.generic-head{display:flex;align-items:center;padding:18px 20px 10px;
-  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:20px 20px 0 0;}
+.generic-head{display:flex;align-items:center;padding:18px 20px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:20px 20px 0 0;}
 .generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;}
 .generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
 .generic-body{padding:16px 20px 20px;}
@@ -544,17 +475,14 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 
 #toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
   background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
-  opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;
-  max-width:80%;overflow:hidden;text-overflow:ellipsis;}
+  opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 </style>
 </head>
 <body>
 <div class="phone">
 
-<!-- ============================
-     STEP 1 — ACCOUNT REGISTRATION
-     ============================ -->
+<!-- STEP 1 — ACCOUNT REGISTRATION -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="closeAuth()">←</div>
@@ -623,9 +551,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============================
-     STEP 2 — REAL-NAME AUTHENTICATION (KYC)
-     ============================ -->
+<!-- STEP 2 — REAL-NAME AUTHENTICATION (KYC) -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="closeAuth()">←</div>
@@ -644,21 +570,9 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
     <h1 class="auth-title">Real-name Authentication</h1>
     <p class="auth-sub">Verify your identity to unlock deposits, withdrawals, and higher trading limits. This takes about a minute.</p>
 
-    <div class="auth-field">
-      <label>Full legal name</label>
-      <div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div>
-    </div>
-
-    <div class="auth-field">
-      <label>Date of birth</label>
-      <div class="wrap"><input id="kycDob" type="date"></div>
-    </div>
-
-    <div class="auth-field">
-      <label>Country / Region</label>
-      <div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div>
-    </div>
-
+    <div class="auth-field"><label>Full legal name</label><div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div></div>
+    <div class="auth-field"><label>Date of birth</label><div class="wrap"><input id="kycDob" type="date"></div></div>
+    <div class="auth-field"><label>Country / Region</label><div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div></div>
     <div class="auth-field">
       <label>ID type</label>
       <div class="wrap">
@@ -669,11 +583,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
         </select>
       </div>
     </div>
-
-    <div class="auth-field">
-      <label>ID number</label>
-      <div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div>
-    </div>
+    <div class="auth-field"><label>ID number</label><div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div></div>
 
     <div class="auth-field">
       <label>ID — Front</label>
@@ -710,9 +620,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============================
-     LOGIN
-     ============================ -->
+<!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header">
     <div class="back" onclick="closeAuth()">←</div>
@@ -751,9 +659,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============================
-     MAIN APP SCREENS (unchanged)
-     ============================ -->
+<!-- HOME -->
 <section class="screen active" id="s-home">
   <div class="topbar">
     <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
@@ -1045,7 +951,6 @@ const TX_KEY = 'nexttrade_tx_v1';
 const COPY_KEY = 'nexttrade_copytrade_v1';
 const POS_KEY = 'nexttrade_positions_v1';
 const PARTS_KEY = 'nexttrade_copytrade_participants_v1';
-const PENDING_KYC_KEY = 'nexttrade_pending_kyc_v1';
 const DEMO_SEED = 10000;
 
 function getAdminState(){ try { return JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"config":{},"clients":[]}'); } catch(e){ return {config:{},clients:[]}; } }
@@ -1067,11 +972,6 @@ function recordParticipant(alertId, user, amountUsdt){
   if(all[alertId].length > 100) all[alertId].length = 100;
   saveParticipants(all);
 }
-
-/* Pending KYC temp storage between step 1 and step 2 */
-function setPendingKyc(email, data){ try { const all = JSON.parse(localStorage.getItem(PENDING_KYC_KEY) || '{}'); all[email] = data; localStorage.setItem(PENDING_KYC_KEY, JSON.stringify(all)); } catch(e){} }
-function getPendingKyc(email){ try { return JSON.parse(localStorage.getItem(PENDING_KYC_KEY) || '{}')[email] || null; } catch(e){ return null; } }
-function clearPendingKyc(email){ try { const all = JSON.parse(localStorage.getItem(PENDING_KYC_KEY) || '{}'); delete all[email]; localStorage.setItem(PENDING_KYC_KEY, JSON.stringify(all)); } catch(e){} }
 
 let currentMode = 'real';
 function setMode(mode){
@@ -1110,7 +1010,6 @@ function updateModeUI(){
     assetTag.className = 'mode-tag ' + (currentMode === 'demo' ? 'demo' : 'real');
     assetTag.textContent = currentMode === 'demo' ? 'DEMO' : 'REAL';
   }
-  // KYC pending banner
   const kb = document.getElementById('kycPendingBanner');
   if(kb){
     if(currentUser && currentUser.kycStatus === 'pending') kb.classList.add('on');
@@ -1554,9 +1453,6 @@ function clearErr(f,e){
   const eel = document.getElementById(e); if(eel) eel.classList.remove('show');
 }
 
-/* ============================
-   STEP 1 — REGISTER
-   ============================ */
 function doRegisterStep1(){
   const email = document.getElementById('suEmail').value.trim().toLowerCase();
   const pw = document.getElementById('suPw').value;
@@ -1584,7 +1480,6 @@ function doRegisterStep1(){
   accs[email] = user;
   saveAccounts(accs);
 
-  // Auto-provision wallet client in admin store
   const admin = getAdminState();
   admin.clients = admin.clients || [];
   const used = admin.clients.map(c => c.derivationIndex);
@@ -1595,7 +1490,6 @@ function doRegisterStep1(){
   admin.clients.push(client);
   saveAdminState(admin);
 
-  // Auto-login and move to Step 2
   currentUser = user;
   currentMode = 'real';
   localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email}));
@@ -1605,9 +1499,6 @@ function doRegisterStep1(){
   openAuth('kyc');
 }
 
-/* ============================
-   STEP 2 — KYC
-   ============================ */
 let kycUploads = {front:null, back:null, selfie:null};
 function handleKycFile(slot, input){
   const file = input.files && input.files[0];
@@ -1644,7 +1535,6 @@ function submitKycStep2(){
   closeAuth();
   go('s-home');
 }
-
 function skipKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   toast('You can complete verification later from Profile');
@@ -1652,9 +1542,6 @@ function skipKycStep2(){
   go('s-home');
 }
 
-/* ============================
-   LOGIN
-   ============================ */
 function doLogin(){
   const id = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pw = document.getElementById('loginPw').value;
@@ -2327,11 +2214,13 @@ window.addEventListener('appinstalled', () => { installBanner.style.display = 'n
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
   }, 3000);
 
-  /* If user lands without a session and hits the app, show the register screen */
-  if(!currentUser && !document.querySelector('.auth-screen.active')){
-    // Don't auto-show — leave them on Home logged-out view with Login/Register button
-    // If you want to force register on arrival, uncomment the next line:
-    // openAuth('register');
+  /* If URL has ?register=1 or #register / #signup, open the registration flow directly */
+  const params = new URLSearchParams(location.search);
+  const hash = (location.hash || '').toLowerCase();
+  const wantsRegister = params.get('register') === '1' || hash === '#register' || hash === '#signup';
+
+  if(!currentUser && wantsRegister){
+    openAuth('register');
   }
 })();
 </script>
