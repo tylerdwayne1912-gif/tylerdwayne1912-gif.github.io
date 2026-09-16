@@ -485,7 +485,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 <!-- STEP 1 — ACCOUNT REGISTRATION -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
-    <div class="back" onclick="closeAuth()">←</div>
+    <div class="back" onclick="backToLanding()">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
 
@@ -554,7 +554,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 <!-- STEP 2 — REAL-NAME AUTHENTICATION (KYC) -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
-    <div class="back" onclick="closeAuth()">←</div>
+    <div class="back" onclick="openAuth('register')">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
 
@@ -623,7 +623,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 <!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header">
-    <div class="back" onclick="closeAuth()">←</div>
+    <div class="back" onclick="openAuth('register')">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
   <div class="auth-body">
@@ -1127,7 +1127,7 @@ function updateNotifDot(){
   dot.classList.toggle('show', getCopyTrades().length > 0);
 }
 function openCopyConfirm(alertId){
-  if(!currentUser){ openAuth('login'); return; }
+  if(!currentUser){ openAuth('register'); return; }
   const ct = getCopyTrades().find(x => x.id === alertId);
   if(!ct) return;
   const trader = ct.traderName || 'Brian';
@@ -1425,6 +1425,10 @@ function openAuth(mode){
   document.getElementById(target).classList.add('active');
 }
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
+
+/* ===== "Got it" change #2: Step 1 back arrow goes to landing page ===== */
+function backToLanding(){ window.location.href = '/'; }
+
 function switchAuth(mode){ openAuth(mode); }
 function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
 function checkUsername(){
@@ -1512,7 +1516,6 @@ function handleKycFile(slot, input){
   };
   reader.readAsDataURL(file);
 }
-
 function submitKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   const name = document.getElementById('kycName').value.trim();
@@ -2214,12 +2217,8 @@ window.addEventListener('appinstalled', () => { installBanner.style.display = 'n
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
   }, 3000);
 
-  /* If URL has ?register=1 or #register / #signup, open the registration flow directly */
-  const params = new URLSearchParams(location.search);
-  const hash = (location.hash || '').toLowerCase();
-  const wantsRegister = params.get('register') === '1' || hash === '#register' || hash === '#signup';
-
-  if(!currentUser && wantsRegister){
+  /* ===== "Got it" change #1: on boot, if no session → always show registration ===== */
+  if(!currentUser){
     openAuth('register');
   }
 })();
