@@ -325,15 +325,15 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
     <div class="nav-menu">
       <a href="#markets">Buy coins ▾</a>
       <a href="#markets">Markets ▾</a>
-      <a href="/app.html">Trade ▾</a>
+      <a href="/app.html?register=1">Trade ▾</a>
       <a href="#features">Financial business ▾</a>
     </div>
     <div class="nav-right">
-      <a href="/app.html">Login</a>
-      <a href="/app.html">Register</a>
-      <a href="/app.html">Download APP</a>
+      <a href="/app.html?register=1">Login</a>
+      <a href="/app.html?register=1">Register</a>
+      <a href="/app.html?register=1">Download APP</a>
       <div class="lang">🌐 English ▾</div>
-      <a href="/app.html" class="nav-cta">Get started</a>
+      <a href="/app.html?register=1" class="nav-cta">Get started</a>
     </div>
   </div>
 </nav>
@@ -349,7 +349,7 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
   <div class="hero-inner">
     <h1>Trade like a legend on the trusted crypto exchange</h1>
     <p>NextTrade has a variety of features that make it the best place to start trading — crypto, forex, commodities, and stocks in one account.</p>
-    <a href="/app.html" class="btn-hero">Get started</a>
+    <a href="/app.html?register=1" class="btn-hero">Get started</a>
   </div>
 </header>
 
@@ -375,7 +375,7 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
       </thead>
       <tbody id="marketsBody"></tbody>
     </table>
-    <div class="see-more"><a href="/app.html">See more →</a></div>
+    <div class="see-more"><a href="/app.html?register=1">See more →</a></div>
   </div>
 </section>
 
@@ -430,7 +430,7 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
     <div class="portfolio-text">
       <h2>Create your cryptocurrency portfolio today</h2>
       <p>NextTrade has a variety of features that make it the best place to start trading — spot markets, copy trading, multi-asset support, and secure storage all in one.</p>
-      <a href="/app.html" class="btn-hero" style="font-family:inherit;">Open your account →</a>
+      <a href="/app.html?register=1" class="btn-hero" style="font-family:inherit;">Open your account →</a>
     </div>
     <div class="portfolio-illo">
       <svg viewBox="0 0 400 400" style="width:100%;height:100%;">
@@ -603,7 +603,7 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
 <section class="cta-final">
   <h2>The most trusted crypto platform</h2>
   <p>Create your free account in under a minute. $10,000 demo balance included.</p>
-  <a href="/app.html" class="btn-cta">Register now</a>
+  <a href="/app.html?register=1" class="btn-cta">Register now</a>
 </section>
 
 <!-- FOOTER -->
@@ -652,7 +652,7 @@ footer{background:#050810;padding:60px 24px 30px;color:var(--text-dark);}
       </div>
       <div class="foot-register">
         <h4>NextTrade Exchange — trade anytime, anywhere</h4>
-        <a href="/app.html" class="btn-reg">Register now</a>
+        <a href="/app.html?register=1" class="btn-reg">Register now</a>
         <div class="qr-mini"><canvas id="footQr" width="200" height="200"></canvas></div>
         <div class="qr-cap">Scan the QR code to download the NextTrade app</div>
       </div>
@@ -733,7 +733,7 @@ function renderMarkets(){
         <td class="right chg ${down?'down':'up'}">${m.chg.toFixed(2)} %</td>
         <td class="right">${m.vol}</td>
         <td class="right"><svg class="spark ${down?'down':'up'}" viewBox="0 0 80 28"><path d="${spark}"/></svg></td>
-        <td class="right"><a href="/app.html" class="trade-btn">Trade</a></td>
+        <td class="right"><a href="/app.html?register=1" class="trade-btn">Trade</a></td>
       </tr>
     `;
   }).join('');
