@@ -396,7 +396,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
 </head>
 <body>
 
-<!-- ============ NAV (TVR-style, Financial business removed) ============ -->
+<!-- ============ NAV ============ -->
 <nav class="nav">
   <div class="in">
     <a href="/" class="brand"><span class="mk">N</span>NextTrade</a>
@@ -413,11 +413,11 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
       </li>
       <li><a href="/app.html#markets">Markets</a></li>
       <li class="has-drop">
-        <a href="/app.html#trade-spot">Trade <span class="caret">▼</span></a>
+        <a href="/trade.html">Trade <span class="caret">▼</span></a>
         <div class="drop">
-          <a href="/app.html#trade-spot">Spot Trading</a>
-          <a href="/app.html#trade-perpetual">Perpetual</a>
-          <a href="/app.html#trade-copy">Copy Trading</a>
+          <a href="/trade.html?tab=spot">Spot Trading</a>
+          <a href="/trade.html?tab=perpetual">Perpetual</a>
+          <a href="/trade.html?tab=copy">Copy Trading</a>
         </div>
       </li>
     </ul>
@@ -757,7 +757,7 @@ function renderMarkets(){
       <div class="px">${fmtUsd(m.price)}</div>
       <div class="chg ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
       <div class="vol">${m.vol}</div>
-      <div class="trade"><a href="/app.html">Trade</a></div>
+      <div class="trade"><a href="/trade.html">Trade</a></div>
     </div>
   `).join('');
 }
