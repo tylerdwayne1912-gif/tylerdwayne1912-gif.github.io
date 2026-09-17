@@ -376,12 +376,11 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 
-/* ===== Trade screen (light, green/white) ===== */
+/* Trade screen */
 .tr-tabs{display:flex;gap:0;padding:6px 12px 0;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
 .tr-tab{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;color:var(--text2);
   cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap;}
 .tr-tab.on{color:var(--green-dk);border-bottom-color:var(--green);}
-
 .tr-head{display:flex;align-items:center;gap:10px;padding:12px 14px 10px;background:#fff;flex-shrink:0;
   border-bottom:1px solid var(--line);}
 .tr-head .pair{font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
@@ -394,7 +393,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-head .candle:active{background:#e9ecef;}
 .tr-head .switch{width:34px;height:34px;border-radius:50%;background:#F5F6F8;display:flex;
   align-items:center;justify-content:center;cursor:pointer;}
-
 .tr-body{display:flex;gap:8px;padding:10px 12px 0;align-items:flex-start;flex-shrink:0;}
 .tr-ob{width:33%;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
 .tr-ob .hd{display:grid;grid-template-columns:1fr 1fr;gap:2px;color:var(--text3);font-size:10px;padding:0 2px 6px;}
@@ -407,7 +405,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-ob .mid{padding:7px 2px;text-align:left;}
 .tr-ob .mid .mp{font-size:20px;font-weight:800;letter-spacing:-.5px;}
 .tr-ob .mid .mq{font-size:10.5px;color:var(--text3);margin-top:1px;}
-
 .tr-form{flex:1;min-width:0;}
 .tr-buysell{display:flex;background:#F5F6F8;border-radius:8px;padding:4px;margin-bottom:10px;}
 .tr-buysell .bs{flex:1;text-align:center;padding:9px;font-size:14.5px;font-weight:700;
@@ -463,15 +460,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-subtabs .ico{margin-left:auto;color:var(--text2);font-size:14px;padding-bottom:10px;cursor:pointer;}
 .tr-history{background:var(--bg);padding:14px;}
 .tr-history .empty{color:var(--text3);font-size:13px;padding:40px 0;text-align:center;}
-
-/* copy trading inside trade */
 .tr-copy-wrap{padding:14px;}
 .tr-copy-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .tr-copy-head h3{margin:0;font-size:15px;font-weight:700;color:var(--text);}
-.tr-copy-head .more{font-size:12px;color:var(--text2);cursor:pointer;}
 .tr-copy-empty{color:var(--text3);font-size:13px;text-align:center;padding:50px 20px;}
-
-/* chart overlay */
 .chart-ov{position:absolute;inset:0;background:#fff;z-index:2200;display:none;flex-direction:column;}
 .chart-ov.active{display:flex;}
 .chart-ov .head{display:flex;align-items:center;gap:10px;padding:12px 14px 10px;border-bottom:1px solid var(--line);flex-shrink:0;}
@@ -484,6 +476,35 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .chart-ov .slot{flex:1;position:relative;background:#fff;}
 .chart-ov .slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
 .chart-ov .slot canvas{width:100%;height:100%;display:block;}
+
+/* ===== Download App card ===== */
+#downloadAppCard{margin:14px;background:linear-gradient(135deg,#0ECB81,#0a9e63);
+  border-radius:16px;padding:18px 16px;color:#fff;box-shadow:0 10px 26px rgba(14,203,129,.28);}
+#downloadAppCard .dt{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+#downloadAppCard .di{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#downloadAppCard .dh{font-size:15px;font-weight:800;letter-spacing:-.3px;}
+#downloadAppCard .ds{font-size:12px;opacity:.9;margin-top:3px;}
+#downloadAppCard .db{display:flex;gap:10px;}
+#downloadAppCard .db button{flex:1;height:42px;border-radius:10px;border:none;
+  font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:7px;}
+#downloadAppCard .db .ios{background:#fff;color:#0a9e63;}
+#downloadAppCard .db .and{background:#04160f;color:#fff;}
+
+/* ===== Android install banner ===== */
+#androidInstallBtn{display:none;position:absolute;bottom:80px;left:14px;right:14px;
+  z-index:9999;background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;
+  border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(14,203,129,.35);
+  align-items:center;gap:12px;}
+#androidInstallBtn .ic{width:38px;height:38px;border-radius:10px;
+  background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+#androidInstallBtn .tx{flex:1;min-width:0;}
+#androidInstallBtn .tx .t{font-size:13.5px;font-weight:800;}
+#androidInstallBtn .tx .s{font-size:11.5px;opacity:.9;margin-top:2px;}
+#androidInstallBtn .go{background:#fff;color:#0a9e63;border:none;border-radius:8px;
+  padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;}
+#androidInstallBtn .x{color:#fff;opacity:.8;font-size:18px;cursor:pointer;padding:0 4px;}
 </style>
 </head>
 <body>
@@ -761,6 +782,30 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <div class="nd" id="newsTime">now</div>
     </div>
+
+    <!-- ===== Download App card (logged-in only) ===== -->
+    <div id="downloadAppCard" style="display:none;">
+      <div class="dt">
+        <div class="di">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div class="dh">Download the app</div>
+          <div class="ds">Faster, full-screen, works offline</div>
+        </div>
+      </div>
+      <div class="db">
+        <button class="ios" onclick="downloadFor('ios')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17.5 12.5c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1s-2.4-1.1-4-1.1c-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.2 1.5 12.2 1 1.5 2.2 3.1 3.8 3 1.5-.1 2.1-1 3.9-1s2.4 1 4 1c1.7 0 2.7-1.5 3.7-3 1.2-1.7 1.6-3.4 1.7-3.5-.1 0-3.2-1.2-3.2-4.7zM14.4 3.7c.8-1 1.4-2.4 1.2-3.7-1.2 0-2.6.8-3.5 1.8-.7.9-1.4 2.3-1.2 3.6 1.3.1 2.7-.7 3.5-1.7z" fill="currentColor"/></svg>
+          iOS
+        </button>
+        <button class="and" onclick="downloadFor('android')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17.6 9.5l1.8-3.1a.4.4 0 10-.7-.4l-1.8 3.1A10.9 10.9 0 0012 8.5c-1.8 0-3.5.4-4.9 1l-1.8-3.1a.4.4 0 10-.7.4l1.8 3.1C3.6 11.2 2 13.5 2 16h20c0-2.5-1.6-4.8-4.4-6.5zM7 13.5a.8.8 0 110-1.6.8.8 0 010 1.6zm10 0a.8.8 0 110-1.6.8.8 0 010 1.6z" fill="currentColor"/></svg>
+          Android
+        </button>
+      </div>
+    </div>
+
     <div class="promo-row">
       <div class="promo-big">
         <div class="brand">NextTrade</div>
@@ -795,16 +840,13 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- TRADE (light, green/white) -->
+<!-- TRADE -->
 <section class="screen" id="s-trade">
-  <!-- Tabs -->
   <div class="tr-tabs" id="trTabs">
     <div class="tr-tab" data-tr="perpetual">Perpetual</div>
     <div class="tr-tab" data-tr="copy">Copy Trading</div>
     <div class="tr-tab on" data-tr="spot">Spot Trading</div>
   </div>
-
-  <!-- Symbol row with candle icon -->
   <div class="tr-head">
     <span class="pair" id="trPair">BTC/USDT</span>
     <span class="tag" id="trTag">Spot</span>
@@ -824,10 +866,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
     </div>
   </div>
-
-  <!-- Scrollable body (so bottom nav is always visible) -->
   <div class="scroll" id="trScroll">
-    <!-- Order form view (spot/perpetual) -->
     <div id="trForm">
       <div class="tr-body">
         <div class="tr-ob">
@@ -887,13 +926,9 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="ladder"><i></i><i></i><i></i></div>
       </div>
     </div>
-
-    <!-- Copy-trading view -->
     <div id="trCopy" style="display:none;">
       <div class="tr-copy-wrap" id="trCopyList"></div>
     </div>
-
-    <!-- Subtabs -->
     <div class="tr-subtabs" id="trSubtabs">
       <div class="st on" data-st="open">Open orders(<span id="trOpenCount">0</span>)</div>
       <div class="st" data-st="history">Order history</div>
@@ -902,7 +937,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     </div>
     <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
   </div>
-
   <nav class="bottomnav" data-nav></nav>
 </section>
 
@@ -983,7 +1017,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- COPY TRADING overlay (bell icon) -->
+<!-- COPY TRADING overlay -->
 <div class="overlay" id="copyPanel">
   <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
   <div class="scroll" id="copyList" style="padding:0 14px 20px;"></div>
@@ -1028,6 +1062,19 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <button id="installBtn" style="background:#0ECB81;color:#fff;border:none;border-radius:8px;
     padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Install</button>
   <div id="installClose" style="color:#707A8A;font-size:18px;cursor:pointer;padding:0 4px;">✕</div>
+</div>
+
+<!-- ===== Android install banner ===== -->
+<div id="androidInstallBtn">
+  <div class="ic">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="tx">
+    <div class="t">Install NextTrade</div>
+    <div class="s">Add to your home screen</div>
+  </div>
+  <button class="go" id="androidInstallGo">Install</button>
+  <div class="x" id="androidInstallX">✕</div>
 </div>
 </div>
 
@@ -1586,7 +1633,6 @@ function skipKycStep2(){
   go('s-home');
 }
 
-/* light KYC page */
 let kpUploads = {front:null, back:null};
 function openKycPage(){
   if(!currentUser){ openAuth('register'); return; }
@@ -1715,6 +1761,7 @@ function applyUserToUI(){
   updateKycBadge();
   updateModeUI();
   renderTradeForm();
+  updateDownloadCard();
 }
 
 function getMyAddress(){
@@ -1794,7 +1841,6 @@ function drawQR(text, canvas){
   }
 }
 
-/* bottom nav */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
   {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
@@ -1894,7 +1940,6 @@ if(acb) acb.addEventListener('click', e => {
   renderMarketsForClass();
 });
 
-/* ===== Trade logic ===== */
 let trSymbol = 'BTC';
 let trSide = 'buy';
 let trOrderType = 'limit';
@@ -2050,7 +2095,6 @@ function trPlace(){
   toast('Order placed');
 }
 
-/* copy view inside trade */
 function renderTrCopy(){
   const el = document.getElementById('trCopyList'); if(!el) return;
   const list = getCopyTrades();
@@ -2079,7 +2123,6 @@ function renderTrCopy(){
   }).join('');
 }
 
-// Trade tabs: Perpetual / Copy Trading / Spot Trading
 document.getElementById('trTabs').addEventListener('click', e => {
   const t = e.target.closest('.tr-tab'); if(!t) return;
   document.querySelectorAll('.tr-tab').forEach(x => x.classList.remove('on'));
@@ -2106,7 +2149,6 @@ document.getElementById('trTabs').addEventListener('click', e => {
   }
 });
 
-// Trade subtabs
 document.getElementById('trSubtabs').addEventListener('click', e => {
   const st = e.target.closest('.st'); if(!st) return;
   document.querySelectorAll('.tr-subtabs .st').forEach(x => x.classList.remove('on'));
@@ -2117,7 +2159,6 @@ document.getElementById('trSubtabs').addEventListener('click', e => {
   renderTradeForm();
 });
 
-/* chart overlay */
 let chartWidget = null;
 let chartRetry = 0;
 function openChart(){
@@ -2231,7 +2272,6 @@ function pickInstrument(sym){
   toast('Switched to ' + sym);
 }
 
-/* accounts & profile & rest */
 function renderAccounts(){
   const funding = activeBalance('funding').toFixed(2);
   const spot = activeBalance('spot').toFixed(2);
@@ -2345,6 +2385,80 @@ if (installClose) installClose.addEventListener('click', () => {
 });
 window.addEventListener('appinstalled', () => { installBanner.style.display = 'none'; });
 
+/* ===== Download App card & Android install prompt ===== */
+const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
+
+function updateDownloadCard(){
+  const card = document.getElementById('downloadAppCard');
+  if(!card) return;
+  card.style.display = currentUser ? 'block' : 'none';
+}
+function downloadFor(platform){
+  if(platform === 'android'){
+    if(window.deferredInstallPrompt){
+      window.deferredInstallPrompt.prompt();
+      window.deferredInstallPrompt.userChoice.then(({outcome}) => {
+        if(outcome === 'accepted'){
+          const banner = document.getElementById('androidInstallBtn');
+          if(banner) banner.style.display = 'none';
+        }
+        window.deferredInstallPrompt = null;
+      });
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = APK_URL;
+    a.download = 'NextTrade.apk';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    return;
+  }
+  window.location.href = '/download.html?platform=' + platform;
+}
+
+window.deferredInstallPrompt = null;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  window.deferredInstallPrompt = e;
+  const banner = document.getElementById('androidInstallBtn');
+  if(banner && localStorage.getItem('androidInstallDismissed') !== '1'){
+    banner.style.display = 'flex';
+  }
+});
+
+document.getElementById('androidInstallGo')?.addEventListener('click', () => {
+  const banner = document.getElementById('androidInstallBtn');
+  if(!window.deferredInstallPrompt){
+    const a = document.createElement('a');
+    a.href = APK_URL;
+    a.download = 'NextTrade.apk';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    return;
+  }
+  window.deferredInstallPrompt.prompt();
+  window.deferredInstallPrompt.userChoice.then(({outcome}) => {
+    if(outcome === 'accepted' && banner) banner.style.display = 'none';
+    window.deferredInstallPrompt = null;
+  });
+});
+
+document.getElementById('androidInstallX')?.addEventListener('click', () => {
+  const banner = document.getElementById('androidInstallBtn');
+  if(banner) banner.style.display = 'none';
+  localStorage.setItem('androidInstallDismissed', '1');
+});
+
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('androidInstallBtn');
+  if(banner) banner.style.display = 'none';
+  window.deferredInstallPrompt = null;
+});
+
 function openDeposit(mode){
   if(!currentUser){ openAuth('register'); return; }
   const addr = getMyAddress();
@@ -2428,7 +2542,6 @@ function doTransfer(){
   toast('Transfer complete');
 }
 
-/* boot */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
