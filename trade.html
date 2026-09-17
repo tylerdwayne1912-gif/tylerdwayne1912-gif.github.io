@@ -7,6 +7,7 @@
 <meta name="theme-color" content="#0ECB81">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/icon-192.png">
+<script src="https://s3.tradingview.com/tv.js"></script>
 <style>
 :root{
   --green:#0ECB81;--green-dk:#0BB574;--green-lt:#E7F9F1;
@@ -121,8 +122,9 @@ a{color:inherit;text-decoration:none;}
   font-variant-numeric:tabular-nums;}
 .chart-meta b{color:var(--text);font-weight:700;}
 
-.chart-area{flex:1;position:relative;background:#fff;min-height:420px;}
-.chart-area canvas{width:100%;height:100%;display:block;}
+/* TradingView container — replaces the old .chart-area canvas */
+.chart-area{flex:1;position:relative;background:#131722;min-height:420px;}
+.chart-area #tv-chart{position:absolute;inset:0;}
 
 .ma-row{display:flex;flex-wrap:wrap;gap:16px;padding:8px 14px;font-size:11px;
   color:var(--text2);border-top:1px solid var(--line);background:#fff;
@@ -275,15 +277,15 @@ a{color:inherit;text-decoration:none;}
   <div class="panel panel-chart">
     <div class="chart-bar">
       <div class="times">
-        <span class="t">1m</span>
-        <span class="t on">5m</span>
-        <span class="t">15m</span>
-        <span class="t">30m</span>
-        <span class="t">1H</span>
-        <span class="t">4H</span>
-        <span class="t">1D</span>
-        <span class="t">1W</span>
-        <span class="t">1M</span>
+        <span class="t" data-tv="1">1m</span>
+        <span class="t on" data-tv="5">5m</span>
+        <span class="t" data-tv="15">15m</span>
+        <span class="t" data-tv="30">30m</span>
+        <span class="t" data-tv="60">1H</span>
+        <span class="t" data-tv="240">4H</span>
+        <span class="t" data-tv="D">1D</span>
+        <span class="t" data-tv="W">1W</span>
+        <span class="t" data-tv="M">1M</span>
       </div>
       <div class="right">
         <button class="btn2 on">Original</button>
@@ -298,13 +300,11 @@ a{color:inherit;text-decoration:none;}
       <span>Low: <b id="cmLow">—</b></span>
       <span>Volume: <b id="cmVol">—</b></span>
     </div>
-    <div class="chart-area"><canvas id="bigChart"></canvas></div>
+    <!-- TradingView widget mounts here -->
+    <div class="chart-area"><div id="tv-chart"></div></div>
     <div class="ma-row">
       <span>MA(5,10,30,60)</span>
-      <span>MA5: <b id="ma5">—</b></span>
-      <span>MA10: <b id="ma10">—</b></span>
-      <span>MA30: <b id="ma30">—</b></span>
-      <span>MA60: <b id="ma60">—</b></span>
+      <span style="color:var(--text3);">Indicators are rendered inside the TradingView widget above.</span>
     </div>
   </div>
 
@@ -376,14 +376,14 @@ a{color:inherit;text-decoration:none;}
 
 <script>
 const COINS = [
-  {sym:'BTC',  name:'Bitcoin',  base:77250.11, color:'#F7931A', icon:'₿'},
-  {sym:'ETH',  name:'Ethereum', base:2445.14,  color:'#627EEA', icon:'Ξ'},
-  {sym:'USDT', name:'Tether',   base:1.0006,   color:'#26A69A', icon:'₮'},
-  {sym:'SOL',  name:'Solana',   base:100.86,   color:'#9945FF', icon:'S'},
-  {sym:'XRP',  name:'XRP',      base:1.3752,   color:'#23292F', icon:'X'},
-  {sym:'BNB',  name:'BNB',      base:715.72,   color:'#F3BA2F', icon:'B'},
-  {sym:'DOGE', name:'Dogecoin', base:0.1645,   color:'#C2A633', icon:'Ð'},
-  {sym:'ADA',  name:'Cardano',  base:0.1967,   color:'#0033AD', icon:'A'}
+  {sym:'BTC',  name:'Bitcoin',  base:77250.11, color:'#F7931A', icon:'₿', tv:'BINANCE:BTCUSDT'},
+  {sym:'ETH',  name:'Ethereum', base:2445.14,  color:'#627EEA', icon:'Ξ', tv:'BINANCE:ETHUSDT'},
+  {sym:'USDT', name:'Tether',   base:1.0006,   color:'#26A69A', icon:'₮', tv:'BINANCE:USDTUSD'},
+  {sym:'SOL',  name:'Solana',   base:100.86,   color:'#9945FF', icon:'S', tv:'BINANCE:SOLUSDT'},
+  {sym:'XRP',  name:'XRP',      base:1.3752,   color:'#23292F', icon:'X', tv:'BINANCE:XRPUSDT'},
+  {sym:'BNB',  name:'BNB',      base:715.72,   color:'#F3BA2F', icon:'B', tv:'BINANCE:BNBUSDT'},
+  {sym:'DOGE', name:'Dogecoin', base:0.1645,   color:'#C2A633', icon:'Ð', tv:'BINANCE:DOGEUSDT'},
+  {sym:'ADA',  name:'Cardano',  base:0.1967,   color:'#0033AD', icon:'A', tv:'BINANCE:ADAUSDT'}
 ];
 
 const state = {
@@ -395,7 +395,8 @@ const state = {
   amt: 296842257.85,
   time: new Date().toISOString().slice(0,16).replace('T',' '),
   open: COINS[0].base * 0.999,
-  chg: 0.73
+  chg: 0.73,
+  tvInterval: '5'
 };
 
 const fmt = n => {
@@ -405,6 +406,39 @@ const fmt = n => {
 };
 const chgStr = c => (c>=0?'+':'') + c.toFixed(2) + '%';
 
+/* ---------- TradingView widget ---------- */
+let tvWidget = null;
+function buildTVChart(){
+  const host = document.getElementById('tv-chart');
+  if(!host || !window.TradingView) return;
+  host.innerHTML = '';
+  tvWidget = new TradingView.widget({
+    container_id: 'tv-chart',
+    autosize: true,
+    symbol: state.coin.tv,
+    interval: state.tvInterval,
+    timezone: 'Etc/UTC',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#131722',
+    enable_publishing: false,
+    allow_symbol_change: false,
+    hide_side_toolbar: false,
+    hide_top_toolbar: false,
+    save_image: false,
+    withdateranges: true,
+    details: false,
+    studies: [
+      'MAExp@tv-basicstudies',
+      'MAExp@tv-basicstudies',
+      'MAExp@tv-basicstudies',
+      'MAExp@tv-basicstudies'
+    ]
+  });
+}
+
+/* ---------- Coin dropdown ---------- */
 function renderCoinDropdown(){
   const drop = document.getElementById('coinDrop');
   drop.innerHTML = COINS.map(c => {
@@ -460,122 +494,10 @@ function switchCoin(sym){
   renderCoinDropdown();
   renderHeader();
   renderBook();
-  drawBigChart();
+  buildTVChart();   // rebuild widget for the new symbol
 }
 
-function drawBigChart(){
-  const c = document.getElementById('bigChart'); if(!c) return;
-  const w = c.clientWidth || 800;
-  const h = c.clientHeight || 500;
-  c.width = w; c.height = h;
-  const ctx = c.getContext('2d');
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(0, 0, w, h);
-  ctx.strokeStyle = 'rgba(234,236,239,1)';
-  ctx.lineWidth = 1;
-  for(let i = 1; i < 10; i++){
-    const y = (h/10) * i;
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-  }
-
-  const N = 90;
-  const candles = [];
-  let price = state.price * 0.985;
-  const bias = state.chg >= 0 ? 0.52 : 0.48;
-  for(let i = 0; i < N; i++){
-    const open = price;
-    const drift = (Math.random() - (1 - bias)) * state.price * 0.0018;
-    const close = open + drift;
-    const high = Math.max(open, close) + Math.random() * state.price * 0.0008;
-    const low  = Math.min(open, close) - Math.random() * state.price * 0.0008;
-    candles.push({o:open, c:close, h:high, l:low});
-    price = close;
-  }
-  candles[N-1].c = state.price;
-  candles[N-1].h = Math.max(candles[N-1].h, state.price);
-  candles[N-1].l = Math.min(candles[N-1].l, state.price);
-
-  let min = Infinity, max = -Infinity;
-  candles.forEach(k => { if(k.l < min) min = k.l; if(k.h > max) max = k.h; });
-  const pad = (max-min)*0.04;
-  min -= pad; max += pad;
-  const range = max - min;
-
-  const axisW = 70;
-  const chartW = w - axisW;
-  const padTop = 8, padBottom = 8;
-  const chartH = h - padTop - padBottom;
-  const yFor = (v) => padTop + (1 - (v - min) / range) * chartH;
-
-  ctx.fillStyle = '#707A8A';
-  ctx.font = '11px -apple-system,sans-serif';
-  ctx.textAlign = 'left';
-  for(let i = 0; i <= 8; i++){
-    const v = min + (range) * (i / 8);
-    const y = yFor(v);
-    ctx.fillText(v.toLocaleString('en-US',{minimumFractionDigits:0, maximumFractionDigits:0}), chartW + 8, y + 4);
-  }
-  ctx.textAlign = 'start';
-
-  const slotW = chartW / N;
-  const candleW = Math.max(2, slotW * 0.65);
-  candles.forEach((k, i) => {
-    const x = slotW * i + slotW/2;
-    const yo = yFor(k.o), yc = yFor(k.c), yh = yFor(k.h), yl = yFor(k.l);
-    const isUp = k.c >= k.o;
-    const color = isUp ? '#0ECB81' : '#F6465D';
-    ctx.strokeStyle = color; ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(Math.round(x) + 0.5, yh);
-    ctx.lineTo(Math.round(x) + 0.5, yl);
-    ctx.stroke();
-    const bodyTop = Math.min(yo, yc);
-    const bodyH = Math.max(1.4, Math.abs(yc - yo));
-    ctx.fillStyle = color;
-    ctx.fillRect(x - candleW/2, bodyTop, candleW, bodyH);
-  });
-
-  const ma5 = [], ma10 = [], ma30 = [], ma60 = [];
-  for(let i = 0; i < N; i++){
-    const win = (n) => {
-      const s = Math.max(0, i - n + 1);
-      const arr = candles.slice(s, i+1).map(k => k.c);
-      return arr.reduce((a,b)=>a+b,0) / arr.length;
-    };
-    ma5.push(win(5)); ma10.push(win(10)); ma30.push(win(30)); ma60.push(win(60));
-  }
-  function drawMA(arr, color){
-    ctx.beginPath();
-    arr.forEach((v,i) => {
-      const x = slotW * i + slotW/2;
-      const y = yFor(v);
-      i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
-    });
-    ctx.strokeStyle = color; ctx.lineWidth = 1.3;
-    ctx.stroke();
-  }
-  drawMA(ma5, '#F5C542');
-  drawMA(ma10, '#1890FF');
-  drawMA(ma30, '#722ED1');
-  drawMA(ma60, '#F6465D');
-
-  const yNow = yFor(state.price);
-  ctx.strokeStyle = 'rgba(14,203,129,.6)';
-  ctx.setLineDash([4,4]);
-  ctx.beginPath(); ctx.moveTo(0, yNow); ctx.lineTo(chartW, yNow); ctx.stroke();
-  ctx.setLineDash([]);
-  ctx.fillStyle = '#0ECB81';
-  ctx.fillRect(chartW, yNow - 9, axisW, 18);
-  ctx.fillStyle = '#fff';
-  ctx.font = 'bold 11px -apple-system,sans-serif';
-  ctx.fillText(fmt(state.price), chartW + 6, yNow + 4);
-
-  document.getElementById('ma5').textContent  = fmt(ma5[N-1]);
-  document.getElementById('ma10').textContent = fmt(ma10[N-1]);
-  document.getElementById('ma30').textContent = fmt(ma30[N-1]);
-  document.getElementById('ma60').textContent = fmt(ma60[N-1]);
-}
-
+/* ---------- Order book ---------- */
 function renderBook(){
   const mid = state.price;
   const asks = [];
@@ -605,6 +527,7 @@ function renderBook(){
   document.getElementById('bookMidSmall').textContent = fmt(mid);
 }
 
+/* ---------- Header / meta ---------- */
 function renderHeader(){
   const c = state.coin;
   document.getElementById('pairIcon').textContent = c.icon;
@@ -629,6 +552,7 @@ function renderHeader(){
   document.getElementById('cmVol').textContent = (state.vol * 1000).toLocaleString('en-US');
 }
 
+/* ---------- Mock tick for header + order book ---------- */
 function tick(){
   const drift = (Math.random() - 0.5) * state.price * 0.0025;
   const base = state.coin.base;
@@ -642,6 +566,7 @@ function tick(){
   renderBook();
 }
 
+/* ---------- Slider / amount input ---------- */
 const slider = document.getElementById('amtSlider');
 const amtInput = document.getElementById('amtInput');
 slider?.addEventListener('input', () => {
@@ -652,16 +577,17 @@ amtInput?.addEventListener('input', () => {
   slider.value = Math.max(0, Math.min(100, (v / 10000) * 100));
 });
 
+/* ---------- Timeframe buttons drive the TV widget ---------- */
 document.querySelectorAll('.chart-bar .times .t').forEach(t => {
   t.addEventListener('click', () => {
     document.querySelectorAll('.chart-bar .times .t').forEach(x => x.classList.remove('on'));
     t.classList.add('on');
-    drawBigChart();
+    state.tvInterval = t.dataset.tv;
+    buildTVChart();
   });
 });
 
-window.addEventListener('resize', () => drawBigChart());
-
+/* ---------- Boot ---------- */
 (function boot(){
   const params = new URLSearchParams(location.search);
   const coinParam = (params.get('coin') || '').toUpperCase();
@@ -679,10 +605,9 @@ window.addEventListener('resize', () => drawBigChart());
   renderCoinDropdown();
   renderHeader();
   renderBook();
-  drawBigChart();
+  buildTVChart();
 
   setInterval(tick, 1500);
-  setInterval(drawBigChart, 4500);
 })();
 </script>
 </body>
