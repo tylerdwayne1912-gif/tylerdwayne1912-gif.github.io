@@ -2542,6 +2542,9 @@ function doTransfer(){
   toast('Transfer complete');
 }
 
+/* ============================================================
+   BOOT — with hash-based routing (login vs register)
+   ============================================================ */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -2586,8 +2589,37 @@ function doTransfer(){
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
     if(document.getElementById('s-trade').classList.contains('active') && trTab === 'copy') renderTrCopy();
   }, 3000);
-  if(!currentUser){
-    openAuth('register');
+
+  /* ============================================================
+     Route on URL hash + session state
+     - #login       → open login (user said they have an account)
+     - #register    → open register
+     - #markets     → jump to markets (if logged in)
+     - #trade-*     → jump to trade + select tab (if logged in)
+     - #financial   → jump to wallet (if logged in)
+     - no hash      → default to register (first-time visitor)
+     ============================================================ */
+  const hash = (location.hash || '').toLowerCase();
+
+  if(currentUser){
+    // Already logged in → honor deep-link nav
+    if(hash === '#markets'){ go('s-markets'); }
+    else if(hash === '#financial'){ go('s-wallet'); }
+    else if(hash.startsWith('#trade')){
+      go('s-trade');
+      let targetTab = 'spot';
+      if(hash === '#trade-perpetual') targetTab = 'perpetual';
+      else if(hash === '#trade-copy') targetTab = 'copy';
+      const tabBtn = document.querySelector(`.tr-tab[data-tr="${targetTab}"]`);
+      if(tabBtn) tabBtn.click();
+    }
+  } else {
+    // Not logged in → decide which auth screen to show
+    if(hash === '#login'){
+      openAuth('login');
+    } else {
+      openAuth('register');
+    }
   }
 })();
 </script>
