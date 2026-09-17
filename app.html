@@ -30,6 +30,10 @@
   --purple:#722ED1;--purple-lt:#F3E8FF;
   --bg:#F5F6F8;--card:#fff;
   --text:#1E2329;--text2:#707A8A;--text3:#B7BDC6;--line:#EAECEF;
+  /* Dark trade theme */
+  --dk-bg:#0b0e11;--dk-panel:#14181d;--dk-panel2:#1a1f26;--dk-line:#232a33;
+  --dk-text:#eaecef;--dk-text2:#848e9c;--dk-text3:#5e6673;
+  --dk-green:#0ecb81;--dk-red:#f6465d;--dk-blue:#2f6bff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;height:100%;background:#0b0e11;}
@@ -64,34 +68,19 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
 .scroll::-webkit-scrollbar{width:0;}
 
-.step-progress{
-  display:flex;align-items:center;justify-content:center;
-  padding:22px 20px 14px;background:#fff;
-  border-bottom:1px solid var(--line);flex-shrink:0;
-}
-.step-progress .step{
-  display:flex;flex-direction:column;align-items:center;gap:8px;
-  flex-shrink:0;position:relative;width:90px;
-}
-.step-progress .circle{
-  width:38px;height:38px;border-radius:50%;
-  background:#F5F6F8;color:var(--text3);
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;border:2px solid #F5F6F8;
-  transition:.2s;
-}
-.step-progress .label{
-  font-size:11.5px;color:var(--text3);font-weight:600;
-  text-align:center;line-height:1.3;
-}
+.step-progress{display:flex;align-items:center;justify-content:center;
+  padding:22px 20px 14px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0;}
+.step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;
+  flex-shrink:0;position:relative;width:90px;}
+.step-progress .circle{width:38px;height:38px;border-radius:50%;
+  background:#F5F6F8;color:var(--text3);display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;border:2px solid #F5F6F8;transition:.2s;}
+.step-progress .label{font-size:11.5px;color:var(--text3);font-weight:600;text-align:center;line-height:1.3;}
 .step-progress .step.done .circle{background:var(--green);color:#fff;border-color:var(--green);}
 .step-progress .step.done .label{color:var(--text2);}
 .step-progress .step.active .circle{background:#FEF6E7;color:var(--orange);border-color:var(--orange);}
 .step-progress .step.active .label{color:var(--orange);font-weight:700;}
-.step-progress .line{
-  height:2px;background:#EAECEF;flex:1;max-width:60px;margin:0 -8px;
-  align-self:flex-start;margin-top:18px;
-}
+.step-progress .line{height:2px;background:#EAECEF;flex:1;max-width:60px;margin:0 -8px;align-self:flex-start;margin-top:18px;}
 .step-progress .line.done{background:var(--green);}
 
 .auth-screen{position:absolute;inset:0;background:#fff;z-index:2000;display:none;flex-direction:column;}
@@ -141,10 +130,8 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
   font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
 .auth-submit:hover{background:var(--green-dk);}
-
 .auth-switch{text-align:center;font-size:13.5px;color:var(--text2);margin-top:22px;}
 .auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
-
 .skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
 .skip-link:hover{color:var(--text);}
 
@@ -158,6 +145,168 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
 .kyc-up.has .t{color:var(--green-dk);}
 
+/* ===== NEW KYC page (Screenshot 1) ===== */
+.kyc-page{position:absolute;inset:0;background:#fff;z-index:2100;display:none;flex-direction:column;}
+.kyc-page.active{display:flex;}
+.kyc-page .kp-head{display:flex;align-items:center;padding:16px 18px 10px;flex-shrink:0;background:#fff;}
+.kyc-page .kp-head .back{width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:#1E2329;font-size:26px;line-height:1;font-weight:300;}
+.kyc-page .kp-head .title{flex:1;text-align:center;font-size:19px;font-weight:700;color:#1E2329;
+  margin-right:34px;letter-spacing:-.3px;}
+.kyc-page .kp-body{flex:1;overflow-y:auto;padding:6px 22px 26px;}
+.kyc-page .kp-body::-webkit-scrollbar{width:0;}
+.kp-label{font-size:14.5px;color:#1E2329;font-weight:500;margin:16px 0 9px;}
+.kp-field{background:#F5F6F8;border-radius:26px;padding:15px 18px;display:flex;align-items:center;
+  gap:8px;font-size:14.5px;color:#1E2329;border:1px solid transparent;}
+.kp-field input{flex:1;border:none;outline:none;background:transparent;font-size:14.5px;
+  font-family:inherit;color:#1E2329;min-width:0;}
+.kp-field input::placeholder{color:#B7BDC6;}
+.kp-field .clr{width:20px;height:20px;border-radius:50%;background:#C9CDD4;color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  flex-shrink:0;cursor:pointer;line-height:1;}
+.kp-field.sel{justify-content:space-between;cursor:pointer;}
+.kp-field.sel .caret{color:#8a929c;font-size:12px;}
+.kp-uploads{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:6px;}
+.kp-up{display:flex;flex-direction:column;align-items:center;gap:9px;}
+.kp-up .box{width:100%;aspect-ratio:1/1;border:1.6px dashed #C9CDD4;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;transition:.15s;}
+.kp-up .box:active{background:#F5F6F8;}
+.kp-up .cap{font-size:12.5px;color:#707A8A;text-align:center;line-height:1.3;}
+.kp-up.has .box{border-style:solid;border-color:var(--green);background:var(--green-lt);}
+.kp-example-title{font-size:19px;font-weight:700;color:#1E2329;margin:26px 0 12px;letter-spacing:-.3px;}
+.kp-examples{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.kp-examples .ex{background:#F5F6F8;border-radius:4px;aspect-ratio:1.15/1;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.kp-examples .ex svg{width:78%;height:auto;}
+.kp-apply{width:100%;height:54px;border-radius:6px;background:#3B6EF6;color:#fff;
+  font-size:16.5px;font-weight:600;border:none;cursor:pointer;font-family:inherit;margin-top:26px;}
+.kp-apply:hover{background:#2f5fe0;}
+.kp-footnote{font-size:12.5px;color:#B7BDC6;text-align:center;padding:14px 0 4px;line-height:1.5;}
+
+/* ===== DARK TRADE screen (Screenshots 2 & 3) ===== */
+.dk-screen{position:absolute;inset:0;background:var(--dk-bg);color:var(--dk-text);
+  display:none;flex-direction:column;overflow:hidden;z-index:10;}
+.dk-screen.active{display:flex;}
+.dk-tabs{display:flex;gap:6px;padding:10px 12px 6px;background:var(--dk-bg);flex-shrink:0;
+  overflow-x:auto;scrollbar-width:none;}
+.dk-tabs::-webkit-scrollbar{display:none;}
+.dk-tab{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13.5px;font-weight:600;
+  background:transparent;color:var(--dk-text2);cursor:pointer;border:1px solid transparent;
+  white-space:nowrap;transition:.15s;}
+.dk-tab.on{background:var(--dk-blue);color:#fff;}
+.dk-sym-row{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;flex-shrink:0;background:var(--dk-bg);}
+.dk-sym-row .pair{font-size:19px;font-weight:800;letter-spacing:-.3px;color:#fff;}
+.dk-sym-row .tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:3px;
+  background:rgba(47,107,255,.16);color:#6f97ff;letter-spacing:.3px;}
+.dk-sym-row .chg{font-size:14px;font-weight:700;color:var(--dk-green);}
+.dk-sym-row .ico{margin-left:auto;color:var(--dk-text2);font-size:18px;line-height:1;cursor:pointer;}
+.dk-body{flex:1;display:flex;gap:8px;padding:0 10px;overflow:hidden;min-height:0;}
+.dk-ob{width:33%;min-width:0;display:flex;flex-direction:column;font-size:11px;
+  font-variant-numeric:tabular-nums;overflow:hidden;}
+.dk-ob .hd{display:grid;grid-template-columns:1fr 1fr;gap:2px;color:var(--dk-text3);
+  font-size:10px;padding:2px 2px 6px;}
+.dk-ob .hd .r{text-align:right;}
+.dk-ob .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;min-height:0;overflow:hidden;}
+.dk-ob .col.rev{justify-content:flex-start;}
+.dk-ob .row{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3.5px 2px;align-items:center;}
+.dk-ob .row .p{font-weight:600;}
+.dk-ob .row .q{text-align:right;color:var(--dk-text2);}
+.dk-ob .row.a .p{color:var(--dk-red);}
+.dk-ob .row.b .p{color:var(--dk-green);}
+.dk-ob .mid{text-align:left;padding:6px 2px 4px;}
+.dk-ob .mid .mp{font-size:20px;font-weight:800;color:var(--dk-red);letter-spacing:-.5px;}
+.dk-ob .mid .mq{font-size:10.5px;color:var(--dk-text3);margin-top:1px;}
+.dk-form{flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:6px;}
+.dk-form::-webkit-scrollbar{width:0;}
+.dk-buysell{display:grid;grid-template-columns:1fr 1fr;background:var(--dk-panel2);
+  border-radius:8px;padding:4px;margin-bottom:10px;}
+.dk-buysell .bs{text-align:center;padding:9px;font-size:14.5px;font-weight:700;
+  border-radius:6px;cursor:pointer;color:var(--dk-text2);transition:.15s;}
+.dk-buysell .bs.on-buy{background:var(--dk-green);color:#04160f;}
+.dk-buysell .bs.on-sell{background:var(--dk-red);color:#fff;}
+.dk-ordertype{display:flex;align-items:center;gap:8px;background:var(--dk-panel2);
+  border-radius:8px;padding:11px 12px;font-size:13.5px;color:var(--dk-text);margin-bottom:9px;cursor:pointer;}
+.dk-ordertype .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--dk-text2);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dk-ordertype .dot i{width:6px;height:6px;border-radius:50%;background:transparent;}
+.dk-ordertype.on .dot{border-color:var(--dk-blue);}
+.dk-ordertype.on .dot i{background:var(--dk-blue);}
+.dk-input{display:flex;align-items:center;background:var(--dk-panel2);border-radius:8px;
+  padding:12px;font-size:13.5px;margin-bottom:9px;gap:6px;}
+.dk-input input{flex:1;border:none;outline:none;background:transparent;color:var(--dk-text);
+  font-size:14px;font-family:inherit;font-variant-numeric:tabular-nums;min-width:0;}
+.dk-input input::placeholder{color:var(--dk-text3);}
+.dk-input .suf{color:var(--dk-text2);font-size:12.5px;flex-shrink:0;}
+.dk-input .step{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;color:var(--dk-text);font-size:16px;font-weight:600;cursor:pointer;flex-shrink:0;}
+.dk-input .step:active{background:rgba(255,255,255,.06);}
+.dk-pcts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.dk-pcts .pc{text-align:center;padding:8px 4px;background:var(--dk-panel2);border-radius:6px;
+  font-size:12px;color:var(--dk-text2);cursor:pointer;font-weight:600;}
+.dk-pcts .pc:active{background:#232a33;}
+.dk-tpsl{display:flex;align-items:center;gap:9px;padding:4px 0 12px;font-size:13px;color:var(--dk-text);}
+.dk-tpsl input{width:16px;height:16px;accent-color:var(--dk-blue);cursor:pointer;}
+.dk-info{display:flex;flex-direction:column;gap:8px;padding:4px 0 14px;font-size:12.5px;}
+.dk-info .r{display:flex;align-items:center;justify-content:space-between;color:var(--dk-text2);}
+.dk-info .r .v{color:var(--dk-text);font-weight:600;font-variant-numeric:tabular-nums;}
+.dk-info .r .plus{width:20px;height:20px;border-radius:50%;background:var(--dk-panel2);
+  display:inline-flex;align-items:center;justify-content:center;color:var(--dk-text2);
+  font-size:14px;font-weight:700;margin-left:6px;cursor:pointer;line-height:1;}
+.dk-action{width:100%;height:48px;border-radius:8px;border:none;font-size:16px;font-weight:700;
+  cursor:pointer;font-family:inherit;margin-bottom:8px;}
+.dk-action.buy{background:var(--dk-green);color:#04160f;}
+.dk-action.sell{background:var(--dk-red);color:#fff;}
+.dk-levbar{display:flex;align-items:center;gap:8px;padding:4px 0 10px;font-size:12.5px;color:var(--dk-text2);}
+.dk-levbar .bar{flex:1;height:6px;border-radius:3px;background:var(--dk-panel2);overflow:hidden;display:flex;}
+.dk-levbar .bar .b{background:var(--dk-green);}
+.dk-levbar .bar .s{background:var(--dk-red);}
+.dk-levbar .lb{color:var(--dk-green);font-weight:700;}
+.dk-levbar .ls{color:var(--dk-red);font-weight:700;}
+.dk-toolbar{display:flex;align-items:center;gap:8px;padding:6px 12px 8px;background:var(--dk-bg);flex-shrink:0;}
+.dk-toolbar .lev{display:flex;align-items:center;gap:6px;background:var(--dk-panel2);
+  padding:8px 10px;border-radius:6px;font-size:12.5px;color:var(--dk-text);cursor:pointer;}
+.dk-toolbar .lev .car{color:var(--dk-text2);font-size:10px;}
+.dk-toolbar .ladder{margin-left:auto;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
+.dk-toolbar .ladder i{display:block;width:20px;height:3px;border-radius:1px;}
+.dk-toolbar .ladder i:nth-child(1){background:var(--dk-red);}
+.dk-toolbar .ladder i:nth-child(2){background:var(--dk-green);}
+.dk-toolbar .ladder i:nth-child(3){background:var(--dk-text2);}
+.dk-subtabs{display:flex;gap:22px;padding:10px 16px 0;background:var(--dk-bg);
+  border-top:1px solid var(--dk-line);flex-shrink:0;}
+.dk-subtabs .st{font-size:14px;color:var(--dk-text2);padding-bottom:10px;cursor:pointer;
+  border-bottom:2px solid transparent;font-weight:600;white-space:nowrap;}
+.dk-subtabs .st.on{color:#fff;border-bottom-color:var(--dk-green);}
+.dk-history{flex:1;overflow-y:auto;background:var(--dk-bg);padding:16px;text-align:center;}
+.dk-history::-webkit-scrollbar{width:0;}
+.dk-history .empty{color:var(--dk-text3);font-size:14px;padding:40px 0;}
+.dk-copy-wrap{padding:12px 14px 20px;overflow-y:auto;flex:1;}
+.dk-copy-wrap::-webkit-scrollbar{width:0;}
+.dk-copy-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.dk-copy-head h3{margin:0;font-size:16px;font-weight:700;color:#fff;}
+.dk-ct{background:var(--dk-panel);border:1px solid var(--dk-line);border-radius:12px;
+  padding:14px;margin-bottom:10px;}
+.dk-ct .top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.dk-ct .av{width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,#0ecb81,#1890ff);display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0;}
+.dk-ct .trader{font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;}
+.dk-ct .trader .v{background:rgba(47,107,255,.18);color:#6f97ff;font-size:9px;padding:1px 6px;
+  border-radius:3px;font-weight:700;}
+.dk-ct .sub{font-size:12px;color:var(--dk-text2);margin-top:3px;}
+.dk-ct .msg{font-size:12.5px;color:var(--dk-text2);line-height:1.55;margin:10px 0;}
+.dk-ct .acts{display:flex;gap:10px;}
+.dk-ct .acts button{flex:1;height:38px;border-radius:8px;border:1px solid var(--dk-line);
+  background:transparent;color:var(--dk-text);font-size:13px;font-weight:600;
+  cursor:pointer;font-family:inherit;}
+.dk-ct .acts button.pri{background:var(--dk-green);color:#04160f;border-color:var(--dk-green);}
+.dk-copy-empty{color:var(--dk-text3);font-size:13.5px;text-align:center;padding:60px 20px;}
+.dk-nav{display:flex;background:#000;border-top:1px solid var(--dk-line);flex-shrink:0;
+  padding-bottom:env(safe-area-inset-bottom);}
+.dk-nav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 0 7px;font-size:10.5px;color:var(--dk-text3);cursor:pointer;user-select:none;}
+.dk-nav .nb.on{color:var(--dk-blue);}
+
+/* ===== Light screens (unchanged) ===== */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);}
 .avatar{width:34px;height:34px;border-radius:50%;background:#fff;flex-shrink:0;
@@ -175,20 +324,16 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;
   background:var(--red);border-radius:50%;border:1.5px solid #fff;display:none;}
 .icon-btn .dot.show{display:block;}
-
 .mode-pill{display:inline-flex;background:#F5F6F8;border-radius:20px;padding:3px;font-size:11px;font-weight:700;}
 .mode-pill .m{padding:4px 12px;border-radius:16px;cursor:pointer;color:var(--text2);transition:.15s;}
 .mode-pill .m.on-demo{background:var(--orange);color:#fff;}
 .mode-pill .m.on-real{background:var(--green);color:#fff;}
-
 .mode-banner{display:none;background:linear-gradient(120deg,#FA8C16,#D46B08);color:#fff;
   font-size:11.5px;font-weight:600;padding:6px 14px;text-align:center;letter-spacing:.3px;}
 .mode-banner.on{display:block;}
-
 .kyc-pending-banner{display:none;background:#FFF7E6;color:#7A5C00;border-bottom:1px solid #FFE9A8;
   font-size:12px;font-weight:600;padding:8px 14px;text-align:center;}
 .kyc-pending-banner.on{display:block;}
-
 .hero{padding:22px 20px 10px;text-align:center;background:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);}
 .hero .art{height:140px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
 .hero h2{font-size:19px;margin:8px 0 18px;font-weight:700;}
@@ -196,7 +341,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   background:var(--green);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;}
 .btn-primary:active{background:var(--green-dk);transform:scale(.985);}
 .btn-primary.wide{max-width:340px;margin:0 auto;}
-
 .hero-in{padding:18px 20px 12px;background:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);}
 .hero-in .row1{display:flex;align-items:center;gap:12px;}
 .hero-in .hi-av{width:52px;height:52px;border-radius:50%;background:#fff;
@@ -219,7 +363,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .hero-in .qa:active{background:#fafafa;}
 .hero-in .qa .qi{width:34px;height:34px;border-radius:10px;background:var(--green-lt);
   display:flex;align-items:center;justify-content:center;color:var(--green-dk);}
-
 .promo-row{display:flex;gap:10px;margin:10px 14px;}
 .promo-big{flex:1;border-radius:12px;padding:14px;
   background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 60%,#0b6b46 100%);
@@ -228,16 +371,13 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .promo-big .tag{display:inline-block;background:#111;color:#fff;font-size:9px;padding:3px 7px;border-radius:4px;margin-top:6px;font-weight:600;}
 .promo-big .sub{font-size:11px;margin-top:8px;opacity:.95;line-height:1.5;}
 .promo-big .sub b{color:#FFD75E;}
-
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;font-size:16px;font-weight:700;}
 .sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
-
 .asset-class{display:flex;gap:8px;padding:10px 14px 4px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
 .asset-class::-webkit-scrollbar{display:none;}
 .ac-pill{flex-shrink:0;padding:7px 14px;border-radius:18px;font-size:12.5px;font-weight:600;
   background:#fff;color:var(--text2);border:1px solid var(--line);cursor:pointer;transition:.15s;}
 .ac-pill.on{background:var(--green);color:#fff;border-color:var(--green);}
-
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
 .coin-card{background:#fff;border-radius:10px;padding:12px;border:1px solid var(--line);position:relative;cursor:pointer;}
 .coin-card:active{transform:scale(.98);}
@@ -247,7 +387,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .coin-card .check{position:absolute;right:10px;bottom:10px;width:20px;height:20px;border-radius:6px;
   background:var(--green);display:flex;align-items:center;justify-content:center;}
 .up{color:var(--green);}.down{color:var(--red);}
-
 .thead{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:8px 16px;font-size:11px;color:var(--text3);gap:4px;}
 .thead .r{justify-content:flex-end;}
 .trow{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:12px 16px;font-size:13px;gap:4px;align-items:center;cursor:pointer;}
@@ -259,14 +398,12 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   color:#fff;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;}
 .chg-pill.up{background:var(--green);}
 .chg-pill.down{background:var(--red);}
-
 .pulse{display:flex;gap:10px;padding:4px 14px 14px;overflow-x:auto;scrollbar-width:none;}
 .pulse::-webkit-scrollbar{display:none;}
 .pulse .p{flex-shrink:0;width:118px;background:#fff;border-radius:10px;padding:11px;border:1px solid var(--line);}
 .pulse .p .top{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;}
 .pulse .p .val{font-size:17px;font-weight:700;margin:8px 0 3px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
 .pulse .p .pc{font-size:12px;font-weight:600;}
-
 .news-strip{margin:14px;background:#fff;border-radius:12px;border:1px solid var(--line);
   padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
 .news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
@@ -275,7 +412,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .news-strip .nt .h{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .news-strip .nt .s{font-size:11px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .news-strip .nd{font-size:10.5px;color:var(--text3);flex-shrink:0;}
-
 .wallet-hero{background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 100%);color:#fff;
   padding:22px 20px;text-align:center;flex-shrink:0;}
 .wallet-hero .lab{font-size:12px;opacity:.9;margin-bottom:6px;}
@@ -304,19 +440,16 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .asset-row .amount{text-align:right;}
 .asset-row .amount .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 .asset-row .amount .usd{font-size:11px;color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums;}
-
 .trade-head{display:flex;align-items:center;gap:14px;padding:10px 14px;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
 .trade-head .sym{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;}
 .trade-head .sym .caret{font-size:10px;color:var(--text3);}
 .trade-head .chg{font-size:12px;font-weight:600;margin-top:1px;}
 .trade-head .acts{margin-left:auto;display:flex;gap:14px;}
-
 .chart-wrap{background:#fff;margin:0 14px 10px;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative;}
 .tv-slot{width:100%;height:clamp(240px, 38vh, 340px);position:relative;overflow:hidden;transition:height .2s ease;background:#fff;}
 .tv-slot.compact{height:140px;}
 .tv-slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
 .tv-slot canvas{width:100%;height:100%;display:block;}
-
 .levels-strip{display:none;margin:-6px 14px 8px;padding:6px 12px;background:#fff;
   border:1px solid var(--line);border-radius:8px;font-family:'Courier New',monospace;font-size:11px;font-variant-numeric:tabular-nums;}
 .levels-strip.on{display:block;}
@@ -327,18 +460,15 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .levels-strip .dash.tp{border-color:var(--green);}
 .levels-strip .lbl{color:var(--text2);font-family:inherit;}
 .levels-strip .val{margin-left:auto;font-weight:700;}
-
 .buysell{display:flex;padding:0 14px;gap:10px;margin-top:8px;flex-shrink:0;}
 .buysell .bs{flex:1;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;
   font-size:15px;font-weight:700;background:#fff;color:var(--text2);border:1px solid var(--line);cursor:pointer;}
 .buysell .bs.buy.on{background:var(--green);color:#fff;border-color:var(--green);}
 .buysell .bs.sell.on{background:var(--red);color:#fff;border-color:var(--red);}
-
 .otype-tabs{display:flex;padding:8px 14px 0;flex-shrink:0;}
 .otype-tabs .ot{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;
   color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;}
 .otype-tabs .ot.on{color:var(--green-dk);border-bottom-color:var(--green);}
-
 .trade-body{display:flex;gap:10px;padding:12px 14px;align-items:flex-start;}
 .order-form{flex:1.25;min-width:0;}
 .order-form .row{display:flex;align-items:center;background:#fff;border:1px solid var(--line);
@@ -353,7 +483,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .order-form .row .tag2.tp{background:var(--blue-lt);color:var(--blue);}
 .est{font-size:12px;color:var(--text2);display:flex;justify-content:space-between;margin:8px 0 4px;}
 .est b{color:var(--text);font-weight:600;}
-
 .order-book{flex:1;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
 .ob-head{display:flex;justify-content:space-between;color:var(--text3);margin-bottom:5px;font-size:10px;}
 .ob-row{display:flex;justify-content:space-between;height:19px;align-items:center;position:relative;}
@@ -361,12 +490,10 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .ob-row span{position:relative;z-index:1;}
 .ob-mid{text-align:center;padding:6px 0;font-size:16px;font-weight:700;color:var(--green);}
 .ob-mid small{display:block;font-size:10px;color:var(--text3);font-weight:400;}
-
 .action-btn{display:block;width:calc(100% - 28px);margin:6px 14px;height:48px;border:none;
   border-radius:24px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;}
 .action-btn.buy{background:var(--green);}
 .action-btn.sell{background:var(--red);}
-
 .live-trade{background:#fff;border-radius:10px;border:1px solid var(--line);padding:10px 12px;margin:8px 14px;}
 .live-trade .lt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .live-trade .lt-head .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulseDot 1.2s infinite;}
@@ -383,7 +510,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .live-trade .lt-kpis .kpi .v{font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:1px;}
 .live-trade .lt-close{margin-top:8px;width:100%;height:34px;border-radius:8px;border:none;
   background:var(--red);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
-
 .ins-group{padding:6px 0 10px;}
 .ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:8px 4px 6px;font-weight:700;}
 .ins-row{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
@@ -392,7 +518,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .ins-row .nm{font-size:11px;color:var(--text2);margin-top:2px;}
 .ins-row .px{text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
 .ins-row .pc{font-size:11px;font-weight:600;text-align:right;margin-top:2px;}
-
 .asset-hero{background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);padding:8px 20px 18px;flex-shrink:0;}
 .asset-hero .lbl{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .asset-hero .big{font-size:28px;font-weight:800;letter-spacing:-1px;margin:6px 0 4px;font-variant-numeric:tabular-nums;}
@@ -411,7 +536,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .acct-row .tx .n{font-size:14px;font-weight:600;}
 .acct-row .tx .v{font-size:13px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
 .acct-row .arrow{color:var(--text3);}
-
 .overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;max-width:430px;margin:0 auto;}
 .overlay.active{display:flex;}
 .ov-head{display:flex;align-items:center;padding:14px 16px;flex-shrink:0;}
@@ -434,16 +558,13 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .menu-row .arrow{color:var(--text3);}
 .logout{margin:20px 16px;height:48px;border-radius:8px;background:var(--red);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;}
-
 .bottomnav{display:flex;background:#fff;border-top:1px solid var(--line);flex-shrink:0;z-index:40;width:100%;box-sizing:border-box;}
 .bottomnav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;
   font-size:11px;color:var(--text2);cursor:pointer;user-select:none;}
 .bottomnav .nb.on{color:var(--green);}
-
 .hint{font-size:11px;color:var(--text3);text-align:center;padding:8px;}
 .logo{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;
   justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;}
-
 .generic-modal{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1700;
   display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
 .generic-modal.on{display:flex;}
@@ -453,7 +574,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;}
 .generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
 .generic-body{padding:16px 20px 20px;}
-
 .ct-card{background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin:0 14px 12px;}
 .ct-card .ct-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .ct-card .ct-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
@@ -466,13 +586,11 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .ct-card .ct-actions .btn2{flex:1;height:38px;border-radius:8px;border:1px solid var(--line);
   background:#fff;color:var(--text);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
 .ct-card .ct-actions .btn2.pri{background:var(--green);color:#fff;border-color:var(--green);}
-
 .tf-fromto{display:flex;gap:8px;align-items:center;margin:8px 0 14px;}
 .tf-fromto .box{flex:1;background:#F5F6F8;border-radius:10px;padding:12px;}
 .tf-fromto .box .k{font-size:11px;color:var(--text2);}
 .tf-fromto .box .v{font-size:14px;font-weight:700;margin-top:3px;}
 .tf-fromto .arrow{color:var(--text3);font-size:20px;}
-
 #toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
   background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
@@ -482,13 +600,12 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 <body>
 <div class="phone">
 
-<!-- STEP 1 — ACCOUNT REGISTRATION -->
+<!-- STEP 1 — REGISTRATION -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
-
   <div class="step-progress">
     <div class="step active"><div class="circle">1</div><div class="label">Account<br>Registration</div></div>
     <div class="line"></div>
@@ -496,68 +613,41 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
     <div class="line"></div>
     <div class="step"><div class="circle">3</div><div class="label">Trade</div></div>
   </div>
-
   <div class="auth-body">
     <h1 class="auth-title">Account Registration</h1>
     <p class="auth-sub">Create your free account in less than a minute.</p>
-
     <div class="auth-method-toggle">
       <div class="mt disabled" title="Coming soon">Mobile</div>
       <div class="mt on">E-mail</div>
     </div>
-
-    <div class="auth-field">
-      <label>E-mail</label>
-      <div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div>
-      <div class="err" id="suEmailErr"></div>
-    </div>
-
-    <div class="auth-field">
-      <label>Invitation code <span style="color:var(--text3);font-weight:400;">(optional)</span></label>
-      <div class="wrap"><input id="suReferral" type="text" placeholder="Please enter the invitation code"></div>
-    </div>
-
+    <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
+    <div class="auth-field"><label>Invitation code <span style="color:var(--text3);font-weight:400;">(optional)</span></label><div class="wrap"><input id="suReferral" type="text" placeholder="Please enter the invitation code"></div></div>
     <div class="auth-field">
       <label>Set password</label>
       <div class="wrap">
         <input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()">
-        <div class="eye-btn" onclick="togglePw('suPw')">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
-        </div>
+        <div class="eye-btn" onclick="togglePw('suPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
       </div>
       <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
       <div class="err" id="suPwErr"></div>
     </div>
-
-    <div class="auth-field">
-      <label>Confirm password</label>
-      <div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div>
-      <div class="err" id="suPw2Err"></div>
-    </div>
-
-    <div class="auth-field">
-      <label>Username</label>
-      <div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username" oninput="checkUsername()"></div>
-      <div class="err" id="suUsernameErr"></div>
-    </div>
-
+    <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
+    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username" oninput="checkUsername()"></div><div class="err" id="suUsernameErr"></div></div>
     <div class="auth-check">
       <input type="checkbox" id="suTerms">
       <label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label>
     </div>
-
     <button class="auth-submit" id="registerBtn" onclick="doRegisterStep1()">Register →</button>
     <div class="auth-switch">Already have an account? <a onclick="openAuth('login')">Log In</a></div>
   </div>
 </section>
 
-<!-- STEP 2 — REAL-NAME AUTHENTICATION (KYC) -->
+<!-- STEP 2 — KYC (from registration) -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
-
   <div class="step-progress">
     <div class="step done"><div class="circle">✓</div><div class="label">Account<br>Registration</div></div>
     <div class="line done"></div>
@@ -565,11 +655,9 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
     <div class="line"></div>
     <div class="step"><div class="circle">3</div><div class="label">Trade</div></div>
   </div>
-
   <div class="auth-body">
     <h1 class="auth-title">Real-name Authentication</h1>
     <p class="auth-sub">Verify your identity to unlock deposits, withdrawals, and higher trading limits. This takes about a minute.</p>
-
     <div class="auth-field"><label>Full legal name</label><div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div></div>
     <div class="auth-field"><label>Date of birth</label><div class="wrap"><input id="kycDob" type="date"></div></div>
     <div class="auth-field"><label>Country / Region</label><div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div></div>
@@ -584,39 +672,108 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
       </div>
     </div>
     <div class="auth-field"><label>ID number</label><div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div></div>
-
     <div class="auth-field">
       <label>ID — Front</label>
       <div class="kyc-up" id="upFront" onclick="document.getElementById('kycFront').click()">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="t">Tap to upload front</div>
-        <div class="s">JPG or PNG · max 5 MB</div>
+        <div class="t">Tap to upload front</div><div class="s">JPG or PNG · max 5 MB</div>
       </div>
       <input type="file" id="kycFront" accept="image/*" style="display:none;" onchange="handleKycFile('front', this)">
     </div>
-
     <div class="auth-field">
       <label>ID — Back</label>
       <div class="kyc-up" id="upBack" onclick="document.getElementById('kycBack').click()">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="t">Tap to upload back</div>
-        <div class="s">JPG or PNG · max 5 MB</div>
+        <div class="t">Tap to upload back</div><div class="s">JPG or PNG · max 5 MB</div>
       </div>
       <input type="file" id="kycBack" accept="image/*" style="display:none;" onchange="handleKycFile('back', this)">
     </div>
-
     <div class="auth-field">
       <label>Selfie with ID</label>
       <div class="kyc-up" id="upSelfie" onclick="document.getElementById('kycSelfie').click()">
         <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#0ECB81" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="#0ECB81" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <div class="t">Tap to upload selfie</div>
-        <div class="s">Hold your ID next to your face</div>
+        <div class="t">Tap to upload selfie</div><div class="s">Hold your ID next to your face</div>
       </div>
       <input type="file" id="kycSelfie" accept="image/*" style="display:none;" onchange="handleKycFile('selfie', this)">
     </div>
-
     <button class="auth-submit" onclick="submitKycStep2()">Submit for Review →</button>
     <div class="skip-link" onclick="skipKycStep2()">Skip for now — do this later</div>
+  </div>
+</section>
+
+<!-- NEW KYC PAGE (Screenshot 1) — opened from Profile → Identity Verification -->
+<section class="kyc-page" id="kycPage">
+  <div class="kp-head">
+    <div class="back" onclick="closeKycPage()">‹</div>
+    <div class="title">KYCAuthentication</div>
+  </div>
+  <div class="kp-body">
+    <div class="kp-label">Nationality</div>
+    <div class="kp-field sel" onclick="pickNationality()">
+      <span id="kpNationality">United States</span>
+      <span class="caret">▼</span>
+    </div>
+
+    <div class="kp-label">Full legal name</div>
+    <div class="kp-field">
+      <input id="kpName" type="text" placeholder="Please enter your real name">
+      <div class="clr" onclick="clearKp('kpName')">✕</div>
+    </div>
+
+    <div class="kp-label">Document/passport number</div>
+    <div class="kp-field">
+      <input id="kpDocNum" type="text" placeholder="Please enter your ID/passport number">
+      <div class="clr" onclick="clearKp('kpDocNum')">✕</div>
+    </div>
+
+    <div class="kp-label">ID photo/upload passport</div>
+    <div class="kp-uploads">
+      <div class="kp-up" id="kpUpFront" onclick="document.getElementById('kpFront').click()">
+        <div class="box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#8a929c" stroke-width="1.7"/><circle cx="12" cy="12.5" r="2.6" stroke="#8a929c" stroke-width="1.7"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#8a929c" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cap">Front page of ID</div>
+      </div>
+      <div class="kp-up" id="kpUpBack" onclick="document.getElementById('kpBack').click()">
+        <div class="box">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#8a929c" stroke-width="1.7"/><circle cx="12" cy="12.5" r="2.6" stroke="#8a929c" stroke-width="1.7"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#8a929c" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="cap">Back page of ID</div>
+      </div>
+    </div>
+    <input type="file" id="kpFront" accept="image/*" style="display:none;" onchange="handleKpFile('front', this)">
+    <input type="file" id="kpBack"  accept="image/*" style="display:none;" onchange="handleKpFile('back', this)">
+
+    <div class="kp-example-title">Shooting example</div>
+    <div class="kp-examples">
+      <div class="ex">
+        <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="14" width="108" height="64" rx="6" fill="#F7D7B0"/>
+          <rect x="14" y="24" width="48" height="6" rx="2" fill="#B4834E"/>
+          <rect x="14" y="35" width="40" height="4" rx="2" fill="#C79A67"/>
+          <rect x="14" y="44" width="52" height="4" rx="2" fill="#C79A67"/>
+          <rect x="14" y="53" width="34" height="4" rx="2" fill="#C79A67"/>
+          <rect x="80" y="22" width="28" height="34" rx="4" fill="#E9BE8C"/>
+          <circle cx="94" cy="34" r="6" fill="#8a6a44"/>
+          <path d="M84 54c2-6 6-9 10-9s8 3 10 9z" fill="#8a6a44"/>
+          <rect x="14" y="64" width="90" height="4" rx="2" fill="#C79A67"/>
+        </svg>
+      </div>
+      <div class="ex">
+        <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="14" width="108" height="64" rx="6" fill="#F7D7B0"/>
+          <rect x="70" y="22" width="36" height="6" rx="2" fill="#B4834E"/>
+          <rect x="70" y="33" width="30" height="4" rx="2" fill="#C79A67"/>
+          <rect x="70" y="41" width="34" height="4" rx="2" fill="#C79A67"/>
+          <circle cx="26" cy="34" r="9" fill="#E9BE8C"/>
+          <rect x="14" y="60" width="92" height="4" rx="2" fill="#C79A67"/>
+          <rect x="14" y="68" width="60" height="4" rx="2" fill="#C79A67"/>
+        </svg>
+      </div>
+    </div>
+
+    <button class="kp-apply" onclick="submitKycPage()">Apply for certification</button>
+    <div class="kp-footnote">Failed to upload the ID photo, please contact customer service</div>
   </div>
 </section>
 
@@ -629,31 +786,21 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   <div class="auth-body">
     <h1 class="auth-title">Welcome back</h1>
     <p class="auth-sub">Sign in to access your account and start trading.</p>
-
-    <div class="auth-field">
-      <label>Email or Username</label>
-      <div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div>
-      <div class="err" id="loginEmailErr"></div>
-    </div>
-
+    <div class="auth-field"><label>Email or Username</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
     <div class="auth-field">
       <label>Password</label>
       <div class="wrap">
         <input id="loginPw" type="password" placeholder="••••••••">
-        <div class="eye-btn" onclick="togglePw('loginPw')">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
-        </div>
+        <div class="eye-btn" onclick="togglePw('loginPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
       </div>
       <div class="err" id="loginPwErr"></div>
     </div>
-
     <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 18px;">
       <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2);cursor:pointer;">
         <input type="checkbox" id="loginRemember" checked style="width:16px;height:16px;accent-color:var(--green);"> Remember me
       </label>
       <div style="font-size:12.5px;color:var(--green-dk);font-weight:600;cursor:pointer;" onclick="forgotPassword()">Forgot password?</div>
     </div>
-
     <button class="auth-submit" onclick="doLogin()">Log In</button>
     <div class="auth-switch">Don't have an account? <a onclick="openAuth('register')">Sign Up</a></div>
   </div>
@@ -667,18 +814,11 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#B7BDC6" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="#B7BDC6" stroke-width="2" stroke-linecap="round"/></svg>
       <span>BTC&USDT</span>
     </div>
-    <div class="icon-btn" onclick="openNews()">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="#1E2329" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="#1E2329" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </div>
-    <div class="icon-btn" onclick="openCopyTrading()">
-      <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="#1E2329" stroke-width="1.8" stroke-linejoin="round"/></svg>
-      <span class="dot" id="notifDot"></span>
-    </div>
+    <div class="icon-btn" onclick="openNews()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="#1E2329" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="#1E2329" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="icon-btn" onclick="openCopyTrading()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="#1E2329" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="dot" id="notifDot"></span></div>
   </div>
-
   <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
   <div class="mode-banner" id="modeBanner">🎮 Demo Mode — you're trading with virtual funds</div>
-
   <div class="scroll" id="homeScroll">
     <div id="heroLoggedOut">
       <div class="hero">
@@ -698,7 +838,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
         <button class="btn-primary wide" onclick="openAuth('register')">Login / Register</button>
       </div>
     </div>
-
     <div id="heroLoggedIn" style="display:none">
       <div class="hero-in">
         <div class="row1">
@@ -718,21 +857,18 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
             <div class="m" data-mode="demo" onclick="setMode('demo')">DEMO</div>
             <div class="m on-real" data-mode="real" onclick="setMode('real')">REAL</div>
           </div>
-          <div class="eye" onclick="toggleHeroMask()">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>
-          </div>
+          <div class="eye" onclick="toggleHeroMask()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
         </div>
         <div class="quick-actions">
           <div class="qa" onclick="openDeposit('deposit')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Deposit</span></div>
           <div class="qa" onclick="openDeposit('withdraw')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Withdraw</span></div>
-          <div class="qa" onclick="go('s-spot')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 17l5-6 4 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Trade</span></div>
+          <div class="qa" onclick="go('s-trade')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 17l5-6 4 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Trade</span></div>
           <div class="qa" onclick="go('s-wallet')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v12H3zM3 11h18" stroke="currentColor" stroke-width="2"/></svg></div><span>Wallet</span></div>
           <div class="qa" onclick="openInvite()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span>Invite</span></div>
           <div class="qa" onclick="openNews()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><span>News</span></div>
         </div>
       </div>
     </div>
-
     <div class="news-strip" onclick="openNews()">
       <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <div class="nt">
@@ -741,7 +877,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
       </div>
       <div class="nd" id="newsTime">now</div>
     </div>
-
     <div class="promo-row">
       <div class="promo-big">
         <div class="brand">NextTrade</div>
@@ -749,17 +884,16 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
         <div class="sub">Instant fills · <b>Low fees</b><br>24/7 support</div>
       </div>
     </div>
-
     <div class="sec-head">Recommended Coins <span class="more" onclick="go('s-markets')">More ›</span></div>
     <div class="pulse" id="homePulse"></div>
     <div class="sec-head">Markets <span class="more" onclick="go('s-markets')">View all ›</span></div>
     <div style="background:#fff;border-radius:12px;margin:0 14px 14px;overflow:hidden"><div id="homeList"></div></div>
     <div class="hint">— Live prices update in real time —</div>
   </div>
-
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
+<!-- MARKETS -->
 <section class="screen" id="s-markets">
   <div class="asset-class" id="assetClassBar">
     <div class="ac-pill on" data-class="crypto">Crypto</div>
@@ -777,57 +911,123 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<section class="screen" id="s-spot">
-  <div class="trade-head">
-    <div>
-      <div class="sym" onclick="openInstrumentPicker()">
-        <span id="spotSym">BTC/USDT</span>
-        <span class="caret">▼</span>
-      </div>
-      <div class="chg up" id="spotChg">+0.00%</div>
+<!-- ===================== NEW DARK TRADE SCREEN ===================== -->
+<section class="screen dk-screen" id="s-trade">
+  <!-- Top tabs -->
+  <div class="dk-tabs" id="dkTabs">
+    <div class="dk-tab" data-dk="perpetual">Perpetual</div>
+    <div class="dk-tab" data-dk="delivery">Delivery contract</div>
+    <div class="dk-tab on" data-dk="spot">Spot Trading</div>
+    <div class="dk-tab" data-dk="copy">Copy Trading</div>
+  </div>
+
+  <!-- Perpetual / Delivery / Spot content -->
+  <div id="dkMarket">
+    <div class="dk-sym-row">
+      <span class="pair" id="dkPair">BTC/USDT</span>
+      <span class="tag" id="dkTag">Perpetual</span>
+      <span class="chg" id="dkChg">+1.17%</span>
+      <span class="ico" onclick="openInstrumentPicker()">⇅</span>
     </div>
-    <div class="acts">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.8-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6L3.3 9.4l6.1-.8L12 3z" stroke="#1E2329" stroke-width="1.6"/></svg>
+
+    <div class="dk-body">
+      <!-- Order book -->
+      <div class="dk-ob">
+        <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
+        <div class="col" id="dkAsks"></div>
+        <div class="mid">
+          <div class="mp" id="dkMid">76650.53</div>
+          <div class="mq" id="dkMidSub">≈76650.53</div>
+        </div>
+        <div class="col rev" id="dkBids"></div>
+      </div>
+
+      <!-- Order form -->
+      <div class="dk-form">
+        <div class="dk-buysell" id="dkBuySell">
+          <div class="bs on-buy" data-side="buy" onclick="dkSetSide('buy')">Buy</div>
+          <div class="bs" data-side="sell" onclick="dkSetSide('sell')">Sell</div>
+        </div>
+
+        <div class="dk-ordertype on" id="dkOTLimit" onclick="dkSetOT('limit')">
+          <span class="dot"><i></i></span> Limit
+        </div>
+        <div class="dk-ordertype" id="dkOTMarket" onclick="dkSetOT('market')">
+          <span class="dot"><i></i></span> Market
+        </div>
+
+        <div class="dk-input" id="dkPriceRow">
+          <input id="dkPrice" placeholder="Price(USDT)" inputmode="decimal">
+          <span class="suf">USDT</span>
+        </div>
+
+        <div class="dk-input">
+          <div class="step" onclick="dkStep('dkQty',-1)">−</div>
+          <input id="dkQty" placeholder="Number(BTC)" inputmode="decimal">
+          <div class="step" onclick="dkStep('dkQty',1)">+</div>
+        </div>
+
+        <div class="dk-pcts">
+          <div class="pc" onclick="dkPct(25)">25%</div>
+          <div class="pc" onclick="dkPct(50)">50%</div>
+          <div class="pc" onclick="dkPct(75)">75%</div>
+          <div class="pc" onclick="dkPct(100)">100%</div>
+        </div>
+
+        <div class="dk-input">
+          <div class="step" onclick="dkStep('dkAmt',-1)">−</div>
+          <input id="dkAmt" placeholder="Number(USDT)" inputmode="decimal">
+          <div class="step" onclick="dkStep('dkAmt',1)">+</div>
+        </div>
+
+        <div class="dk-tpsl">
+          <input type="checkbox" id="dkTpSl">
+          <label for="dkTpSl">Take Profit and Stop Loss</label>
+        </div>
+
+        <div class="dk-info">
+          <div class="r"><span>Available balance</span><span class="v">0 USDT <span class="plus">+</span></span></div>
+          <div class="r"><span>Buy</span><span class="v" id="dkInfoBuy">0 USDT</span></div>
+          <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
+        </div>
+
+        <button class="dk-action buy" id="dkBtn" onclick="dkPlace()">Buy</button>
+      </div>
+    </div>
+
+    <!-- Perpetual leverage bar (only shown for perpetual) -->
+    <div class="dk-levbar" id="dkLevBar" style="display:none;padding:6px 14px;">
+      <span class="lb">B 50%</span>
+      <span class="bar"><span class="b" style="width:50%"></span><span class="s" style="width:50%"></span></span>
+      <span class="ls">50% S</span>
+    </div>
+
+    <div class="dk-toolbar">
+      <div class="lev" id="dkLevBtn">Cross <span class="car">▼</span></div>
+      <div class="ladder"><i></i><i></i><i></i></div>
     </div>
   </div>
-  <div class="chart-wrap"><div class="tv-slot" id="tv-mini-chart"></div></div>
-  <div class="levels-strip" id="levelsStrip">
-    <div class="row"><span class="dash entry"></span><span class="lbl">Entry</span><span class="val" id="lvlEntry">—</span></div>
-    <div class="row"><span class="dash sl"></span><span class="lbl">Stop Loss</span><span class="val" id="lvlSL" style="color:var(--red)">—</span></div>
-    <div class="row"><span class="dash tp"></span><span class="lbl">Take Profit</span><span class="val" id="lvlTP" style="color:var(--green)">—</span></div>
+
+  <!-- Copy Trading content -->
+  <div id="dkCopy" style="display:none;flex:1;flex-direction:column;min-height:0;">
+    <div class="dk-copy-wrap" id="dkCopyList"></div>
   </div>
-  <div id="liveTradeSlot"></div>
-  <div class="buysell">
-    <div class="bs buy on" id="bsBuy" onclick="setSide('buy')">Buy</div>
-    <div class="bs sell" id="bsSell" onclick="setSide('sell')">Sell</div>
+
+  <!-- Subtabs -->
+  <div class="dk-subtabs" id="dkSubtabs">
+    <div class="st on" data-st="open">Open orders(<span id="dkOpenCount">0</span>)</div>
+    <div class="st" data-st="history">Order history</div>
+    <div class="st" data-st="assets">Assets</div>
+    <div class="st" data-st="copy" id="dkCopyTab" style="display:none;">Copy signals</div>
+    <div style="margin-left:auto;color:var(--dk-text2);font-size:16px;cursor:pointer;">📄</div>
   </div>
-  <div class="otype-tabs" id="otypeTabs">
-    <div class="ot on" data-otype="market">Market</div>
-    <div class="ot" data-otype="limit">Limit</div>
-    <div class="ot" data-otype="stop">Stop-Limit</div>
-  </div>
-  <div class="scroll" style="padding-top:2px">
-    <div class="trade-body">
-      <div class="order-form">
-        <div class="row"><input id="fLimitPrice" placeholder="Price" inputmode="decimal"><span class="suf">USDT</span></div>
-        <div class="row"><input id="fAmt" placeholder="Quantity" inputmode="decimal"><span class="suf" id="fAmtSuf">BTC</span></div>
-        <div class="row"><span class="tag2">SL</span><input id="fSL" placeholder="Stop Loss price" inputmode="decimal"><span class="suf">USDT</span></div>
-        <div class="row"><span class="tag2 tp">TP</span><input id="fTP" placeholder="Take Profit price" inputmode="decimal"><span class="suf">USDT</span></div>
-        <div class="est"><span>Estimated total</span><b id="estAmt">0.00 USDT</b></div>
-        <div class="est"><span>Available</span><b id="estAvail">0.00 USDT</b></div>
-      </div>
-      <div class="order-book">
-        <div class="ob-head"><span>Price</span><span>Qty</span></div>
-        <div id="asks"></div>
-        <div class="ob-mid" id="obMid">—</div>
-        <div id="bids"></div>
-      </div>
-    </div>
-    <button class="action-btn buy" id="placeBtn" onclick="placeOrder()">Buy BTC</button>
-  </div>
-  <nav class="bottomnav" data-nav></nav>
+
+  <div class="dk-history" id="dkHistory"><div class="empty">No orders yet</div></div>
+
+  <nav class="dk-nav" id="dkNav"></nav>
 </section>
 
+<!-- WALLET -->
 <section class="screen" id="s-wallet">
   <div class="wallet-hero">
     <div class="lab">Total Balance</div>
@@ -855,6 +1055,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
+<!-- ASSETS -->
 <section class="screen" id="s-assets">
   <div class="scroll">
     <div class="asset-hero">
@@ -903,7 +1104,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- COPY TRADING OVERLAY -->
+<!-- COPY TRADING OVERLAY (kept for existing bell icon) -->
 <div class="overlay" id="copyPanel">
   <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
   <div class="scroll" id="copyList" style="padding:0 0 20px;"></div>
@@ -1119,12 +1320,15 @@ function renderCopyTrades(){
 function dismissCopy(id){
   saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
   renderCopyTrades();
+  renderDkCopyList();
   updateNotifDot();
 }
 function updateNotifDot(){
   const dot = document.getElementById('notifDot');
   if(!dot) return;
   dot.classList.toggle('show', getCopyTrades().length > 0);
+  const c = document.getElementById('dkOpenCount');
+  if(c) c.textContent = getCopyTrades().length ? getCopyTrades().length : 0;
 }
 function openCopyConfirm(alertId){
   if(!currentUser){ openAuth('register'); return; }
@@ -1181,8 +1385,8 @@ function confirmCopyTrade(alertId){
   recordParticipant(ct.id, currentUser, amt);
   dismissCopy(ct.id);
   closeGeneric();
-  go('s-spot');
-  setSpotSymbol(ct.sym);
+  go('s-trade');
+  dkSetSymbol(ct.sym);
   renderLiveTradeCard();
   applyUserToUI();
   toast('Trade opened — watching live');
@@ -1300,9 +1504,12 @@ function refreshNewsStrip(){
   const list = liveNews.length ? liveNews : buildGeneratedNews();
   if(!list.length) return;
   const top = list[0];
-  document.getElementById('newsHeadline').textContent = top.title;
-  document.getElementById('newsSub').textContent = (top.body || '').slice(0, 100) + '…';
-  document.getElementById('newsTime').textContent = top.source || 'now';
+  const h = document.getElementById('newsHeadline');
+  const s = document.getElementById('newsSub');
+  const t = document.getElementById('newsTime');
+  if(h) h.textContent = top.title;
+  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
+  if(t) t.textContent = top.source || 'now';
 }
 function openNews(){
   const list = liveNews.length ? liveNews : buildGeneratedNews();
@@ -1403,6 +1610,8 @@ function renderAllPrices(){
   updateSpotHeader();
   refreshNewsStrip();
   renderLiveTradeCard();
+  renderDkOrderBook();
+  renderDkHeader();
   checkSlTp();
 }
 setInterval(renderAllPrices, 1500);
@@ -1425,10 +1634,7 @@ function openAuth(mode){
   document.getElementById(target).classList.add('active');
 }
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
-
-/* ===== "Got it" change #2: Step 1 back arrow goes to landing page ===== */
 function backToLanding(){ window.location.href = '/'; }
-
 function switchAuth(mode){ openAuth(mode); }
 function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
 function checkUsername(){
@@ -1525,7 +1731,6 @@ function submitKycStep2(){
   const idNum = document.getElementById('kycIdNum').value.trim();
   if(!name || !dob || !country || !idNum){ toast('Please fill all fields'); return; }
   if(!kycUploads.front || !kycUploads.back || !kycUploads.selfie){ toast('Please upload all three images'); return; }
-
   currentUser.kycStatus = 'pending';
   currentUser.kycData = { fullName:name, dob, country, idType, idNumber:idNum,
     front:kycUploads.front, back:kycUploads.back, selfie:kycUploads.selfie, submittedAt: Date.now() };
@@ -1543,6 +1748,64 @@ function skipKycStep2(){
   toast('You can complete verification later from Profile');
   closeAuth();
   go('s-home');
+}
+
+/* ===== NEW KYC PAGE (Screenshot 1) ===== */
+let kpUploads = {front:null, back:null};
+function openKycPage(){
+  if(!currentUser){ openAuth('register'); return; }
+  // Prefill from existing data
+  if(currentUser.kycData){
+    const kd = currentUser.kycData;
+    const nn = document.getElementById('kpName'); if(nn) nn.value = kd.fullName || '';
+    const dn = document.getElementById('kpDocNum'); if(dn) dn.value = kd.idNumber || '';
+    const nat = document.getElementById('kpNationality'); if(nat) nat.textContent = kd.country || 'United States';
+  } else {
+    // Prefill with username as a sensible default
+    const nn = document.getElementById('kpName'); if(nn) nn.value = currentUser.username || '';
+  }
+  document.getElementById('kycPage').classList.add('active');
+}
+function closeKycPage(){ document.getElementById('kycPage').classList.remove('active'); }
+function clearKp(id){ const el = document.getElementById(id); if(el) el.value = ''; }
+function pickNationality(){
+  const cur = document.getElementById('kpNationality').textContent;
+  const list = ['United States','United Kingdom','Canada','Australia','Germany','France','Japan','Singapore','Kenya','Nigeria','South Africa','India','China','Brazil'];
+  const next = list[(list.indexOf(cur) + 1) % list.length];
+  document.getElementById('kpNationality').textContent = next;
+}
+function handleKpFile(slot, input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 5 * 1024 * 1024){ toast('File too large (max 5MB)'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    kpUploads[slot] = e.target.result;
+    const box = document.getElementById(slot === 'front' ? 'kpUpFront' : 'kpUpBack');
+    if(box) box.classList.add('has');
+  };
+  reader.readAsDataURL(file);
+}
+function submitKycPage(){
+  if(!currentUser){ openAuth('register'); return; }
+  const name = document.getElementById('kpName').value.trim();
+  const doc = document.getElementById('kpDocNum').value.trim();
+  const nationality = document.getElementById('kpNationality').textContent;
+  if(!name || !doc){ toast('Please fill in your name and document number'); return; }
+  if(!kpUploads.front || !kpUploads.back){ toast('Please upload both front and back of your ID'); return; }
+  currentUser.kycStatus = 'pending';
+  currentUser.kycData = {
+    fullName: name, idNumber: doc, country: nationality,
+    idType: 'passport', front: kpUploads.front, back: kpUploads.back,
+    selfie: null, submittedAt: Date.now()
+  };
+  const accs = getAccounts();
+  accs[currentUser.email] = currentUser;
+  saveAccounts(accs);
+  updateKycBadge();
+  updateModeUI();
+  toast('Application submitted — pending review');
+  closeKycPage();
 }
 
 function doLogin(){
@@ -1696,10 +1959,11 @@ function drawQR(text, canvas){
   }
 }
 
+/* ===== Bottom nav ===== */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
   {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
-  {id:'s-spot', label:'Spot', icon:'M12 4v16M6 9l6-5 6 5'},
+  {id:'s-trade', label:'Trade', icon:'M12 4v16M6 9l6-5 6 5'},
   {id:'s-wallet', label:'Wallet', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
   {id:'s-assets', label:'Assets', icon:'M3 7h18v12H3zM3 11h18'}
 ];
@@ -1710,14 +1974,32 @@ function buildNav(el, active){
 document.querySelectorAll('[data-nav]').forEach(nav => buildNav(nav, nav.closest('.screen').id));
 buildNav(document.getElementById('homeNav'), 's-home');
 
+/* Dark bottom nav (home / market / trade / financial / funds) */
+const DK_NAV = [
+  {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
+  {id:'s-markets', label:'Market', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
+  {id:'s-trade', label:'Trade', icon:'M12 4v16M6 9l6-5 6 5'},
+  {id:'s-wallet', label:'Financial', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
+  {id:'s-assets', label:'Funds', icon:'M3 7h18v12H3zM3 11h18'}
+];
+function buildDkNav(active){
+  const el = document.getElementById('dkNav');
+  if(!el) return;
+  el.innerHTML = DK_NAV.map(n => `<div class="nb ${n.id===active?'on':''}" onclick="go('${n.id}')">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="${n.icon}" stroke="${n.id===active?'#2f6bff':'#848e9c'}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span>${n.label}</span></div>`).join('');
+}
+buildDkNav('s-trade');
+
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id===id));
   document.querySelectorAll('[data-nav]').forEach(nav => { const s = nav.closest('.screen'); if(s) buildNav(nav, s.id); });
   buildNav(document.getElementById('homeNav'), id);
+  buildDkNav(id);
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-wallet') renderWalletScreen();
-  if(id === 's-spot'){ renderLiveTradeCard(); renderTradingViewChart(); }
+  if(id === 's-trade'){ renderDkOrderBook(); renderDkHeader(); renderDkCopyList(); }
 }
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
 function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
@@ -1758,7 +2040,7 @@ function renderHomePulse(){
 function renderHomeList(){
   document.getElementById('homeList').innerHTML = ['BTC','ETH','SOL','XRP','BNB'].map(s => {
     const m = findMarket(s);
-    return `<div class="trow" onclick="go('s-spot');setSpotSymbol('${s}')">
+    return `<div class="trow" onclick="go('s-trade');dkSetSymbol('${s}')">
       <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(s,22)}<span>${s}<small>${m.name}</small></span></div>
       <div class="px" style="grid-column:2/4">${fmt(m.price)}</div>
       <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
@@ -1786,8 +2068,8 @@ function renderMarketsForClass(){
   `).join('');
 }
 function openInstrumentFromMarket(sym){
-  go('s-spot');
-  setSpotSymbol(sym);
+  go('s-trade');
+  dkSetSymbol(sym);
 }
 const acb = document.getElementById('assetClassBar');
 if(acb) acb.addEventListener('click', e => {
@@ -1798,258 +2080,193 @@ if(acb) acb.addEventListener('click', e => {
   renderMarketsForClass();
 });
 
-let tvWidget = null;
-let tvRetryCount = 0;
-function renderTradingViewChart(){
-  const slot = document.getElementById('tv-mini-chart');
-  if(!slot) return;
-  const m = findMarket(spotSymbol);
-  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
-  slot.innerHTML = '';
-  if(typeof TradingView === 'undefined' || !TradingView.widget){
-    tvRetryCount++;
-    if(tvRetryCount < 5) setTimeout(renderTradingViewChart, 600);
-    drawFallbackChart(slot, m);
-    return;
-  }
-  try {
-    tvWidget = new TradingView.widget({
-      container_id: 'tv-mini-chart', autosize: true, symbol: tvSym,
-      interval: '15', timezone: 'Etc/UTC', theme: 'light', style: '1', locale: 'en',
-      toolbar_bg: '#ffffff', enable_publishing: false, allow_symbol_change: false,
-      hide_side_toolbar: true, hide_top_toolbar: true, save_image: false, withdateranges: false
-    });
-    setTimeout(() => {
-      const iframe = slot.querySelector('iframe');
-      if(!iframe || iframe.offsetHeight < 40) drawFallbackChart(slot, m);
-    }, 3000);
-  } catch(e){ drawFallbackChart(slot, m); }
-}
-function drawFallbackChart(slot, marketInfo){
-  const oldCanvas = slot.querySelector('canvas.fallback');
-  if(oldCanvas) oldCanvas.remove();
-  const c = document.createElement('canvas');
-  c.className = 'fallback';
-  slot.appendChild(c);
-  setTimeout(() => {
-    const w = slot.clientWidth || 360;
-    const h = slot.clientHeight || 240;
-    c.width = w; c.height = h;
-    const ctx = c.getContext('2d');
-    const mid = (marketInfo && marketInfo.price) || 77845;
-    const isUp = ((marketInfo && marketInfo.chg) || 0) >= 0;
-    const lineColor = isUp ? '#0ECB81' : '#F6465D';
-    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = 'rgba(234,236,239,0.9)';
-    ctx.lineWidth = 1;
-    for(let i = 1; i < 4; i++){
-      const y = (h / 4) * i;
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
-    let p = mid * 0.99;
-    const pts = [];
-    for(let i = 0; i < 60; i++){ p += (Math.random()-0.48)*mid*0.003; pts.push(p); }
-    pts[pts.length-1] = mid;
-    const min = Math.min(...pts), max = Math.max(...pts), range = max-min || 1;
-    ctx.strokeStyle = lineColor; ctx.lineWidth = 2;
-    ctx.beginPath();
-    pts.forEach((v, i) => {
-      const x = (i/(pts.length-1)) * w;
-      const y = 8 + (h-16) * (1 - (v-min)/range);
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    });
-    ctx.stroke();
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, isUp ? 'rgba(14,203,129,0.25)' : 'rgba(246,70,93,0.25)');
-    grad.addColorStop(1, isUp ? 'rgba(14,203,129,0)' : 'rgba(246,70,93,0)');
-    ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-    ctx.fillStyle = grad; ctx.fill();
-    ctx.fillStyle = '#fff'; ctx.fillRect(6, 6, 96, 20);
-    ctx.strokeStyle = 'rgba(234,236,239,1)'; ctx.strokeRect(6.5, 6.5, 95, 19);
-    ctx.fillStyle = lineColor;
-    ctx.font = 'bold 12px -apple-system,sans-serif';
-    ctx.fillText('$' + fmt(mid), 12, 20);
-  }, 30);
-}
+/* ================= DARK TRADE logic ================= */
+let dkSymbol = 'BTC';
+let dkSide = 'buy';
+let dkOrderType = 'limit';
+let dkTab = 'spot'; // perpetual | delivery | spot | copy
 
-let spotSymbol = 'BTC';
-function setSpotSymbol(sym){
-  spotSymbol = sym;
+function dkSetSymbol(sym){
+  dkSymbol = sym;
   const m = findMarket(sym); if(!m) return;
-  document.getElementById('spotSym').textContent = sym + '/USDT';
-  document.getElementById('fLimitPrice').value = fmt(m.price);
-  document.getElementById('fAmtSuf').textContent = sym;
-  document.getElementById('placeBtn').textContent = (currentSide === 'buy' ? 'Buy ' : 'Sell ') + sym;
-  updateSpotHeader();
-  tvRetryCount = 0;
-  renderTradingViewChart();
-  renderOrderBook();
+  document.getElementById('dkPair').textContent = sym + '/USDT';
+  const priceInput = document.getElementById('dkPrice');
+  if(priceInput) priceInput.value = fmt(m.price);
+  renderDkHeader();
+  renderDkOrderBook();
 }
-function updateSpotHeader(){
-  const m = findMarket(spotSymbol); if(!m) return;
-  const el = document.getElementById('spotChg');
-  el.className = 'chg ' + chgCls(m.chg);
-  el.textContent = chgSign(m.chg);
+function renderDkHeader(){
+  const m = findMarket(dkSymbol); if(!m) return;
+  const chg = document.getElementById('dkChg');
+  if(chg){ chg.textContent = chgSign(m.chg); chg.style.color = m.chg >= 0 ? 'var(--dk-green)' : 'var(--dk-red)'; }
+  const mid = document.getElementById('dkMid');
+  const midSub = document.getElementById('dkMidSub');
+  if(mid) mid.textContent = fmt(m.price);
+  if(midSub) midSub.textContent = '≈' + fmt(m.price);
+  const tag = document.getElementById('dkTag');
+  if(tag){
+    tag.textContent = dkTab === 'perpetual' ? 'Perpetual' : dkTab === 'delivery' ? 'Delivery' : 'Spot';
+  }
+  // Update button label
+  const btn = document.getElementById('dkBtn');
+  if(btn){
+    if(dkTab === 'perpetual' || dkTab === 'delivery'){
+      btn.textContent = dkSide === 'buy' ? 'Buy/Long' : 'Sell/Short';
+      btn.className = 'dk-action ' + (dkSide === 'buy' ? 'buy' : 'sell');
+    } else {
+      btn.textContent = dkSide === 'buy' ? 'Buy' : 'Sell';
+      btn.className = 'dk-action ' + (dkSide === 'buy' ? 'buy' : 'sell');
+    }
+  }
+  const levBar = document.getElementById('dkLevBar');
+  if(levBar) levBar.style.display = (dkTab === 'perpetual' || dkTab === 'delivery') ? 'flex' : 'none';
 }
-let currentSide = 'buy';
-function setSide(side){
-  currentSide = side;
-  document.getElementById('bsBuy').classList.toggle('on', side === 'buy');
-  document.getElementById('bsSell').classList.toggle('on', side === 'sell');
-  const btn = document.getElementById('placeBtn');
-  btn.className = 'action-btn ' + (side === 'buy' ? 'buy' : 'sell');
-  btn.textContent = (side === 'buy' ? 'Buy ' : 'Sell ') + spotSymbol;
-}
-const ot = document.getElementById('otypeTabs');
-if(ot) ot.addEventListener('click', e => {
-  const t = e.target.closest('.ot'); if(!t) return;
-  document.querySelectorAll('.ot').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-});
-
-function openInstrumentPicker(){
-  const groups = [
-    {key:'crypto', label:'Crypto'},
-    {key:'forex', label:'Forex'},
-    {key:'commodities', label:'Commodities'},
-    {key:'stocks', label:'Stocks'}
-  ];
-  document.getElementById('genericTitle').textContent = 'Choose Instrument';
-  document.getElementById('genericBody').innerHTML = groups.map(g => `
-    <div class="ins-group">
-      <div class="ins-group-title">${g.label}</div>
-      ${MARKETS[g.key].map(m => `
-        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
-          ${symLogo(m.sym, 30)}
-          <div style="flex:1;min-width:0;">
-            <div class="sym">${m.sym}/USDT</div>
-            <div class="nm">${m.name}</div>
-          </div>
-          <div>
-            <div class="px">${fmt(m.price)}</div>
-            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-  document.getElementById('genericModal').classList.add('on');
-}
-function pickInstrument(sym){ closeGeneric(); setSpotSymbol(sym); toast('Switched to ' + sym); }
-
-function renderOrderBook(){
-  const m = findMarket(spotSymbol) || {price:77845};
+function renderDkOrderBook(){
+  const m = findMarket(dkSymbol) || {price:76650};
   const mid = m.price;
   const asks = [], bids = [];
-  for(let i = 0; i < 5; i++){
+  for(let i = 0; i < 8; i++){
     asks.push({p: mid * (1 + (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
     bids.push({p: mid * (1 - (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
   }
-  document.getElementById('asks').innerHTML = asks.map(r => `<div class="ob-row"><span class="down">${fmt(r.p)}</span><span>${r.q}</span></div>`).join('');
-  document.getElementById('bids').innerHTML = bids.map(r => `<div class="ob-row"><span class="up">${fmt(r.p)}</span><span>${r.q}</span></div>`).join('');
-  document.getElementById('obMid').innerHTML = `${fmt(mid)}<small>≈ $${fmt(mid)}</small>`;
+  const a = document.getElementById('dkAsks');
+  const b = document.getElementById('dkBids');
+  if(a) a.innerHTML = asks.map(r => `<div class="row a"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
+  if(b) b.innerHTML = bids.map(r => `<div class="row b"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
 }
-setInterval(renderOrderBook, 2500);
-
-function placeOrder(){
-  if(!currentUser){ openAuth('login'); return; }
-  const amt = document.getElementById('fAmt').value.trim();
-  const px = document.getElementById('fLimitPrice').value.trim();
-  const sl = document.getElementById('fSL').value.trim();
-  const tp = document.getElementById('fTP').value.trim();
-  if(!amt || parseFloat(amt) <= 0){ toast('Enter a quantity'); return; }
-  const detail = `${currentSide.toUpperCase()} ${amt} ${spotSymbol} @ ${px || 'market'}${sl ? ' · SL ' + sl : ''}${tp ? ' · TP ' + tp : ''}`;
+function dkSetSide(side){
+  dkSide = side;
+  document.querySelectorAll('#dkBuySell .bs').forEach(el => {
+    el.classList.remove('on-buy','on-sell');
+    if(el.dataset.side === side) el.classList.add(side === 'buy' ? 'on-buy' : 'on-sell');
+  });
+  renderDkHeader();
+}
+function dkSetOT(ot){
+  dkOrderType = ot;
+  document.getElementById('dkOTLimit').classList.toggle('on', ot === 'limit');
+  document.getElementById('dkOTMarket').classList.toggle('on', ot === 'market');
+  const priceRow = document.getElementById('dkPriceRow');
+  if(priceRow) priceRow.style.display = ot === 'market' ? 'none' : 'flex';
+}
+function dkStep(id, dir){
+  const el = document.getElementById(id); if(!el) return;
+  const cur = parseFloat(el.value) || 0;
+  const step = id === 'dkQty' ? 0.0001 : 1;
+  el.value = (cur + dir*step).toFixed(id === 'dkQty' ? 6 : 2);
+  dkRecalc();
+}
+function dkPct(p){
+  const bal = activeBalance('spot') || 0;
+  const amtEl = document.getElementById('dkAmt');
+  const qtyEl = document.getElementById('dkQty');
+  const m = findMarket(dkSymbol);
+  if(amtEl) amtEl.value = (bal * p / 100).toFixed(2);
+  if(qtyEl && m) qtyEl.value = ((bal * p / 100) / m.price).toFixed(6);
+  dkRecalc();
+}
+function dkRecalc(){
+  const qty = parseFloat(document.getElementById('dkQty').value) || 0;
+  const m = findMarket(dkSymbol) || {price:0};
+  const total = qty * m.price;
+  const buyEl = document.getElementById('dkInfoBuy');
+  if(buyEl) buyEl.textContent = total.toFixed(2) + ' USDT';
+}
+document.addEventListener('input', e => {
+  if(e.target && (e.target.id === 'dkQty' || e.target.id === 'dkAmt')) dkRecalc();
+});
+function dkPlace(){
+  if(!currentUser){ openAuth('register'); return; }
+  const qty = parseFloat(document.getElementById('dkQty').value) || 0;
+  const price = parseFloat(document.getElementById('dkPrice').value) || 0;
+  if(qty <= 0){ toast('Enter a valid quantity'); return; }
+  const m = findMarket(dkSymbol) || {price};
+  const detail = `${dkSide.toUpperCase()} ${qty} ${dkSymbol} @ ${dkOrderType === 'market' ? 'market' : price || m.price} (${dkTab})`;
   recordTx('trade', detail);
-  document.getElementById('fAmt').value = '';
-  document.getElementById('fSL').value = '';
-  document.getElementById('fTP').value = '';
+  document.getElementById('dkQty').value = '';
+  document.getElementById('dkAmt').value = '';
+  dkRecalc();
   toast('Order placed');
 }
+// Tabs
+document.getElementById('dkTabs').addEventListener('click', e => {
+  const t = e.target.closest('.dk-tab'); if(!t) return;
+  document.querySelectorAll('.dk-tab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  dkTab = t.dataset.dk;
+  const market = document.getElementById('dkMarket');
+  const copy = document.getElementById('dkCopy');
+  const subtabs = document.getElementById('dkSubtabs');
+  const hist = document.getElementById('dkHistory');
+  if(dkTab === 'copy'){
+    market.style.display = 'none';
+    copy.style.display = 'flex';
+    subtabs.style.display = 'none';
+    hist.style.display = 'none';
+    renderDkCopyList();
+  } else {
+    market.style.display = 'block';
+    copy.style.display = 'none';
+    subtabs.style.display = 'flex';
+    hist.style.display = 'block';
+    renderDkHeader();
+  }
+});
+// Subtabs (Open orders / Order history / Assets)
+document.getElementById('dkSubtabs').addEventListener('click', e => {
+  const st = e.target.closest('.st'); if(!st) return;
+  document.querySelectorAll('.dk-subtabs .st').forEach(x => x.classList.remove('on'));
+  st.classList.add('on');
+  const kind = st.dataset.st;
+  const hist = document.getElementById('dkHistory');
+  if(kind === 'open'){ hist.innerHTML = '<div class="empty">No orders yet</div>'; }
+  else if(kind === 'history'){ hist.innerHTML = '<div class="empty">No history yet</div>'; }
+  else if(kind === 'assets'){
+    const bal = activeBalance('spot') || 0;
+    hist.innerHTML = `<div style="color:var(--dk-text);text-align:left;font-size:14px;line-height:2;">
+      <div style="color:var(--dk-text2);font-size:12px;">Spot balance</div>
+      <div style="font-size:22px;font-weight:800;">${bal.toFixed(2)} USDT</div>
+    </div>`;
+  }
+});
 
-function openTransfer(){
-  if(!currentUser){ openAuth('login'); return; }
-  const funding = activeBalance('funding');
-  const spot = activeBalance('spot');
-  const tag = currentMode === 'demo' ? ' (Demo)' : '';
-  document.getElementById('genericTitle').textContent = 'Transfer' + tag;
-  document.getElementById('genericBody').innerHTML = `
-    <div class="tf-fromto">
-      <div class="box"><div class="k">From</div>
-        <select id="tfFrom" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
-          <option value="funding">Funding (${funding.toFixed(2)} USDT)</option>
-          <option value="spot">Spot (${spot.toFixed(2)} USDT)</option>
-        </select>
+function renderDkCopyList(){
+  const el = document.getElementById('dkCopyList');
+  if(!el) return;
+  const list = getCopyTrades();
+  if(!list.length){
+    el.innerHTML = '<div class="dk-copy-empty">No copy-trade alerts yet</div>';
+    return;
+  }
+  el.innerHTML = '<div class="dk-copy-head"><h3>Copy Trading signals</h3></div>' + list.map(ct => {
+    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
+    const trader = ct.traderName || 'Brian';
+    const initial = trader[0].toUpperCase();
+    return `<div class="dk-ct">
+      <div class="top">
+        <div class="av">${initial}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="trader">${trader} <span class="v">VERIFIED</span></div>
+          <div class="sub">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
+        </div>
       </div>
-      <div class="arrow">⇄</div>
-      <div class="box"><div class="k">To</div>
-        <select id="tfTo" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
-          <option value="spot">Spot</option>
-          <option value="funding">Funding</option>
-        </select>
+      <div class="msg">${ct.message || ''}</div>
+      <div class="acts">
+        <button onclick="dismissCopy('${ct.id}')">Dismiss</button>
+        <button class="pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
       </div>
-    </div>
-    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Amount</label>
-    <div style="display:flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
-      <input id="tfAmt" type="text" inputmode="decimal" placeholder="0.00" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;">
-      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
-    </div>
-    <button class="auth-submit" style="margin-top:16px;" onclick="doTransfer()">Confirm Transfer</button>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function doTransfer(){
-  const from = document.getElementById('tfFrom').value;
-  const to = document.getElementById('tfTo').value;
-  const amt = parseFloat(document.getElementById('tfAmt').value || '0');
-  if(from === to){ toast('Choose different accounts'); return; }
-  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
-  if(activeBalance(from) < amt){ toast('Insufficient balance'); return; }
-  setActiveBalance(from, activeBalance(from) - amt);
-  setActiveBalance(to, activeBalance(to) + amt);
-  currentUser = getAccounts()[currentUser.email];
-  recordTx('transfer', `${amt.toFixed(2)} USDT from ${from} → ${to}`);
-  closeGeneric();
-  renderAccounts();
-  applyUserToUI();
-  toast('Transfer complete');
-}
-
-function openDeposit(mode){
-  if(!currentUser){ openAuth('login'); return; }
-  const addr = getMyAddress();
-  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="background:#F5F6F8;border-radius:10px;padding:14px;margin-bottom:14px;">
-      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Your ${mode === 'withdraw' ? 'withdrawal' : 'deposit'} address</div>
-      <div style="font-family:'Courier New',monospace;font-size:12px;color:var(--green-dk);word-break:break-all;">${addr || 'Admin has not configured XPUB'}</div>
-    </div>
-    ${mode === 'deposit' ? `
-      <div style="text-align:center;"><canvas id="dmQr" style="width:160px;height:160px;"></canvas></div>
-      <div style="background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#7A5C00;margin-top:12px;line-height:1.6;">
-        Send only ETH or ERC-20 tokens (USDT, USDC). Deposits credited after confirmation.
-      </div>
-    ` : `
-      <div style="margin-top:12px;">
-        <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:6px;">Destination address</label>
-        <input id="wdAddr" type="text" placeholder="0x..." style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
-        <label style="font-size:12px;color:var(--text2);display:block;margin:12px 0 6px;">Amount</label>
-        <input id="wdAmt" type="text" placeholder="0.00" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
-        <button class="auth-submit" style="margin-top:14px;" onclick="submitWithdraw()">Request Withdrawal</button>
-      </div>
-    `}
-  `;
-  document.getElementById('genericModal').classList.add('on');
-  if(mode === 'deposit' && addr) setTimeout(() => drawQR(addr, document.getElementById('dmQr')), 50);
-}
-function submitWithdraw(){
-  const addr = document.getElementById('wdAddr').value.trim();
-  const amt = document.getElementById('wdAmt').value.trim();
-  if(!addr || !amt){ toast('Fill all fields'); return; }
-  recordTx('withdraw', `${amt} to ${addr.slice(0,10)}…`);
-  toast('Withdrawal requested');
-  closeGeneric();
+    </div>`;
+  }).join('');
 }
 
+// Profile menu button (Identity Verification → new KYC page)
+function openKycFromProfile(){
+  if(!currentUser){ openAuth('register'); return; }
+  closeProfile();
+  openKycPage();
+}
+
+/* ================== EXISTING REST ================== */
 function renderAccounts(){
   const funding = activeBalance('funding').toFixed(2);
   const spot = activeBalance('spot').toFixed(2);
@@ -2087,11 +2304,6 @@ function renderProfileMenu(){
       <div class="arrow">›</div>
     </div>
   `).join('');
-}
-function openKycFromProfile(){
-  if(!currentUser){ openAuth('register'); return; }
-  kycUploads = {front:null, back:null, selfie:null};
-  openAuth('kyc');
 }
 
 function resetDemo(){
@@ -2169,6 +2381,127 @@ if (installClose) installClose.addEventListener('click', () => {
 });
 window.addEventListener('appinstalled', () => { installBanner.style.display = 'none'; });
 
+/* ===== instrument picker still used by dark Trade screen ===== */
+function openInstrumentPicker(){
+  const groups = [
+    {key:'crypto', label:'Crypto'},
+    {key:'forex', label:'Forex'},
+    {key:'commodities', label:'Commodities'},
+    {key:'stocks', label:'Stocks'}
+  ];
+  document.getElementById('genericTitle').textContent = 'Choose Instrument';
+  document.getElementById('genericBody').innerHTML = groups.map(g => `
+    <div class="ins-group">
+      <div class="ins-group-title">${g.label}</div>
+      ${MARKETS[g.key].map(m => `
+        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
+          ${symLogo(m.sym, 30)}
+          <div style="flex:1;min-width:0;">
+            <div class="sym">${m.sym}/USDT</div>
+            <div class="nm">${m.name}</div>
+          </div>
+          <div>
+            <div class="px">${fmt(m.price)}</div>
+            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  document.getElementById('genericModal').classList.add('on');
+}
+function pickInstrument(sym){ closeGeneric(); dkSetSymbol(sym); toast('Switched to ' + sym); }
+
+/* ===== Placeholder stubs to keep old handlers alive (screen removed) ===== */
+function updateSpotHeader(){ /* dark trade screen uses renderDkHeader instead */ }
+function renderTradingViewChart(){ /* chart is not shown on dark trade screen */ }
+function setSpotSymbol(sym){ dkSetSymbol(sym); }
+
+/* ===== openDeposit / openTransfer / submitWithdraw ===== */
+function openDeposit(mode){
+  if(!currentUser){ openAuth('register'); return; }
+  const addr = getMyAddress();
+  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="background:#F5F6F8;border-radius:10px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Your ${mode === 'withdraw' ? 'withdrawal' : 'deposit'} address</div>
+      <div style="font-family:'Courier New',monospace;font-size:12px;color:var(--green-dk);word-break:break-all;">${addr || 'Admin has not configured XPUB'}</div>
+    </div>
+    ${mode === 'deposit' ? `
+      <div style="text-align:center;"><canvas id="dmQr" style="width:160px;height:160px;"></canvas></div>
+      <div style="background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;padding:10px 12px;font-size:11.5px;color:#7A5C00;margin-top:12px;line-height:1.6;">
+        Send only ETH or ERC-20 tokens (USDT, USDC). Deposits credited after confirmation.
+      </div>
+    ` : `
+      <div style="margin-top:12px;">
+        <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:6px;">Destination address</label>
+        <input id="wdAddr" type="text" placeholder="0x..." style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
+        <label style="font-size:12px;color:var(--text2);display:block;margin:12px 0 6px;">Amount</label>
+        <input id="wdAmt" type="text" placeholder="0.00" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;">
+        <button class="auth-submit" style="margin-top:14px;" onclick="submitWithdraw()">Request Withdrawal</button>
+      </div>
+    `}
+  `;
+  document.getElementById('genericModal').classList.add('on');
+  if(mode === 'deposit' && addr) setTimeout(() => drawQR(addr, document.getElementById('dmQr')), 50);
+}
+function submitWithdraw(){
+  const addr = document.getElementById('wdAddr').value.trim();
+  const amt = document.getElementById('wdAmt').value.trim();
+  if(!addr || !amt){ toast('Fill all fields'); return; }
+  recordTx('withdraw', `${amt} to ${addr.slice(0,10)}…`);
+  toast('Withdrawal requested');
+  closeGeneric();
+}
+function openTransfer(){
+  if(!currentUser){ openAuth('register'); return; }
+  const funding = activeBalance('funding');
+  const spot = activeBalance('spot');
+  const tag = currentMode === 'demo' ? ' (Demo)' : '';
+  document.getElementById('genericTitle').textContent = 'Transfer' + tag;
+  document.getElementById('genericBody').innerHTML = `
+    <div class="tf-fromto">
+      <div class="box"><div class="k">From</div>
+        <select id="tfFrom" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
+          <option value="funding">Funding (${funding.toFixed(2)} USDT)</option>
+          <option value="spot">Spot (${spot.toFixed(2)} USDT)</option>
+        </select>
+      </div>
+      <div class="arrow">⇄</div>
+      <div class="box"><div class="k">To</div>
+        <select id="tfTo" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;">
+          <option value="spot">Spot</option>
+          <option value="funding">Funding</option>
+        </select>
+      </div>
+    </div>
+    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Amount</label>
+    <div style="display:flex;align-items:center;background:#fff;border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
+      <input id="tfAmt" type="text" inputmode="decimal" placeholder="0.00" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;">
+      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
+    </div>
+    <button class="auth-submit" style="margin-top:16px;" onclick="doTransfer()">Confirm Transfer</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function doTransfer(){
+  const from = document.getElementById('tfFrom').value;
+  const to = document.getElementById('tfTo').value;
+  const amt = parseFloat(document.getElementById('tfAmt').value || '0');
+  if(from === to){ toast('Choose different accounts'); return; }
+  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
+  if(activeBalance(from) < amt){ toast('Insufficient balance'); return; }
+  setActiveBalance(from, activeBalance(from) - amt);
+  setActiveBalance(to, activeBalance(to) + amt);
+  currentUser = getAccounts()[currentUser.email];
+  recordTx('transfer', `${amt.toFixed(2)} USDT from ${from} → ${to}`);
+  closeGeneric();
+  renderAccounts();
+  applyUserToUI();
+  toast('Transfer complete');
+}
+
+/* ===== boot ===== */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -2202,12 +2535,13 @@ window.addEventListener('appinstalled', () => { installBanner.style.display = 'n
   updateModeUI();
   refreshNewsStrip();
   updateNotifDot();
-  setSpotSymbol('BTC');
+  dkSetSymbol('BTC');
+  renderDkOrderBook();
+  renderDkHeader();
   renderLiveTradeCard();
 
   startBinanceStream();
   startSimulation();
-  renderOrderBook();
 
   fetchLiveNews().then(() => refreshNewsStrip());
   setInterval(async () => { await fetchLiveNews(); refreshNewsStrip(); }, 60000);
@@ -2215,9 +2549,9 @@ window.addEventListener('appinstalled', () => { installBanner.style.display = 'n
   setInterval(() => {
     updateNotifDot();
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
+    if(document.getElementById('s-trade').classList.contains('active') && dkTab === 'copy') renderDkCopyList();
   }, 3000);
 
-  /* ===== "Got it" change #1: on boot, if no session → always show registration ===== */
   if(!currentUser){
     openAuth('register');
   }
