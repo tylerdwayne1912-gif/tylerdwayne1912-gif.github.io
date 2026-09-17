@@ -55,7 +55,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
 .scroll::-webkit-scrollbar{width:0;}
 
-/* ===== auth (unchanged) ===== */
+/* auth */
 .step-progress{display:flex;align-items:center;justify-content:center;
   padding:22px 20px 14px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0;}
 .step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative;width:90px;}
@@ -126,7 +126,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
 .kyc-up.has .t{color:var(--green-dk);}
 
-/* ===== new light KYC page ===== */
+/* new light KYC page */
 .kyc-page{position:absolute;inset:0;background:#fff;z-index:2100;display:none;flex-direction:column;}
 .kyc-page.active{display:flex;}
 .kyc-page .kp-head{display:flex;align-items:center;padding:16px 18px 10px;flex-shrink:0;background:#fff;}
@@ -164,7 +164,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kp-apply:hover{background:#2f5fe0;}
 .kp-footnote{font-size:12.5px;color:#B7BDC6;text-align:center;padding:14px 0 4px;line-height:1.5;}
 
-/* ===== top bar / home / markets / wallet / assets (unchanged) ===== */
+/* rest of light app */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);}
 .avatar{width:34px;height:34px;border-radius:50%;background:#fff;flex-shrink:0;
@@ -354,7 +354,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;}
 .generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
 .generic-body{padding:16px 20px 20px;}
-.ct-card{background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin:0 14px 12px;}
+.ct-card{background:#fff;border-radius:12px;border:1px solid var(--line);padding:14px;margin:0 0 12px;}
 .ct-card .ct-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
 .ct-card .ct-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
   display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0;}
@@ -376,7 +376,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 
-/* ============ NEW: light Trade screen (matches screenshot) ============ */
+/* ===== Trade screen (light, green/white) ===== */
 .tr-tabs{display:flex;gap:0;padding:6px 12px 0;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
 .tr-tab{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;color:var(--text2);
   cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap;}
@@ -395,10 +395,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-head .switch{width:34px;height:34px;border-radius:50%;background:#F5F6F8;display:flex;
   align-items:center;justify-content:center;cursor:pointer;}
 
-/* body split */
 .tr-body{display:flex;gap:8px;padding:10px 12px 0;align-items:flex-start;flex-shrink:0;}
-
-/* order book (left) */
 .tr-ob{width:33%;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
 .tr-ob .hd{display:grid;grid-template-columns:1fr 1fr;gap:2px;color:var(--text3);font-size:10px;padding:0 2px 6px;}
 .tr-ob .hd .r{text-align:right;}
@@ -411,14 +408,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-ob .mid .mp{font-size:20px;font-weight:800;letter-spacing:-.5px;}
 .tr-ob .mid .mq{font-size:10.5px;color:var(--text3);margin-top:1px;}
 
-/* form (right) */
 .tr-form{flex:1;min-width:0;}
 .tr-buysell{display:flex;background:#F5F6F8;border-radius:8px;padding:4px;margin-bottom:10px;}
 .tr-buysell .bs{flex:1;text-align:center;padding:9px;font-size:14.5px;font-weight:700;
   border-radius:6px;cursor:pointer;color:var(--text2);}
 .tr-buysell .bs.on-buy{background:var(--green);color:#fff;}
 .tr-buysell .bs.on-sell{background:var(--red);color:#fff;}
-
 .tr-otype{display:flex;align-items:center;gap:8px;background:#F5F6F8;border-radius:8px;
   padding:10px 12px;font-size:13.5px;color:var(--text);margin-bottom:9px;cursor:pointer;}
 .tr-otype .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--text3);
@@ -426,7 +421,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-otype .dot i{width:6px;height:6px;border-radius:50%;background:transparent;}
 .tr-otype.on .dot{border-color:var(--green);}
 .tr-otype.on .dot i{background:var(--green);}
-
 .tr-input{display:flex;align-items:center;background:#F5F6F8;border-radius:8px;
   padding:11px 12px;font-size:13.5px;margin-bottom:9px;gap:6px;}
 .tr-input input{flex:1;border:none;outline:none;background:transparent;color:var(--text);
@@ -436,28 +430,22 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-input .step{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
   justify-content:center;color:var(--text);font-size:16px;font-weight:600;cursor:pointer;flex-shrink:0;}
 .tr-input .step:active{background:#e9ecef;}
-
 .tr-pcts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
 .tr-pcts .pc{text-align:center;padding:8px 4px;background:#F5F6F8;border-radius:6px;
   font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;}
 .tr-pcts .pc:active{background:#e9ecef;}
-
 .tr-tpsl{display:flex;align-items:center;gap:9px;padding:2px 0 10px;font-size:12.5px;color:var(--text2);}
 .tr-tpsl input{width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
-
 .tr-info{display:flex;flex-direction:column;gap:7px;padding:0 0 12px;font-size:12px;}
 .tr-info .r{display:flex;align-items:center;justify-content:space-between;color:var(--text2);}
 .tr-info .r .v{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;}
 .tr-info .r .plus{width:18px;height:18px;border-radius:50%;background:var(--green);
   display:inline-flex;align-items:center;justify-content:center;color:#fff;
   font-size:12px;font-weight:700;margin-left:5px;cursor:pointer;line-height:1;}
-
 .tr-action{width:100%;height:48px;border-radius:8px;border:none;font-size:16px;font-weight:700;
   cursor:pointer;font-family:inherit;margin-bottom:8px;color:#fff;}
 .tr-action.buy{background:var(--green);}
 .tr-action.sell{background:var(--red);}
-
-/* toolbar under form */
 .tr-toolbar{display:flex;align-items:center;gap:8px;padding:6px 12px 10px;background:var(--bg);flex-shrink:0;}
 .tr-toolbar .lev{display:flex;align-items:center;gap:6px;background:#F5F6F8;
   padding:8px 10px;border-radius:6px;font-size:12.5px;color:var(--text);cursor:pointer;}
@@ -467,18 +455,21 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .tr-toolbar .ladder i:nth-child(1){background:var(--red);}
 .tr-toolbar .ladder i:nth-child(2){background:var(--green);}
 .tr-toolbar .ladder i:nth-child(3){background:var(--text2);}
-
-/* sub tabs: Open orders / Order history / Assets */
 .tr-subtabs{display:flex;gap:20px;padding:10px 16px 0;background:#fff;flex-shrink:0;
   border-top:1px solid var(--line);}
 .tr-subtabs .st{font-size:13.5px;color:var(--text2);padding:0 0 10px;cursor:pointer;
   border-bottom:2px solid transparent;font-weight:600;white-space:nowrap;}
 .tr-subtabs .st.on{color:var(--green-dk);border-bottom-color:var(--green);}
 .tr-subtabs .ico{margin-left:auto;color:var(--text2);font-size:14px;padding-bottom:10px;cursor:pointer;}
+.tr-history{background:var(--bg);padding:14px;}
+.tr-history .empty{color:var(--text3);font-size:13px;padding:40px 0;text-align:center;}
 
-.tr-history{flex:1;overflow-y:auto;background:var(--bg);padding:18px;text-align:center;}
-.tr-history::-webkit-scrollbar{width:0;}
-.tr-history .empty{color:var(--text3);font-size:13px;padding:40px 0;}
+/* copy trading inside trade */
+.tr-copy-wrap{padding:14px;}
+.tr-copy-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.tr-copy-head h3{margin:0;font-size:15px;font-weight:700;color:var(--text);}
+.tr-copy-head .more{font-size:12px;color:var(--text2);cursor:pointer;}
+.tr-copy-empty{color:var(--text3);font-size:13px;text-align:center;padding:50px 20px;}
 
 /* chart overlay */
 .chart-ov{position:absolute;inset:0;background:#fff;z-index:2200;display:none;flex-direction:column;}
@@ -804,19 +795,19 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- TRADE (light, green/white — new) -->
+<!-- TRADE (light, green/white) -->
 <section class="screen" id="s-trade">
-  <!-- Top tabs: Perpetual / Delivery contract / Spot Trading -->
+  <!-- Tabs -->
   <div class="tr-tabs" id="trTabs">
     <div class="tr-tab" data-tr="perpetual">Perpetual</div>
-    <div class="tr-tab" data-tr="delivery">Delivery contract</div>
+    <div class="tr-tab" data-tr="copy">Copy Trading</div>
     <div class="tr-tab on" data-tr="spot">Spot Trading</div>
   </div>
 
   <!-- Symbol row with candle icon -->
   <div class="tr-head">
     <span class="pair" id="trPair">BTC/USDT</span>
-    <span class="tag" id="trTag">Perpetual</span>
+    <span class="tag" id="trTag">Spot</span>
     <span class="chg" id="trChg">+0.00%</span>
     <div class="right">
       <div class="candle" onclick="openChart()" title="Chart">
@@ -834,75 +825,83 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     </div>
   </div>
 
-  <!-- body: order book + form -->
-  <div class="tr-body">
-    <div class="tr-ob">
-      <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
-      <div id="trAsks"></div>
-      <div class="mid">
-        <div class="mp" id="trMid">—</div>
-        <div class="mq" id="trMidSub">≈ —</div>
+  <!-- Scrollable body (so bottom nav is always visible) -->
+  <div class="scroll" id="trScroll">
+    <!-- Order form view (spot/perpetual) -->
+    <div id="trForm">
+      <div class="tr-body">
+        <div class="tr-ob">
+          <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
+          <div id="trAsks"></div>
+          <div class="mid">
+            <div class="mp" id="trMid">—</div>
+            <div class="mq" id="trMidSub">≈ —</div>
+          </div>
+          <div id="trBids"></div>
+        </div>
+        <div class="tr-form">
+          <div class="tr-buysell" id="trBuySell">
+            <div class="bs on-buy" data-side="buy" onclick="trSetSide('buy')">Buy</div>
+            <div class="bs" data-side="sell" onclick="trSetSide('sell')">Sell</div>
+          </div>
+          <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')">
+            <span class="dot"><i></i></span> Limit
+          </div>
+          <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')">
+            <span class="dot"><i></i></span> Market
+          </div>
+          <div class="tr-input" id="trPriceRow">
+            <input id="trPrice" placeholder="Price(USDT)" inputmode="decimal">
+            <span class="suf">USDT</span>
+          </div>
+          <div class="tr-input">
+            <div class="step" onclick="trStep('trQty',-1)">−</div>
+            <input id="trQty" placeholder="Number(BTC)" inputmode="decimal">
+            <div class="step" onclick="trStep('trQty',1)">+</div>
+          </div>
+          <div class="tr-pcts">
+            <div class="pc" onclick="trPct(25)">25%</div>
+            <div class="pc" onclick="trPct(50)">50%</div>
+            <div class="pc" onclick="trPct(75)">75%</div>
+            <div class="pc" onclick="trPct(100)">100%</div>
+          </div>
+          <div class="tr-input">
+            <div class="step" onclick="trStep('trAmt',-1)">−</div>
+            <input id="trAmt" placeholder="Number(USDT)" inputmode="decimal">
+            <div class="step" onclick="trStep('trAmt',1)">+</div>
+          </div>
+          <div class="tr-tpsl">
+            <input type="checkbox" id="trTpSl">
+            <label for="trTpSl">Take Profit and Stop Loss</label>
+          </div>
+          <div class="tr-info">
+            <div class="r"><span>Available balance</span><span class="v"><span id="trAvail">0</span> USDT <span class="plus" onclick="openDeposit('deposit')">+</span></span></div>
+            <div class="r"><span>Buy</span><span class="v" id="trInfoBuy">0 USDT</span></div>
+            <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
+          </div>
+          <button class="tr-action buy" id="trBtn" onclick="trPlace()">Buy</button>
+        </div>
       </div>
-      <div id="trBids"></div>
+      <div class="tr-toolbar">
+        <div class="lev" id="trLevBtn">Cross <span class="car">▼</span></div>
+        <div class="ladder"><i></i><i></i><i></i></div>
+      </div>
     </div>
-    <div class="tr-form">
-      <div class="tr-buysell" id="trBuySell">
-        <div class="bs on-buy" data-side="buy" onclick="trSetSide('buy')">Buy</div>
-        <div class="bs" data-side="sell" onclick="trSetSide('sell')">Sell</div>
-      </div>
-      <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')">
-        <span class="dot"><i></i></span> Limit
-      </div>
-      <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')">
-        <span class="dot"><i></i></span> Market
-      </div>
-      <div class="tr-input" id="trPriceRow">
-        <input id="trPrice" placeholder="Price(USDT)" inputmode="decimal">
-        <span class="suf">USDT</span>
-      </div>
-      <div class="tr-input">
-        <div class="step" onclick="trStep('trQty',-1)">−</div>
-        <input id="trQty" placeholder="Number(BTC)" inputmode="decimal">
-        <div class="step" onclick="trStep('trQty',1)">+</div>
-      </div>
-      <div class="tr-pcts">
-        <div class="pc" onclick="trPct(25)">25%</div>
-        <div class="pc" onclick="trPct(50)">50%</div>
-        <div class="pc" onclick="trPct(75)">75%</div>
-        <div class="pc" onclick="trPct(100)">100%</div>
-      </div>
-      <div class="tr-input">
-        <div class="step" onclick="trStep('trAmt',-1)">−</div>
-        <input id="trAmt" placeholder="Number(USDT)" inputmode="decimal">
-        <div class="step" onclick="trStep('trAmt',1)">+</div>
-      </div>
-      <div class="tr-tpsl">
-        <input type="checkbox" id="trTpSl">
-        <label for="trTpSl">Take Profit and Stop Loss</label>
-      </div>
-      <div class="tr-info">
-        <div class="r"><span>Available balance</span><span class="v"><span id="trAvail">0</span> USDT <span class="plus" onclick="openDeposit('deposit')">+</span></span></div>
-        <div class="r"><span>Buy</span><span class="v" id="trInfoBuy">0 USDT</span></div>
-        <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
-      </div>
-      <button class="tr-action buy" id="trBtn" onclick="trPlace()">Buy</button>
+
+    <!-- Copy-trading view -->
+    <div id="trCopy" style="display:none;">
+      <div class="tr-copy-wrap" id="trCopyList"></div>
     </div>
-  </div>
 
-  <div class="tr-toolbar">
-    <div class="lev" id="trLevBtn">Cross <span class="car">▼</span></div>
-    <div class="ladder"><i></i><i></i><i></i></div>
+    <!-- Subtabs -->
+    <div class="tr-subtabs" id="trSubtabs">
+      <div class="st on" data-st="open">Open orders(<span id="trOpenCount">0</span>)</div>
+      <div class="st" data-st="history">Order history</div>
+      <div class="st" data-st="assets">Assets</div>
+      <div class="ico" onclick="openTxHistory()">📄</div>
+    </div>
+    <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
   </div>
-
-  <!-- Subtabs -->
-  <div class="tr-subtabs" id="trSubtabs">
-    <div class="st on" data-st="open">Open orders(<span id="trOpenCount">0</span>)</div>
-    <div class="st" data-st="history">Order history</div>
-    <div class="st" data-st="assets">Assets</div>
-    <div class="ico" onclick="openTxHistory()">📄</div>
-  </div>
-
-  <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
 
   <nav class="bottomnav" data-nav></nav>
 </section>
@@ -984,10 +983,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- COPY TRADING overlay -->
+<!-- COPY TRADING overlay (bell icon) -->
 <div class="overlay" id="copyPanel">
   <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
-  <div class="scroll" id="copyList" style="padding:0 0 20px;"></div>
+  <div class="scroll" id="copyList" style="padding:0 14px 20px;"></div>
 </div>
 
 <!-- TX HISTORY overlay -->
@@ -1080,7 +1079,6 @@ function setMode(mode){
   applyUserToUI();
   renderWalletScreen();
   renderAccounts();
-  renderLiveTradeCard();
   updateModeUI();
   renderTradeForm();
   toast(mode === 'demo' ? 'Switched to Demo mode' : 'Switched to Real mode');
@@ -1210,6 +1208,7 @@ function renderCopyTrades(){
 function dismissCopy(id){
   saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
   renderCopyTrades();
+  renderTrCopy();
   updateNotifDot();
 }
 function updateNotifDot(){
@@ -1274,15 +1273,11 @@ function confirmCopyTrade(alertId){
   closeGeneric();
   go('s-trade');
   trSetSymbol(ct.sym);
-  renderLiveTradeCard();
+  renderTradeForm();
   applyUserToUI();
   toast('Trade opened — watching live');
 }
 
-function renderLiveTradeCard(){
-  // (Live-trade info card is shown via the Trade tab Assets subtab)
-  renderTradeForm();
-}
 function checkSlTp(){
   const pos = getMyPosition();
   if(!pos || pos.status !== 'open') return;
@@ -1308,7 +1303,7 @@ function closePosition(reason){
   const reasonTxt = reason === 'tp' ? 'Take Profit hit' : reason === 'sl' ? 'Stop Loss hit' : 'Manual close';
   recordTx('copy', `CLOSE ${pos.sym} @ ${fmt(exit)} · ${pnlTxt} (${reasonTxt})`);
   saveMyPosition(null);
-  renderLiveTradeCard();
+  renderTradeForm();
   applyUserToUI();
   toast(reasonTxt + ' — ' + pnlTxt);
 }
@@ -1591,7 +1586,7 @@ function skipKycStep2(){
   go('s-home');
 }
 
-/* new light KYC page (Screenshot 1) */
+/* light KYC page */
 let kpUploads = {front:null, back:null};
 function openKycPage(){
   if(!currentUser){ openAuth('register'); return; }
@@ -1665,7 +1660,7 @@ function doLogin(){
   applyUserToUI();
   updateModeUI();
   closeAuth();
-  renderLiveTradeCard();
+  renderTradeForm();
   toast('Welcome back!');
 }
 function doLogout(){
@@ -1673,7 +1668,7 @@ function doLogout(){
   localStorage.removeItem(SESSION_KEY);
   applyUserToUI();
   closeProfile();
-  renderLiveTradeCard();
+  renderTradeForm();
   toast('Logged out');
 }
 function forgotPassword(){
@@ -1799,7 +1794,7 @@ function drawQR(text, canvas){
   }
 }
 
-/* ====== bottom nav ====== */
+/* bottom nav */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
   {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
@@ -1899,7 +1894,7 @@ if(acb) acb.addEventListener('click', e => {
   renderMarketsForClass();
 });
 
-/* ================== TRADE (light, new) ================== */
+/* ===== Trade logic ===== */
 let trSymbol = 'BTC';
 let trSide = 'buy';
 let trOrderType = 'limit';
@@ -1924,14 +1919,13 @@ function renderTrHeader(){
   if(midSub) midSub.textContent = '≈' + fmt(m.price);
   const tag = document.getElementById('trTag');
   if(tag){
-    tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'delivery' ? 'Delivery' : 'Spot';
+    tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'copy' ? 'Copy' : 'Spot';
   }
   const btn = document.getElementById('trBtn');
   if(btn){
     btn.textContent = trSide === 'buy' ? 'Buy' : 'Sell';
     btn.className = 'tr-action ' + (trSide === 'buy' ? 'buy' : 'sell');
   }
-  // also update chart overlay if open
   const cp = document.getElementById('chartPair'); if(cp) cp.textContent = trSymbol + '/USDT';
   const cc = document.getElementById('chartChg'); if(cc){ cc.textContent = chgSign(m.chg); cc.style.color = m.chg>=0?'var(--green)':'var(--red)'; }
 }
@@ -1993,38 +1987,51 @@ function renderTradeForm(){
   const avail = activeBalance('spot') || 0;
   const av = document.getElementById('trAvail');
   if(av) av.textContent = avail.toFixed(2);
-  // open orders count = my open position count
   const pos = getMyPosition();
   const cnt = pos && pos.status === 'open' ? 1 : 0;
   const oc = document.getElementById('trOpenCount');
   if(oc) oc.textContent = cnt;
-  // history area
   const hist = document.getElementById('trHistory');
-  if(hist && hist.dataset.tab !== 'assets'){
-    if(hist.dataset.tab === 'history'){
-      const list = (getAllTx()[currentUser ? currentUser.email : ''] || []).filter(t => t.type === 'trade');
-      hist.innerHTML = list.length
-        ? list.map(t => `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px;font-size:12.5px;">
-            <div style="font-weight:700;color:var(--text);">${t.detail}</div>
-            <div style="color:var(--text3);font-size:10.5px;margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
-          </div>`).join('')
-        : '<div class="empty">No history yet</div>';
+  if(!hist) return;
+  const kind = hist.dataset.tab || 'open';
+  if(kind === 'assets'){
+    let html = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;">
+      <div style="color:var(--text2);font-size:12px;">Spot balance</div>
+      <div style="font-size:22px;font-weight:800;color:var(--text);">${avail.toFixed(2)} USDT</div>`;
+    if(pos && pos.status === 'open'){
+      const m = findMarket(pos.sym) || {price:pos.entry};
+      const pnl = (m.price - pos.entry) * pos.qty;
+      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      html += `<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
+        <div style="font-size:12.5px;font-weight:700;color:var(--text);">Open position · ${pos.sym}/USDT</div>
+        <div style="font-size:12px;color:${cls};font-weight:700;margin-top:4px;">P&L ${pnl>=0?'+':''}$${pnl.toFixed(2)}</div>
+      </div>`;
+    }
+    html += '</div>';
+    hist.innerHTML = html;
+  } else if(kind === 'history'){
+    const list = (getAllTx()[currentUser ? currentUser.email : ''] || []).filter(t => t.type === 'trade');
+    hist.innerHTML = list.length
+      ? list.map(t => `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px;font-size:12.5px;">
+          <div style="font-weight:700;color:var(--text);">${t.detail}</div>
+          <div style="color:var(--text3);font-size:10.5px;margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
+        </div>`).join('')
+      : '<div class="empty">No history yet</div>';
+  } else {
+    if(pos && pos.status === 'open'){
+      const m = findMarket(pos.sym) || {price:pos.entry};
+      const pnl = (m.price - pos.entry) * pos.qty;
+      const pnlPct = ((m.price - pos.entry) / pos.entry) * 100;
+      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      hist.innerHTML = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;">
+        <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;">${pos.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
+        <div style="display:flex;gap:14px;color:var(--text2);margin-top:8px;">
+          <span>Entry ${fmt(pos.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos.tpPrice)}</b></span>
+        </div>
+        <button onclick="closePosition('manual')" style="margin-top:10px;width:100%;height:34px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:700;font-family:inherit;cursor:pointer;">Close Position</button>
+      </div>`;
     } else {
-      if(pos && pos.status === 'open'){
-        const m = findMarket(pos.sym) || {price:pos.entry};
-        const pnl = (m.price - pos.entry) * pos.qty;
-        const pnlPct = ((m.price - pos.entry) / pos.entry) * 100;
-        const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-        hist.innerHTML = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;">
-          <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;">${pos.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
-          <div style="display:flex;gap:14px;color:var(--text2);margin-top:8px;">
-            <span>Entry ${fmt(pos.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos.tpPrice)}</b></span>
-          </div>
-          <button onclick="closePosition('manual')" style="margin-top:10px;width:100%;height:34px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:700;font-family:inherit;cursor:pointer;">Close Position</button>
-        </div>`;
-      } else {
-        hist.innerHTML = '<div class="empty">No orders yet</div>';
-      }
+      hist.innerHTML = '<div class="empty">No orders yet</div>';
     }
   }
 }
@@ -2043,14 +2050,62 @@ function trPlace(){
   toast('Order placed');
 }
 
-// Trade top tabs
+/* copy view inside trade */
+function renderTrCopy(){
+  const el = document.getElementById('trCopyList'); if(!el) return;
+  const list = getCopyTrades();
+  if(!list.length){
+    el.innerHTML = '<div class="tr-copy-empty">No copy-trade alerts yet</div>';
+    return;
+  }
+  el.innerHTML = '<div class="tr-copy-head"><h3>Copy Trading signals</h3></div>' + list.map(ct => {
+    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
+    const trader = ct.traderName || 'Brian';
+    const initial = trader[0].toUpperCase();
+    return `<div class="ct-card">
+      <div class="ct-top">
+        <div class="ct-av">${initial}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="ct-trader">${trader} <span class="verified">VERIFIED TRADER</span></div>
+          <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
+        </div>
+      </div>
+      <div class="ct-msg">${ct.message || ''}</div>
+      <div class="ct-actions">
+        <button class="btn2" onclick="dismissCopy('${ct.id}')">Dismiss</button>
+        <button class="btn2 pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// Trade tabs: Perpetual / Copy Trading / Spot Trading
 document.getElementById('trTabs').addEventListener('click', e => {
   const t = e.target.closest('.tr-tab'); if(!t) return;
   document.querySelectorAll('.tr-tab').forEach(x => x.classList.remove('on'));
   t.classList.add('on');
   trTab = t.dataset.tr;
-  renderTrHeader();
+  const form = document.getElementById('trForm');
+  const copy = document.getElementById('trCopy');
+  const subtabs = document.getElementById('trSubtabs');
+  const hist = document.getElementById('trHistory');
+  const toolbar = document.querySelector('.tr-toolbar');
+  if(trTab === 'copy'){
+    form.style.display = 'none';
+    copy.style.display = 'block';
+    subtabs.style.display = 'none';
+    hist.style.display = 'none';
+    renderTrCopy();
+  } else {
+    form.style.display = 'block';
+    copy.style.display = 'none';
+    subtabs.style.display = 'flex';
+    hist.style.display = 'block';
+    renderTrHeader();
+    renderTradeForm();
+  }
 });
+
 // Trade subtabs
 document.getElementById('trSubtabs').addEventListener('click', e => {
   const st = e.target.closest('.st'); if(!st) return;
@@ -2059,29 +2114,10 @@ document.getElementById('trSubtabs').addEventListener('click', e => {
   const kind = st.dataset.st;
   const hist = document.getElementById('trHistory');
   hist.dataset.tab = kind;
-  if(kind === 'assets'){
-    const bal = activeBalance('spot') || 0;
-    const pos = getMyPosition();
-    let html = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;">
-      <div style="color:var(--text2);font-size:12px;">Spot balance</div>
-      <div style="font-size:22px;font-weight:800;color:var(--text);">${bal.toFixed(2)} USDT</div>`;
-    if(pos && pos.status === 'open'){
-      const m = findMarket(pos.sym) || {price:pos.entry};
-      const pnl = (m.price - pos.entry) * pos.qty;
-      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      html += `<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
-        <div style="font-size:12.5px;font-weight:700;color:var(--text);">Open position · ${pos.sym}/USDT</div>
-        <div style="font-size:12px;color:${cls};font-weight:700;margin-top:4px;">P&L ${pnl>=0?'+':''}$${pnl.toFixed(2)}</div>
-      </div>`;
-    }
-    html += '</div>';
-    hist.innerHTML = html;
-  } else {
-    renderTradeForm();
-  }
+  renderTradeForm();
 });
 
-/* ================== CHART overlay ================== */
+/* chart overlay */
 let chartWidget = null;
 let chartRetry = 0;
 function openChart(){
@@ -2195,7 +2231,7 @@ function pickInstrument(sym){
   toast('Switched to ' + sym);
 }
 
-/* ================== Rest ================== */
+/* accounts & profile & rest */
 function renderAccounts(){
   const funding = activeBalance('funding').toFixed(2);
   const spot = activeBalance('spot').toFixed(2);
@@ -2211,7 +2247,6 @@ function renderAccounts(){
     </div>
   `).join('');
 }
-
 function renderProfileMenu(){
   const items = [
     {l:'Identity Verification', sub:'Not verified', action:'openKycFromProfile()'},
@@ -2239,7 +2274,6 @@ function openKycFromProfile(){
   closeProfile();
   openKycPage();
 }
-
 function resetDemo(){
   if(!currentUser){ openAuth('register'); return; }
   currentUser.demoFunding = DEMO_SEED;
@@ -2256,7 +2290,6 @@ function resetDemo(){
   renderTradeForm();
   toast('Demo reset — $' + DEMO_SEED.toLocaleString() + ' USDT');
 }
-
 function updateKycBadge(){
   const el = document.getElementById('profKycBadge');
   if(!el || !currentUser) return;
@@ -2266,7 +2299,6 @@ function updateKycBadge(){
   else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
   else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
 }
-
 function toast(msg){
   const el = document.getElementById('toast');
   if(!el) return;
@@ -2281,14 +2313,12 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js').catch(() => {});
   });
 }
-
 let deferredPrompt = null;
 const installBanner = document.getElementById('installBanner');
 const installBtn = document.getElementById('installBtn');
 const installClose = document.getElementById('installClose');
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
@@ -2315,7 +2345,6 @@ if (installClose) installClose.addEventListener('click', () => {
 });
 window.addEventListener('appinstalled', () => { installBanner.style.display = 'none'; });
 
-/* openDeposit / openTransfer / submitWithdraw */
 function openDeposit(mode){
   if(!currentUser){ openAuth('register'); return; }
   const addr = getMyAddress();
@@ -2399,7 +2428,7 @@ function doTransfer(){
   toast('Transfer complete');
 }
 
-/* ================= boot ================= */
+/* boot */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -2411,7 +2440,6 @@ function doTransfer(){
       }
     }
   } catch(e){}
-
   if(currentUser){
     let dirty = false;
     if(typeof currentUser.demoFunding !== 'number'){ currentUser.demoFunding = DEMO_SEED; dirty = true; }
@@ -2422,7 +2450,6 @@ function doTransfer(){
       saveAccounts(accs);
     }
   }
-
   renderHomePulse();
   renderHomeList();
   renderMarketsForClass();
@@ -2437,18 +2464,15 @@ function doTransfer(){
   renderTradeForm();
   renderTrOrderBook();
   renderTrHeader();
-
   startBinanceStream();
   startSimulation();
-
   fetchLiveNews().then(() => refreshNewsStrip());
   setInterval(async () => { await fetchLiveNews(); refreshNewsStrip(); }, 60000);
-
   setInterval(() => {
     updateNotifDot();
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
+    if(document.getElementById('s-trade').classList.contains('active') && trTab === 'copy') renderTrCopy();
   }, 3000);
-
   if(!currentUser){
     openAuth('register');
   }
