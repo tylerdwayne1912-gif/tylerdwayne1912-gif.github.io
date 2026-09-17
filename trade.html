@@ -20,7 +20,6 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;}
 a{color:inherit;text-decoration:none;}
 
-/* ===== Top nav (dark, matches index) ===== */
 .nav{position:sticky;top:0;z-index:50;background:rgba(10,25,41,.92);
   backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);}
 .nav .in{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:22px;
@@ -45,7 +44,7 @@ a{color:inherit;text-decoration:none;}
   .nav-menu{display:none;}
 }
 
-/* ===== Symbol bar (white) ===== */
+/* Symbol bar */
 .symbar{background:#fff;border-bottom:1px solid var(--line);position:relative;}
 .symbar .in{max-width:1440px;margin:0 auto;padding:14px 20px;display:flex;
   align-items:flex-start;gap:34px;flex-wrap:wrap;}
@@ -64,10 +63,9 @@ a{color:inherit;text-decoration:none;}
 .sym-stats{display:flex;gap:30px;margin-left:auto;flex-wrap:wrap;align-items:flex-start;}
 .sym-stats .stat{display:flex;flex-direction:column;gap:3px;}
 .sym-stats .stat .k{font-size:11px;color:var(--text3);font-weight:600;letter-spacing:.2px;}
-.sym-stats .stat .v{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;
-  color:var(--text);}
+.sym-stats .stat .v{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);}
 
-/* ===== Coin dropdown (white) ===== */
+/* Coin dropdown */
 .coin-drop{position:absolute;top:calc(100% + 8px);left:0;width:280px;
   background:#fff;color:var(--text);border-radius:12px;padding:6px;
   box-shadow:0 20px 50px rgba(0,0,0,.15);border:1px solid var(--line);
@@ -81,8 +79,7 @@ a{color:inherit;text-decoration:none;}
 .coin-item:hover{background:var(--bg2);}
 .coin-item.active{background:var(--green-lt);}
 .coin-item .ic{width:26px;height:26px;border-radius:50%;color:#fff;
-  display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;
-  flex-shrink:0;}
+  display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;}
 .coin-item .tx{flex:1;min-width:0;}
 .coin-item .tx .sym{font-size:13px;font-weight:700;color:var(--text);}
 .coin-item .tx .nm{font-size:11px;color:var(--text2);margin-top:1px;}
@@ -93,22 +90,19 @@ a{color:inherit;text-decoration:none;}
 .coin-item .pc.up{color:var(--green);}
 .coin-item .pc.down{color:var(--red);}
 
-/* ===== Main grid ===== */
+/* Main layout */
 .trade-layout{max-width:1440px;margin:0 auto;display:grid;
   grid-template-columns:1.7fr 1fr .9fr;gap:1px;background:var(--line);}
 @media(max-width:1200px){
   .trade-layout{grid-template-columns:1.5fr 1fr;}
   .panel-right{grid-column:1 / -1;}
 }
-@media(max-width:820px){
-  .trade-layout{grid-template-columns:1fr;}
-}
+@media(max-width:820px){ .trade-layout{grid-template-columns:1fr;} }
 .panel{background:#fff;}
 .panel.panel-chart{min-height:600px;display:flex;flex-direction:column;}
 .panel.panel-book{background:#fff;padding:0;display:flex;flex-direction:column;}
 .panel.panel-right{background:#fff;padding:16px;}
 
-/* chart bar */
 .chart-bar{display:flex;align-items:center;gap:12px;padding:10px 14px;
   border-bottom:1px solid var(--line);flex-wrap:wrap;font-size:12px;background:#fff;}
 .chart-bar .times{display:flex;gap:2px;}
@@ -134,10 +128,8 @@ a{color:inherit;text-decoration:none;}
   color:var(--text2);border-top:1px solid var(--line);background:#fff;
   font-variant-numeric:tabular-nums;}
 
-/* Order book (white) */
 .book-title{display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px 10px;font-size:15px;font-weight:800;letter-spacing:-.3px;
-  color:var(--text);}
+  padding:14px 16px 10px;font-size:15px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
 .book-title .modes{display:flex;gap:4px;}
 .book-title .modes span{width:16px;height:16px;border-radius:3px;display:inline-block;cursor:pointer;opacity:.5;}
 .book-title .modes span.on{opacity:1;}
@@ -168,7 +160,6 @@ a{color:inherit;text-decoration:none;}
   font-variant-numeric:tabular-nums;display:flex;align-items:baseline;gap:8px;}
 .book-mid .small{font-size:11px;color:var(--text3);font-weight:500;}
 
-/* Right panel (white) */
 .ptabs{display:flex;gap:2px;margin-bottom:14px;border-bottom:1px solid var(--line);}
 .ptabs .t{padding:10px 14px;font-size:13px;font-weight:700;color:var(--text2);
   cursor:pointer;border-bottom:2px solid transparent;}
@@ -222,9 +213,7 @@ a{color:inherit;text-decoration:none;}
 .margin-card .r .v{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;
   display:flex;align-items:center;gap:5px;}
 
-/* Bottom (white) */
-.bottom{max-width:1440px;margin:0 auto;border-top:1px solid var(--line);
-  background:#fff;}
+.bottom{max-width:1440px;margin:0 auto;border-top:1px solid var(--line);background:#fff;}
 .bottom-tabs{display:flex;gap:22px;padding:12px 20px;border-bottom:1px solid var(--line);}
 .bottom-tabs .t{font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;
   padding-bottom:8px;border-bottom:2px solid transparent;}
@@ -240,7 +229,6 @@ a{color:inherit;text-decoration:none;}
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
 <nav class="nav">
   <div class="in">
     <a href="/" class="brand"><span class="mk">N</span>NextTrade</a>
@@ -250,15 +238,14 @@ a{color:inherit;text-decoration:none;}
       <li><a href="/trade.html">Trade ▾</a></li>
     </ul>
     <div class="nav-right">
-      <a href="/app.html">Login</a>
-      <a href="/app.html">Register</a>
+      <a href="/app.html#login">Login</a>
+      <a href="/app.html#register">Register</a>
       <a href="/download.html">Download APP</a>
       <a href="#" style="opacity:.75;">English</a>
     </div>
   </div>
 </nav>
 
-<!-- ============ SYMBOL BAR ============ -->
 <section class="symbar">
   <div class="in">
     <div class="sym-info">
@@ -272,8 +259,6 @@ a{color:inherit;text-decoration:none;}
         <span class="chg up" id="bigChg">+0.73%</span>
         <span style="color:var(--text3);font-size:11.5px;" id="bigUsd">≈ $92,419.37</span>
       </div>
-
-      <!-- Coin dropdown -->
       <div class="coin-drop" id="coinDrop"></div>
     </div>
 
@@ -286,7 +271,6 @@ a{color:inherit;text-decoration:none;}
   </div>
 </section>
 
-<!-- ============ MAIN 3-COLUMN LAYOUT ============ -->
 <div class="trade-layout">
   <div class="panel panel-chart">
     <div class="chart-bar">
@@ -364,8 +348,8 @@ a{color:inherit;text-decoration:none;}
     <div class="pct-row">
       <span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span>
     </div>
-    <a href="/app.html" class="btn-lg btn-register">Register now</a>
-    <a href="/app.html" class="btn-lg btn-login">Login</a>
+    <a href="/app.html#register" class="btn-lg btn-register">Register now</a>
+    <a href="/app.html#login" class="btn-lg btn-login">Login</a>
 
     <div class="margin-card">
       <div class="h">Margin Ratio</div>
@@ -380,7 +364,6 @@ a{color:inherit;text-decoration:none;}
   </div>
 </div>
 
-<!-- ============ BOTTOM TABS ============ -->
 <section class="bottom">
   <div class="bottom-tabs">
     <div class="t on">Open Orders(0)</div>
@@ -392,9 +375,6 @@ a{color:inherit;text-decoration:none;}
 </section>
 
 <script>
-/* ============================================================
-   ALL COINS from the index.html markets table
-   ============================================================ */
 const COINS = [
   {sym:'BTC',  name:'Bitcoin',  base:77250.11, color:'#F7931A', icon:'₿'},
   {sym:'ETH',  name:'Ethereum', base:2445.14,  color:'#627EEA', icon:'Ξ'},
@@ -418,7 +398,6 @@ const state = {
   chg: 0.73
 };
 
-/* formatters */
 const fmt = n => {
   if(n >= 1000) return n.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:2});
   if(n >= 1) return n.toLocaleString('en-US',{minimumFractionDigits:2, maximumFractionDigits:4});
@@ -426,9 +405,6 @@ const fmt = n => {
 };
 const chgStr = c => (c>=0?'+':'') + c.toFixed(2) + '%';
 
-/* ============================================================
-   Coin dropdown
-   ============================================================ */
 function renderCoinDropdown(){
   const drop = document.getElementById('coinDrop');
   drop.innerHTML = COINS.map(c => {
@@ -446,7 +422,6 @@ function renderCoinDropdown(){
       </div>
     </div>`;
   }).join('');
-
   drop.querySelectorAll('.coin-item').forEach(el => {
     el.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -477,34 +452,25 @@ function switchCoin(sym){
   state.amt  = state.vol * state.price;
   state.time = new Date().toISOString().slice(0,16).replace('T',' ');
 
-  // Update URL so the link is shareable
   const url = new URL(location.href);
   url.searchParams.set('coin', c.sym);
   history.replaceState(null, '', url);
 
   document.title = `NextTrade — Trade ${c.sym}/USDT`;
-
   renderCoinDropdown();
   renderHeader();
   renderBook();
   drawBigChart();
 }
 
-/* ============================================================
-   Big candlestick chart
-   ============================================================ */
 function drawBigChart(){
   const c = document.getElementById('bigChart'); if(!c) return;
   const w = c.clientWidth || 800;
   const h = c.clientHeight || 500;
   c.width = w; c.height = h;
   const ctx = c.getContext('2d');
-
-  // white background
   ctx.fillStyle = '#fff';
   ctx.fillRect(0, 0, w, h);
-
-  // grid
   ctx.strokeStyle = 'rgba(234,236,239,1)';
   ctx.lineWidth = 1;
   for(let i = 1; i < 10; i++){
@@ -541,7 +507,6 @@ function drawBigChart(){
   const chartH = h - padTop - padBottom;
   const yFor = (v) => padTop + (1 - (v - min) / range) * chartH;
 
-  // axis
   ctx.fillStyle = '#707A8A';
   ctx.font = '11px -apple-system,sans-serif';
   ctx.textAlign = 'left';
@@ -554,7 +519,6 @@ function drawBigChart(){
 
   const slotW = chartW / N;
   const candleW = Math.max(2, slotW * 0.65);
-
   candles.forEach((k, i) => {
     const x = slotW * i + slotW/2;
     const yo = yFor(k.o), yc = yFor(k.c), yh = yFor(k.h), yl = yFor(k.l);
@@ -571,8 +535,7 @@ function drawBigChart(){
     ctx.fillRect(x - candleW/2, bodyTop, candleW, bodyH);
   });
 
-  // MAs
-  const ma5  = [], ma10 = [], ma30 = [], ma60 = [];
+  const ma5 = [], ma10 = [], ma30 = [], ma60 = [];
   for(let i = 0; i < N; i++){
     const win = (n) => {
       const s = Math.max(0, i - n + 1);
@@ -591,12 +554,11 @@ function drawBigChart(){
     ctx.strokeStyle = color; ctx.lineWidth = 1.3;
     ctx.stroke();
   }
-  drawMA(ma5,  '#F5C542');
+  drawMA(ma5, '#F5C542');
   drawMA(ma10, '#1890FF');
   drawMA(ma30, '#722ED1');
   drawMA(ma60, '#F6465D');
 
-  // current price dashed line
   const yNow = yFor(state.price);
   ctx.strokeStyle = 'rgba(14,203,129,.6)';
   ctx.setLineDash([4,4]);
@@ -614,9 +576,6 @@ function drawBigChart(){
   document.getElementById('ma60').textContent = fmt(ma60[N-1]);
 }
 
-/* ============================================================
-   Order book
-   ============================================================ */
 function renderBook(){
   const mid = state.price;
   const asks = [];
@@ -646,9 +605,6 @@ function renderBook(){
   document.getElementById('bookMidSmall').textContent = fmt(mid);
 }
 
-/* ============================================================
-   Header
-   ============================================================ */
 function renderHeader(){
   const c = state.coin;
   document.getElementById('pairIcon').textContent = c.icon;
@@ -673,9 +629,6 @@ function renderHeader(){
   document.getElementById('cmVol').textContent = (state.vol * 1000).toLocaleString('en-US');
 }
 
-/* ============================================================
-   Live simulation
-   ============================================================ */
 function tick(){
   const drift = (Math.random() - 0.5) * state.price * 0.0025;
   const base = state.coin.base;
@@ -689,9 +642,6 @@ function tick(){
   renderBook();
 }
 
-/* ============================================================
-   Slider / tabs / resize
-   ============================================================ */
 const slider = document.getElementById('amtSlider');
 const amtInput = document.getElementById('amtInput');
 slider?.addEventListener('input', () => {
@@ -712,9 +662,6 @@ document.querySelectorAll('.chart-bar .times .t').forEach(t => {
 
 window.addEventListener('resize', () => drawBigChart());
 
-/* ============================================================
-   Boot
-   ============================================================ */
 (function boot(){
   const params = new URLSearchParams(location.search);
   const coinParam = (params.get('coin') || '').toUpperCase();
