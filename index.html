@@ -22,14 +22,13 @@ html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;}
 a{color:inherit;text-decoration:none;}
 
-/* ===== NAV (TVR-style) ===== */
+/* NAV */
 .nav{position:sticky;top:0;z-index:50;background:rgba(10,25,41,.92);
   backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08);}
 .nav .in{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:26px;padding:12px 22px;}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px;letter-spacing:-.3px;color:#fff;flex-shrink:0;}
 .brand .mk{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#0ECB81,#0a9e63);
   display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#04160f;}
-
 .nav-menu{display:flex;list-style:none;margin:0;padding:0;gap:6px;align-items:center;}
 .nav-menu > li{position:relative;}
 .nav-menu > li > a{display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,.85);
@@ -37,8 +36,6 @@ a{color:inherit;text-decoration:none;}
 .nav-menu > li > a:hover{color:#fff;background:rgba(255,255,255,.06);}
 .nav-menu > li > a .caret{font-size:9px;opacity:.7;transition:transform .15s;}
 .nav-menu > li:hover > a .caret{transform:rotate(180deg);}
-
-/* dropdown panel */
 .has-drop .drop{position:absolute;top:calc(100% + 4px);left:0;min-width:200px;
   background:#fff;color:#1E2329;border-radius:12px;padding:8px;
   box-shadow:0 18px 44px rgba(0,0,0,.25);border:1px solid #EAECEF;
@@ -48,21 +45,18 @@ a{color:inherit;text-decoration:none;}
 .has-drop .drop a{display:block;font-size:13.5px;font-weight:600;color:#1E2329;
   padding:9px 12px;border-radius:8px;transition:.12s;}
 .has-drop .drop a:hover{background:#E7F9F1;color:#0BB574;}
-
-/* right-side action links */
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
 .nav-right .nav-link{color:rgba(255,255,255,.85);font-size:13.5px;font-weight:600;
   padding:8px 12px;border-radius:8px;transition:.15s;white-space:nowrap;}
 .nav-right .nav-link:hover{color:#fff;background:rgba(255,255,255,.06);}
 .nav-right .lang-link{opacity:.75;}
-
 @media(max-width:900px){
   .nav .in{gap:12px;padding:10px 14px;}
   .nav-menu{display:none;}
   .nav-right .nav-link:not(.lang-link){padding:8px 10px;font-size:12.5px;}
 }
 
-/* ===== HERO ===== */
+/* HERO */
 .hero{position:relative;overflow:hidden;
   background:linear-gradient(135deg,#0a1929 0%,#0d2233 45%,#0f2b3d 100%);
   padding:80px 20px 90px;min-height:480px;}
@@ -84,7 +78,6 @@ a{color:inherit;text-decoration:none;}
 .btn.primary:hover{background:var(--green-dk);color:#fff;transform:translateY(-1px);}
 .btn.ghost{background:rgba(255,255,255,.08);color:#fff;border:1.5px solid rgba(255,255,255,.2);}
 .btn.ghost:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.4);}
-
 .coin{position:absolute;border-radius:50%;display:flex;align-items:center;justify-content:center;
   color:#fff;font-weight:900;box-shadow:0 20px 60px rgba(0,0,0,.35);
   animation:floatCoin 6s ease-in-out infinite;z-index:1;}
@@ -102,7 +95,7 @@ a{color:inherit;text-decoration:none;}
   .coin.sol{width:46px;height:46px;font-size:20px;top:68%;right:6%;}
 }
 
-/* ===== SIGNAL CARDS ===== */
+/* SIGNALS */
 .signals-wrap{max-width:1120px;margin:-40px auto 0;padding:0 16px;position:relative;z-index:3;}
 .signals{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;
   -webkit-overflow-scrolling:touch;padding:4px 2px 6px;}
@@ -126,7 +119,7 @@ a{color:inherit;text-decoration:none;}
   .signal .chg{font-size:11px;}
 }
 
-/* ===== Markets table ===== */
+/* MARKETS TABLE */
 .mkt-wrap{max-width:1120px;margin:30px auto 0;padding:0 16px 40px;}
 .mkt-card{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
   box-shadow:0 8px 24px rgba(0,0,0,.04);}
@@ -155,7 +148,6 @@ a{color:inherit;text-decoration:none;}
 .mkt-row .trade a{color:var(--green-dk);font-weight:700;font-size:12.5px;padding:5px 12px;
   border-radius:14px;background:var(--green-lt);display:inline-block;transition:.15s;white-space:nowrap;}
 .mkt-row .trade a:hover{background:var(--green);color:#fff;}
-
 @media(max-width:640px){
   .mkt-head, .mkt-row{
     grid-template-columns:1.9fr 1fr 1fr 1fr .7fr;
@@ -168,7 +160,7 @@ a{color:inherit;text-decoration:none;}
   .mkt-row .trade a{font-size:11.5px;padding:5px 10px;}
 }
 
-/* ===== Features ===== */
+/* FEATURES */
 .ft{max-width:1120px;margin:0 auto;padding:60px 20px 80px;}
 .ft h2{text-align:center;font-size:clamp(22px,3vw,34px);letter-spacing:-.8px;
   margin:0 0 12px;font-weight:800;}
@@ -182,7 +174,7 @@ a{color:inherit;text-decoration:none;}
 .ft-card h3{font-size:16px;font-weight:700;margin:0 0 8px;letter-spacing:-.2px;}
 .ft-card p{font-size:13.5px;color:var(--text2);line-height:1.65;margin:0;}
 
-/* ===== Portfolio CTA ===== */
+/* PORTFOLIO CTA */
 .portfolio{background:linear-gradient(135deg,#0a1929 0%,#0d2233 45%,#0f2b3d 100%);
   padding:70px 20px;position:relative;overflow:hidden;}
 .portfolio .in{max-width:1120px;margin:0 auto;display:grid;
@@ -196,7 +188,7 @@ a{color:inherit;text-decoration:none;}
 .portfolio-art{position:relative;height:280px;}
 .portfolio-art svg{width:100%;height:100%;overflow:visible;}
 
-/* ===== Transaction section ===== */
+/* TRANSACTION */
 .tx{background:#fff;padding:60px 20px 80px;}
 .tx .in{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;
   gap:60px;align-items:center;}
@@ -211,19 +203,17 @@ a{color:inherit;text-decoration:none;}
   font-size:10.5px;color:var(--text2);font-weight:600;cursor:pointer;text-decoration:none;}
 .tx .store:hover{color:var(--green-dk);}
 
-/* ===== Device mockups ===== */
+/* DEVICE MOCKUPS */
 .devices{position:relative;height:480px;}
 @media(max-width:1100px){ .devices{height:440px;} }
 @media(max-width:900px){ .devices{height:520px;} }
 @media(max-width:560px){ .devices{height:520px;} }
-
 .dev-lap{position:absolute;top:10px;right:0;width:calc(100% - 130px);
   background:#0b0e11;border-radius:12px;padding:8px;
   box-shadow:0 30px 70px rgba(10,25,41,.30);border:1px solid #1a1f26;}
 @media(max-width:900px){
   .dev-lap{width:calc(100% - 110px);right:0;}
 }
-
 .dev-lap .bar{display:flex;align-items:center;gap:6px;padding:4px 8px 8px;color:rgba(255,255,255,.5);
   font-size:10px;font-weight:600;}
 .dev-lap .bar .dots{display:flex;gap:3px;}
@@ -258,7 +248,6 @@ a{color:inherit;text-decoration:none;}
   color:#fff;font-weight:800;font-size:11px;font-family:inherit;cursor:pointer;}
 .dev-lap .wallet-col .buysell .buy{background:#0ECB81;color:#04160f;}
 .dev-lap .wallet-col .buysell .sell{background:#F6465D;}
-
 .dev-ph{position:absolute;bottom:0;left:0;width:200px;
   background:#0b0e11;border-radius:28px;padding:8px;
   box-shadow:0 30px 70px rgba(10,25,41,.45);border:1px solid #1a1f26;z-index:2;}
@@ -305,7 +294,7 @@ a{color:inherit;text-decoration:none;}
 .dev-ph .ph-btns .buy{background:#0ECB81;color:#04160f;}
 .dev-ph .ph-btns .sell{background:#F6465D;}
 
-/* ===== Stats ===== */
+/* STATS */
 .stats{background:var(--bg2);padding:44px 20px;}
 .stats .in{max-width:1120px;margin:0 auto;display:grid;
   grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;}
@@ -313,7 +302,7 @@ a{color:inherit;text-decoration:none;}
 .stats .v{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.8px;color:var(--text);}
 .stats .k{font-size:12.5px;color:var(--text2);margin-top:5px;font-weight:500;}
 
-/* ===== Final CTA ===== */
+/* FINAL CTA */
 .cta-final{max-width:1120px;margin:0 auto;padding:60px 20px;text-align:center;}
 .cta-final h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.8px;margin:0 0 12px;font-weight:800;}
 .cta-final p{font-size:15px;color:var(--text2);line-height:1.65;max-width:600px;margin:0 auto 26px;}
@@ -321,7 +310,7 @@ a{color:inherit;text-decoration:none;}
   background:var(--green);color:#fff;font-size:15px;font-weight:700;
   box-shadow:0 8px 24px rgba(14,203,129,.35);}
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 footer.site{background:linear-gradient(180deg,#0a1929,#0d2233);color:rgba(255,255,255,.75);
   padding:60px 20px 30px;}
 footer.site .in{max-width:1120px;margin:0 auto;}
@@ -336,7 +325,6 @@ footer.site h4{font-size:13.5px;font-weight:800;color:#fff;margin:0 0 16px;lette
 footer.site .col a{display:block;font-size:13px;color:rgba(255,255,255,.6);
   margin-bottom:11px;transition:color .15s;}
 footer.site .col a:hover{color:#fff;}
-
 footer.site .bottom-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:34px;
   margin-top:50px;padding-top:36px;border-top:1px solid rgba(255,255,255,.08);align-items:center;}
 @media(max-width:900px){ footer.site .bottom-row{grid-template-columns:1fr;gap:24px;text-align:center;justify-items:center;} }
@@ -352,7 +340,6 @@ footer.site .qr-wrap .btns .btn:hover{background:#E7F9F1;}
 footer.site .scan-copy{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:20px;
   grid-column:1/-1;text-align:left;}
 @media(max-width:900px){ footer.site .scan-copy{text-align:center;} }
-
 footer.site .legal{margin-top:36px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);
   display:flex;justify-content:space-between;gap:16px;font-size:12px;color:rgba(255,255,255,.5);
   flex-wrap:wrap;cursor:pointer;transition:color .15s;text-decoration:none;}
@@ -360,7 +347,7 @@ footer.site .legal:hover{color:rgba(255,255,255,.85);}
 footer.site .legal:hover .right{color:#0ECB81;}
 footer.site .legal .right{color:rgba(255,255,255,.65);}
 
-/* ===== BIG REGISTER BAND ===== */
+/* REGISTER BAND */
 .register-band{display:block;background:linear-gradient(135deg,#0ECB81,#0a9e63);
   color:#fff;padding:40px 20px;text-decoration:none;transition:transform .15s;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.15);cursor:pointer;}
@@ -379,7 +366,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   .register-band .rb-sub{margin-left:auto;margin-right:auto;}
 }
 
-/* Android install banner */
+/* ANDROID INSTALL BANNER */
 #androidInstallBtn{display:none;position:fixed;bottom:24px;left:14px;right:14px;
   z-index:9999;background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;
   border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(14,203,129,.35);
@@ -396,11 +383,10 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
 </head>
 <body>
 
-<!-- ============ NAV ============ -->
+<!-- NAV -->
 <nav class="nav">
   <div class="in">
     <a href="/" class="brand"><span class="mk">N</span>NextTrade</a>
-
     <ul class="nav-menu">
       <li class="has-drop">
         <a href="/app.html">Buy coins <span class="caret">▼</span></a>
@@ -421,16 +407,16 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
         </div>
       </li>
     </ul>
-
     <div class="nav-right">
-      <a href="/app.html" class="nav-link">Login</a>
-      <a href="/app.html" class="nav-link">Register</a>
+      <a href="/app.html#login" class="nav-link">Login</a>
+      <a href="/app.html#register" class="nav-link">Register</a>
       <a href="/download.html" class="nav-link">Download APP</a>
       <a href="#" class="nav-link lang-link">English</a>
     </div>
   </div>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="coin btc">₿</div>
   <div class="coin eth">Ξ</div>
@@ -441,7 +427,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
     <h1>Trade like a legend on the trusted crypto exchange</h1>
     <p>NextTrade has a variety of features that make it the best place to start trading — crypto, forex, commodities, and stocks in one account.</p>
     <div class="btn-row">
-      <a href="/app.html" class="btn primary">
+      <a href="/app.html#register" class="btn primary">
         Get started
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
@@ -451,10 +437,12 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- SIGNALS -->
 <div class="signals-wrap">
   <div class="signals" id="signals"></div>
 </div>
 
+<!-- MARKETS -->
 <section class="mkt-wrap" id="download">
   <div class="mkt-card">
     <div class="mkt-scroll">
@@ -470,6 +458,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- FEATURES -->
 <section class="ft" id="features">
   <h2>The most trusted platform</h2>
   <p class="sub">Here are some reasons why you should choose NextTrade</p>
@@ -492,12 +481,13 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- PORTFOLIO -->
 <section class="portfolio">
   <div class="in">
     <div>
       <h2>Create your cryptocurrency portfolio today</h2>
       <p>NextTrade has a variety of features that make it the best place to start trading — spot markets, copy trading, multi-asset support, and secure storage all in one.</p>
-      <a href="/app.html" class="btn primary">Open your account →</a>
+      <a href="/app.html#register" class="btn primary">Open your account →</a>
     </div>
     <div class="portfolio-art">
       <svg viewBox="0 0 480 280" preserveAspectRatio="xMidYMid meet">
@@ -516,6 +506,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- TRANSACTION -->
 <section class="tx">
   <div class="in">
     <div>
@@ -608,6 +599,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- STATS -->
 <section class="stats">
   <div class="in">
     <div><div class="v">$217B</div><div class="k">Quarterly trading volume</div></div>
@@ -617,12 +609,14 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
   </div>
 </section>
 
+<!-- FINAL CTA -->
 <section class="cta-final">
   <h2>The most trusted crypto platform</h2>
   <p>Create your free account in under a minute. $10,000 demo balance included.</p>
-  <a href="/app.html">Register now</a>
+  <a href="/app.html#register">Register now</a>
 </section>
 
+<!-- FOOTER -->
 <footer class="site">
   <div class="in">
     <div class="cols">
@@ -632,31 +626,31 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
       </div>
       <div class="col">
         <h4>About NextTrade</h4>
-        <a href="/app.html">About us</a>
-        <a href="/app.html">Terms of Use</a>
-        <a href="/app.html">Risk Statement</a>
-        <a href="/app.html">Privacy protection</a>
+        <a href="/app.html#register">About us</a>
+        <a href="/app.html#register">Terms of Use</a>
+        <a href="/app.html#register">Risk Statement</a>
+        <a href="/app.html#register">Privacy protection</a>
       </div>
       <div class="col">
         <h4>Product</h4>
-        <a href="/app.html">Quickly buy coins</a>
-        <a href="/app.html">C2C trade</a>
-        <a href="/app.html">Flash exchange</a>
-        <a href="/app.html">Earn coins</a>
+        <a href="/app.html#register">Quickly buy coins</a>
+        <a href="/app.html#register">C2C trade</a>
+        <a href="/app.html#register">Flash exchange</a>
+        <a href="/app.html#register">Earn coins</a>
       </div>
       <div class="col">
         <h4>Service</h4>
-        <a href="/app.html">Novice guidance</a>
-        <a href="/app.html">Reminder</a>
-        <a href="/app.html">Acquisition and conversion USDT</a>
-        <a href="/app.html">Announcement Center</a>
+        <a href="/app.html#register">Novice guidance</a>
+        <a href="/app.html#register">Reminder</a>
+        <a href="/app.html#register">Acquisition and conversion USDT</a>
+        <a href="/app.html#register">Announcement Center</a>
       </div>
       <div class="col">
         <h4>Trade</h4>
-        <a href="/app.html">BTC/USDT</a>
-        <a href="/app.html">ETH/USDT</a>
-        <a href="/app.html">XRP/USDT</a>
-        <a href="/app.html">ADA/USDT</a>
+        <a href="/trade.html?coin=BTC">BTC/USDT</a>
+        <a href="/trade.html?coin=ETH">ETH/USDT</a>
+        <a href="/trade.html?coin=XRP">XRP/USDT</a>
+        <a href="/trade.html?coin=ADA">ADA/USDT</a>
       </div>
     </div>
 
@@ -665,20 +659,20 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
       <div class="qr-wrap">
         <canvas id="footQr" width="120" height="120"></canvas>
         <div class="btns">
-          <a href="/app.html" class="btn">Register now</a>
+          <a href="/app.html#register" class="btn">Register now</a>
         </div>
       </div>
       <div class="scan-copy">Scan the QR code to download the NextTrade app</div>
     </div>
 
-    <a href="/app.html" class="legal">
+    <a href="/app.html#register" class="legal">
       <div>© <span id="yr"></span> NextTrade. All rights reserved. Trading involves risk — never invest more than you can afford to lose.</div>
       <div class="right">Register now →</div>
     </a>
   </div>
 </footer>
 
-<a href="/app.html" class="register-band">
+<a href="/app.html#register" class="register-band">
   <div class="rb-inner">
     <div>
       <div class="rb-title">Ready to start trading?</div>
@@ -701,7 +695,7 @@ footer.site .legal .right{color:rgba(255,255,255,.65);}
 <script>
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-/* ===== Touch-friendly dropdowns (mobile fallback) ===== */
+/* Touch dropdowns */
 document.querySelectorAll('.has-drop > a').forEach(a => {
   a.addEventListener('click', (e) => {
     const isTouch = window.matchMedia('(pointer: coarse)').matches;
@@ -757,12 +751,11 @@ function renderMarkets(){
       <div class="px">${fmtUsd(m.price)}</div>
       <div class="chg ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
       <div class="vol">${m.vol}</div>
-      <div class="trade"><a href="/trade.html">Trade</a></div>
+      <div class="trade"><a href="/trade.html?coin=${m.sym}">Trade</a></div>
     </div>
   `).join('');
 }
 
-/* ===== Candlestick chart ===== */
 function drawMiniChart(canvasId, up){
   const c = document.getElementById(canvasId); if(!c) return;
   const w = c.clientWidth || 300;
