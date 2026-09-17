@@ -30,59 +30,46 @@
   --purple:#722ED1;--purple-lt:#F3E8FF;
   --bg:#F5F6F8;--card:#fff;
   --text:#1E2329;--text2:#707A8A;--text3:#B7BDC6;--line:#EAECEF;
-  /* Dark trade theme */
-  --dk-bg:#0b0e11;--dk-panel:#14181d;--dk-panel2:#1a1f26;--dk-line:#232a33;
-  --dk-text:#eaecef;--dk-text2:#848e9c;--dk-text3:#5e6673;
-  --dk-green:#0ecb81;--dk-red:#f6465d;--dk-blue:#2f6bff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;height:100%;background:#0b0e11;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Inter",sans-serif;color:var(--text);
   display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden;}
-
-.phone{
-  width:390px;height:844px;max-height:100dvh;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;
-  box-shadow:0 20px 60px rgba(0,0,0,.6);
-}
+.phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);}
 html.is-mobile,html.is-mobile body{background:var(--bg);overflow:hidden;height:100%;}
 html.is-mobile body{display:block;min-height:0;padding:0;margin:0;}
-html.is-mobile .phone{
-  width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;
-  box-shadow:none;border-radius:0;
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
+html.is-mobile .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;
+  box-shadow:none;border-radius:0;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
+html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 @media(max-width:820px){
   body{display:block;min-height:0;overflow:hidden;background:var(--bg);}
   .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;box-shadow:none;border-radius:0;}
 }
 @supports(padding: max(0px)){
-  .phone{padding-left: env(safe-area-inset-left);padding-right: env(safe-area-inset-right);}
-  .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
+  .phone{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
+  .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 }
-
 .screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
 .screen.active{display:flex;}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
 .scroll::-webkit-scrollbar{width:0;}
 
+/* ===== auth (unchanged) ===== */
 .step-progress{display:flex;align-items:center;justify-content:center;
   padding:22px 20px 14px;background:#fff;border-bottom:1px solid var(--line);flex-shrink:0;}
-.step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;
-  flex-shrink:0;position:relative;width:90px;}
-.step-progress .circle{width:38px;height:38px;border-radius:50%;
-  background:#F5F6F8;color:var(--text3);display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;border:2px solid #F5F6F8;transition:.2s;}
+.step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative;width:90px;}
+.step-progress .circle{width:38px;height:38px;border-radius:50%;background:#F5F6F8;color:var(--text3);
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;
+  border:2px solid #F5F6F8;transition:.2s;}
 .step-progress .label{font-size:11.5px;color:var(--text3);font-weight:600;text-align:center;line-height:1.3;}
 .step-progress .step.done .circle{background:var(--green);color:#fff;border-color:var(--green);}
 .step-progress .step.done .label{color:var(--text2);}
 .step-progress .step.active .circle{background:#FEF6E7;color:var(--orange);border-color:var(--orange);}
 .step-progress .step.active .label{color:var(--orange);font-weight:700;}
-.step-progress .line{height:2px;background:#EAECEF;flex:1;max-width:60px;margin:0 -8px;align-self:flex-start;margin-top:18px;}
+.step-progress .line{height:2px;background:#EAECEF;flex:1;max-width:60px;margin:0 -8px;
+  align-self:flex-start;margin-top:18px;}
 .step-progress .line.done{background:var(--green);}
-
 .auth-screen{position:absolute;inset:0;background:#fff;z-index:2000;display:none;flex-direction:column;}
 .auth-screen.active{display:flex;}
 .auth-header{padding:16px 20px 8px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
@@ -95,13 +82,11 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .auth-body{flex:1;overflow-y:auto;padding:20px 22px 40px;}
 .auth-title{font-size:26px;font-weight:800;letter-spacing:-.7px;margin:0 0 6px;color:var(--text);}
 .auth-sub{font-size:13.5px;color:var(--text2);line-height:1.6;margin:0 0 22px;}
-
 .auth-method-toggle{display:flex;background:#F5F6F8;border-radius:10px;padding:4px;margin-bottom:22px;}
 .auth-method-toggle .mt{flex:1;text-align:center;padding:11px;font-size:14px;font-weight:600;
   border-radius:8px;cursor:pointer;color:var(--text2);transition:.15s;}
 .auth-method-toggle .mt.on{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
 .auth-method-toggle .mt.disabled{color:var(--text3);cursor:not-allowed;opacity:.55;}
-
 .auth-field{margin-bottom:16px;}
 .auth-field label{display:block;font-size:13px;color:var(--text);margin-bottom:8px;font-weight:600;}
 .auth-field .wrap{position:relative;}
@@ -114,19 +99,16 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   cursor:pointer;color:var(--text2);}
 .auth-field .err{font-size:11.5px;color:var(--red);margin-top:6px;display:none;}
 .auth-field .err.show{display:block;}
-
 .pw-strength{display:flex;gap:4px;margin-top:8px;}
 .pw-strength .seg{flex:1;height:4px;border-radius:2px;background:#EAECEF;transition:.2s;}
 .pw-strength .seg.on-1{background:var(--red);}
 .pw-strength .seg.on-2{background:#FA8C16;}
 .pw-strength .seg.on-3{background:#F5C542;}
 .pw-strength .seg.on-4{background:var(--green);}
-
 .auth-check{display:flex;align-items:flex-start;gap:10px;margin:16px 0;}
 .auth-check input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
 .auth-check label{font-size:12.5px;color:var(--text2);line-height:1.55;cursor:pointer;}
 .auth-check a{color:var(--green-dk);font-weight:600;}
-
 .auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
   font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
 .auth-submit:hover{background:var(--green-dk);}
@@ -134,9 +116,8 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
 .skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
 .skip-link:hover{color:var(--text);}
-
-.kyc-up{background:#FAFBFC;border:1.5px dashed var(--line);border-radius:12px;
-  padding:22px;text-align:center;cursor:pointer;transition:.15s;}
+.kyc-up{background:#FAFBFC;border:1.5px dashed var(--line);border-radius:12px;padding:22px;
+  text-align:center;cursor:pointer;transition:.15s;}
 .kyc-up:hover{background:#F5F6F8;border-color:var(--text3);}
 .kyc-up .ic{width:40px;height:40px;border-radius:10px;background:#fff;margin:0 auto 10px;
   display:flex;align-items:center;justify-content:center;border:1px solid var(--line);}
@@ -145,7 +126,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
 .kyc-up.has .t{color:var(--green-dk);}
 
-/* ===== NEW KYC page (Screenshot 1) ===== */
+/* ===== new light KYC page ===== */
 .kyc-page{position:absolute;inset:0;background:#fff;z-index:2100;display:none;flex-direction:column;}
 .kyc-page.active{display:flex;}
 .kyc-page .kp-head{display:flex;align-items:center;padding:16px 18px 10px;flex-shrink:0;background:#fff;}
@@ -183,130 +164,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .kp-apply:hover{background:#2f5fe0;}
 .kp-footnote{font-size:12.5px;color:#B7BDC6;text-align:center;padding:14px 0 4px;line-height:1.5;}
 
-/* ===== DARK TRADE screen (Screenshots 2 & 3) ===== */
-.dk-screen{position:absolute;inset:0;background:var(--dk-bg);color:var(--dk-text);
-  display:none;flex-direction:column;overflow:hidden;z-index:10;}
-.dk-screen.active{display:flex;}
-.dk-tabs{display:flex;gap:6px;padding:10px 12px 6px;background:var(--dk-bg);flex-shrink:0;
-  overflow-x:auto;scrollbar-width:none;}
-.dk-tabs::-webkit-scrollbar{display:none;}
-.dk-tab{flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13.5px;font-weight:600;
-  background:transparent;color:var(--dk-text2);cursor:pointer;border:1px solid transparent;
-  white-space:nowrap;transition:.15s;}
-.dk-tab.on{background:var(--dk-blue);color:#fff;}
-.dk-sym-row{display:flex;align-items:center;gap:10px;padding:6px 14px 10px;flex-shrink:0;background:var(--dk-bg);}
-.dk-sym-row .pair{font-size:19px;font-weight:800;letter-spacing:-.3px;color:#fff;}
-.dk-sym-row .tag{font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:3px;
-  background:rgba(47,107,255,.16);color:#6f97ff;letter-spacing:.3px;}
-.dk-sym-row .chg{font-size:14px;font-weight:700;color:var(--dk-green);}
-.dk-sym-row .ico{margin-left:auto;color:var(--dk-text2);font-size:18px;line-height:1;cursor:pointer;}
-.dk-body{flex:1;display:flex;gap:8px;padding:0 10px;overflow:hidden;min-height:0;}
-.dk-ob{width:33%;min-width:0;display:flex;flex-direction:column;font-size:11px;
-  font-variant-numeric:tabular-nums;overflow:hidden;}
-.dk-ob .hd{display:grid;grid-template-columns:1fr 1fr;gap:2px;color:var(--dk-text3);
-  font-size:10px;padding:2px 2px 6px;}
-.dk-ob .hd .r{text-align:right;}
-.dk-ob .col{flex:1;display:flex;flex-direction:column;justify-content:flex-end;gap:1px;min-height:0;overflow:hidden;}
-.dk-ob .col.rev{justify-content:flex-start;}
-.dk-ob .row{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3.5px 2px;align-items:center;}
-.dk-ob .row .p{font-weight:600;}
-.dk-ob .row .q{text-align:right;color:var(--dk-text2);}
-.dk-ob .row.a .p{color:var(--dk-red);}
-.dk-ob .row.b .p{color:var(--dk-green);}
-.dk-ob .mid{text-align:left;padding:6px 2px 4px;}
-.dk-ob .mid .mp{font-size:20px;font-weight:800;color:var(--dk-red);letter-spacing:-.5px;}
-.dk-ob .mid .mq{font-size:10.5px;color:var(--dk-text3);margin-top:1px;}
-.dk-form{flex:1;min-width:0;display:flex;flex-direction:column;overflow-y:auto;padding-bottom:6px;}
-.dk-form::-webkit-scrollbar{width:0;}
-.dk-buysell{display:grid;grid-template-columns:1fr 1fr;background:var(--dk-panel2);
-  border-radius:8px;padding:4px;margin-bottom:10px;}
-.dk-buysell .bs{text-align:center;padding:9px;font-size:14.5px;font-weight:700;
-  border-radius:6px;cursor:pointer;color:var(--dk-text2);transition:.15s;}
-.dk-buysell .bs.on-buy{background:var(--dk-green);color:#04160f;}
-.dk-buysell .bs.on-sell{background:var(--dk-red);color:#fff;}
-.dk-ordertype{display:flex;align-items:center;gap:8px;background:var(--dk-panel2);
-  border-radius:8px;padding:11px 12px;font-size:13.5px;color:var(--dk-text);margin-bottom:9px;cursor:pointer;}
-.dk-ordertype .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--dk-text2);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.dk-ordertype .dot i{width:6px;height:6px;border-radius:50%;background:transparent;}
-.dk-ordertype.on .dot{border-color:var(--dk-blue);}
-.dk-ordertype.on .dot i{background:var(--dk-blue);}
-.dk-input{display:flex;align-items:center;background:var(--dk-panel2);border-radius:8px;
-  padding:12px;font-size:13.5px;margin-bottom:9px;gap:6px;}
-.dk-input input{flex:1;border:none;outline:none;background:transparent;color:var(--dk-text);
-  font-size:14px;font-family:inherit;font-variant-numeric:tabular-nums;min-width:0;}
-.dk-input input::placeholder{color:var(--dk-text3);}
-.dk-input .suf{color:var(--dk-text2);font-size:12.5px;flex-shrink:0;}
-.dk-input .step{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
-  justify-content:center;color:var(--dk-text);font-size:16px;font-weight:600;cursor:pointer;flex-shrink:0;}
-.dk-input .step:active{background:rgba(255,255,255,.06);}
-.dk-pcts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
-.dk-pcts .pc{text-align:center;padding:8px 4px;background:var(--dk-panel2);border-radius:6px;
-  font-size:12px;color:var(--dk-text2);cursor:pointer;font-weight:600;}
-.dk-pcts .pc:active{background:#232a33;}
-.dk-tpsl{display:flex;align-items:center;gap:9px;padding:4px 0 12px;font-size:13px;color:var(--dk-text);}
-.dk-tpsl input{width:16px;height:16px;accent-color:var(--dk-blue);cursor:pointer;}
-.dk-info{display:flex;flex-direction:column;gap:8px;padding:4px 0 14px;font-size:12.5px;}
-.dk-info .r{display:flex;align-items:center;justify-content:space-between;color:var(--dk-text2);}
-.dk-info .r .v{color:var(--dk-text);font-weight:600;font-variant-numeric:tabular-nums;}
-.dk-info .r .plus{width:20px;height:20px;border-radius:50%;background:var(--dk-panel2);
-  display:inline-flex;align-items:center;justify-content:center;color:var(--dk-text2);
-  font-size:14px;font-weight:700;margin-left:6px;cursor:pointer;line-height:1;}
-.dk-action{width:100%;height:48px;border-radius:8px;border:none;font-size:16px;font-weight:700;
-  cursor:pointer;font-family:inherit;margin-bottom:8px;}
-.dk-action.buy{background:var(--dk-green);color:#04160f;}
-.dk-action.sell{background:var(--dk-red);color:#fff;}
-.dk-levbar{display:flex;align-items:center;gap:8px;padding:4px 0 10px;font-size:12.5px;color:var(--dk-text2);}
-.dk-levbar .bar{flex:1;height:6px;border-radius:3px;background:var(--dk-panel2);overflow:hidden;display:flex;}
-.dk-levbar .bar .b{background:var(--dk-green);}
-.dk-levbar .bar .s{background:var(--dk-red);}
-.dk-levbar .lb{color:var(--dk-green);font-weight:700;}
-.dk-levbar .ls{color:var(--dk-red);font-weight:700;}
-.dk-toolbar{display:flex;align-items:center;gap:8px;padding:6px 12px 8px;background:var(--dk-bg);flex-shrink:0;}
-.dk-toolbar .lev{display:flex;align-items:center;gap:6px;background:var(--dk-panel2);
-  padding:8px 10px;border-radius:6px;font-size:12.5px;color:var(--dk-text);cursor:pointer;}
-.dk-toolbar .lev .car{color:var(--dk-text2);font-size:10px;}
-.dk-toolbar .ladder{margin-left:auto;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
-.dk-toolbar .ladder i{display:block;width:20px;height:3px;border-radius:1px;}
-.dk-toolbar .ladder i:nth-child(1){background:var(--dk-red);}
-.dk-toolbar .ladder i:nth-child(2){background:var(--dk-green);}
-.dk-toolbar .ladder i:nth-child(3){background:var(--dk-text2);}
-.dk-subtabs{display:flex;gap:22px;padding:10px 16px 0;background:var(--dk-bg);
-  border-top:1px solid var(--dk-line);flex-shrink:0;}
-.dk-subtabs .st{font-size:14px;color:var(--dk-text2);padding-bottom:10px;cursor:pointer;
-  border-bottom:2px solid transparent;font-weight:600;white-space:nowrap;}
-.dk-subtabs .st.on{color:#fff;border-bottom-color:var(--dk-green);}
-.dk-history{flex:1;overflow-y:auto;background:var(--dk-bg);padding:16px;text-align:center;}
-.dk-history::-webkit-scrollbar{width:0;}
-.dk-history .empty{color:var(--dk-text3);font-size:14px;padding:40px 0;}
-.dk-copy-wrap{padding:12px 14px 20px;overflow-y:auto;flex:1;}
-.dk-copy-wrap::-webkit-scrollbar{width:0;}
-.dk-copy-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.dk-copy-head h3{margin:0;font-size:16px;font-weight:700;color:#fff;}
-.dk-ct{background:var(--dk-panel);border:1px solid var(--dk-line);border-radius:12px;
-  padding:14px;margin-bottom:10px;}
-.dk-ct .top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.dk-ct .av{width:40px;height:40px;border-radius:50%;
-  background:linear-gradient(135deg,#0ecb81,#1890ff);display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:15px;flex-shrink:0;}
-.dk-ct .trader{font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:6px;}
-.dk-ct .trader .v{background:rgba(47,107,255,.18);color:#6f97ff;font-size:9px;padding:1px 6px;
-  border-radius:3px;font-weight:700;}
-.dk-ct .sub{font-size:12px;color:var(--dk-text2);margin-top:3px;}
-.dk-ct .msg{font-size:12.5px;color:var(--dk-text2);line-height:1.55;margin:10px 0;}
-.dk-ct .acts{display:flex;gap:10px;}
-.dk-ct .acts button{flex:1;height:38px;border-radius:8px;border:1px solid var(--dk-line);
-  background:transparent;color:var(--dk-text);font-size:13px;font-weight:600;
-  cursor:pointer;font-family:inherit;}
-.dk-ct .acts button.pri{background:var(--dk-green);color:#04160f;border-color:var(--dk-green);}
-.dk-copy-empty{color:var(--dk-text3);font-size:13.5px;text-align:center;padding:60px 20px;}
-.dk-nav{display:flex;background:#000;border-top:1px solid var(--dk-line);flex-shrink:0;
-  padding-bottom:env(safe-area-inset-bottom);}
-.dk-nav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
-  padding:8px 0 7px;font-size:10.5px;color:var(--dk-text3);cursor:pointer;user-select:none;}
-.dk-nav .nb.on{color:var(--dk-blue);}
-
-/* ===== Light screens (unchanged) ===== */
+/* ===== top bar / home / markets / wallet / assets (unchanged) ===== */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);}
 .avatar{width:34px;height:34px;border-radius:50%;background:#fff;flex-shrink:0;
@@ -321,8 +179,8 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .icon-btn{width:36px;height:36px;border-radius:50%;background:#fff;display:flex;align-items:center;
   justify-content:center;flex-shrink:0;cursor:pointer;border:1px solid rgba(0,0,0,.03);position:relative;}
 .icon-btn:active{background:#f0f0f0;}
-.icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;
-  background:var(--red);border-radius:50%;border:1.5px solid #fff;display:none;}
+.icon-btn .dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--red);
+  border-radius:50%;border:1.5px solid #fff;display:none;}
 .icon-btn .dot.show{display:block;}
 .mode-pill{display:inline-flex;background:#F5F6F8;border-radius:20px;padding:3px;font-size:11px;font-weight:700;}
 .mode-pill .m{padding:4px 12px;border-radius:16px;cursor:pointer;color:var(--text2);transition:.15s;}
@@ -440,84 +298,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
 .asset-row .amount{text-align:right;}
 .asset-row .amount .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;}
 .asset-row .amount .usd{font-size:11px;color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums;}
-.trade-head{display:flex;align-items:center;gap:14px;padding:10px 14px;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
-.trade-head .sym{font-size:17px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer;}
-.trade-head .sym .caret{font-size:10px;color:var(--text3);}
-.trade-head .chg{font-size:12px;font-weight:600;margin-top:1px;}
-.trade-head .acts{margin-left:auto;display:flex;gap:14px;}
-.chart-wrap{background:#fff;margin:0 14px 10px;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative;}
-.tv-slot{width:100%;height:clamp(240px, 38vh, 340px);position:relative;overflow:hidden;transition:height .2s ease;background:#fff;}
-.tv-slot.compact{height:140px;}
-.tv-slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
-.tv-slot canvas{width:100%;height:100%;display:block;}
-.levels-strip{display:none;margin:-6px 14px 8px;padding:6px 12px;background:#fff;
-  border:1px solid var(--line);border-radius:8px;font-family:'Courier New',monospace;font-size:11px;font-variant-numeric:tabular-nums;}
-.levels-strip.on{display:block;}
-.levels-strip .row{display:flex;align-items:center;gap:8px;height:16px;}
-.levels-strip .dash{flex:0 0 30px;border-top:2px dashed;}
-.levels-strip .dash.entry{border-color:var(--text2);}
-.levels-strip .dash.sl{border-color:var(--red);}
-.levels-strip .dash.tp{border-color:var(--green);}
-.levels-strip .lbl{color:var(--text2);font-family:inherit;}
-.levels-strip .val{margin-left:auto;font-weight:700;}
-.buysell{display:flex;padding:0 14px;gap:10px;margin-top:8px;flex-shrink:0;}
-.buysell .bs{flex:1;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:700;background:#fff;color:var(--text2);border:1px solid var(--line);cursor:pointer;}
-.buysell .bs.buy.on{background:var(--green);color:#fff;border-color:var(--green);}
-.buysell .bs.sell.on{background:var(--red);color:#fff;border-color:var(--red);}
-.otype-tabs{display:flex;padding:8px 14px 0;flex-shrink:0;}
-.otype-tabs .ot{flex:1;text-align:center;padding:8px;font-size:12px;font-weight:600;
-  color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;}
-.otype-tabs .ot.on{color:var(--green-dk);border-bottom-color:var(--green);}
-.trade-body{display:flex;gap:10px;padding:12px 14px;align-items:flex-start;}
-.order-form{flex:1.25;min-width:0;}
-.order-form .row{display:flex;align-items:center;background:#fff;border:1px solid var(--line);
-  border-radius:8px;height:40px;padding:0 10px;margin-bottom:9px;font-size:13px;}
-.order-form .row .lbl{color:var(--text2);flex:1;}
-.order-form .row .suf{color:var(--text2);font-size:12px;}
-.order-form .row input{border:none;outline:none;font-size:14px;width:100%;background:transparent;
-  font-variant-numeric:tabular-nums;color:var(--text);}
-.order-form .row input::placeholder{color:var(--text3);}
-.order-form .row .tag2{font-size:10px;background:var(--green-lt);color:var(--green-dk);
-  padding:2px 6px;border-radius:4px;font-weight:700;margin-right:6px;}
-.order-form .row .tag2.tp{background:var(--blue-lt);color:var(--blue);}
-.est{font-size:12px;color:var(--text2);display:flex;justify-content:space-between;margin:8px 0 4px;}
-.est b{color:var(--text);font-weight:600;}
-.order-book{flex:1;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
-.ob-head{display:flex;justify-content:space-between;color:var(--text3);margin-bottom:5px;font-size:10px;}
-.ob-row{display:flex;justify-content:space-between;height:19px;align-items:center;position:relative;}
-.ob-row .bg{position:absolute;top:0;bottom:0;right:0;opacity:.09;}
-.ob-row span{position:relative;z-index:1;}
-.ob-mid{text-align:center;padding:6px 0;font-size:16px;font-weight:700;color:var(--green);}
-.ob-mid small{display:block;font-size:10px;color:var(--text3);font-weight:400;}
-.action-btn{display:block;width:calc(100% - 28px);margin:6px 14px;height:48px;border:none;
-  border-radius:24px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;}
-.action-btn.buy{background:var(--green);}
-.action-btn.sell{background:var(--red);}
-.live-trade{background:#fff;border-radius:10px;border:1px solid var(--line);padding:10px 12px;margin:8px 14px;}
-.live-trade .lt-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.live-trade .lt-head .pulse{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulseDot 1.2s infinite;}
-@keyframes pulseDot{0%,100%{opacity:1;}50%{opacity:.3;}}
-.live-trade .lt-head .t{font-size:12.5px;font-weight:700;flex:1;line-height:1.2;}
-.live-trade .lt-head .side{font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;background:var(--green-lt);color:var(--green-dk);}
-.live-trade .lt-head .demo-tag{font-size:9px;padding:2px 5px;border-radius:3px;font-weight:800;background:var(--orange-lt);color:var(--orange);letter-spacing:.4px;}
-.live-trade .lt-row{display:flex;align-items:center;justify-content:space-between;font-size:11.5px;margin-top:4px;}
-.live-trade .lt-row .lbl{color:var(--text2);}
-.live-trade .lt-row .val{font-weight:800;font-variant-numeric:tabular-nums;}
-.live-trade .lt-kpis{display:flex;gap:6px;margin-top:8px;}
-.live-trade .lt-kpis .kpi{flex:1;background:#F5F6F8;border-radius:6px;padding:5px 8px;font-size:10px;}
-.live-trade .lt-kpis .kpi .k{color:var(--text2);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;}
-.live-trade .lt-kpis .kpi .v{font-size:11.5px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:1px;}
-.live-trade .lt-close{margin-top:8px;width:100%;height:34px;border-radius:8px;border:none;
-  background:var(--red);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
-.ins-group{padding:6px 0 10px;}
-.ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;padding:8px 4px 6px;font-weight:700;}
-.ins-row{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;}
-.ins-row:last-child{border-bottom:none;}
-.ins-row .sym{font-size:14px;font-weight:700;}
-.ins-row .nm{font-size:11px;color:var(--text2);margin-top:2px;}
-.ins-row .px{text-align:right;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
-.ins-row .pc{font-size:11px;font-weight:600;text-align:right;margin-top:2px;}
 .asset-hero{background:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);padding:8px 20px 18px;flex-shrink:0;}
 .asset-hero .lbl{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .asset-hero .big{font-size:28px;font-weight:800;letter-spacing:-1px;margin:6px 0 4px;font-variant-numeric:tabular-nums;}
@@ -595,12 +375,130 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
+
+/* ============ NEW: light Trade screen (matches screenshot) ============ */
+.tr-tabs{display:flex;gap:0;padding:6px 12px 0;background:#fff;flex-shrink:0;border-bottom:1px solid var(--line);}
+.tr-tab{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;color:var(--text2);
+  cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap;}
+.tr-tab.on{color:var(--green-dk);border-bottom-color:var(--green);}
+
+.tr-head{display:flex;align-items:center;gap:10px;padding:12px 14px 10px;background:#fff;flex-shrink:0;
+  border-bottom:1px solid var(--line);}
+.tr-head .pair{font-size:19px;font-weight:800;color:var(--text);letter-spacing:-.3px;}
+.tr-head .tag{font-size:10px;font-weight:700;padding:2px 7px;border-radius:3px;
+  background:var(--green-lt);color:var(--green-dk);letter-spacing:.3px;}
+.tr-head .chg{font-size:14px;font-weight:700;}
+.tr-head .right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.tr-head .candle{width:34px;height:34px;border-radius:50%;background:#F5F6F8;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;}
+.tr-head .candle:active{background:#e9ecef;}
+.tr-head .switch{width:34px;height:34px;border-radius:50%;background:#F5F6F8;display:flex;
+  align-items:center;justify-content:center;cursor:pointer;}
+
+/* body split */
+.tr-body{display:flex;gap:8px;padding:10px 12px 0;align-items:flex-start;flex-shrink:0;}
+
+/* order book (left) */
+.tr-ob{width:33%;min-width:0;font-size:11px;font-variant-numeric:tabular-nums;}
+.tr-ob .hd{display:grid;grid-template-columns:1fr 1fr;gap:2px;color:var(--text3);font-size:10px;padding:0 2px 6px;}
+.tr-ob .hd .r{text-align:right;}
+.tr-ob .row{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3.5px 2px;align-items:center;}
+.tr-ob .row .p{font-weight:600;}
+.tr-ob .row .q{text-align:right;color:var(--text2);}
+.tr-ob .row.a .p{color:var(--red);}
+.tr-ob .row.b .p{color:var(--green);}
+.tr-ob .mid{padding:7px 2px;text-align:left;}
+.tr-ob .mid .mp{font-size:20px;font-weight:800;letter-spacing:-.5px;}
+.tr-ob .mid .mq{font-size:10.5px;color:var(--text3);margin-top:1px;}
+
+/* form (right) */
+.tr-form{flex:1;min-width:0;}
+.tr-buysell{display:flex;background:#F5F6F8;border-radius:8px;padding:4px;margin-bottom:10px;}
+.tr-buysell .bs{flex:1;text-align:center;padding:9px;font-size:14.5px;font-weight:700;
+  border-radius:6px;cursor:pointer;color:var(--text2);}
+.tr-buysell .bs.on-buy{background:var(--green);color:#fff;}
+.tr-buysell .bs.on-sell{background:var(--red);color:#fff;}
+
+.tr-otype{display:flex;align-items:center;gap:8px;background:#F5F6F8;border-radius:8px;
+  padding:10px 12px;font-size:13.5px;color:var(--text);margin-bottom:9px;cursor:pointer;}
+.tr-otype .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--text3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.tr-otype .dot i{width:6px;height:6px;border-radius:50%;background:transparent;}
+.tr-otype.on .dot{border-color:var(--green);}
+.tr-otype.on .dot i{background:var(--green);}
+
+.tr-input{display:flex;align-items:center;background:#F5F6F8;border-radius:8px;
+  padding:11px 12px;font-size:13.5px;margin-bottom:9px;gap:6px;}
+.tr-input input{flex:1;border:none;outline:none;background:transparent;color:var(--text);
+  font-size:14px;font-family:inherit;font-variant-numeric:tabular-nums;min-width:0;}
+.tr-input input::placeholder{color:var(--text3);}
+.tr-input .suf{color:var(--text2);font-size:12.5px;flex-shrink:0;}
+.tr-input .step{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;
+  justify-content:center;color:var(--text);font-size:16px;font-weight:600;cursor:pointer;flex-shrink:0;}
+.tr-input .step:active{background:#e9ecef;}
+
+.tr-pcts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;}
+.tr-pcts .pc{text-align:center;padding:8px 4px;background:#F5F6F8;border-radius:6px;
+  font-size:12px;color:var(--text2);cursor:pointer;font-weight:600;}
+.tr-pcts .pc:active{background:#e9ecef;}
+
+.tr-tpsl{display:flex;align-items:center;gap:9px;padding:2px 0 10px;font-size:12.5px;color:var(--text2);}
+.tr-tpsl input{width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
+
+.tr-info{display:flex;flex-direction:column;gap:7px;padding:0 0 12px;font-size:12px;}
+.tr-info .r{display:flex;align-items:center;justify-content:space-between;color:var(--text2);}
+.tr-info .r .v{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;}
+.tr-info .r .plus{width:18px;height:18px;border-radius:50%;background:var(--green);
+  display:inline-flex;align-items:center;justify-content:center;color:#fff;
+  font-size:12px;font-weight:700;margin-left:5px;cursor:pointer;line-height:1;}
+
+.tr-action{width:100%;height:48px;border-radius:8px;border:none;font-size:16px;font-weight:700;
+  cursor:pointer;font-family:inherit;margin-bottom:8px;color:#fff;}
+.tr-action.buy{background:var(--green);}
+.tr-action.sell{background:var(--red);}
+
+/* toolbar under form */
+.tr-toolbar{display:flex;align-items:center;gap:8px;padding:6px 12px 10px;background:var(--bg);flex-shrink:0;}
+.tr-toolbar .lev{display:flex;align-items:center;gap:6px;background:#F5F6F8;
+  padding:8px 10px;border-radius:6px;font-size:12.5px;color:var(--text);cursor:pointer;}
+.tr-toolbar .lev .car{color:var(--text2);font-size:10px;}
+.tr-toolbar .ladder{margin-left:auto;display:flex;flex-direction:column;gap:2px;cursor:pointer;}
+.tr-toolbar .ladder i{display:block;width:20px;height:3px;border-radius:1px;}
+.tr-toolbar .ladder i:nth-child(1){background:var(--red);}
+.tr-toolbar .ladder i:nth-child(2){background:var(--green);}
+.tr-toolbar .ladder i:nth-child(3){background:var(--text2);}
+
+/* sub tabs: Open orders / Order history / Assets */
+.tr-subtabs{display:flex;gap:20px;padding:10px 16px 0;background:#fff;flex-shrink:0;
+  border-top:1px solid var(--line);}
+.tr-subtabs .st{font-size:13.5px;color:var(--text2);padding:0 0 10px;cursor:pointer;
+  border-bottom:2px solid transparent;font-weight:600;white-space:nowrap;}
+.tr-subtabs .st.on{color:var(--green-dk);border-bottom-color:var(--green);}
+.tr-subtabs .ico{margin-left:auto;color:var(--text2);font-size:14px;padding-bottom:10px;cursor:pointer;}
+
+.tr-history{flex:1;overflow-y:auto;background:var(--bg);padding:18px;text-align:center;}
+.tr-history::-webkit-scrollbar{width:0;}
+.tr-history .empty{color:var(--text3);font-size:13px;padding:40px 0;}
+
+/* chart overlay */
+.chart-ov{position:absolute;inset:0;background:#fff;z-index:2200;display:none;flex-direction:column;}
+.chart-ov.active{display:flex;}
+.chart-ov .head{display:flex;align-items:center;gap:10px;padding:12px 14px 10px;border-bottom:1px solid var(--line);flex-shrink:0;}
+.chart-ov .head .x{width:34px;height:34px;border-radius:50%;background:#F5F6F8;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:var(--text);}
+.chart-ov .head .pair{font-size:17px;font-weight:800;}
+.chart-ov .head .chg{font-size:13px;font-weight:700;}
+.chart-ov .head .pick{margin-left:auto;font-size:12px;font-weight:700;color:var(--green-dk);
+  cursor:pointer;background:var(--green-lt);padding:7px 11px;border-radius:16px;}
+.chart-ov .slot{flex:1;position:relative;background:#fff;}
+.chart-ov .slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
+.chart-ov .slot canvas{width:100%;height:100%;display:block;}
 </style>
 </head>
 <body>
 <div class="phone">
 
-<!-- STEP 1 — REGISTRATION -->
+<!-- STEP 1 -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
@@ -642,7 +540,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- STEP 2 — KYC (from registration) -->
+<!-- STEP 2 KYC -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -701,7 +599,7 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- NEW KYC PAGE (Screenshot 1) — opened from Profile → Identity Verification -->
+<!-- New light KYC page -->
 <section class="kyc-page" id="kycPage">
   <div class="kp-head">
     <div class="back" onclick="closeKycPage()">‹</div>
@@ -713,19 +611,16 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
       <span id="kpNationality">United States</span>
       <span class="caret">▼</span>
     </div>
-
     <div class="kp-label">Full legal name</div>
     <div class="kp-field">
       <input id="kpName" type="text" placeholder="Please enter your real name">
       <div class="clr" onclick="clearKp('kpName')">✕</div>
     </div>
-
     <div class="kp-label">Document/passport number</div>
     <div class="kp-field">
       <input id="kpDocNum" type="text" placeholder="Please enter your ID/passport number">
       <div class="clr" onclick="clearKp('kpDocNum')">✕</div>
     </div>
-
     <div class="kp-label">ID photo/upload passport</div>
     <div class="kp-uploads">
       <div class="kp-up" id="kpUpFront" onclick="document.getElementById('kpFront').click()">
@@ -743,7 +638,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
     </div>
     <input type="file" id="kpFront" accept="image/*" style="display:none;" onchange="handleKpFile('front', this)">
     <input type="file" id="kpBack"  accept="image/*" style="display:none;" onchange="handleKpFile('back', this)">
-
     <div class="kp-example-title">Shooting example</div>
     <div class="kp-examples">
       <div class="ex">
@@ -771,7 +665,6 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
         </svg>
       </div>
     </div>
-
     <button class="kp-apply" onclick="submitKycPage()">Apply for certification</button>
     <div class="kp-footnote">Failed to upload the ID photo, please contact customer service</div>
   </div>
@@ -911,120 +804,107 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ===================== NEW DARK TRADE SCREEN ===================== -->
-<section class="screen dk-screen" id="s-trade">
-  <!-- Top tabs -->
-  <div class="dk-tabs" id="dkTabs">
-    <div class="dk-tab" data-dk="perpetual">Perpetual</div>
-    <div class="dk-tab" data-dk="delivery">Delivery contract</div>
-    <div class="dk-tab on" data-dk="spot">Spot Trading</div>
-    <div class="dk-tab" data-dk="copy">Copy Trading</div>
+<!-- TRADE (light, green/white — new) -->
+<section class="screen" id="s-trade">
+  <!-- Top tabs: Perpetual / Delivery contract / Spot Trading -->
+  <div class="tr-tabs" id="trTabs">
+    <div class="tr-tab" data-tr="perpetual">Perpetual</div>
+    <div class="tr-tab" data-tr="delivery">Delivery contract</div>
+    <div class="tr-tab on" data-tr="spot">Spot Trading</div>
   </div>
 
-  <!-- Perpetual / Delivery / Spot content -->
-  <div id="dkMarket">
-    <div class="dk-sym-row">
-      <span class="pair" id="dkPair">BTC/USDT</span>
-      <span class="tag" id="dkTag">Perpetual</span>
-      <span class="chg" id="dkChg">+1.17%</span>
-      <span class="ico" onclick="openInstrumentPicker()">⇅</span>
-    </div>
-
-    <div class="dk-body">
-      <!-- Order book -->
-      <div class="dk-ob">
-        <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
-        <div class="col" id="dkAsks"></div>
-        <div class="mid">
-          <div class="mp" id="dkMid">76650.53</div>
-          <div class="mq" id="dkMidSub">≈76650.53</div>
-        </div>
-        <div class="col rev" id="dkBids"></div>
+  <!-- Symbol row with candle icon -->
+  <div class="tr-head">
+    <span class="pair" id="trPair">BTC/USDT</span>
+    <span class="tag" id="trTag">Perpetual</span>
+    <span class="chg" id="trChg">+0.00%</span>
+    <div class="right">
+      <div class="candle" onclick="openChart()" title="Chart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M7 4v3M7 17v3M17 4v3M17 17v3" stroke="#1E2329" stroke-width="1.7" stroke-linecap="round"/>
+          <rect x="5" y="7" width="4" height="10" rx="1" stroke="#1E2329" stroke-width="1.7"/>
+          <rect x="15" y="7" width="4" height="10" rx="1" stroke="#1E2329" stroke-width="1.7"/>
+        </svg>
       </div>
-
-      <!-- Order form -->
-      <div class="dk-form">
-        <div class="dk-buysell" id="dkBuySell">
-          <div class="bs on-buy" data-side="buy" onclick="dkSetSide('buy')">Buy</div>
-          <div class="bs" data-side="sell" onclick="dkSetSide('sell')">Sell</div>
-        </div>
-
-        <div class="dk-ordertype on" id="dkOTLimit" onclick="dkSetOT('limit')">
-          <span class="dot"><i></i></span> Limit
-        </div>
-        <div class="dk-ordertype" id="dkOTMarket" onclick="dkSetOT('market')">
-          <span class="dot"><i></i></span> Market
-        </div>
-
-        <div class="dk-input" id="dkPriceRow">
-          <input id="dkPrice" placeholder="Price(USDT)" inputmode="decimal">
-          <span class="suf">USDT</span>
-        </div>
-
-        <div class="dk-input">
-          <div class="step" onclick="dkStep('dkQty',-1)">−</div>
-          <input id="dkQty" placeholder="Number(BTC)" inputmode="decimal">
-          <div class="step" onclick="dkStep('dkQty',1)">+</div>
-        </div>
-
-        <div class="dk-pcts">
-          <div class="pc" onclick="dkPct(25)">25%</div>
-          <div class="pc" onclick="dkPct(50)">50%</div>
-          <div class="pc" onclick="dkPct(75)">75%</div>
-          <div class="pc" onclick="dkPct(100)">100%</div>
-        </div>
-
-        <div class="dk-input">
-          <div class="step" onclick="dkStep('dkAmt',-1)">−</div>
-          <input id="dkAmt" placeholder="Number(USDT)" inputmode="decimal">
-          <div class="step" onclick="dkStep('dkAmt',1)">+</div>
-        </div>
-
-        <div class="dk-tpsl">
-          <input type="checkbox" id="dkTpSl">
-          <label for="dkTpSl">Take Profit and Stop Loss</label>
-        </div>
-
-        <div class="dk-info">
-          <div class="r"><span>Available balance</span><span class="v">0 USDT <span class="plus">+</span></span></div>
-          <div class="r"><span>Buy</span><span class="v" id="dkInfoBuy">0 USDT</span></div>
-          <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
-        </div>
-
-        <button class="dk-action buy" id="dkBtn" onclick="dkPlace()">Buy</button>
+      <div class="switch" onclick="openInstrumentPicker()" title="Switch pair">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path d="M4 8h13l-3-3M20 16H7l3 3" stroke="#1E2329" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
-    </div>
-
-    <!-- Perpetual leverage bar (only shown for perpetual) -->
-    <div class="dk-levbar" id="dkLevBar" style="display:none;padding:6px 14px;">
-      <span class="lb">B 50%</span>
-      <span class="bar"><span class="b" style="width:50%"></span><span class="s" style="width:50%"></span></span>
-      <span class="ls">50% S</span>
-    </div>
-
-    <div class="dk-toolbar">
-      <div class="lev" id="dkLevBtn">Cross <span class="car">▼</span></div>
-      <div class="ladder"><i></i><i></i><i></i></div>
     </div>
   </div>
 
-  <!-- Copy Trading content -->
-  <div id="dkCopy" style="display:none;flex:1;flex-direction:column;min-height:0;">
-    <div class="dk-copy-wrap" id="dkCopyList"></div>
+  <!-- body: order book + form -->
+  <div class="tr-body">
+    <div class="tr-ob">
+      <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
+      <div id="trAsks"></div>
+      <div class="mid">
+        <div class="mp" id="trMid">—</div>
+        <div class="mq" id="trMidSub">≈ —</div>
+      </div>
+      <div id="trBids"></div>
+    </div>
+    <div class="tr-form">
+      <div class="tr-buysell" id="trBuySell">
+        <div class="bs on-buy" data-side="buy" onclick="trSetSide('buy')">Buy</div>
+        <div class="bs" data-side="sell" onclick="trSetSide('sell')">Sell</div>
+      </div>
+      <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')">
+        <span class="dot"><i></i></span> Limit
+      </div>
+      <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')">
+        <span class="dot"><i></i></span> Market
+      </div>
+      <div class="tr-input" id="trPriceRow">
+        <input id="trPrice" placeholder="Price(USDT)" inputmode="decimal">
+        <span class="suf">USDT</span>
+      </div>
+      <div class="tr-input">
+        <div class="step" onclick="trStep('trQty',-1)">−</div>
+        <input id="trQty" placeholder="Number(BTC)" inputmode="decimal">
+        <div class="step" onclick="trStep('trQty',1)">+</div>
+      </div>
+      <div class="tr-pcts">
+        <div class="pc" onclick="trPct(25)">25%</div>
+        <div class="pc" onclick="trPct(50)">50%</div>
+        <div class="pc" onclick="trPct(75)">75%</div>
+        <div class="pc" onclick="trPct(100)">100%</div>
+      </div>
+      <div class="tr-input">
+        <div class="step" onclick="trStep('trAmt',-1)">−</div>
+        <input id="trAmt" placeholder="Number(USDT)" inputmode="decimal">
+        <div class="step" onclick="trStep('trAmt',1)">+</div>
+      </div>
+      <div class="tr-tpsl">
+        <input type="checkbox" id="trTpSl">
+        <label for="trTpSl">Take Profit and Stop Loss</label>
+      </div>
+      <div class="tr-info">
+        <div class="r"><span>Available balance</span><span class="v"><span id="trAvail">0</span> USDT <span class="plus" onclick="openDeposit('deposit')">+</span></span></div>
+        <div class="r"><span>Buy</span><span class="v" id="trInfoBuy">0 USDT</span></div>
+        <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
+      </div>
+      <button class="tr-action buy" id="trBtn" onclick="trPlace()">Buy</button>
+    </div>
+  </div>
+
+  <div class="tr-toolbar">
+    <div class="lev" id="trLevBtn">Cross <span class="car">▼</span></div>
+    <div class="ladder"><i></i><i></i><i></i></div>
   </div>
 
   <!-- Subtabs -->
-  <div class="dk-subtabs" id="dkSubtabs">
-    <div class="st on" data-st="open">Open orders(<span id="dkOpenCount">0</span>)</div>
+  <div class="tr-subtabs" id="trSubtabs">
+    <div class="st on" data-st="open">Open orders(<span id="trOpenCount">0</span>)</div>
     <div class="st" data-st="history">Order history</div>
     <div class="st" data-st="assets">Assets</div>
-    <div class="st" data-st="copy" id="dkCopyTab" style="display:none;">Copy signals</div>
-    <div style="margin-left:auto;color:var(--dk-text2);font-size:16px;cursor:pointer;">📄</div>
+    <div class="ico" onclick="openTxHistory()">📄</div>
   </div>
 
-  <div class="dk-history" id="dkHistory"><div class="empty">No orders yet</div></div>
+  <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
 
-  <nav class="dk-nav" id="dkNav"></nav>
+  <nav class="bottomnav" data-nav></nav>
 </section>
 
 <!-- WALLET -->
@@ -1098,19 +978,19 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- NEWS OVERLAY -->
+<!-- NEWS overlay -->
 <div class="overlay" id="newsPanel">
   <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- COPY TRADING OVERLAY (kept for existing bell icon) -->
+<!-- COPY TRADING overlay -->
 <div class="overlay" id="copyPanel">
   <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
   <div class="scroll" id="copyList" style="padding:0 0 20px;"></div>
 </div>
 
-<!-- TRANSACTION HISTORY OVERLAY -->
+<!-- TX HISTORY overlay -->
 <div class="overlay" id="txPanel">
   <div class="ov-head"><div class="x" onclick="closeTxHistory()">✕</div><div class="title">Transaction History</div></div>
   <div class="scroll" id="txList" style="padding:0 14px 20px;"></div>
@@ -1124,9 +1004,19 @@ html.is-mobile .bottomnav{padding-bottom: env(safe-area-inset-bottom);}
   </div>
 </div>
 
+<!-- CHART overlay -->
+<section class="chart-ov" id="chartOv">
+  <div class="head">
+    <div class="x" onclick="closeChart()">←</div>
+    <span class="pair" id="chartPair">BTC/USDT</span>
+    <span class="chg" id="chartChg">+0.00%</span>
+    <span class="pick" onclick="openInstrumentPicker()">Change</span>
+  </div>
+  <div class="slot" id="chartSlot"></div>
+</section>
+
 <div id="toast"></div>
 
-<!-- INSTALL BANNER -->
 <div id="installBanner" style="display:none; position:fixed; bottom:80px; left:14px; right:14px;
   background:#1E2329; color:#fff; border-radius:12px; padding:12px 14px; z-index:9999;
   box-shadow:0 8px 24px rgba(0,0,0,.4); align-items:center; gap:12px;">
@@ -1191,8 +1081,8 @@ function setMode(mode){
   renderWalletScreen();
   renderAccounts();
   renderLiveTradeCard();
-  renderTradingViewChart();
   updateModeUI();
+  renderTradeForm();
   toast(mode === 'demo' ? 'Switched to Demo mode' : 'Switched to Real mode');
 }
 function updateModeUI(){
@@ -1320,15 +1210,12 @@ function renderCopyTrades(){
 function dismissCopy(id){
   saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
   renderCopyTrades();
-  renderDkCopyList();
   updateNotifDot();
 }
 function updateNotifDot(){
   const dot = document.getElementById('notifDot');
   if(!dot) return;
   dot.classList.toggle('show', getCopyTrades().length > 0);
-  const c = document.getElementById('dkOpenCount');
-  if(c) c.textContent = getCopyTrades().length ? getCopyTrades().length : 0;
 }
 function openCopyConfirm(alertId){
   if(!currentUser){ openAuth('register'); return; }
@@ -1386,58 +1273,15 @@ function confirmCopyTrade(alertId){
   dismissCopy(ct.id);
   closeGeneric();
   go('s-trade');
-  dkSetSymbol(ct.sym);
+  trSetSymbol(ct.sym);
   renderLiveTradeCard();
   applyUserToUI();
   toast('Trade opened — watching live');
 }
 
 function renderLiveTradeCard(){
-  const slot = document.getElementById('liveTradeSlot');
-  const strip = document.getElementById('levelsStrip');
-  const chart = document.querySelector('.tv-slot');
-  if(!slot) return;
-  const pos = getMyPosition();
-  if(!pos || pos.status !== 'open'){
-    slot.innerHTML = '';
-    if(strip) strip.classList.remove('on');
-    if(chart) chart.classList.remove('compact');
-    return;
-  }
-  const m = findMarket(pos.sym) || {price:pos.entry};
-  const cur = m.price;
-  const pnl = (cur - pos.entry) * pos.qty;
-  const pnlPct = ((cur - pos.entry) / pos.entry) * 100;
-  const pnlCls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-  const pnlSign = pnl >= 0 ? '+' : '';
-  const isDemo = (pos.mode || 'real') === 'demo';
-  slot.innerHTML = `
-    <div class="live-trade">
-      <div class="lt-head">
-        <div class="pulse"></div>
-        <div class="t">Live · ${pos.traderName}</div>
-        ${isDemo ? '<div class="demo-tag">DEMO</div>' : ''}
-        <div class="side">LONG</div>
-      </div>
-      <div class="lt-row">
-        <span class="lbl">${pos.sym}/USDT · ${pos.qty.toFixed(6)}</span>
-        <span class="val" style="color:${pnlCls};">${pnlSign}$${pnl.toFixed(2)} (${pnlSign}${pnlPct.toFixed(2)}%)</span>
-      </div>
-      <div class="lt-kpis">
-        <div class="kpi"><div class="k">Entry</div><div class="v">${fmt(pos.entry)}</div></div>
-        <div class="kpi"><div class="k">SL</div><div class="v" style="color:var(--red);">${fmt(pos.slPrice)}</div></div>
-        <div class="kpi"><div class="k">TP</div><div class="v" style="color:var(--green);">${fmt(pos.tpPrice)}</div></div>
-      </div>
-      <button class="lt-close" onclick="closePosition('manual')">Close Position</button>
-    </div>
-  `;
-  if(strip){
-    document.getElementById('lvlEntry').textContent = fmt(pos.entry);
-    document.getElementById('lvlSL').textContent = fmt(pos.slPrice);
-    document.getElementById('lvlTP').textContent = fmt(pos.tpPrice);
-    strip.classList.add('on');
-  }
-  if(chart) chart.classList.add('compact');
+  // (Live-trade info card is shown via the Trade tab Assets subtab)
+  renderTradeForm();
 }
 function checkSlTp(){
   const pos = getMyPosition();
@@ -1607,11 +1451,9 @@ function renderAllPrices(){
   renderHomePulse();
   renderHomeList();
   renderMarketsForClass();
-  updateSpotHeader();
+  renderTrOrderBook();
+  renderTrHeader();
   refreshNewsStrip();
-  renderLiveTradeCard();
-  renderDkOrderBook();
-  renderDkHeader();
   checkSlTp();
 }
 setInterval(renderAllPrices, 1500);
@@ -1635,7 +1477,6 @@ function openAuth(mode){
 }
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
 function backToLanding(){ window.location.href = '/'; }
-function switchAuth(mode){ openAuth(mode); }
 function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
 function checkUsername(){
   const v = document.getElementById('suUsername').value.trim();
@@ -1750,18 +1591,16 @@ function skipKycStep2(){
   go('s-home');
 }
 
-/* ===== NEW KYC PAGE (Screenshot 1) ===== */
+/* new light KYC page (Screenshot 1) */
 let kpUploads = {front:null, back:null};
 function openKycPage(){
   if(!currentUser){ openAuth('register'); return; }
-  // Prefill from existing data
   if(currentUser.kycData){
     const kd = currentUser.kycData;
     const nn = document.getElementById('kpName'); if(nn) nn.value = kd.fullName || '';
     const dn = document.getElementById('kpDocNum'); if(dn) dn.value = kd.idNumber || '';
     const nat = document.getElementById('kpNationality'); if(nat) nat.textContent = kd.country || 'United States';
   } else {
-    // Prefill with username as a sensible default
     const nn = document.getElementById('kpName'); if(nn) nn.value = currentUser.username || '';
   }
   document.getElementById('kycPage').classList.add('active');
@@ -1880,6 +1719,7 @@ function applyUserToUI(){
   updateNotifDot();
   updateKycBadge();
   updateModeUI();
+  renderTradeForm();
 }
 
 function getMyAddress(){
@@ -1959,7 +1799,7 @@ function drawQR(text, canvas){
   }
 }
 
-/* ===== Bottom nav ===== */
+/* ====== bottom nav ====== */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
   {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
@@ -1974,32 +1814,14 @@ function buildNav(el, active){
 document.querySelectorAll('[data-nav]').forEach(nav => buildNav(nav, nav.closest('.screen').id));
 buildNav(document.getElementById('homeNav'), 's-home');
 
-/* Dark bottom nav (home / market / trade / financial / funds) */
-const DK_NAV = [
-  {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
-  {id:'s-markets', label:'Market', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
-  {id:'s-trade', label:'Trade', icon:'M12 4v16M6 9l6-5 6 5'},
-  {id:'s-wallet', label:'Financial', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
-  {id:'s-assets', label:'Funds', icon:'M3 7h18v12H3zM3 11h18'}
-];
-function buildDkNav(active){
-  const el = document.getElementById('dkNav');
-  if(!el) return;
-  el.innerHTML = DK_NAV.map(n => `<div class="nb ${n.id===active?'on':''}" onclick="go('${n.id}')">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="${n.icon}" stroke="${n.id===active?'#2f6bff':'#848e9c'}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span>${n.label}</span></div>`).join('');
-}
-buildDkNav('s-trade');
-
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id===id));
   document.querySelectorAll('[data-nav]').forEach(nav => { const s = nav.closest('.screen'); if(s) buildNav(nav, s.id); });
   buildNav(document.getElementById('homeNav'), id);
-  buildDkNav(id);
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-wallet') renderWalletScreen();
-  if(id === 's-trade'){ renderDkOrderBook(); renderDkHeader(); renderDkCopyList(); }
+  if(id === 's-trade'){ renderTrOrderBook(); renderTrHeader(); renderTradeForm(); }
 }
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
 function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
@@ -2040,7 +1862,7 @@ function renderHomePulse(){
 function renderHomeList(){
   document.getElementById('homeList').innerHTML = ['BTC','ETH','SOL','XRP','BNB'].map(s => {
     const m = findMarket(s);
-    return `<div class="trow" onclick="go('s-trade');dkSetSymbol('${s}')">
+    return `<div class="trow" onclick="go('s-trade');trSetSymbol('${s}')">
       <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(s,22)}<span>${s}<small>${m.name}</small></span></div>
       <div class="px" style="grid-column:2/4">${fmt(m.price)}</div>
       <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
@@ -2067,10 +1889,7 @@ function renderMarketsForClass(){
     </div>
   `).join('');
 }
-function openInstrumentFromMarket(sym){
-  go('s-trade');
-  dkSetSymbol(sym);
-}
+function openInstrumentFromMarket(sym){ go('s-trade'); trSetSymbol(sym); }
 const acb = document.getElementById('assetClassBar');
 if(acb) acb.addEventListener('click', e => {
   const p = e.target.closest('.ac-pill'); if(!p) return;
@@ -2080,193 +1899,303 @@ if(acb) acb.addEventListener('click', e => {
   renderMarketsForClass();
 });
 
-/* ================= DARK TRADE logic ================= */
-let dkSymbol = 'BTC';
-let dkSide = 'buy';
-let dkOrderType = 'limit';
-let dkTab = 'spot'; // perpetual | delivery | spot | copy
+/* ================== TRADE (light, new) ================== */
+let trSymbol = 'BTC';
+let trSide = 'buy';
+let trOrderType = 'limit';
+let trTab = 'spot';
 
-function dkSetSymbol(sym){
-  dkSymbol = sym;
+function trSetSymbol(sym){
+  trSymbol = sym;
   const m = findMarket(sym); if(!m) return;
-  document.getElementById('dkPair').textContent = sym + '/USDT';
-  const priceInput = document.getElementById('dkPrice');
-  if(priceInput) priceInput.value = fmt(m.price);
-  renderDkHeader();
-  renderDkOrderBook();
+  const pairEl = document.getElementById('trPair'); if(pairEl) pairEl.textContent = sym + '/USDT';
+  const priceInput = document.getElementById('trPrice'); if(priceInput) priceInput.value = fmt(m.price);
+  renderTrHeader();
+  renderTrOrderBook();
+  renderTradeForm();
 }
-function renderDkHeader(){
-  const m = findMarket(dkSymbol); if(!m) return;
-  const chg = document.getElementById('dkChg');
-  if(chg){ chg.textContent = chgSign(m.chg); chg.style.color = m.chg >= 0 ? 'var(--dk-green)' : 'var(--dk-red)'; }
-  const mid = document.getElementById('dkMid');
-  const midSub = document.getElementById('dkMidSub');
+function renderTrHeader(){
+  const m = findMarket(trSymbol); if(!m) return;
+  const chg = document.getElementById('trChg');
+  if(chg){ chg.textContent = chgSign(m.chg); chg.style.color = m.chg >= 0 ? 'var(--green)' : 'var(--red)'; }
+  const mid = document.getElementById('trMid');
+  const midSub = document.getElementById('trMidSub');
   if(mid) mid.textContent = fmt(m.price);
   if(midSub) midSub.textContent = '≈' + fmt(m.price);
-  const tag = document.getElementById('dkTag');
+  const tag = document.getElementById('trTag');
   if(tag){
-    tag.textContent = dkTab === 'perpetual' ? 'Perpetual' : dkTab === 'delivery' ? 'Delivery' : 'Spot';
+    tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'delivery' ? 'Delivery' : 'Spot';
   }
-  // Update button label
-  const btn = document.getElementById('dkBtn');
+  const btn = document.getElementById('trBtn');
   if(btn){
-    if(dkTab === 'perpetual' || dkTab === 'delivery'){
-      btn.textContent = dkSide === 'buy' ? 'Buy/Long' : 'Sell/Short';
-      btn.className = 'dk-action ' + (dkSide === 'buy' ? 'buy' : 'sell');
-    } else {
-      btn.textContent = dkSide === 'buy' ? 'Buy' : 'Sell';
-      btn.className = 'dk-action ' + (dkSide === 'buy' ? 'buy' : 'sell');
-    }
+    btn.textContent = trSide === 'buy' ? 'Buy' : 'Sell';
+    btn.className = 'tr-action ' + (trSide === 'buy' ? 'buy' : 'sell');
   }
-  const levBar = document.getElementById('dkLevBar');
-  if(levBar) levBar.style.display = (dkTab === 'perpetual' || dkTab === 'delivery') ? 'flex' : 'none';
+  // also update chart overlay if open
+  const cp = document.getElementById('chartPair'); if(cp) cp.textContent = trSymbol + '/USDT';
+  const cc = document.getElementById('chartChg'); if(cc){ cc.textContent = chgSign(m.chg); cc.style.color = m.chg>=0?'var(--green)':'var(--red)'; }
 }
-function renderDkOrderBook(){
-  const m = findMarket(dkSymbol) || {price:76650};
+function renderTrOrderBook(){
+  const m = findMarket(trSymbol) || {price:76650};
   const mid = m.price;
   const asks = [], bids = [];
   for(let i = 0; i < 8; i++){
     asks.push({p: mid * (1 + (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
     bids.push({p: mid * (1 - (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
   }
-  const a = document.getElementById('dkAsks');
-  const b = document.getElementById('dkBids');
+  const a = document.getElementById('trAsks');
+  const b = document.getElementById('trBids');
   if(a) a.innerHTML = asks.map(r => `<div class="row a"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
   if(b) b.innerHTML = bids.map(r => `<div class="row b"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
 }
-function dkSetSide(side){
-  dkSide = side;
-  document.querySelectorAll('#dkBuySell .bs').forEach(el => {
+function trSetSide(side){
+  trSide = side;
+  document.querySelectorAll('#trBuySell .bs').forEach(el => {
     el.classList.remove('on-buy','on-sell');
     if(el.dataset.side === side) el.classList.add(side === 'buy' ? 'on-buy' : 'on-sell');
   });
-  renderDkHeader();
+  renderTrHeader();
 }
-function dkSetOT(ot){
-  dkOrderType = ot;
-  document.getElementById('dkOTLimit').classList.toggle('on', ot === 'limit');
-  document.getElementById('dkOTMarket').classList.toggle('on', ot === 'market');
-  const priceRow = document.getElementById('dkPriceRow');
+function trSetOT(ot){
+  trOrderType = ot;
+  document.getElementById('trOTLimit').classList.toggle('on', ot === 'limit');
+  document.getElementById('trOTMarket').classList.toggle('on', ot === 'market');
+  const priceRow = document.getElementById('trPriceRow');
   if(priceRow) priceRow.style.display = ot === 'market' ? 'none' : 'flex';
 }
-function dkStep(id, dir){
+function trStep(id, dir){
   const el = document.getElementById(id); if(!el) return;
   const cur = parseFloat(el.value) || 0;
-  const step = id === 'dkQty' ? 0.0001 : 1;
-  el.value = (cur + dir*step).toFixed(id === 'dkQty' ? 6 : 2);
-  dkRecalc();
+  const step = id === 'trQty' ? 0.0001 : 1;
+  el.value = (cur + dir*step).toFixed(id === 'trQty' ? 6 : 2);
+  trRecalc();
 }
-function dkPct(p){
+function trPct(p){
   const bal = activeBalance('spot') || 0;
-  const amtEl = document.getElementById('dkAmt');
-  const qtyEl = document.getElementById('dkQty');
-  const m = findMarket(dkSymbol);
+  const amtEl = document.getElementById('trAmt');
+  const qtyEl = document.getElementById('trQty');
+  const m = findMarket(trSymbol);
   if(amtEl) amtEl.value = (bal * p / 100).toFixed(2);
   if(qtyEl && m) qtyEl.value = ((bal * p / 100) / m.price).toFixed(6);
-  dkRecalc();
+  trRecalc();
 }
-function dkRecalc(){
-  const qty = parseFloat(document.getElementById('dkQty').value) || 0;
-  const m = findMarket(dkSymbol) || {price:0};
+function trRecalc(){
+  const qty = parseFloat(document.getElementById('trQty').value) || 0;
+  const m = findMarket(trSymbol) || {price:0};
   const total = qty * m.price;
-  const buyEl = document.getElementById('dkInfoBuy');
+  const buyEl = document.getElementById('trInfoBuy');
   if(buyEl) buyEl.textContent = total.toFixed(2) + ' USDT';
 }
 document.addEventListener('input', e => {
-  if(e.target && (e.target.id === 'dkQty' || e.target.id === 'dkAmt')) dkRecalc();
+  if(e.target && (e.target.id === 'trQty' || e.target.id === 'trAmt')) trRecalc();
 });
-function dkPlace(){
+function renderTradeForm(){
+  const avail = activeBalance('spot') || 0;
+  const av = document.getElementById('trAvail');
+  if(av) av.textContent = avail.toFixed(2);
+  // open orders count = my open position count
+  const pos = getMyPosition();
+  const cnt = pos && pos.status === 'open' ? 1 : 0;
+  const oc = document.getElementById('trOpenCount');
+  if(oc) oc.textContent = cnt;
+  // history area
+  const hist = document.getElementById('trHistory');
+  if(hist && hist.dataset.tab !== 'assets'){
+    if(hist.dataset.tab === 'history'){
+      const list = (getAllTx()[currentUser ? currentUser.email : ''] || []).filter(t => t.type === 'trade');
+      hist.innerHTML = list.length
+        ? list.map(t => `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px;font-size:12.5px;">
+            <div style="font-weight:700;color:var(--text);">${t.detail}</div>
+            <div style="color:var(--text3);font-size:10.5px;margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
+          </div>`).join('')
+        : '<div class="empty">No history yet</div>';
+    } else {
+      if(pos && pos.status === 'open'){
+        const m = findMarket(pos.sym) || {price:pos.entry};
+        const pnl = (m.price - pos.entry) * pos.qty;
+        const pnlPct = ((m.price - pos.entry) / pos.entry) * 100;
+        const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+        hist.innerHTML = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;">
+          <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;">${pos.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
+          <div style="display:flex;gap:14px;color:var(--text2);margin-top:8px;">
+            <span>Entry ${fmt(pos.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos.tpPrice)}</b></span>
+          </div>
+          <button onclick="closePosition('manual')" style="margin-top:10px;width:100%;height:34px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:700;font-family:inherit;cursor:pointer;">Close Position</button>
+        </div>`;
+      } else {
+        hist.innerHTML = '<div class="empty">No orders yet</div>';
+      }
+    }
+  }
+}
+function trPlace(){
   if(!currentUser){ openAuth('register'); return; }
-  const qty = parseFloat(document.getElementById('dkQty').value) || 0;
-  const price = parseFloat(document.getElementById('dkPrice').value) || 0;
+  const qty = parseFloat(document.getElementById('trQty').value) || 0;
+  const price = parseFloat(document.getElementById('trPrice').value) || 0;
   if(qty <= 0){ toast('Enter a valid quantity'); return; }
-  const m = findMarket(dkSymbol) || {price};
-  const detail = `${dkSide.toUpperCase()} ${qty} ${dkSymbol} @ ${dkOrderType === 'market' ? 'market' : price || m.price} (${dkTab})`;
+  const m = findMarket(trSymbol) || {price};
+  const detail = `${trSide.toUpperCase()} ${qty} ${trSymbol} @ ${trOrderType === 'market' ? 'market' : price || m.price} (${trTab})`;
   recordTx('trade', detail);
-  document.getElementById('dkQty').value = '';
-  document.getElementById('dkAmt').value = '';
-  dkRecalc();
+  document.getElementById('trQty').value = '';
+  document.getElementById('trAmt').value = '';
+  trRecalc();
+  renderTradeForm();
   toast('Order placed');
 }
-// Tabs
-document.getElementById('dkTabs').addEventListener('click', e => {
-  const t = e.target.closest('.dk-tab'); if(!t) return;
-  document.querySelectorAll('.dk-tab').forEach(x => x.classList.remove('on'));
+
+// Trade top tabs
+document.getElementById('trTabs').addEventListener('click', e => {
+  const t = e.target.closest('.tr-tab'); if(!t) return;
+  document.querySelectorAll('.tr-tab').forEach(x => x.classList.remove('on'));
   t.classList.add('on');
-  dkTab = t.dataset.dk;
-  const market = document.getElementById('dkMarket');
-  const copy = document.getElementById('dkCopy');
-  const subtabs = document.getElementById('dkSubtabs');
-  const hist = document.getElementById('dkHistory');
-  if(dkTab === 'copy'){
-    market.style.display = 'none';
-    copy.style.display = 'flex';
-    subtabs.style.display = 'none';
-    hist.style.display = 'none';
-    renderDkCopyList();
-  } else {
-    market.style.display = 'block';
-    copy.style.display = 'none';
-    subtabs.style.display = 'flex';
-    hist.style.display = 'block';
-    renderDkHeader();
-  }
+  trTab = t.dataset.tr;
+  renderTrHeader();
 });
-// Subtabs (Open orders / Order history / Assets)
-document.getElementById('dkSubtabs').addEventListener('click', e => {
+// Trade subtabs
+document.getElementById('trSubtabs').addEventListener('click', e => {
   const st = e.target.closest('.st'); if(!st) return;
-  document.querySelectorAll('.dk-subtabs .st').forEach(x => x.classList.remove('on'));
+  document.querySelectorAll('.tr-subtabs .st').forEach(x => x.classList.remove('on'));
   st.classList.add('on');
   const kind = st.dataset.st;
-  const hist = document.getElementById('dkHistory');
-  if(kind === 'open'){ hist.innerHTML = '<div class="empty">No orders yet</div>'; }
-  else if(kind === 'history'){ hist.innerHTML = '<div class="empty">No history yet</div>'; }
-  else if(kind === 'assets'){
+  const hist = document.getElementById('trHistory');
+  hist.dataset.tab = kind;
+  if(kind === 'assets'){
     const bal = activeBalance('spot') || 0;
-    hist.innerHTML = `<div style="color:var(--dk-text);text-align:left;font-size:14px;line-height:2;">
-      <div style="color:var(--dk-text2);font-size:12px;">Spot balance</div>
-      <div style="font-size:22px;font-weight:800;">${bal.toFixed(2)} USDT</div>
-    </div>`;
+    const pos = getMyPosition();
+    let html = `<div style="text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px;">
+      <div style="color:var(--text2);font-size:12px;">Spot balance</div>
+      <div style="font-size:22px;font-weight:800;color:var(--text);">${bal.toFixed(2)} USDT</div>`;
+    if(pos && pos.status === 'open'){
+      const m = findMarket(pos.sym) || {price:pos.entry};
+      const pnl = (m.price - pos.entry) * pos.qty;
+      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+      html += `<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
+        <div style="font-size:12.5px;font-weight:700;color:var(--text);">Open position · ${pos.sym}/USDT</div>
+        <div style="font-size:12px;color:${cls};font-weight:700;margin-top:4px;">P&L ${pnl>=0?'+':''}$${pnl.toFixed(2)}</div>
+      </div>`;
+    }
+    html += '</div>';
+    hist.innerHTML = html;
+  } else {
+    renderTradeForm();
   }
 });
 
-function renderDkCopyList(){
-  const el = document.getElementById('dkCopyList');
-  if(!el) return;
-  const list = getCopyTrades();
-  if(!list.length){
-    el.innerHTML = '<div class="dk-copy-empty">No copy-trade alerts yet</div>';
+/* ================== CHART overlay ================== */
+let chartWidget = null;
+let chartRetry = 0;
+function openChart(){
+  document.getElementById('chartOv').classList.add('active');
+  renderTrHeader();
+  renderChartWidget();
+}
+function closeChart(){ document.getElementById('chartOv').classList.remove('active'); }
+function renderChartWidget(){
+  const slot = document.getElementById('chartSlot'); if(!slot) return;
+  const m = findMarket(trSymbol);
+  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
+  slot.innerHTML = '';
+  if(typeof TradingView === 'undefined' || !TradingView.widget){
+    chartRetry++;
+    if(chartRetry < 6) setTimeout(renderChartWidget, 500);
+    drawFallbackChart(slot, m);
     return;
   }
-  el.innerHTML = '<div class="dk-copy-head"><h3>Copy Trading signals</h3></div>' + list.map(ct => {
-    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
-    const trader = ct.traderName || 'Brian';
-    const initial = trader[0].toUpperCase();
-    return `<div class="dk-ct">
-      <div class="top">
-        <div class="av">${initial}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="trader">${trader} <span class="v">VERIFIED</span></div>
-          <div class="sub">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
+  try {
+    chartWidget = new TradingView.widget({
+      container_id: 'chartSlot', autosize: true, symbol: tvSym,
+      interval: '15', timezone: 'Etc/UTC', theme: 'light', style: '1', locale: 'en',
+      toolbar_bg: '#ffffff', enable_publishing: false, allow_symbol_change: false,
+      hide_side_toolbar: false, hide_top_toolbar: false, save_image: false, withdateranges: true
+    });
+    setTimeout(() => {
+      const iframe = slot.querySelector('iframe');
+      if(!iframe || iframe.offsetHeight < 40) drawFallbackChart(slot, m);
+    }, 3000);
+  } catch(e){ drawFallbackChart(slot, m); }
+}
+function drawFallbackChart(slot, marketInfo){
+  const oldCanvas = slot.querySelector('canvas.fallback');
+  if(oldCanvas) oldCanvas.remove();
+  const c = document.createElement('canvas');
+  c.className = 'fallback';
+  slot.appendChild(c);
+  setTimeout(() => {
+    const w = slot.clientWidth || 360;
+    const h = slot.clientHeight || 400;
+    c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    const mid = (marketInfo && marketInfo.price) || 77845;
+    const isUp = ((marketInfo && marketInfo.chg) || 0) >= 0;
+    const lineColor = isUp ? '#0ECB81' : '#F6465D';
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(234,236,239,0.9)';
+    ctx.lineWidth = 1;
+    for(let i = 1; i < 6; i++){
+      const y = (h / 6) * i;
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+    }
+    let p = mid * 0.99;
+    const pts = [];
+    for(let i = 0; i < 90; i++){ p += (Math.random()-0.48)*mid*0.003; pts.push(p); }
+    pts[pts.length-1] = mid;
+    const min = Math.min(...pts), max = Math.max(...pts), range = max-min || 1;
+    ctx.strokeStyle = lineColor; ctx.lineWidth = 2;
+    ctx.beginPath();
+    pts.forEach((v, i) => {
+      const x = (i/(pts.length-1)) * w;
+      const y = 12 + (h-24) * (1 - (v-min)/range);
+      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    });
+    ctx.stroke();
+    const grad = ctx.createLinearGradient(0, 0, 0, h);
+    grad.addColorStop(0, isUp ? 'rgba(14,203,129,0.25)' : 'rgba(246,70,93,0.25)');
+    grad.addColorStop(1, isUp ? 'rgba(14,203,129,0)' : 'rgba(246,70,93,0)');
+    ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillRect(8, 8, 110, 22);
+    ctx.strokeStyle = 'rgba(234,236,239,1)'; ctx.strokeRect(8.5, 8.5, 109, 21);
+    ctx.fillStyle = lineColor;
+    ctx.font = 'bold 13px -apple-system,sans-serif';
+    ctx.fillText('$' + fmt(mid), 14, 23);
+  }, 30);
+}
+
+function openInstrumentPicker(){
+  const groups = [
+    {key:'crypto', label:'Crypto'},
+    {key:'forex', label:'Forex'},
+    {key:'commodities', label:'Commodities'},
+    {key:'stocks', label:'Stocks'}
+  ];
+  document.getElementById('genericTitle').textContent = 'Choose Instrument';
+  document.getElementById('genericBody').innerHTML = groups.map(g => `
+    <div class="ins-group">
+      <div class="ins-group-title">${g.label}</div>
+      ${MARKETS[g.key].map(m => `
+        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
+          ${symLogo(m.sym, 30)}
+          <div style="flex:1;min-width:0;">
+            <div class="sym">${m.sym}/USDT</div>
+            <div class="nm">${m.name}</div>
+          </div>
+          <div>
+            <div class="px">${fmt(m.price)}</div>
+            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+          </div>
         </div>
-      </div>
-      <div class="msg">${ct.message || ''}</div>
-      <div class="acts">
-        <button onclick="dismissCopy('${ct.id}')">Dismiss</button>
-        <button class="pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
-      </div>
-    </div>`;
-  }).join('');
+      `).join('')}
+    </div>
+  `).join('');
+  document.getElementById('genericModal').classList.add('on');
+}
+function pickInstrument(sym){
+  closeGeneric();
+  trSetSymbol(sym);
+  toast('Switched to ' + sym);
 }
 
-// Profile menu button (Identity Verification → new KYC page)
-function openKycFromProfile(){
-  if(!currentUser){ openAuth('register'); return; }
-  closeProfile();
-  openKycPage();
-}
-
-/* ================== EXISTING REST ================== */
+/* ================== Rest ================== */
 function renderAccounts(){
   const funding = activeBalance('funding').toFixed(2);
   const spot = activeBalance('spot').toFixed(2);
@@ -2305,6 +2234,11 @@ function renderProfileMenu(){
     </div>
   `).join('');
 }
+function openKycFromProfile(){
+  if(!currentUser){ openAuth('register'); return; }
+  closeProfile();
+  openKycPage();
+}
 
 function resetDemo(){
   if(!currentUser){ openAuth('register'); return; }
@@ -2319,7 +2253,7 @@ function resetDemo(){
     saveAllPositions(all);
   }
   applyUserToUI();
-  renderLiveTradeCard();
+  renderTradeForm();
   toast('Demo reset — $' + DEMO_SEED.toLocaleString() + ' USDT');
 }
 
@@ -2381,43 +2315,7 @@ if (installClose) installClose.addEventListener('click', () => {
 });
 window.addEventListener('appinstalled', () => { installBanner.style.display = 'none'; });
 
-/* ===== instrument picker still used by dark Trade screen ===== */
-function openInstrumentPicker(){
-  const groups = [
-    {key:'crypto', label:'Crypto'},
-    {key:'forex', label:'Forex'},
-    {key:'commodities', label:'Commodities'},
-    {key:'stocks', label:'Stocks'}
-  ];
-  document.getElementById('genericTitle').textContent = 'Choose Instrument';
-  document.getElementById('genericBody').innerHTML = groups.map(g => `
-    <div class="ins-group">
-      <div class="ins-group-title">${g.label}</div>
-      ${MARKETS[g.key].map(m => `
-        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
-          ${symLogo(m.sym, 30)}
-          <div style="flex:1;min-width:0;">
-            <div class="sym">${m.sym}/USDT</div>
-            <div class="nm">${m.name}</div>
-          </div>
-          <div>
-            <div class="px">${fmt(m.price)}</div>
-            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
-  document.getElementById('genericModal').classList.add('on');
-}
-function pickInstrument(sym){ closeGeneric(); dkSetSymbol(sym); toast('Switched to ' + sym); }
-
-/* ===== Placeholder stubs to keep old handlers alive (screen removed) ===== */
-function updateSpotHeader(){ /* dark trade screen uses renderDkHeader instead */ }
-function renderTradingViewChart(){ /* chart is not shown on dark trade screen */ }
-function setSpotSymbol(sym){ dkSetSymbol(sym); }
-
-/* ===== openDeposit / openTransfer / submitWithdraw ===== */
+/* openDeposit / openTransfer / submitWithdraw */
 function openDeposit(mode){
   if(!currentUser){ openAuth('register'); return; }
   const addr = getMyAddress();
@@ -2501,7 +2399,7 @@ function doTransfer(){
   toast('Transfer complete');
 }
 
-/* ===== boot ===== */
+/* ================= boot ================= */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -2535,10 +2433,10 @@ function doTransfer(){
   updateModeUI();
   refreshNewsStrip();
   updateNotifDot();
-  dkSetSymbol('BTC');
-  renderDkOrderBook();
-  renderDkHeader();
-  renderLiveTradeCard();
+  trSetSymbol('BTC');
+  renderTradeForm();
+  renderTrOrderBook();
+  renderTrHeader();
 
   startBinanceStream();
   startSimulation();
@@ -2549,7 +2447,6 @@ function doTransfer(){
   setInterval(() => {
     updateNotifDot();
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
-    if(document.getElementById('s-trade').classList.contains('active') && dkTab === 'copy') renderDkCopyList();
   }, 3000);
 
   if(!currentUser){
