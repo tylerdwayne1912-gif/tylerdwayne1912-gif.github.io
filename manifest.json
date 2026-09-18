@@ -5,9 +5,13 @@
   "start_url": "/app.html",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
   "orientation": "portrait",
-  "background_color": "#0b0e11",
-  "theme_color": "#0ECB81",
+  "background_color": "#0B0E11",
+  "theme_color": "#0B0E11",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["finance", "business"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -34,5 +38,24 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["finance", "business"]
+  "shortcuts": [
+    {
+      "name": "Trade",
+      "short_name": "Trade",
+      "url": "/app.html#trade",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Markets",
+      "short_name": "Markets",
+      "url": "/app.html#markets",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Wallet",
+      "short_name": "Wallet",
+      "url": "/app.html#financial",
+      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
 }
