@@ -14,7 +14,6 @@
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script src="https://s3.tradingview.com/tv.js"></script>
 <script>
-/* Theme bootstrap — runs before paint, prevents white flash. Dark is default. */
 (function(){
   try{
     var saved = localStorage.getItem('nt_theme');
@@ -32,10 +31,6 @@
 })();
 </script>
 <style>
-/* ============================================================
-   THEME TOKENS — 66EX-inspired
-   Dark is default. Light overrides below.
-   ============================================================ */
 :root,
 :root[data-theme="dark"]{
   --green:#0ECB81;--green-dk:#0BB574;--green-lt:rgba(14,203,129,.14);
@@ -43,6 +38,7 @@
   --orange:#FA8C16;--orange-lt:rgba(250,140,22,.14);
   --blue:#1890FF;--blue-lt:rgba(24,144,255,.14);
   --purple:#722ED1;--purple-lt:rgba(114,46,209,.14);
+  --yellow:#F5C542;
 
   --bg:#0B0E11;
   --bg2:#12161C;
@@ -82,6 +78,7 @@
   --orange:#FA8C16;--orange-lt:#FFF7E6;
   --blue:#1890FF;--blue-lt:#E6F4FF;
   --purple:#722ED1;--purple-lt:#F3E8FF;
+  --yellow:#F5C542;
 
   --bg:#F5F6F8;
   --bg2:#FFFFFF;
@@ -214,7 +211,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kyc-up.has{border-style:solid;border-color:var(--green);background:var(--green-lt);}
 .kyc-up.has .t{color:var(--green-dk);}
 
-/* KYC light-app page (uses tokens now) */
 .kyc-page{position:absolute;inset:0;background:var(--card);z-index:2100;display:none;flex-direction:column;}
 .kyc-page.active{display:flex;}
 .kyc-page .kp-head{display:flex;align-items:center;padding:16px 18px 10px;flex-shrink:0;background:var(--card);}
@@ -252,7 +248,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kp-apply:hover{background:#2f5fe0;}
 .kp-footnote{font-size:12.5px;color:var(--text3);text-align:center;padding:14px 0 4px;line-height:1.5;}
 
-/* topbar / home */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:var(--topbar-grad);}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--card);flex-shrink:0;
@@ -475,7 +470,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 
-/* Trade screen */
 .tr-tabs{display:flex;gap:0;padding:6px 12px 0;background:var(--card);flex-shrink:0;border-bottom:1px solid var(--line);}
 .tr-tab{flex:1;text-align:center;padding:11px 6px;font-size:13.5px;font-weight:600;color:var(--text2);
   cursor:pointer;border-bottom:2px solid transparent;transition:.15s;white-space:nowrap;}
@@ -578,7 +572,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .chart-ov .slot iframe{width:100% !important;height:100% !important;display:block;border:0;}
 .chart-ov .slot canvas{width:100%;height:100%;display:block;}
 
-/* Download App card */
 #downloadAppCard{margin:14px;background:linear-gradient(135deg,#0ECB81,#0a9e63);
   border-radius:16px;padding:18px 16px;color:#fff;box-shadow:0 10px 26px rgba(14,203,129,.28);}
 #downloadAppCard .dt{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
@@ -593,7 +586,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 #downloadAppCard .db .ios{background:#fff;color:#0a9e63;}
 #downloadAppCard .db .and{background:#04160f;color:#fff;}
 
-/* Android install banner */
 #androidInstallBtn{display:none;position:absolute;bottom:80px;left:14px;right:14px;
   z-index:9999;background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;
   border-radius:14px;padding:14px 16px;box-shadow:0 12px 32px rgba(14,203,129,.35);
@@ -607,12 +599,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;}
 #androidInstallBtn .x{color:#fff;opacity:.8;font-size:18px;cursor:pointer;padding:0 4px;}
 
-/* Install banner (generic) */
 #installBanner{display:none;position:fixed;bottom:80px;left:14px;right:14px;
   background:#1E2329;color:#fff;border-radius:12px;padding:12px 14px;z-index:9999;
   box-shadow:0 8px 24px rgba(0,0,0,.4);align-items:center;gap:12px;}
 
-/* Instrument picker rows */
 .ins-group{margin-bottom:12px;}
 .ins-group-title{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;
   font-weight:700;margin:8px 0 8px;}
@@ -622,12 +612,140 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .ins-row .nm{font-size:11px;color:var(--text2);margin-top:2px;}
 .ins-row .px{font-size:13px;font-weight:700;color:var(--text);text-align:right;font-variant-numeric:tabular-nums;}
 .ins-row .pc{font-size:11px;font-weight:700;text-align:right;margin-top:2px;font-variant-numeric:tabular-nums;}
+
+/* Copy Signals */
+.copy-section{margin:14px 0 0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.copy-section-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;font-size:15px;font-weight:700;color:var(--text);}
+.copy-section-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
+.copy-cards{display:flex;flex-direction:column;gap:10px;padding:0 12px 14px;}
+.copy-card{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:14px;}
+.copy-card-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:17px;flex-shrink:0;}
+.copy-card-info{flex:1;min-width:0;}
+.copy-card-name{font-size:15px;font-weight:800;color:var(--text);letter-spacing:-.2px;}
+.copy-card-followers{font-size:11.5px;color:var(--text2);margin-top:3px;}
+.copy-card-stats{display:flex;justify-content:space-between;gap:8px;margin-top:8px;}
+.copy-stat{display:flex;flex-direction:column;gap:1px;}
+.copy-stat-lbl{font-size:10.5px;color:var(--text3);font-weight:600;}
+.copy-stat-val{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;}
+.copy-stat-val.up{color:var(--green);}
+.copy-stat-val.down{color:var(--red);}
+.copy-card-btn{background:var(--yellow);color:#111;border:none;border-radius:10px;padding:11px 20px;
+  font-size:13.5px;font-weight:800;cursor:pointer;font-family:inherit;transition:.15s;flex-shrink:0;}
+.copy-card-btn:hover{background:#E5B532;}
+.copy-card-btn:active{transform:scale(.96);}
+
+.nt-follow-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1900;
+  display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+.nt-follow-backdrop.on{display:flex;}
+.nt-follow-panel{background:var(--card);color:var(--text);width:100%;max-width:440px;
+  border-radius:22px 22px 0 0;max-height:92vh;overflow-y:auto;
+  animation:ntSheetUp .3s cubic-bezier(.2,.9,.3,1);}
+@keyframes ntSheetUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.nt-follow-head{display:flex;align-items:center;justify-content:center;padding:20px 20px 10px;
+  position:sticky;top:0;background:var(--card);z-index:2;border-radius:22px 22px 0 0;}
+.nt-follow-head h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.3px;}
+.nt-follow-head .nt-follow-x{position:absolute;right:18px;font-size:22px;color:var(--text2);cursor:pointer;
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+.nt-follow-head .nt-follow-x:active{background:var(--bg3);}
+.nt-follow-body{padding:8px 20px 24px;}
+
+.nt-follow-analyst{display:flex;align-items:center;gap:12px;padding:12px;background:var(--bg2);
+  border-radius:12px;margin-bottom:14px;}
+.nt-follow-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:16px;flex-shrink:0;}
+.nt-follow-name{font-size:15px;font-weight:800;color:var(--text);}
+.nt-follow-sub{font-size:11.5px;color:var(--text2);margin-top:2px;}
+.nt-follow-msg{background:var(--bg2);border-left:3px solid var(--green);border-radius:8px;
+  padding:10px 14px;font-size:12.5px;color:var(--text2);line-height:1.55;margin-bottom:14px;}
+
+.nt-follow-live{background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+  padding:12px 14px;margin-bottom:16px;max-height:180px;overflow:hidden;position:relative;}
+.nt-follow-live::after{content:"";position:absolute;bottom:0;left:0;right:0;height:32px;
+  background:linear-gradient(180deg,transparent,var(--bg2));pointer-events:none;}
+.nt-live-head{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--text2);margin-bottom:8px;}
+.nt-live-head b{color:var(--text);}
+.nt-live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+  animation:ntPulse 1.4s infinite;}
+@keyframes ntPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.2);}}
+.nt-live-list{display:flex;flex-direction:column;gap:6px;}
+.nt-live-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);
+  animation:ntRowIn .35s ease-out backwards;}
+@keyframes ntRowIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
+.nt-live-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:700;font-size:10px;flex-shrink:0;}
+.nt-live-txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nt-live-txt b{color:var(--text);font-weight:700;}
+.nt-live-ago{font-size:10.5px;color:var(--text3);flex-shrink:0;}
+
+.nt-follow-field{margin-bottom:16px;}
+.nt-follow-field label{display:block;font-size:12.5px;color:var(--text2);font-weight:700;margin-bottom:8px;letter-spacing:.1px;}
+.nt-code-wrap{position:relative;}
+.nt-code-wrap input{width:100%;background:var(--input-bg);border:1.5px solid var(--line);border-radius:12px;
+  padding:18px 20px;font-size:24px;font-weight:800;letter-spacing:14px;text-align:center;
+  color:var(--text);font-family:'Courier New',monospace;outline:none;transition:.15s;}
+.nt-code-wrap input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-lt);}
+.nt-code-hint{font-size:11.5px;color:var(--text3);margin-top:6px;text-align:center;}
+
+.nt-amount-wrap{display:flex;align-items:center;gap:8px;background:var(--input-bg);
+  border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;}
+.nt-amount-wrap input{flex:1;background:transparent;border:none;outline:none;
+  color:var(--text);font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;
+  font-family:inherit;min-width:0;}
+.nt-amount-suf{font-size:12.5px;color:var(--text2);font-weight:700;}
+.nt-max-btn{background:var(--green-lt);color:var(--green-dk);border:none;border-radius:8px;
+  padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;}
+.nt-avail{font-size:11.5px;color:var(--text3);margin-top:6px;}
+.nt-avail b{color:var(--text);}
+
+.nt-follow-field select{width:100%;background:var(--input-bg);border:1.5px solid var(--line);
+  border-radius:12px;padding:14px 16px;font-size:13.5px;font-family:inherit;
+  color:var(--text);outline:none;cursor:pointer;}
+
+.nt-agree{display:flex;align-items:flex-start;gap:10px;margin:8px 0 16px;font-size:12.5px;
+  color:var(--text2);line-height:1.5;cursor:pointer;}
+.nt-agree input{margin-top:2px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
+.nt-agree b{color:var(--green-dk);}
+
+.nt-apply-btn{width:100%;height:54px;border-radius:12px;background:var(--green);color:#fff;
+  font-size:15.5px;font-weight:800;border:none;cursor:pointer;font-family:inherit;
+  transition:.15s;letter-spacing:.2px;}
+.nt-apply-btn:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
+.nt-apply-btn:not(:disabled):active{background:var(--green-dk);transform:scale(.985);}
+
+.copy-tracking-card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+  padding:14px;margin-bottom:10px;}
+.ctc-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.ctc-top b{font-size:13.5px;color:var(--text);}
+.ctc-trader{font-size:11.5px;color:var(--text2);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ctc-live{width:7px;height:7px;border-radius:50%;background:var(--green);animation:ntPulse 1.4s infinite;}
+.ctc-pnl{font-size:13.5px;font-weight:800;font-variant-numeric:tabular-nums;}
+.ctc-pnl.up{color:var(--green);}
+.ctc-pnl.down{color:var(--red);}
+.ctc-row{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:var(--text2);
+  padding-top:10px;border-top:1px solid var(--line);}
+.ctc-row b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;}
+
+.nt-signal-banner{position:fixed;top:12px;left:12px;right:12px;z-index:1850;
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;display:flex;align-items:center;gap:12px;
+  box-shadow:0 12px 36px rgba(0,0,0,.35);
+  transform:translateY(-140%);transition:transform .35s cubic-bezier(.2,.9,.3,1);max-width:440px;margin:0 auto;}
+.nt-signal-banner.on{transform:translateY(0);}
+.nt-sb-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.nt-sb-txt{flex:1;min-width:0;}
+.nt-sb-title{font-size:13px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nt-sb-sub{font-size:11.5px;color:var(--text2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.nt-sb-btn{background:var(--yellow);color:#111;border:none;border-radius:9px;padding:9px 16px;
+  font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;}
+.nt-sb-btn:active{transform:scale(.96);}
+.nt-sb-x{color:var(--text3);font-size:16px;cursor:pointer;padding:0 4px;flex-shrink:0;}
 </style>
 </head>
 <body>
 <div class="phone">
 
-<!-- STEP 1 -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
@@ -669,7 +787,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- STEP 2 KYC -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -728,7 +845,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- KYC light page -->
 <section class="kyc-page" id="kycPage">
   <div class="kp-head">
     <div class="back" onclick="closeKycPage()">‹</div>
@@ -799,7 +915,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -828,7 +943,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- HOME -->
 <section class="screen active" id="s-home">
   <div class="topbar">
     <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
@@ -837,16 +951,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <span>BTC&USDT</span>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
-      <!-- moon shown in dark mode (click → go light) -->
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <!-- sun shown in light mode (click → go dark) -->
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none">
         <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
     <div class="icon-btn" onclick="openNews()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
@@ -951,7 +1061,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
-<!-- MARKETS -->
 <section class="screen" id="s-markets">
   <div class="asset-class" id="assetClassBar">
     <div class="ac-pill on" data-class="crypto">Crypto</div>
@@ -969,7 +1078,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- TRADE -->
 <section class="screen" id="s-trade">
   <div class="tr-tabs" id="trTabs">
     <div class="tr-tab" data-tr="perpetual">Perpetual</div>
@@ -1065,11 +1173,18 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="ico" onclick="openTxHistory()">📄</div>
     </div>
     <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
+
+    <div class="copy-section" id="copySection" style="display:none;">
+      <div class="copy-section-head">
+        <span>You may be interested in – Copy</span>
+        <span class="more" onclick="goCopyTab()">See all ›</span>
+      </div>
+      <div class="copy-cards" id="copySectionCards"></div>
+    </div>
   </div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- WALLET -->
 <section class="screen" id="s-wallet">
   <div class="wallet-hero">
     <div class="lab">Total Balance</div>
@@ -1097,7 +1212,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ASSETS -->
 <section class="screen" id="s-assets">
   <div class="scroll">
     <div class="asset-hero">
@@ -1120,7 +1234,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- PROFILE -->
 <div class="overlay" id="profile">
   <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
   <div class="scroll" style="padding-bottom:20px">
@@ -1140,25 +1253,21 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- NEWS overlay -->
 <div class="overlay" id="newsPanel">
   <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- COPY TRADING overlay -->
 <div class="overlay" id="copyPanel">
   <div class="ov-head"><div class="x" onclick="closeCopyTrading()">✕</div><div class="title">Copy Trading</div></div>
   <div class="scroll" id="copyList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- TX HISTORY overlay -->
 <div class="overlay" id="txPanel">
   <div class="ov-head"><div class="x" onclick="closeTxHistory()">✕</div><div class="title">Transaction History</div></div>
   <div class="scroll" id="txList" style="padding:0 14px 20px;"></div>
 </div>
 
-<!-- GENERIC MODAL -->
 <div class="generic-modal" id="genericModal">
   <div class="generic-sheet">
     <div class="generic-head"><h3 id="genericTitle">Title</h3><div class="x" onclick="closeGeneric()">✕</div></div>
@@ -1166,7 +1275,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- CHART overlay -->
 <section class="chart-ov" id="chartOv">
   <div class="head">
     <div class="x" onclick="closeChart()">←</div>
@@ -1191,7 +1299,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div id="installClose" style="color:#707A8A;font-size:18px;cursor:pointer;padding:0 4px;">✕</div>
 </div>
 
-<!-- Android install banner -->
 <div id="androidInstallBtn">
   <div class="ic">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1206,9 +1313,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 </div>
 
 <script>
-/* ============================================================
-   THEME TOGGLE
-   ============================================================ */
 (function(){
   const btn = document.getElementById('themeToggle');
   if(!btn) return;
@@ -1220,7 +1324,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     try{ localStorage.setItem('nt_theme', next); }catch(e){}
     const meta = document.querySelector('meta[name="theme-color"]');
     if(meta) meta.setAttribute('content', next === 'dark' ? '#0B0E11' : '#FFFFFF');
-    /* Rebuild the TV chart so it matches the theme */
     const ov = document.getElementById('chartOv');
     if(ov && ov.classList.contains('active')) renderChartWidget();
   });
@@ -1235,6 +1338,10 @@ const TX_KEY = 'nexttrade_tx_v1';
 const COPY_KEY = 'nexttrade_copytrade_v1';
 const POS_KEY = 'nexttrade_positions_v1';
 const PARTS_KEY = 'nexttrade_copytrade_participants_v1';
+const SEEN_KEY = 'nexttrade_seen_signals_v1';
+const FOLLOWED_KEY = 'nexttrade_followed_signals_v1';
+const COPY_PROFIT_KEY = 'nexttrade_copy_profit_v1';
+const COPY_PROFIT_PCT = 0.006;
 const DEMO_SEED = 10000;
 
 function getAdminState(){ try { return JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"config":{},"clients":[]}'); } catch(e){ return {config:{},clients:[]}; } }
@@ -1248,14 +1355,6 @@ function deriveEthAddress(xpub, index){
 }
 function getParticipants(){ try { return JSON.parse(localStorage.getItem(PARTS_KEY) || '{}'); } catch(e){ return {}; } }
 function saveParticipants(p){ try { localStorage.setItem(PARTS_KEY, JSON.stringify(p)); } catch(e){} }
-function recordParticipant(alertId, user, amountUsdt){
-  if(!user || !alertId) return;
-  const all = getParticipants();
-  all[alertId] = all[alertId] || [];
-  all[alertId].unshift({ username: user.username, uid: user.uid, email: user.email, amountUsdt, mode: currentMode, time: Date.now() });
-  if(all[alertId].length > 100) all[alertId].length = 100;
-  saveParticipants(all);
-}
 
 let currentMode = 'real';
 function setMode(mode){
@@ -1336,12 +1435,13 @@ function renderTxHistory(){
     const icon = { deposit:'M12 4v12M7 11l5 5 5-5M4 20h16', withdraw:'M12 20V8M7 13l5-5 5 5M4 4h16',
       trade:'M4 17l5-6 4 3 7-8', transfer:'M4 8h13l-3-3M20 16H7l3 3', copy:'M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z' }[t.type] || 'M12 3v18M3 12h18';
     const color = { deposit:'var(--green)', withdraw:'var(--red)', trade:'var(--blue)', transfer:'var(--orange)', copy:'var(--purple)' }[t.type] || 'var(--text2)';
+    const label = t.type === 'copy' ? '📈 Copy Profit' : (t.type.charAt(0).toUpperCase() + t.type.slice(1));
     return `<div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;">
       <div style="width:36px;height:36px;border-radius:10px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="${icon}" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div style="flex:1;min-width:0;">
-        <div style="font-size:13.5px;font-weight:700;text-transform:capitalize;color:var(--text);">${t.type}</div>
+        <div style="font-size:13.5px;font-weight:700;color:var(--text);">${label}</div>
         <div style="font-size:11.5px;color:var(--text2);margin-top:3px;">${t.detail}</div>
         <div style="font-size:10.5px;color:var(--text3);margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
       </div>
@@ -1370,8 +1470,488 @@ function saveMyPosition(pos){
 
 function getCopyTrades(){ try { return JSON.parse(localStorage.getItem(COPY_KEY) || '[]'); } catch(e){ return []; } }
 function saveCopyTrades(list){ try { localStorage.setItem(COPY_KEY, JSON.stringify(list)); } catch(e){} }
-function openCopyTrading(){ renderCopyTrades(); document.getElementById('copyPanel').classList.add('active'); }
+function openCopyTrading(){
+  renderCopyTrades();
+  document.getElementById('copyPanel').classList.add('active');
+}
 function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
+
+function getSeenSignals(){ try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch(e){ return {}; } }
+function markSeenSignal(id){ const s = getSeenSignals(); s[id] = Date.now(); try{ localStorage.setItem(SEEN_KEY, JSON.stringify(s)); }catch(e){} }
+function getFollowedSignals(){ try { return JSON.parse(localStorage.getItem(FOLLOWED_KEY) || '{}'); } catch(e){ return {}; } }
+function saveFollowedSignals(f){ try { localStorage.setItem(FOLLOWED_KEY, JSON.stringify(f)); } catch(e){} }
+function markFollowedSignal(id, data){ const f = getFollowedSignals(); f[id] = data; saveFollowedSignals(f); }
+
+function activeSignals(){
+  const now = Date.now();
+  return getCopyTrades().filter(s => !s.expiresAt || s.expiresAt > now);
+}
+
+function getCopyProfitHistory(){
+  try { return JSON.parse(localStorage.getItem(COPY_PROFIT_KEY) || '{}'); } catch(e){ return {}; }
+}
+function saveCopyProfitHistory(h){
+  try { localStorage.setItem(COPY_PROFIT_KEY, JSON.stringify(h)); } catch(e){}
+}
+function addCopyProfitEntry(userEmail, entry){
+  if(!userEmail) return;
+  const all = getCopyProfitHistory();
+  all[userEmail] = all[userEmail] || [];
+  all[userEmail].unshift(entry);
+  if(all[userEmail].length > 200) all[userEmail].length = 200;
+  saveCopyProfitHistory(all);
+}
+function getUserCopyProfitHistory(){
+  if(!currentUser) return [];
+  return getCopyProfitHistory()[currentUser.email] || [];
+}
+function creditCopyProfit(signalId, amount, traderName, sym){
+  if(!currentUser) return;
+  const profit = amount * COPY_PROFIT_PCT;
+  const bal = activeBalance('spot');
+  setActiveBalance('spot', bal + profit);
+  currentUser = getAccounts()[currentUser.email];
+
+  const entry = {
+    id: 'cp' + Date.now() + Math.random().toString(36).slice(2,6),
+    signalId,
+    traderName: traderName || 'Analyst',
+    sym: sym || '—',
+    amount: Number(amount) || 0,
+    profit: Number(profit.toFixed(4)),
+    time: Date.now(),
+    mode: currentMode
+  };
+  addCopyProfitEntry(currentUser.email, entry);
+  recordTx('copy', `Copy profit · ${sym} · +$${profit.toFixed(2)} (0.6%)`);
+
+  applyUserToUI();
+  toast('✓ Copy profit credited: +$' + profit.toFixed(2));
+}
+
+(function(global){
+  'use strict';
+
+  function initialsOf(name){
+    if(!name) return '?';
+    const parts = name.split(/\s+/).filter(Boolean);
+    if(parts.length === 1) return parts[0][0].toUpperCase();
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  }
+  function avatarColor(name){
+    let h = 0;
+    for(let i = 0; i < (name || '').length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
+    const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
+    return colors[Math.abs(h) % colors.length];
+  }
+
+  function buildTicker(signal){
+    return (getParticipants()[signal.id] || []).map(p => ({
+      name: p.username, uid: p.uid, amount: p.amountUsdt, mode: p.mode,
+      time: p.time, isReal: true
+    })).sort((a,b) => b.time - a.time);
+  }
+
+  function renderCopyCard(signal){
+    const pnl = (signal.pnl >= 0 ? '+' : '') + Number(signal.pnl || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    const roi = (signal.roi >= 0 ? '+' : '') + Number(signal.roi || 0).toFixed(2) + '%';
+    const cls = signal.pnl >= 0 ? 'up' : 'down';
+    const roiCls = signal.roi >= 0 ? 'up' : 'down';
+    const initial = initialsOf(signal.traderName);
+    const color = avatarColor(signal.traderName);
+    return `
+      <div class="copy-card" data-signal-id="${signal.id}">
+        <div class="copy-card-av" style="background:${color};">${initial}</div>
+        <div class="copy-card-info">
+          <div class="copy-card-name">${signal.traderName}</div>
+          <div class="copy-card-followers">👥 ${signal.followers || '0/0'}</div>
+          <div class="copy-card-stats">
+            <div class="copy-stat">
+              <span class="copy-stat-lbl">30D PnL (USD)</span>
+              <b class="copy-stat-val ${cls}">${pnl}</b>
+            </div>
+            <div class="copy-stat" style="text-align:right;">
+              <span class="copy-stat-lbl">30D ROI</span>
+              <b class="copy-stat-val ${roiCls}">${roi}</b>
+            </div>
+          </div>
+        </div>
+        <button class="copy-card-btn" onclick="NextTradeCopy.openFollowSheet('${signal.id}')">Copy</button>
+      </div>
+    `;
+  }
+
+  let currentSignal = null;
+  let tickerTimer = null;
+  let selectedVoucher = 'none';
+
+  function ensureSheet(){
+    let el = document.getElementById('nt-follow-sheet');
+    if(el) return el;
+    el = document.createElement('div');
+    el.id = 'nt-follow-sheet';
+    el.className = 'nt-follow-backdrop';
+    el.innerHTML = `
+      <div class="nt-follow-panel" onclick="event.stopPropagation()">
+        <div class="nt-follow-head">
+          <h3>Follow Signal</h3>
+          <div class="nt-follow-x" onclick="NextTradeCopy.closeFollowSheet()">✕</div>
+        </div>
+        <div class="nt-follow-body" id="nt-follow-body"></div>
+      </div>
+    `;
+    el.addEventListener('click', () => NextTradeCopy.closeFollowSheet());
+    document.body.appendChild(el);
+    return el;
+  }
+
+  function openFollowSheet(id){
+    const sig = getCopyTrades().find(s => s.id === id);
+    if(!sig){ toast('Signal not found'); return; }
+    const now = Date.now();
+    if(sig.expiresAt && sig.expiresAt < now){ toast('Signal expired'); return; }
+    if(!currentUser){ openAuth('register'); return; }
+    currentSignal = sig;
+    selectedVoucher = 'none';
+    const sheet = ensureSheet();
+    renderFollowBody(sig);
+    sheet.classList.add('on');
+    startTicker(sig);
+  }
+  function closeFollowSheet(){
+    const sheet = document.getElementById('nt-follow-sheet');
+    if(sheet) sheet.classList.remove('on');
+    if(tickerTimer){ clearInterval(tickerTimer); tickerTimer = null; }
+    currentSignal = null;
+  }
+
+  function renderFollowBody(sig){
+    const body = document.getElementById('nt-follow-body');
+    if(!body) return;
+    const bal = activeBalance('spot') || 0;
+    const sugAmount = Number(sig.amount || 100);
+    const pnl = (sig.pnl >= 0 ? '+' : '') + Number(sig.pnl || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const roi = (sig.roi >= 0 ? '+' : '') + Number(sig.roi || 0).toFixed(2) + '%';
+    const color = avatarColor(sig.traderName);
+    const initial = initialsOf(sig.traderName);
+
+    body.innerHTML = `
+      <div class="nt-follow-analyst">
+        <div class="nt-follow-av" style="background:${color};">${initial}</div>
+        <div style="flex:1;min-width:0;">
+          <div class="nt-follow-name">${sig.traderName}</div>
+          <div class="nt-follow-sub">${sig.sym}/USDT · ${sig.followers || '0/0'} followers</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:13px;font-weight:800;color:${sig.pnl>=0?'var(--green)':'var(--red)'};">${pnl}</div>
+          <div style="font-size:11px;font-weight:700;color:${sig.roi>=0?'var(--green)':'var(--red)'};">${roi} 30D</div>
+        </div>
+      </div>
+
+      <div class="nt-follow-msg">${sig.message || ''}</div>
+
+      <div class="nt-follow-live" id="nt-follow-live">
+        <div class="nt-live-head">
+          <span class="nt-live-dot"></span>
+          <b>Live</b> · <span id="nt-live-count">0</span> users copying
+        </div>
+        <div class="nt-live-list" id="nt-live-list"></div>
+      </div>
+
+      <div class="nt-follow-field">
+        <label>Signal Code</label>
+        <div class="nt-code-wrap">
+          <input id="nt-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="— — — —" autocomplete="off">
+        </div>
+        <div class="nt-code-hint" id="nt-code-hint">Enter the 4-digit code shown by ${sig.traderName}.</div>
+      </div>
+
+      <div class="nt-follow-field">
+        <label>Copy Trading Amount</label>
+        <div class="nt-amount-wrap">
+          <input id="nt-amount-input" type="text" inputmode="decimal" value="${sugAmount}" placeholder="0">
+          <span class="nt-amount-suf">USD</span>
+          <button class="nt-max-btn" onclick="NextTradeCopy.setMaxAmount()">Max</button>
+        </div>
+        <div class="nt-avail">Available Balance: <b>$${bal.toFixed(2)} USD</b></div>
+      </div>
+
+      <div class="nt-follow-field">
+        <label>Choose a voucher</label>
+        <select id="nt-voucher" onchange="NextTradeCopy.setVoucher(this.value)">
+          <option value="none">None</option>
+          <option value="welcome10">WELCOME10 — +$10 on first copy</option>
+          <option value="referral5">REFERRAL5 — +$5 bonus</option>
+        </select>
+      </div>
+
+      <label class="nt-agree">
+        <input type="checkbox" id="nt-agree-check" onchange="NextTradeCopy.refreshApplyBtn()">
+        <span>I have read and agree <b>Copy Trading Agreement</b></span>
+      </label>
+
+      <button class="nt-apply-btn" id="nt-apply-btn" disabled onclick="NextTradeCopy.applyCopy()">Apply to Copy Trading</button>
+    `;
+
+    document.getElementById('nt-code-input').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
+      refreshApplyBtn();
+    });
+    document.getElementById('nt-amount-input').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^\d.]/g,'');
+      refreshApplyBtn();
+    });
+  }
+
+  function refreshApplyBtn(){
+    const btn = document.getElementById('nt-apply-btn');
+    if(!btn || !currentSignal) return;
+    const code = (document.getElementById('nt-code-input')?.value || '').trim();
+    const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
+    const agree = document.getElementById('nt-agree-check')?.checked;
+    const codeOk = /^\d{4}$/.test(code) && code === String(currentSignal.code);
+    const hint = document.getElementById('nt-code-hint');
+    if(hint){
+      if(!code){ hint.textContent = `Enter the 4-digit code shown by ${currentSignal.traderName}.`; hint.style.color = ''; }
+      else if(code.length < 4){ hint.textContent = 'Keep typing…'; hint.style.color = ''; }
+      else if(!codeOk){ hint.textContent = 'Incorrect code. Try again.'; hint.style.color = 'var(--red)'; }
+      else { hint.textContent = '✓ Code accepted'; hint.style.color = 'var(--green)'; }
+    }
+    btn.disabled = !(codeOk && amt > 0 && agree);
+  }
+
+  function setMaxAmount(){
+    const bal = activeBalance('spot') || 0;
+    const el = document.getElementById('nt-amount-input');
+    if(el) el.value = bal.toFixed(2);
+    refreshApplyBtn();
+  }
+  function setVoucher(v){ selectedVoucher = v; }
+
+  function startTicker(sig){
+    const render = () => {
+      const list = document.getElementById('nt-live-list');
+      const count = document.getElementById('nt-live-count');
+      const liveBox = document.getElementById('nt-follow-live');
+      if(!list || !sig) return;
+      const entries = buildTicker(sig);
+      const shown = entries.slice(0, 8);
+      if(liveBox) liveBox.style.display = shown.length ? 'block' : 'none';
+      if(count) count.textContent = entries.length;
+      list.innerHTML = shown.map((p, i) => {
+        const c = avatarColor(p.name);
+        const initial = initialsOf(p.name);
+        const ago = timeAgo(p.time);
+        return `
+          <div class="nt-live-row" style="animation-delay:${i*40}ms;">
+            <div class="nt-live-av" style="background:${c};">${initial}</div>
+            <div class="nt-live-txt">
+              <b>${p.name}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount).toFixed(0)}</span>
+            </div>
+            <div class="nt-live-ago">${ago}</div>
+          </div>
+        `;
+      }).join('');
+    };
+    render();
+    if(tickerTimer) clearInterval(tickerTimer);
+    tickerTimer = setInterval(render, 10000 + Math.random()*5000);
+  }
+
+  function timeAgo(ts){
+    const s = Math.floor((Date.now() - ts)/1000);
+    if(s < 60) return s + 's';
+    const m = Math.floor(s/60);
+    if(m < 60) return m + 'm';
+    const h = Math.floor(m/60);
+    if(h < 24) return h + 'h';
+    return Math.floor(h/24) + 'd';
+  }
+
+  function applyCopy(){
+    if(!currentSignal) return;
+    const code = (document.getElementById('nt-code-input')?.value || '').trim();
+    if(code !== String(currentSignal.code)){ toast('Incorrect code'); return; }
+    const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
+    if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
+    if(!document.getElementById('nt-agree-check')?.checked){ toast('Please agree to the Copy Trading Agreement'); return; }
+
+    const bal = activeBalance('spot') || 0;
+    if(bal < amt){ toast('Insufficient balance'); return; }
+
+    let bonus = 0;
+    if(selectedVoucher === 'welcome10') bonus = 10;
+    else if(selectedVoucher === 'referral5') bonus = 5;
+    const effectiveAmt = amt + bonus;
+
+    setActiveBalance('spot', bal - amt);
+
+    const parts = getParticipants();
+    parts[currentSignal.id] = parts[currentSignal.id] || [];
+    parts[currentSignal.id].unshift({
+      username: currentUser ? currentUser.username : 'You',
+      uid: currentUser ? currentUser.uid : '—',
+      email: currentUser ? currentUser.email : '',
+      amountUsdt: effectiveAmt,
+      mode: currentMode,
+      time: Date.now(),
+      voucher: selectedVoucher
+    });
+    if(parts[currentSignal.id].length > 500) parts[currentSignal.id].length = 500;
+    try { localStorage.setItem(PARTS_KEY, JSON.stringify(parts)); } catch(e){}
+
+    const m = findMarket(currentSignal.sym);
+    const entry = m ? m.price : 0;
+    markFollowedSignal(currentSignal.id, {
+      signalId: currentSignal.id,
+      traderName: currentSignal.traderName,
+      sym: currentSignal.sym,
+      amountUsdt: effectiveAmt,
+      entry,
+      qty: entry ? effectiveAmt / entry : 0,
+      slPrice: entry ? entry * (1 - Number(currentSignal.sl || 2)/100) : 0,
+      tpPrice: entry ? entry * (1 + Number(currentSignal.tp || 4)/100) : 0,
+      openedAt: Date.now(),
+      status: 'open'
+    });
+
+    const capturedSignalId = currentSignal.id;
+    const capturedTrader = currentSignal.traderName;
+    const capturedSym = currentSignal.sym;
+
+    markSeenSignal(currentSignal.id);
+    closeFollowSheet();
+    toast('✓ Copy trade placed — $' + effectiveAmt.toFixed(2) + (bonus ? ' (+$' + bonus + ' bonus)' : ''));
+
+    setTimeout(() => {
+      creditCopyProfit(capturedSignalId, effectiveAmt, capturedTrader, capturedSym);
+      /* Auto-close the followed position so it leaves Open Orders */
+      const followed = getFollowedSignals();
+      if(followed[capturedSignalId]){
+        followed[capturedSignalId].status = 'closed';
+        followed[capturedSignalId].closedAt = Date.now();
+        saveFollowedSignals(followed);
+      }
+      if(typeof renderTradeForm === 'function') renderTradeForm();
+      if(typeof renderCopySection === 'function') renderCopySection();
+    }, 45000);
+
+    renderTradeForm();
+    applyUserToUI();
+    renderCopySection();
+  }
+
+  function renderFollowedCard(){
+    const followed = getFollowedSignals();
+    const ids = Object.keys(followed);
+    if(!ids.length) return null;
+    const latest = ids.map(id => followed[id]).filter(p => p.status === 'open').sort((a,b) => b.openedAt - a.openedAt)[0];
+    if(!latest) return null;
+    const m = findMarket(latest.sym);
+    const price = m ? m.price : latest.entry;
+    const pnl = (price - latest.entry) * latest.qty;
+    const pnlPct = latest.entry ? ((price - latest.entry) / latest.entry) * 100 : 0;
+    const cls = pnl >= 0 ? 'up' : 'down';
+    return `
+      <div class="copy-tracking-card">
+        <div class="ctc-top">
+          <span class="ctc-live"></span>
+          <b>${latest.sym}/USDT</b>
+          <span class="ctc-trader">Following ${latest.traderName}</span>
+          <span class="ctc-pnl ${cls}">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)</span>
+        </div>
+        <div class="ctc-row">
+          <span>Entry <b>${latest.entry ? latest.entry.toFixed(2) : '—'}</b></span>
+          <span>Amount <b>$${latest.amountUsdt.toFixed(2)}</b></span>
+          <span>SL <b style="color:var(--red);">${latest.slPrice ? latest.slPrice.toFixed(2) : '—'}</b></span>
+          <span>TP <b style="color:var(--green);">${latest.tpPrice ? latest.tpPrice.toFixed(2) : '—'}</b></span>
+        </div>
+      </div>
+    `;
+  }
+
+  function getFollowedPosition(){
+    const followed = getFollowedSignals();
+    const ids = Object.keys(followed);
+    if(!ids.length) return null;
+    return ids.map(id => followed[id]).filter(p => p.status === 'open').sort((a,b) => b.openedAt - a.openedAt)[0] || null;
+  }
+
+  global.NextTradeCopy = {
+    getSignals: getCopyTrades,
+    activeSignals, renderCopyCard,
+    openFollowSheet, closeFollowSheet, refreshApplyBtn,
+    setMaxAmount, setVoucher, applyCopy,
+    renderFollowedCard, getFollowedPosition,
+    buildTicker, initialsOf, avatarColor, markSeenSignal
+  };
+})(window);
+
+function renderCopySection(){
+  const wrap = document.getElementById('copySection');
+  if(!wrap) return;
+  if(typeof NextTradeCopy === 'undefined') return;
+  const active = NextTradeCopy.activeSignals();
+  if(!active.length){
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'block';
+  document.getElementById('copySectionCards').innerHTML = active.map(s => NextTradeCopy.renderCopyCard(s)).join('');
+}
+
+function goCopyTab(){
+  const tab = document.querySelector('.tr-tab[data-tr="copy"]');
+  if(tab) tab.click();
+}
+
+let lastSeenSignalId = null;
+function checkForNewSignals(){
+  if(typeof NextTradeCopy === 'undefined') return;
+  const active = NextTradeCopy.activeSignals();
+  if(!active.length) return;
+  const newest = active[0];
+  const seen = getSeenSignals();
+  if(seen[newest.id]) return;
+  if(lastSeenSignalId === newest.id) return;
+  lastSeenSignalId = newest.id;
+  showCopySignalBanner(newest);
+}
+function showCopySignalBanner(sig){
+  let banner = document.getElementById('nt-signal-banner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'nt-signal-banner';
+    banner.className = 'nt-signal-banner';
+    banner.innerHTML = `
+      <div class="nt-sb-av" id="nt-sb-av"></div>
+      <div class="nt-sb-txt">
+        <div class="nt-sb-title" id="nt-sb-title"></div>
+        <div class="nt-sb-sub" id="nt-sb-sub"></div>
+      </div>
+      <button class="nt-sb-btn" id="nt-sb-btn">Follow</button>
+      <div class="nt-sb-x" onclick="dismissSignalBanner()">✕</div>
+    `;
+    document.body.appendChild(banner);
+  }
+  const initial = NextTradeCopy.initialsOf(sig.traderName);
+  const color = NextTradeCopy.avatarColor(sig.traderName);
+  document.getElementById('nt-sb-av').textContent = initial;
+  document.getElementById('nt-sb-av').style.background = color;
+  document.getElementById('nt-sb-title').textContent = `New signal from ${sig.traderName}`;
+  document.getElementById('nt-sb-sub').textContent = `${sig.sym}/USDT · tap to follow`;
+  document.getElementById('nt-sb-btn').onclick = () => {
+    dismissSignalBanner();
+    NextTradeCopy.openFollowSheet(sig.id);
+  };
+  banner.classList.add('on');
+  setTimeout(() => { if(banner.classList.contains('on')) banner.classList.remove('on'); }, 15000);
+}
+function dismissSignalBanner(){
+  const b = document.getElementById('nt-signal-banner');
+  if(b) b.classList.remove('on');
+}
+
 function renderCopyTrades(){
   const list = getCopyTrades();
   const el = document.getElementById('copyList');
@@ -1381,20 +1961,21 @@ function renderCopyTrades(){
   }
   el.innerHTML = list.map(ct => {
     const m = findMarket(ct.sym) || {price:0, name:ct.sym};
-    const trader = ct.traderName || 'Brian';
+    const trader = ct.traderName || 'Analyst';
     const initial = trader[0].toUpperCase();
+    const expired = ct.expiresAt && ct.expiresAt < Date.now();
     return `<div class="ct-card">
       <div class="ct-top">
         <div class="ct-av">${initial}</div>
         <div style="flex:1;min-width:0;">
-          <div class="ct-trader">${trader} <span class="verified">VERIFIED TRADER</span></div>
+          <div class="ct-trader">${trader} ${expired ? '' : '<span class="verified">LIVE</span>'}</div>
           <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
         </div>
       </div>
       <div class="ct-msg">${ct.message || ''}</div>
       <div class="ct-actions">
         <button class="btn2" onclick="dismissCopy('${ct.id}')">Dismiss</button>
-        <button class="btn2 pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
+        <button class="btn2 pri" ${expired?'disabled style="opacity:.4;cursor:not-allowed;"':''} onclick="${expired?'':'NextTradeCopy.openFollowSheet(\''+ct.id+'\')'}">Copy Trade</button>
       </div>
     </div>`;
   }).join('');
@@ -1403,73 +1984,13 @@ function dismissCopy(id){
   saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
   renderCopyTrades();
   renderTrCopy();
+  renderCopySection();
   updateNotifDot();
 }
 function updateNotifDot(){
   const dot = document.getElementById('notifDot');
   if(!dot) return;
-  dot.classList.toggle('show', getCopyTrades().length > 0);
-}
-function openCopyConfirm(alertId){
-  if(!currentUser){ openAuth('register'); return; }
-  const ct = getCopyTrades().find(x => x.id === alertId);
-  if(!ct) return;
-  const trader = ct.traderName || 'Brian';
-  const isDemo = currentMode === 'demo';
-  document.getElementById('genericTitle').textContent = 'Copy ' + trader + "'s Trade";
-  document.getElementById('genericBody').innerHTML = `
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
-      <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
-        display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:17px;">${trader[0].toUpperCase()}</div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:14px;font-weight:700;color:var(--text);">${trader}</div>
-        <div style="font-size:11.5px;color:var(--text2);margin-top:2px;">Copying ${ct.sym}/USDT signal</div>
-      </div>
-      ${isDemo ? '<span style="font-size:10px;background:var(--orange-lt);color:var(--orange);padding:3px 8px;border-radius:4px;font-weight:800;">DEMO</span>' : ''}
-    </div>
-    <div style="background:var(--input-bg);border-radius:12px;padding:14px;">
-      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;color:var(--text2);"><span>Instrument</span><b style="color:var(--text);">${ct.sym}/USDT</b></div>
-      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;color:var(--text2);"><span>Stop Loss</span><b style="color:var(--red);">-2%</b></div>
-      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;color:var(--text2);"><span>Take Profit</span><b style="color:var(--green);">+4%</b></div>
-      <div style="display:flex;justify-content:space-between;font-size:12.5px;padding:6px 0;border-top:1px solid var(--line);margin-top:6px;padding-top:10px;color:var(--text2);"><span>Source</span><b style="color:var(--text);">${isDemo ? 'Demo Spot' : 'Real Spot'}</b></div>
-    </div>
-    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin:16px 0 6px;">Amount (USDT)</label>
-    <div style="display:flex;align-items:center;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
-      <input id="ctAmt" type="text" inputmode="decimal" value="100" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;font-variant-numeric:tabular-nums;background:transparent;color:var(--text);">
-      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
-    </div>
-    <button class="auth-submit" style="margin-top:16px;${isDemo?'background:var(--orange);':''}" onclick="confirmCopyTrade('${ct.id}')">Place Copy Trade</button>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function confirmCopyTrade(alertId){
-  const ct = getCopyTrades().find(x => x.id === alertId);
-  if(!ct) return;
-  const amt = parseFloat(document.getElementById('ctAmt').value || '0');
-  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
-  const m = findMarket(ct.sym);
-  if(!m){ toast('Instrument unavailable'); return; }
-  const spotBal = activeBalance('spot');
-  if(spotBal < amt){ toast('Insufficient ' + (currentMode === 'demo' ? 'Demo ' : '') + 'Spot balance'); return; }
-  setActiveBalance('spot', spotBal - amt);
-  currentUser = getAccounts()[currentUser.email];
-  const entry = m.price;
-  const pos = {
-    alertId: ct.id, traderName: ct.traderName || 'Brian', sym: ct.sym, side: 'long',
-    amountUsdt: amt, entry, qty: amt/entry,
-    slPrice: entry * 0.98, tpPrice: entry * 1.04,
-    openedAt: Date.now(), status: 'open'
-  };
-  saveMyPosition(pos);
-  recordTx('copy', `Copy ${pos.traderName} · BUY ${(amt/entry).toFixed(6)} ${ct.sym} @ ${fmt(entry)} · $${amt}`);
-  recordParticipant(ct.id, currentUser, amt);
-  dismissCopy(ct.id);
-  closeGeneric();
-  go('s-trade');
-  trSetSymbol(ct.sym);
-  renderTradeForm();
-  applyUserToUI();
-  toast('Trade opened — watching live');
+  dot.classList.toggle('show', activeSignals().length > 0);
 }
 
 function checkSlTp(){
@@ -1644,6 +2165,7 @@ function renderAllPrices(){
   renderTrHeader();
   refreshNewsStrip();
   checkSlTp();
+  renderCopySection();
 }
 setInterval(renderAllPrices, 1500);
 
@@ -1909,6 +2431,7 @@ function applyUserToUI(){
   updateModeUI();
   renderTradeForm();
   updateDownloadCard();
+  renderCopySection();
 }
 
 function getMyAddress(){
@@ -2009,7 +2532,7 @@ function go(id){
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-wallet') renderWalletScreen();
-  if(id === 's-trade'){ renderTrOrderBook(); renderTrHeader(); renderTradeForm(); }
+  if(id === 's-trade'){ renderTrOrderBook(); renderTrHeader(); renderTradeForm(); renderCopySection(); }
 }
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
 function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
@@ -2180,7 +2703,8 @@ function renderTradeForm(){
   const av = document.getElementById('trAvail');
   if(av) av.textContent = avail.toFixed(2);
   const pos = getMyPosition();
-  const cnt = pos && pos.status === 'open' ? 1 : 0;
+  const followed = NextTradeCopy.getFollowedPosition();
+  const cnt = (pos && pos.status === 'open' ? 1 : 0) + (followed ? 1 : 0);
   const oc = document.getElementById('trOpenCount');
   if(oc) oc.textContent = cnt;
   const hist = document.getElementById('trHistory');
@@ -2210,18 +2734,23 @@ function renderTradeForm(){
         </div>`).join('')
       : '<div class="empty">No history yet</div>';
   } else {
-    if(pos && pos.status === 'open'){
-      const m = findMarket(pos.sym) || {price:pos.entry};
-      const pnl = (m.price - pos.entry) * pos.qty;
-      const pnlPct = ((m.price - pos.entry) / pos.entry) * 100;
+    const tracking = NextTradeCopy.renderFollowedCard();
+    const pos2 = getMyPosition();
+    if(pos2 && pos2.status === 'open'){
+      const m = findMarket(pos2.sym) || {price:pos2.entry};
+      const pnl = (m.price - pos2.entry) * pos2.qty;
+      const pnlPct = ((m.price - pos2.entry) / pos2.entry) * 100;
       const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
       hist.innerHTML = `<div style="text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;">
-        <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;color:var(--text);">${pos.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;color:var(--text);">${pos2.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
         <div style="display:flex;gap:14px;color:var(--text2);margin-top:8px;">
-          <span>Entry ${fmt(pos.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos.tpPrice)}</b></span>
+          <span>Entry ${fmt(pos2.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos2.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos2.tpPrice)}</b></span>
         </div>
         <button onclick="closePosition('manual')" style="margin-top:10px;width:100%;height:34px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:700;font-family:inherit;cursor:pointer;">Close Position</button>
       </div>`;
+      if(tracking) hist.insertAdjacentHTML('afterbegin', tracking);
+    } else if(tracking) {
+      hist.innerHTML = tracking;
     } else {
       hist.innerHTML = '<div class="empty">No orders yet</div>';
     }
@@ -2244,27 +2773,28 @@ function trPlace(){
 
 function renderTrCopy(){
   const el = document.getElementById('trCopyList'); if(!el) return;
-  const list = getCopyTrades();
+  const list = activeSignals();
   if(!list.length){
-    el.innerHTML = '<div class="tr-copy-empty">No copy-trade alerts yet</div>';
+    el.innerHTML = '<div class="tr-copy-empty">No live signals right now</div>';
     return;
   }
-  el.innerHTML = '<div class="tr-copy-head"><h3>Copy Trading signals</h3></div>' + list.map(ct => {
+  el.innerHTML = '<div class="tr-copy-head"><h3>Live Copy Signals</h3></div>' + list.map(ct => {
     const m = findMarket(ct.sym) || {price:0, name:ct.sym};
-    const trader = ct.traderName || 'Brian';
+    const trader = ct.traderName || 'Analyst';
     const initial = trader[0].toUpperCase();
+    const parts = getParticipants()[ct.id] || [];
     return `<div class="ct-card">
       <div class="ct-top">
         <div class="ct-av">${initial}</div>
         <div style="flex:1;min-width:0;">
-          <div class="ct-trader">${trader} <span class="verified">VERIFIED TRADER</span></div>
+          <div class="ct-trader">${trader} <span class="verified">LIVE</span></div>
           <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
         </div>
       </div>
       <div class="ct-msg">${ct.message || ''}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">👥 ${parts.length} users copying</div>
       <div class="ct-actions">
-        <button class="btn2" onclick="dismissCopy('${ct.id}')">Dismiss</button>
-        <button class="btn2 pri" onclick="openCopyConfirm('${ct.id}')">Copy Trade</button>
+        <button class="btn2 pri" onclick="NextTradeCopy.openFollowSheet('${ct.id}')">Follow Signal</button>
       </div>
     </div>`;
   }).join('');
@@ -2279,12 +2809,13 @@ document.getElementById('trTabs').addEventListener('click', e => {
   const copy = document.getElementById('trCopy');
   const subtabs = document.getElementById('trSubtabs');
   const hist = document.getElementById('trHistory');
-  const toolbar = document.querySelector('.tr-toolbar');
+  const copySec = document.getElementById('copySection');
   if(trTab === 'copy'){
     form.style.display = 'none';
     copy.style.display = 'block';
     subtabs.style.display = 'none';
     hist.style.display = 'none';
+    copySec.style.display = 'none';
     renderTrCopy();
   } else {
     form.style.display = 'block';
@@ -2293,6 +2824,7 @@ document.getElementById('trTabs').addEventListener('click', e => {
     hist.style.display = 'block';
     renderTrHeader();
     renderTradeForm();
+    renderCopySection();
   }
 });
 
@@ -2537,9 +3069,7 @@ if (installClose) installClose.addEventListener('click', () => {
 });
 window.addEventListener('appinstalled', () => { installBanner.style.display = 'none'; });
 
-/* Download App card & Android install prompt */
 const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
-
 function updateDownloadCard(){
   const card = document.getElementById('downloadAppCard');
   if(!card) return;
@@ -2571,7 +3101,6 @@ function downloadFor(platform){
 }
 
 window.deferredInstallPrompt = null;
-
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   window.deferredInstallPrompt = e;
@@ -2580,7 +3109,6 @@ window.addEventListener('beforeinstallprompt', (e) => {
     banner.style.display = 'flex';
   }
 });
-
 document.getElementById('androidInstallGo')?.addEventListener('click', () => {
   const banner = document.getElementById('androidInstallBtn');
   if(!window.deferredInstallPrompt){
@@ -2598,13 +3126,11 @@ document.getElementById('androidInstallGo')?.addEventListener('click', () => {
     window.deferredInstallPrompt = null;
   });
 });
-
 document.getElementById('androidInstallX')?.addEventListener('click', () => {
   const banner = document.getElementById('androidInstallBtn');
   if(banner) banner.style.display = 'none';
   localStorage.setItem('androidInstallDismissed', '1');
 });
-
 window.addEventListener('appinstalled', () => {
   const banner = document.getElementById('androidInstallBtn');
   if(banner) banner.style.display = 'none';
@@ -2694,7 +3220,6 @@ function doTransfer(){
   toast('Transfer complete');
 }
 
-/* BOOT */
 (function boot(){
   try {
     const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -2730,15 +3255,19 @@ function doTransfer(){
   renderTradeForm();
   renderTrOrderBook();
   renderTrHeader();
+  renderCopySection();
   startBinanceStream();
   startSimulation();
   fetchLiveNews().then(() => refreshNewsStrip());
   setInterval(async () => { await fetchLiveNews(); refreshNewsStrip(); }, 60000);
   setInterval(() => {
     updateNotifDot();
+    renderCopySection();
+    renderTradeForm();
     if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
     if(document.getElementById('s-trade').classList.contains('active') && trTab === 'copy') renderTrCopy();
-  }, 3000);
+    checkForNewSignals();
+  }, 5000);
 
   const hash = (location.hash || '').toLowerCase();
 
@@ -2760,6 +3289,8 @@ function doTransfer(){
       openAuth('register');
     }
   }
+
+  setTimeout(checkForNewSignals, 3000);
 })();
 </script>
 </body>
