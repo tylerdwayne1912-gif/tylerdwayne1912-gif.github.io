@@ -71,6 +71,12 @@
   --mock-line:#1E242C;
 
   --icon-color:#FFFFFF;
+
+  /* Welcome card + coin card tint (dark: flat, no tint) */
+  --welcome-bg:var(--card);
+  --coin-card-bg:var(--card);
+  --quick-circle-bg:var(--card);
+  --quick-circle-ring:var(--line);
 }
 :root[data-theme="light"]{
   --green:#0ECB81;--green-dk:#0BB574;--green-lt:#E7F9F1;
@@ -111,6 +117,12 @@
   --mock-line:#1E242C;
 
   --icon-color:#1E2329;
+
+  /* 66EX-style tints (light mode only) */
+  --welcome-bg:#F1F3F6;
+  --coin-card-bg:#F5F6F8;
+  --quick-circle-bg:#FFFFFF;
+  --quick-circle-ring:#EAECEF;
 }
 
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -248,6 +260,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kp-apply:hover{background:#2f5fe0;}
 .kp-footnote{font-size:12.5px;color:var(--text3);text-align:center;padding:14px 0 4px;line-height:1.5;}
 
+/* topbar / home */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:var(--topbar-grad);}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--card);flex-shrink:0;
@@ -286,6 +299,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kyc-pending-banner{display:none;background:var(--orange-lt);color:var(--orange);border-bottom:1px solid var(--line);
   font-size:12px;font-weight:600;padding:8px 14px;text-align:center;}
 .kyc-pending-banner.on{display:block;}
+
+/* ============================================================
+   66EX-STYLE HOME + MARKETS
+   ============================================================ */
+.home-greet{padding:6px 16px 4px;}
+.home-greet h1{font-size:22px;font-weight:800;letter-spacing:-.6px;margin:0;color:var(--text);}
+.home-greet .sub{font-size:12.5px;color:var(--text2);margin-top:2px;}
+
 .hero{padding:22px 20px 10px;text-align:center;background:var(--hero-grad);}
 .hero .art{height:140px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
 .hero h2{font-size:19px;margin:8px 0 18px;font-weight:700;color:var(--text);}
@@ -308,54 +329,120 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .hero-in .balance .lbl{font-size:11.5px;color:var(--text2);}
 .hero-in .balance .val{font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.5px;color:var(--text);}
 .hero-in .balance .eye{cursor:pointer;color:var(--text2);}
-.hero-in .quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;}
-.hero-in .qa{background:var(--card);border-radius:10px;padding:12px 6px;display:flex;
-  flex-direction:column;align-items:center;gap:7px;font-size:11px;font-weight:600;
-  cursor:pointer;border:1px solid var(--line);transition:.15s;color:var(--text);}
-.hero-in .qa:active{background:var(--bg3);}
-.hero-in .qa .qi{width:34px;height:34px;border-radius:10px;background:var(--green-lt);
-  display:flex;align-items:center;justify-content:center;color:var(--green-dk);}
-.promo-row{display:flex;gap:10px;margin:10px 14px;}
-.promo-big{flex:1;border-radius:12px;padding:14px;
-  background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 60%,#0b6b46 100%);
-  color:#fff;position:relative;overflow:hidden;min-height:118px;}
-.promo-big .brand{font-size:22px;font-weight:800;letter-spacing:-.5px;line-height:1.1;text-shadow:0 1px 2px rgba(0,0,0,.15);}
-.promo-big .tag{display:inline-block;background:#111;color:#fff;font-size:9px;padding:3px 7px;border-radius:4px;margin-top:6px;font-weight:600;}
-.promo-big .sub{font-size:11px;margin-top:8px;opacity:.95;line-height:1.5;}
-.promo-big .sub b{color:#FFD75E;}
+
+/* Welcome card (66EX style) */
+.welcome-card{margin:10px 14px 0;background:var(--welcome-bg);border-radius:16px;padding:18px 20px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);}
+.welcome-card .wc-left{flex:1;min-width:0;}
+.welcome-card .wc-h{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--text);line-height:1.15;}
+.welcome-card .wc-sub{font-size:12.5px;color:var(--text2);line-height:1.5;margin-top:8px;max-width:200px;}
+.welcome-card .wc-badge{width:96px;height:96px;border-radius:16px;flex-shrink:0;
+  background:linear-gradient(135deg,#0ECB81,#0a9e63);display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:32px;font-weight:900;position:relative;box-shadow:0 8px 24px rgba(14,203,129,.25);}
+.welcome-card .wc-badge .check{position:absolute;top:-6px;right:-6px;width:26px;height:26px;border-radius:50%;
+  background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
+  border:2px solid var(--bg);}
+
+/* Quick actions row (5 circles) */
+.quick-circle-row{display:flex;justify-content:space-between;gap:6px;padding:18px 14px 10px;}
+.qc{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;min-width:0;}
+.qc .circle{width:52px;height:52px;border-radius:50%;background:var(--quick-circle-bg);
+  border:1px solid var(--quick-circle-ring);display:flex;align-items:center;justify-content:center;transition:.15s;}
+.qc:active .circle{background:var(--bg3);transform:scale(.95);}
+.qc .circle svg{width:24px;height:24px;}
+.qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+
+/* Section headers — 66EX-style bold+grey pair */
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;font-size:16px;font-weight:700;color:var(--text);}
 .sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
-.asset-class{display:flex;gap:8px;padding:10px 14px 4px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
-.asset-class::-webkit-scrollbar{display:none;}
-.ac-pill{flex-shrink:0;padding:7px 14px;border-radius:18px;font-size:12.5px;font-weight:600;
-  background:var(--card);color:var(--text2);border:1px solid var(--line);cursor:pointer;transition:.15s;}
-.ac-pill.on{background:var(--green);color:#fff;border-color:var(--green);}
+.sec-pair{display:flex;align-items:center;gap:14px;padding:16px 16px 8px;}
+.sec-pair .on{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--text);}
+.sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
+
+/* 2x2 coin grid — 66EX style with sparkline */
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
-.coin-card{background:var(--card);border-radius:10px;padding:12px;border:1px solid var(--line);position:relative;cursor:pointer;}
+.coin-card{background:var(--coin-card-bg);border-radius:12px;padding:14px;border:1px solid var(--line);
+  position:relative;cursor:pointer;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
 .coin-card:active{transform:scale(.98);}
-.coin-card .pair{font-size:13px;font-weight:600;color:var(--text);}
-.coin-card .price{font-size:17px;font-weight:700;margin-top:8px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;color:var(--text);}
-.coin-card .chg{font-size:13px;margin-top:4px;font-weight:600;}
-.coin-card .check{position:absolute;right:10px;bottom:10px;width:20px;height:20px;border-radius:6px;
-  background:var(--green);display:flex;align-items:center;justify-content:center;}
-.up{color:var(--green);}.down{color:var(--red);}
-.thead{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:8px 16px;font-size:11px;color:var(--text3);gap:4px;}
-.thead .r{justify-content:flex-end;}
-.trow{display:grid;grid-template-columns:1.4fr 1.1fr 1.1fr .9fr;padding:12px 16px;font-size:13px;gap:4px;align-items:center;cursor:pointer;}
-.trow .name{font-weight:600;line-height:1.25;color:var(--text);}
-.trow .name small{display:block;color:var(--text3);font-size:11px;font-weight:400;}
-.trow .px,.trow .vol{text-align:right;font-variant-numeric:tabular-nums;color:var(--text);}
-.trow .px small{display:block;color:var(--text3);font-size:11px;}
-.chg-pill{justify-self:end;min-width:62px;text-align:center;padding:7px 6px;border-radius:6px;
-  color:#fff;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;}
-.chg-pill.up{background:var(--green);}
-.chg-pill.down{background:var(--red);}
+.coin-card .row-top{display:flex;align-items:center;gap:6px;}
+.coin-card .pair{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
+.coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;}
+.coin-card .row-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:10px;}
+.coin-card .left{min-width:0;}
+.coin-card .price{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;
+  letter-spacing:-.3px;white-space:nowrap;}
+.coin-card .chg{font-size:12px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;}
+.coin-card .chg.up{color:var(--green);}
+.coin-card .chg.down{color:var(--red);}
+.coin-card .spark{width:52px;height:28px;flex-shrink:0;}
+
+/* Coin list — big bold price + grey USD + solid pill */
+.coin-list{background:transparent;border-radius:0;margin:0;overflow:hidden;}
+.coin-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
+.coin-row:last-child{border-bottom:none;}
+.coin-row:active{background:var(--bg2);}
+.coin-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
+.coin-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.coin-row .left .nm{min-width:0;}
+.coin-row .left .pair{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.2px;white-space:nowrap;}
+.coin-row .left .pair small{font-size:11px;font-weight:500;color:var(--text2);margin-left:1px;}
+.coin-row .left .vol{font-size:11.5px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
+.coin-row .price-col{text-align:right;min-width:0;}
+.coin-row .price-col .p{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.3px;white-space:nowrap;}
+.coin-row .price-col .usd{font-size:11px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.coin-row .pill{min-width:74px;text-align:center;padding:8px 12px;border-radius:8px;
+  color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.2px;white-space:nowrap;}
+.coin-row .pill.up{background:var(--green);}
+.coin-row .pill.down{background:var(--red);}
+
+/* Top gainers horizontal strip */
+.top-gainers{display:flex;gap:10px;padding:6px 14px 14px;overflow-x:auto;scrollbar-width:none;}
+.top-gainers::-webkit-scrollbar{display:none;}
+.tg-card{flex-shrink:0;width:112px;background:var(--coin-card-bg);border:1px solid var(--line);
+  border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;}
+.tg-card:active{transform:scale(.97);}
+.tg-card .tg-logo{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:800;font-size:14px;}
+.tg-card .tg-sym{font-size:12.5px;font-weight:700;color:var(--text);}
+.tg-card .tg-price{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.2px;}
+.tg-card .tg-chg{font-size:12px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
+.tg-card .tg-chg.down{color:var(--red);}
+
+/* Sub-tab pill row (Favorites / Cryptocurrency / Futures) */
+.subtabs{display:flex;align-items:center;gap:18px;padding:16px 16px 10px;border-bottom:1px solid var(--line);}
+.subtabs .st{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
+  border-bottom:2px solid transparent;letter-spacing:-.3px;transition:.15s;}
+.subtabs .st.on{color:var(--text);font-weight:800;border-bottom-color:var(--green);}
+
+/* Markets search */
+.mk-search{margin:12px 14px 8px;height:44px;border-radius:12px;background:var(--input-bg);
+  display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--line);}
+.mk-search svg{flex-shrink:0;}
+.mk-search input{flex:1;background:transparent;border:none;outline:none;font-family:inherit;
+  font-size:14px;color:var(--text);min-width:0;}
+.mk-search input::placeholder{color:var(--text3);}
+
+/* Market table header */
+.mkt-head{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:8px 16px 6px;
+  font-size:11px;color:var(--text3);font-weight:600;}
+.mkt-head .r{text-align:right;}
+
+/* Market tabs (Top Gainers / Top Losers / Vol) */
+.mkt-tabs{display:flex;align-items:center;gap:16px;padding:6px 16px 8px;}
+.mkt-tabs .mt{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;letter-spacing:-.3px;}
+.mkt-tabs .mt.on{color:var(--text);font-weight:800;}
+
+/* Keep old pulse cards (used elsewhere if needed) */
 .pulse{display:flex;gap:10px;padding:4px 14px 14px;overflow-x:auto;scrollbar-width:none;}
 .pulse::-webkit-scrollbar{display:none;}
 .pulse .p{flex-shrink:0;width:118px;background:var(--card);border-radius:10px;padding:11px;border:1px solid var(--line);}
 .pulse .p .top{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);}
 .pulse .p .val{font-size:17px;font-weight:700;margin:8px 0 3px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;color:var(--text);}
 .pulse .p .pc{font-size:12px;font-weight:600;}
+
 .news-strip{margin:14px;background:var(--card);border-radius:12px;border:1px solid var(--line);
   padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
 .news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
@@ -746,6 +833,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <body>
 <div class="phone">
 
+<!-- AUTH -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
@@ -943,12 +1031,13 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
+<!-- HOME -->
 <section class="screen active" id="s-home">
   <div class="topbar">
     <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
     <div class="search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>BTC&USDT</span>
+      <span>Welcome to our platform~</span>
     </div>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
@@ -959,61 +1048,72 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
-    <div class="icon-btn" onclick="openNews()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-    <div class="icon-btn" onclick="openCopyTrading()"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="dot" id="notifDot"></span></div>
+    <div class="icon-btn" title="Support"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+    <div class="icon-btn" onclick="downloadFor('android')" title="Download"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   </div>
   <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
   <div class="mode-banner" id="modeBanner">🎮 Demo Mode — you're trading with virtual funds</div>
   <div class="scroll" id="homeScroll">
-    <div id="heroLoggedOut">
-      <div class="hero">
-        <div class="art">
-          <svg width="200" height="140" viewBox="0 0 200 140">
-            <ellipse cx="100" cy="122" rx="66" ry="10" fill="#000" opacity=".07"/>
-            <g transform="rotate(-8 100 70)">
-              <rect x="62" y="34" width="76" height="60" rx="8" fill="#2FD3C0"/>
-              <rect x="58" y="28" width="76" height="14" rx="7" fill="#14B8A6"/>
-              <rect x="88" y="20" width="30" height="40" rx="6" fill="#e9f7f4"/>
-            </g>
-            <circle cx="132" cy="46" r="15" fill="#F5C542"/>
-            <circle cx="150" cy="70" r="11" fill="#7ED957"/>
-          </svg>
-        </div>
-        <h2>Register now and claim rich rewards</h2>
-        <button class="btn-primary wide" onclick="openAuth('register')">Login / Register</button>
+    <div class="home-greet">
+      <h1>Start using NextTrade!</h1>
+    </div>
+
+    <div class="welcome-card">
+      <div class="wc-left">
+        <div class="wc-h">Welcome to<br>NextTrade</div>
+        <div class="wc-sub">A Global Digital Asset Trading Platform Built for the Future.</div>
+      </div>
+      <div class="wc-badge">
+        <span class="check">✓</span>
+        N
       </div>
     </div>
-    <div id="heroLoggedIn" style="display:none">
-      <div class="hero-in">
-        <div class="row1">
-          <div class="hi-av" id="heroAvatar">U</div>
-          <div class="greet">
-            <div class="hi">Welcome back</div>
-            <div class="nm" id="heroName">—</div>
-            <div class="uid" id="heroUid">UID: —</div>
-          </div>
+
+    <div class="quick-circle-row">
+      <div class="qc" onclick="openDeposit('deposit')">
+        <div class="circle" style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="balance">
-          <div style="flex:1;min-width:0;">
-            <div class="lbl" id="heroBalanceLabel">Total Balance</div>
-            <div class="val" id="heroBalance">$0.00</div>
-          </div>
-          <div class="mode-pill" id="modePill">
-            <div class="m" data-mode="demo" onclick="setMode('demo')">DEMO</div>
-            <div class="m on-real" data-mode="real" onclick="setMode('real')">REAL</div>
-          </div>
-          <div class="eye" onclick="toggleHeroMask()"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
+        <div class="lbl">Deposit</div>
+      </div>
+      <div class="qc" onclick="openDeposit('withdraw')">
+        <div class="circle">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <div class="quick-actions">
-          <div class="qa" onclick="openDeposit('deposit')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Deposit</span></div>
-          <div class="qa" onclick="openDeposit('withdraw')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Withdraw</span></div>
-          <div class="qa" onclick="go('s-trade')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 17l5-6 4 3 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span>Trade</span></div>
-          <div class="qa" onclick="go('s-wallet')"><div class="qi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 7h18v12H3zM3 11h18" stroke="currentColor" stroke-width="2"/></svg></div><span>Wallet</span></div>
-          <div class="qa" onclick="openInvite()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M2.5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><span>Invite</span></div>
-          <div class="qa" onclick="openNews()"><div class="qi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><span>News</span></div>
+        <div class="lbl">Withdraw</div>
+      </div>
+      <div class="qc" onclick="openTransfer()">
+        <div class="circle">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
+        <div class="lbl">Swap</div>
+      </div>
+      <div class="qc" onclick="openTxHistory()">
+        <div class="circle">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="lbl">History</div>
+      </div>
+      <div class="qc" onclick="openInvite()">
+        <div class="circle">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div class="lbl">Referrals</div>
       </div>
     </div>
+
+    <div class="sec-pair">
+      <span class="on">Cryptocurrency</span>
+      <span class="off" onclick="go('s-markets')">Futures</span>
+    </div>
+    <div class="coin-grid" id="homeCoinGrid"></div>
+
+    <div class="sec-pair" style="padding-top:6px;">
+      <span class="on">Top Movers</span>
+      <span class="off" onclick="go('s-markets')">View all ›</span>
+    </div>
+    <div class="coin-list" id="homeCoinList" style="margin:0 14px 14px;background:var(--card);border-radius:14px;border:1px solid var(--line);overflow:hidden;"></div>
+
     <div class="news-strip" onclick="openNews()">
       <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
       <div class="nt">
@@ -1034,50 +1134,46 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         </div>
       </div>
       <div class="db">
-        <button class="ios" onclick="downloadFor('ios')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17.5 12.5c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.7 1.1-4.6 1.1s-2.4-1.1-4-1.1c-2 0-3.9 1.2-5 3-2.1 3.7-.5 9.2 1.5 12.2 1 1.5 2.2 3.1 3.8 3 1.5-.1 2.1-1 3.9-1s2.4 1 4 1c1.7 0 2.7-1.5 3.7-3 1.2-1.7 1.6-3.4 1.7-3.5-.1 0-3.2-1.2-3.2-4.7zM14.4 3.7c.8-1 1.4-2.4 1.2-3.7-1.2 0-2.6.8-3.5 1.8-.7.9-1.4 2.3-1.2 3.6 1.3.1 2.7-.7 3.5-1.7z" fill="currentColor"/></svg>
-          iOS
-        </button>
-        <button class="and" onclick="downloadFor('android')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17.6 9.5l1.8-3.1a.4.4 0 10-.7-.4l-1.8 3.1A10.9 10.9 0 0012 8.5c-1.8 0-3.5.4-4.9 1l-1.8-3.1a.4.4 0 10-.7.4l1.8 3.1C3.6 11.2 2 13.5 2 16h20c0-2.5-1.6-4.8-4.4-6.5zM7 13.5a.8.8 0 110-1.6.8.8 0 010 1.6zm10 0a.8.8 0 110-1.6.8.8 0 010 1.6z" fill="currentColor"/></svg>
-          Android
-        </button>
+        <button class="ios" onclick="downloadFor('ios')">iOS</button>
+        <button class="and" onclick="downloadFor('android')">Android</button>
       </div>
     </div>
-
-    <div class="promo-row">
-      <div class="promo-big">
-        <div class="brand">NextTrade</div>
-        <div class="tag">Your Secure Crypto Platform</div>
-        <div class="sub">Instant fills · <b>Low fees</b><br>24/7 support</div>
-      </div>
-    </div>
-    <div class="sec-head">Recommended Coins <span class="more" onclick="go('s-markets')">More ›</span></div>
-    <div class="pulse" id="homePulse"></div>
-    <div class="sec-head">Markets <span class="more" onclick="go('s-markets')">View all ›</span></div>
-    <div style="background:var(--card);border-radius:12px;margin:0 14px 14px;overflow:hidden;border:1px solid var(--line)"><div id="homeList"></div></div>
-    <div class="hint">— Live prices update in real time —</div>
   </div>
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
+<!-- MARKETS -->
 <section class="screen" id="s-markets">
-  <div class="asset-class" id="assetClassBar">
-    <div class="ac-pill on" data-class="crypto">Crypto</div>
-    <div class="ac-pill" data-class="forex">Forex</div>
-    <div class="ac-pill" data-class="commodities">Commodities</div>
-    <div class="ac-pill" data-class="stocks">Stocks</div>
+  <div class="mk-search">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
+    <input placeholder="Search" id="mkSearch" oninput="filterMarkets(this.value)">
   </div>
+
+  <div class="mkt-tabs" id="mktTabs">
+    <span class="mt on" data-mt="gainers">Top Gainers</span>
+    <span class="mt" data-mt="losers">Top Losers</span>
+    <span class="mt" data-mt="vol">Vol</span>
+  </div>
+  <div class="top-gainers" id="topGainers"></div>
+
+  <div class="subtabs" id="mkSubtabs">
+    <span class="st" data-class="favorites">Favorites</span>
+    <span class="st on" data-class="crypto">Cryptocurrency</span>
+    <span class="st" data-class="futures">Futures</span>
+  </div>
+
   <div class="scroll">
-    <div class="sec-head" style="padding-top:4px">You may be interested</div>
-    <div class="coin-grid" id="coinGrid"></div>
-    <div class="sec-head">All Markets</div>
-    <div class="thead"><span>Name</span><span class="r">24h Vol</span><span class="r">Price</span><span class="r">Change</span></div>
+    <div class="mkt-head">
+      <span>Title/Vol</span>
+      <span class="r">Latest Price</span>
+      <span class="r">Day Change</span>
+    </div>
     <div id="mktTable"></div>
   </div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
+<!-- TRADE -->
 <section class="screen" id="s-trade">
   <div class="tr-tabs" id="trTabs">
     <div class="tr-tab" data-tr="perpetual">Perpetual</div>
@@ -1120,12 +1216,8 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
             <div class="bs on-buy" data-side="buy" onclick="trSetSide('buy')">Buy</div>
             <div class="bs" data-side="sell" onclick="trSetSide('sell')">Sell</div>
           </div>
-          <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')">
-            <span class="dot"><i></i></span> Limit
-          </div>
-          <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')">
-            <span class="dot"><i></i></span> Market
-          </div>
+          <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')"><span class="dot"><i></i></span> Limit</div>
+          <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')"><span class="dot"><i></i></span> Market</div>
           <div class="tr-input" id="trPriceRow">
             <input id="trPrice" placeholder="Price(USDT)" inputmode="decimal">
             <span class="suf">USDT</span>
@@ -1185,6 +1277,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
+<!-- WALLET -->
 <section class="screen" id="s-wallet">
   <div class="wallet-hero">
     <div class="lab">Total Balance</div>
@@ -1212,6 +1305,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
+<!-- ASSETS -->
 <section class="screen" id="s-assets">
   <div class="scroll">
     <div class="asset-hero">
@@ -1234,6 +1328,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
+<!-- Overlays -->
 <div class="overlay" id="profile">
   <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
   <div class="scroll" style="padding-bottom:20px">
@@ -1292,7 +1387,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#04160f;flex-shrink:0;">N</div>
   <div style="flex:1;min-width:0;">
     <div style="font-size:13px;font-weight:700;">Install NextTrade</div>
-    <div style="font-size:11px;color:#B7BDC6;margin-top:2px;">Add to your home screen for the best experience</div>
+    <div style="font-size:11px;color:#B7BDC6;margin-top:2px;">Add to your home screen</div>
   </div>
   <button id="installBtn" style="background:#0ECB81;color:#fff;border:none;border-radius:8px;
     padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">Install</button>
@@ -1470,10 +1565,7 @@ function saveMyPosition(pos){
 
 function getCopyTrades(){ try { return JSON.parse(localStorage.getItem(COPY_KEY) || '[]'); } catch(e){ return []; } }
 function saveCopyTrades(list){ try { localStorage.setItem(COPY_KEY, JSON.stringify(list)); } catch(e){} }
-function openCopyTrading(){
-  renderCopyTrades();
-  document.getElementById('copyPanel').classList.add('active');
-}
+function openCopyTrading(){ renderCopyTrades(); document.getElementById('copyPanel').classList.add('active'); }
 function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
 
 function getSeenSignals(){ try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch(e){ return {}; } }
@@ -1487,12 +1579,8 @@ function activeSignals(){
   return getCopyTrades().filter(s => !s.expiresAt || s.expiresAt > now);
 }
 
-function getCopyProfitHistory(){
-  try { return JSON.parse(localStorage.getItem(COPY_PROFIT_KEY) || '{}'); } catch(e){ return {}; }
-}
-function saveCopyProfitHistory(h){
-  try { localStorage.setItem(COPY_PROFIT_KEY, JSON.stringify(h)); } catch(e){}
-}
+function getCopyProfitHistory(){ try { return JSON.parse(localStorage.getItem(COPY_PROFIT_KEY) || '{}'); } catch(e){ return {}; } }
+function saveCopyProfitHistory(h){ try { localStorage.setItem(COPY_PROFIT_KEY, JSON.stringify(h)); } catch(e){} }
 function addCopyProfitEntry(userEmail, entry){
   if(!userEmail) return;
   const all = getCopyProfitHistory();
@@ -1500,10 +1588,6 @@ function addCopyProfitEntry(userEmail, entry){
   all[userEmail].unshift(entry);
   if(all[userEmail].length > 200) all[userEmail].length = 200;
   saveCopyProfitHistory(all);
-}
-function getUserCopyProfitHistory(){
-  if(!currentUser) return [];
-  return getCopyProfitHistory()[currentUser.email] || [];
 }
 function creditCopyProfit(signalId, amount, traderName, sym){
   if(!currentUser) return;
@@ -1825,7 +1909,6 @@ function creditCopyProfit(signalId, amount, traderName, sym){
 
     setTimeout(() => {
       creditCopyProfit(capturedSignalId, effectiveAmt, capturedTrader, capturedSym);
-      /* Auto-close the followed position so it leaves Open Orders */
       const followed = getFollowedSignals();
       if(followed[capturedSignalId]){
         followed[capturedSignalId].status = 'closed';
@@ -2123,6 +2206,31 @@ function symLogo(sym, sz=22){
   return `<span class="logo" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*0.5)}px;background:${col};${dark?'color:#000;':''}">${sym[0]}</span>`;
 }
 
+/* ---------- 66EX-style sparkline generator (tiny SVG) ---------- */
+function sparklineSVG(up, width=52, height=28){
+  const points = [];
+  const N = 16;
+  let p = 50;
+  const bias = up ? 0.55 : 0.45;
+  for(let i = 0; i < N; i++){
+    p += (Math.random() - (1 - bias)) * 6;
+    points.push(p);
+  }
+  const min = Math.min(...points), max = Math.max(...points), range = max - min || 1;
+  const path = points.map((v, i) => {
+    const x = (i/(N-1)) * width;
+    const y = height - ((v - min) / range) * (height - 4) - 2;
+    return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  const color = up ? 'var(--green)' : 'var(--red)';
+  const fill = up ? 'rgba(14,203,129,0.10)' : 'rgba(246,70,93,0.10)';
+  const areaPath = `${path} L${width},${height} L0,${height} Z`;
+  return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
+    <path d="${areaPath}" fill="${fill}" stroke="none"/>
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+}
+
 let lastBinanceTick = 0;
 function startBinanceStream(){
   if(typeof WebSocket === 'undefined') return;
@@ -2157,10 +2265,148 @@ function startSimulation(){
     });
   }, 1500);
 }
+
+/* ---------- Home renderers (66EX style) ---------- */
+const HOME_GRID_COINS = ['BTC','USDC','TRX','ETH'];
+const HOME_LIST_COINS = ['BTC','USDC','TRX','ETH','BNB'];
+
+function renderHomeCoinGrid(){
+  const el = document.getElementById('homeCoinGrid');
+  if(!el) return;
+  const symbols = HOME_GRID_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81', name:s});
+  el.innerHTML = symbols.map(m => {
+    const up = (m.chg || 0) >= 0;
+    return `<div class="coin-card" onclick="openInstrumentFromMarket('${m.sym}')">
+      <div class="row-top">
+        <span class="pair">${m.sym}</span>
+        <span class="tag">crypto</span>
+      </div>
+      <div class="row-bottom">
+        <div class="left">
+          <div class="price">$${fmt(m.price)}</div>
+          <div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
+        </div>
+        ${sparklineSVG(up)}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderHomeCoinList(){
+  const el = document.getElementById('homeCoinList');
+  if(!el) return;
+  const symbols = HOME_LIST_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81', name:s, vol:'—'});
+  el.innerHTML = symbols.map(m => {
+    const up = (m.chg || 0) >= 0;
+    return `<div class="coin-row" onclick="openInstrumentFromMarket('${m.sym}')">
+      <div class="left">
+        ${symLogo(m.sym, 36)}
+        <div class="nm">
+          <div class="pair">${m.sym}<small>/USDT</small></div>
+          <div class="vol">${m.vol || '—'}</div>
+        </div>
+      </div>
+      <div class="price-col">
+        <div class="p">${fmt(m.price)}</div>
+        <div class="usd">$ ${fmt(m.price)}</div>
+      </div>
+      <div class="pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- Markets renderers (66EX style) ---------- */
+let mktTopTab = 'gainers';
+let mktSubTab = 'crypto';
+let mkFilter = '';
+
+function allCoins(){
+  const out = [];
+  ['crypto','forex','commodities','stocks'].forEach(k => {
+    (MARKETS[k] || []).forEach(m => out.push(m));
+  });
+  return out;
+}
+
+function renderTopGainers(){
+  const el = document.getElementById('topGainers');
+  if(!el) return;
+  let list = allCoins().slice();
+  if(mktTopTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
+  else if(mktTopTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
+  else list.sort((a,b) => parseFloat(String(b.vol||'').replace(/[^0-9.]/g,'')) - parseFloat(String(a.vol||'').replace(/[^0-9.]/g,'')));
+  const top = list.slice(0, 8);
+  el.innerHTML = top.map(m => {
+    const up = (m.chg || 0) >= 0;
+    return `<div class="tg-card" onclick="openInstrumentFromMarket('${m.sym}')">
+      ${symLogo(m.sym, 34)}
+      <div class="tg-sym">${m.sym}</div>
+      <div class="tg-price">${fmt(m.price)}</div>
+      <div class="tg-chg ${up?'':'down'}">${chgSign(m.chg || 0)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderMarketsTable(){
+  const el = document.getElementById('mktTable');
+  if(!el) return;
+  let list;
+  if(mktSubTab === 'favorites'){
+    list = ['BTC','ETH','SOL','BNB'].map(s => findMarket(s)).filter(Boolean);
+  } else if(mktSubTab === 'futures'){
+    list = allCoins().filter(m => ['BTC','ETH','SOL','XRP','BNB','DOGE'].includes(m.sym));
+  } else {
+    list = (MARKETS.crypto || []).slice();
+  }
+  if(mkFilter){
+    const q = mkFilter.toLowerCase();
+    list = list.filter(m => m.sym.toLowerCase().includes(q) || (m.name||'').toLowerCase().includes(q));
+  }
+  if(!list.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No matches</div>';
+    return;
+  }
+  el.innerHTML = list.map(m => {
+    const up = (m.chg || 0) >= 0;
+    return `<div class="coin-row" onclick="openInstrumentFromMarket('${m.sym}')">
+      <div class="left">
+        ${symLogo(m.sym, 36)}
+        <div class="nm">
+          <div class="pair">${m.sym}<small>/USDT</small></div>
+          <div class="vol">${m.vol || '—'}</div>
+        </div>
+      </div>
+      <div class="price-col">
+        <div class="p">${fmt(m.price)}</div>
+        <div class="usd">$ ${fmt(m.price)}</div>
+      </div>
+      <div class="pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterMarkets(v){ mkFilter = v; renderMarketsTable(); }
+
+document.getElementById('mktTabs')?.addEventListener('click', e => {
+  const t = e.target.closest('.mt'); if(!t) return;
+  document.querySelectorAll('#mktTabs .mt').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  mktTopTab = t.dataset.mt;
+  renderTopGainers();
+});
+document.getElementById('mkSubtabs')?.addEventListener('click', e => {
+  const t = e.target.closest('.st'); if(!t) return;
+  document.querySelectorAll('#mkSubtabs .st').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  mktSubTab = t.dataset.class;
+  renderMarketsTable();
+});
+
 function renderAllPrices(){
-  renderHomePulse();
-  renderHomeList();
-  renderMarketsForClass();
+  renderHomeCoinGrid();
+  renderHomeCoinList();
+  renderTopGainers();
+  renderMarketsTable();
   renderTrOrderBook();
   renderTrHeader();
   refreshNewsStrip();
@@ -2401,28 +2647,24 @@ let heroMasked = false;
 function toggleHeroMask(){
   heroMasked = !heroMasked;
   const el = document.getElementById('heroBalance');
+  if(!el) return;
   const bal = activeBalance('funding') + activeBalance('spot') + (currentUser && currentUser.balance || 0);
   el.textContent = heroMasked ? '••••••' : ('$' + fmt(bal));
   toast(heroMasked ? 'Balance hidden' : 'Balance shown');
 }
 function applyUserToUI(){
   const loggedIn = !!currentUser;
-  document.getElementById('heroLoggedOut').style.display = loggedIn ? 'none' : 'block';
-  document.getElementById('heroLoggedIn').style.display = loggedIn ? 'block' : 'none';
   const av = document.getElementById('homeAvatar');
-  if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
-  else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
+  if(av){
+    if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
+    else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
+  }
   if(loggedIn){
-    document.getElementById('heroAvatar').textContent = currentUser.username[0].toUpperCase();
-    document.getElementById('heroName').textContent = currentUser.username;
-    document.getElementById('heroUid').textContent = 'UID: ' + currentUser.uid;
-    const bal = activeBalance('funding') + activeBalance('spot') + (currentUser.balance || 0);
-    document.getElementById('heroBalance').textContent = heroMasked ? '••••••' : ('$' + fmt(bal));
-    document.getElementById('profileAvatar').textContent = currentUser.username[0].toUpperCase();
-    document.getElementById('profileAddr').textContent = currentUser.email;
+    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = currentUser.username[0].toUpperCase();
+    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = currentUser.email;
   } else {
-    document.getElementById('profileAvatar').textContent = 'U';
-    document.getElementById('profileAddr').textContent = 'Not signed in';
+    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = 'U';
+    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = 'Not signed in';
   }
   renderWalletScreen();
   renderAccounts();
@@ -2564,51 +2806,7 @@ function shareInvite(code){
   else { if(navigator.clipboard) navigator.clipboard.writeText(txt); toast('Copied'); }
 }
 
-function renderHomePulse(){
-  document.getElementById('homePulse').innerHTML = ['BTC','ETH','SOL'].map(s => {
-    const m = findMarket(s);
-    return `<div class="p"><div class="top">${symLogo(s,16)} ${s}/USDT</div><div class="val">${fmt(m.price)}</div><div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div></div>`;
-  }).join('');
-}
-function renderHomeList(){
-  document.getElementById('homeList').innerHTML = ['BTC','ETH','SOL','XRP','BNB'].map(s => {
-    const m = findMarket(s);
-    return `<div class="trow" onclick="go('s-trade');trSetSymbol('${s}')">
-      <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(s,22)}<span>${s}<small>${m.name}</small></span></div>
-      <div class="px" style="grid-column:2/4">${fmt(m.price)}</div>
-      <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-    </div>`;
-  }).join('');
-}
-let currentClass = 'crypto';
-function renderMarketsForClass(){
-  const list = MARKETS[currentClass];
-  document.getElementById('coinGrid').innerHTML = list.slice(0,8).map(m => `
-    <div class="coin-card" onclick="openInstrumentFromMarket('${m.sym}')">
-      <div class="pair">${m.sym}</div>
-      <div class="price">${fmt(m.price)}</div>
-      <div class="chg ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-      <div class="check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </div>
-  `).join('');
-  document.getElementById('mktTable').innerHTML = list.map(m => `
-    <div class="trow" onclick="openInstrumentFromMarket('${m.sym}')">
-      <div class="name" style="display:flex;align-items:center;gap:8px">${symLogo(m.sym,26)}<span>${m.sym}<small>${m.name}</small></span></div>
-      <div class="vol">${m.vol}</div>
-      <div class="px">${fmt(m.price)}</div>
-      <div class="chg-pill ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-    </div>
-  `).join('');
-}
 function openInstrumentFromMarket(sym){ go('s-trade'); trSetSymbol(sym); }
-const acb = document.getElementById('assetClassBar');
-if(acb) acb.addEventListener('click', e => {
-  const p = e.target.closest('.ac-pill'); if(!p) return;
-  document.querySelectorAll('.ac-pill').forEach(x => x.classList.remove('on'));
-  p.classList.add('on');
-  currentClass = p.dataset.class;
-  renderMarketsForClass();
-});
 
 let trSymbol = 'BTC';
 let trSide = 'buy';
@@ -2963,7 +3161,9 @@ function renderAccounts(){
     {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
     {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
   ];
-  document.getElementById('acctList').innerHTML = accts.map(a => `
+  const el = document.getElementById('acctList');
+  if(!el) return;
+  el.innerHTML = accts.map(a => `
     <div class="acct-row" onclick="openTransfer()">
       <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
@@ -2984,7 +3184,9 @@ function renderProfileMenu(){
     {l:'Contact Us', action:"toast('Contact')"},
     {l:'About Us', action:"toast('About')"}
   ];
-  document.getElementById('profileMenu').innerHTML = items.map(it => `
+  const el = document.getElementById('profileMenu');
+  if(!el) return;
+  el.innerHTML = items.map(it => `
     <div class="menu-row" onclick="${it.action}">
       <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
       <div class="mt">${it.l}</div>
@@ -3241,9 +3443,10 @@ function doTransfer(){
       saveAccounts(accs);
     }
   }
-  renderHomePulse();
-  renderHomeList();
-  renderMarketsForClass();
+  renderHomeCoinGrid();
+  renderHomeCoinList();
+  renderTopGainers();
+  renderMarketsTable();
   renderAccounts();
   renderProfileMenu();
   applyUserToUI();
