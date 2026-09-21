@@ -13,6 +13,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script src="https://s3.tradingview.com/tv.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 <script>
 (function(){
   try{
@@ -72,7 +74,6 @@
 
   --icon-color:#FFFFFF;
 
-  /* Welcome card + coin card tint (dark: flat, no tint) */
   --welcome-bg:var(--card);
   --coin-card-bg:var(--card);
   --quick-circle-bg:var(--card);
@@ -118,7 +119,6 @@
 
   --icon-color:#1E2329;
 
-  /* 66EX-style tints (light mode only) */
   --welcome-bg:#F1F3F6;
   --coin-card-bg:#F5F6F8;
   --quick-circle-bg:#FFFFFF;
@@ -209,6 +209,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
   font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
 .auth-submit:hover{background:var(--green-dk);}
+.auth-submit:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
 .auth-switch{text-align:center;font-size:13.5px;color:var(--text2);margin-top:22px;}
 .auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
 .skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
@@ -260,7 +261,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .kp-apply:hover{background:#2f5fe0;}
 .kp-footnote{font-size:12.5px;color:var(--text3);text-align:center;padding:14px 0 4px;line-height:1.5;}
 
-/* topbar / home */
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:var(--topbar-grad);}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--card);flex-shrink:0;
@@ -300,37 +300,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   font-size:12px;font-weight:600;padding:8px 14px;text-align:center;}
 .kyc-pending-banner.on{display:block;}
 
-/* ============================================================
-   66EX-STYLE HOME + MARKETS
-   ============================================================ */
 .home-greet{padding:6px 16px 4px;}
 .home-greet h1{font-size:22px;font-weight:800;letter-spacing:-.6px;margin:0;color:var(--text);}
 .home-greet .sub{font-size:12.5px;color:var(--text2);margin-top:2px;}
 
-.hero{padding:22px 20px 10px;text-align:center;background:var(--hero-grad);}
-.hero .art{height:140px;margin-bottom:6px;display:flex;align-items:center;justify-content:center;}
-.hero h2{font-size:19px;margin:8px 0 18px;font-weight:700;color:var(--text);}
-.btn-primary{display:block;width:100%;height:48px;border:none;border-radius:24px;
-  background:var(--green);color:#fff;font-size:16px;font-weight:700;cursor:pointer;transition:.15s;}
-.btn-primary:active{background:var(--green-dk);transform:scale(.985);}
-.btn-primary.wide{max-width:340px;margin:0 auto;}
-.hero-in{padding:18px 20px 12px;background:var(--hero-grad);}
-.hero-in .row1{display:flex;align-items:center;gap:12px;}
-.hero-in .hi-av{width:52px;height:52px;border-radius:50%;background:var(--card);
-  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);
-  font-size:20px;font-weight:800;color:var(--green-dk);overflow:hidden;flex-shrink:0;}
-.hero-in .greet{flex:1;min-width:0;}
-.hero-in .greet .hi{font-size:12px;color:var(--text2);}
-.hero-in .greet .nm{font-size:18px;font-weight:800;letter-spacing:-.3px;margin-top:2px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
-.hero-in .greet .uid{font-size:11px;color:var(--text3);margin-top:2px;}
-.hero-in .balance{margin-top:16px;padding:14px 16px;background:var(--card);border-radius:12px;
-  border:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;}
-.hero-in .balance .lbl{font-size:11.5px;color:var(--text2);}
-.hero-in .balance .val{font-size:19px;font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums;letter-spacing:-.5px;color:var(--text);}
-.hero-in .balance .eye{cursor:pointer;color:var(--text2);}
-
-/* Welcome card (66EX style) */
 .welcome-card{margin:10px 14px 0;background:var(--welcome-bg);border-radius:16px;padding:18px 20px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);}
 .welcome-card .wc-left{flex:1;min-width:0;}
@@ -343,7 +316,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
   border:2px solid var(--bg);}
 
-/* Quick actions row (5 circles) */
 .quick-circle-row{display:flex;justify-content:space-between;gap:6px;padding:18px 14px 10px;}
 .qc{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;min-width:0;}
 .qc .circle{width:52px;height:52px;border-radius:50%;background:var(--quick-circle-bg);
@@ -353,14 +325,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
 
-/* Section headers — 66EX-style bold+grey pair */
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;font-size:16px;font-weight:700;color:var(--text);}
 .sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
 .sec-pair{display:flex;align-items:center;gap:14px;padding:16px 16px 8px;}
 .sec-pair .on{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--text);}
 .sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
 
-/* 2x2 coin grid — 66EX style with sparkline */
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
 .coin-card{background:var(--coin-card-bg);border-radius:12px;padding:14px;border:1px solid var(--line);
   position:relative;cursor:pointer;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
@@ -377,7 +347,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .coin-card .chg.down{color:var(--red);}
 .coin-card .spark{width:52px;height:28px;flex-shrink:0;}
 
-/* Coin list — big bold price + grey USD + solid pill */
 .coin-list{background:transparent;border-radius:0;margin:0;overflow:hidden;}
 .coin-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
   padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
@@ -398,26 +367,21 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .coin-row .pill.up{background:var(--green);}
 .coin-row .pill.down{background:var(--red);}
 
-/* Top gainers horizontal strip */
 .top-gainers{display:flex;gap:10px;padding:6px 14px 14px;overflow-x:auto;scrollbar-width:none;}
 .top-gainers::-webkit-scrollbar{display:none;}
 .tg-card{flex-shrink:0;width:112px;background:var(--coin-card-bg);border:1px solid var(--line);
   border-radius:12px;padding:12px;display:flex;flex-direction:column;align-items:flex-start;gap:8px;cursor:pointer;}
 .tg-card:active{transform:scale(.97);}
-.tg-card .tg-logo{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:14px;}
 .tg-card .tg-sym{font-size:12.5px;font-weight:700;color:var(--text);}
 .tg-card .tg-price{font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.2px;}
 .tg-card .tg-chg{font-size:12px;font-weight:700;color:var(--green);font-variant-numeric:tabular-nums;}
 .tg-card .tg-chg.down{color:var(--red);}
 
-/* Sub-tab pill row (Favorites / Cryptocurrency / Futures) */
 .subtabs{display:flex;align-items:center;gap:18px;padding:16px 16px 10px;border-bottom:1px solid var(--line);}
 .subtabs .st{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
   border-bottom:2px solid transparent;letter-spacing:-.3px;transition:.15s;}
 .subtabs .st.on{color:var(--text);font-weight:800;border-bottom-color:var(--green);}
 
-/* Markets search */
 .mk-search{margin:12px 14px 8px;height:44px;border-radius:12px;background:var(--input-bg);
   display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--line);}
 .mk-search svg{flex-shrink:0;}
@@ -425,23 +389,13 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   font-size:14px;color:var(--text);min-width:0;}
 .mk-search input::placeholder{color:var(--text3);}
 
-/* Market table header */
 .mkt-head{display:grid;grid-template-columns:1fr auto auto;gap:12px;padding:8px 16px 6px;
   font-size:11px;color:var(--text3);font-weight:600;}
 .mkt-head .r{text-align:right;}
 
-/* Market tabs (Top Gainers / Top Losers / Vol) */
 .mkt-tabs{display:flex;align-items:center;gap:16px;padding:6px 16px 8px;}
 .mkt-tabs .mt{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;letter-spacing:-.3px;}
 .mkt-tabs .mt.on{color:var(--text);font-weight:800;}
-
-/* Keep old pulse cards (used elsewhere if needed) */
-.pulse{display:flex;gap:10px;padding:4px 14px 14px;overflow-x:auto;scrollbar-width:none;}
-.pulse::-webkit-scrollbar{display:none;}
-.pulse .p{flex-shrink:0;width:118px;background:var(--card);border-radius:10px;padding:11px;border:1px solid var(--line);}
-.pulse .p .top{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--text);}
-.pulse .p .val{font-size:17px;font-weight:700;margin:8px 0 3px;letter-spacing:-.3px;font-variant-numeric:tabular-nums;color:var(--text);}
-.pulse .p .pc{font-size:12px;font-weight:600;}
 
 .news-strip{margin:14px;background:var(--card);border-radius:12px;border:1px solid var(--line);
   padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
@@ -700,7 +654,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .ins-row .px{font-size:13px;font-weight:700;color:var(--text);text-align:right;font-variant-numeric:tabular-nums;}
 .ins-row .pc{font-size:11px;font-weight:700;text-align:right;margin-top:2px;font-variant-numeric:tabular-nums;}
 
-/* Copy Signals */
 .copy-section{margin:14px 0 0;background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
 .copy-section-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;font-size:15px;font-weight:700;color:var(--text);}
 .copy-section-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
@@ -833,7 +786,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <body>
 <div class="phone">
 
-<!-- AUTH -->
+<!-- REGISTER -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
@@ -849,10 +802,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div class="auth-body">
     <h1 class="auth-title">Account Registration</h1>
     <p class="auth-sub">Create your free account in less than a minute.</p>
-    <div class="auth-method-toggle">
-      <div class="mt disabled" title="Coming soon">Mobile</div>
-      <div class="mt on">E-mail</div>
-    </div>
     <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
     <div class="auth-field"><label>Invitation code <span style="color:var(--text3);font-weight:400;">(optional)</span></label><div class="wrap"><input id="suReferral" type="text" placeholder="Please enter the invitation code"></div></div>
     <div class="auth-field">
@@ -865,7 +814,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="err" id="suPwErr"></div>
     </div>
     <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
-    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username" oninput="checkUsername()"></div><div class="err" id="suUsernameErr"></div></div>
+    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
     <div class="auth-check">
       <input type="checkbox" id="suTerms">
       <label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label>
@@ -875,6 +824,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
+<!-- KYC STEP 2 -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -889,7 +839,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
   <div class="auth-body">
     <h1 class="auth-title">Real-name Authentication</h1>
-    <p class="auth-sub">Verify your identity to unlock deposits, withdrawals, and higher trading limits. This takes about a minute.</p>
+    <p class="auth-sub">Verify your identity to unlock deposits, withdrawals, and higher trading limits.</p>
     <div class="auth-field"><label>Full legal name</label><div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div></div>
     <div class="auth-field"><label>Date of birth</label><div class="wrap"><input id="kycDob" type="date"></div></div>
     <div class="auth-field"><label>Country / Region</label><div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div></div>
@@ -904,105 +854,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
     </div>
     <div class="auth-field"><label>ID number</label><div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div></div>
-    <div class="auth-field">
-      <label>ID — Front</label>
-      <div class="kyc-up" id="upFront" onclick="document.getElementById('kycFront').click()">
-        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="t">Tap to upload front</div><div class="s">JPG or PNG · max 5 MB</div>
-      </div>
-      <input type="file" id="kycFront" accept="image/*" style="display:none;" onchange="handleKycFile('front', this)">
-    </div>
-    <div class="auth-field">
-      <label>ID — Back</label>
-      <div class="kyc-up" id="upBack" onclick="document.getElementById('kycBack').click()">
-        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#0ECB81" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="t">Tap to upload back</div><div class="s">JPG or PNG · max 5 MB</div>
-      </div>
-      <input type="file" id="kycBack" accept="image/*" style="display:none;" onchange="handleKycFile('back', this)">
-    </div>
-    <div class="auth-field">
-      <label>Selfie with ID</label>
-      <div class="kyc-up" id="upSelfie" onclick="document.getElementById('kycSelfie').click()">
-        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="9" r="3.5" stroke="#0ECB81" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="#0ECB81" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <div class="t">Tap to upload selfie</div><div class="s">Hold your ID next to your face</div>
-      </div>
-      <input type="file" id="kycSelfie" accept="image/*" style="display:none;" onchange="handleKycFile('selfie', this)">
-    </div>
     <button class="auth-submit" onclick="submitKycStep2()">Submit for Review →</button>
     <div class="skip-link" onclick="skipKycStep2()">Skip for now — do this later</div>
   </div>
 </section>
 
-<section class="kyc-page" id="kycPage">
-  <div class="kp-head">
-    <div class="back" onclick="closeKycPage()">‹</div>
-    <div class="title">KYCAuthentication</div>
-  </div>
-  <div class="kp-body">
-    <div class="kp-label">Nationality</div>
-    <div class="kp-field sel" onclick="pickNationality()">
-      <span id="kpNationality">United States</span>
-      <span class="caret">▼</span>
-    </div>
-    <div class="kp-label">Full legal name</div>
-    <div class="kp-field">
-      <input id="kpName" type="text" placeholder="Please enter your real name">
-      <div class="clr" onclick="clearKp('kpName')">✕</div>
-    </div>
-    <div class="kp-label">Document/passport number</div>
-    <div class="kp-field">
-      <input id="kpDocNum" type="text" placeholder="Please enter your ID/passport number">
-      <div class="clr" onclick="clearKp('kpDocNum')">✕</div>
-    </div>
-    <div class="kp-label">ID photo/upload passport</div>
-    <div class="kp-uploads">
-      <div class="kp-up" id="kpUpFront" onclick="document.getElementById('kpFront').click()">
-        <div class="box">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#8a929c" stroke-width="1.7"/><circle cx="12" cy="12.5" r="2.6" stroke="#8a929c" stroke-width="1.7"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#8a929c" stroke-width="1.7" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="cap">Front page of ID</div>
-      </div>
-      <div class="kp-up" id="kpUpBack" onclick="document.getElementById('kpBack').click()">
-        <div class="box">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="13" rx="2" stroke="#8a929c" stroke-width="1.7"/><circle cx="12" cy="12.5" r="2.6" stroke="#8a929c" stroke-width="1.7"/><path d="M8 6l1.2-2h5.6L16 6" stroke="#8a929c" stroke-width="1.7" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="cap">Back page of ID</div>
-      </div>
-    </div>
-    <input type="file" id="kpFront" accept="image/*" style="display:none;" onchange="handleKpFile('front', this)">
-    <input type="file" id="kpBack"  accept="image/*" style="display:none;" onchange="handleKpFile('back', this)">
-    <div class="kp-example-title">Shooting example</div>
-    <div class="kp-examples">
-      <div class="ex">
-        <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="14" width="108" height="64" rx="6" fill="#F7D7B0"/>
-          <rect x="14" y="24" width="48" height="6" rx="2" fill="#B4834E"/>
-          <rect x="14" y="35" width="40" height="4" rx="2" fill="#C79A67"/>
-          <rect x="14" y="44" width="52" height="4" rx="2" fill="#C79A67"/>
-          <rect x="14" y="53" width="34" height="4" rx="2" fill="#C79A67"/>
-          <rect x="80" y="22" width="28" height="34" rx="4" fill="#E9BE8C"/>
-          <circle cx="94" cy="34" r="6" fill="#8a6a44"/>
-          <path d="M84 54c2-6 6-9 10-9s8 3 10 9z" fill="#8a6a44"/>
-          <rect x="14" y="64" width="90" height="4" rx="2" fill="#C79A67"/>
-        </svg>
-      </div>
-      <div class="ex">
-        <svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="14" width="108" height="64" rx="6" fill="#F7D7B0"/>
-          <rect x="70" y="22" width="36" height="6" rx="2" fill="#B4834E"/>
-          <rect x="70" y="33" width="30" height="4" rx="2" fill="#C79A67"/>
-          <rect x="70" y="41" width="34" height="4" rx="2" fill="#C79A67"/>
-          <circle cx="26" cy="34" r="9" fill="#E9BE8C"/>
-          <rect x="14" y="60" width="92" height="4" rx="2" fill="#C79A67"/>
-          <rect x="14" y="68" width="60" height="4" rx="2" fill="#C79A67"/>
-        </svg>
-      </div>
-    </div>
-    <button class="kp-apply" onclick="submitKycPage()">Apply for certification</button>
-    <div class="kp-footnote">Failed to upload the ID photo, please contact customer service</div>
-  </div>
-</section>
-
+<!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -1019,12 +876,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="eye-btn" onclick="togglePw('loginPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
       </div>
       <div class="err" id="loginPwErr"></div>
-    </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0 18px;">
-      <label style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--text2);cursor:pointer;">
-        <input type="checkbox" id="loginRemember" checked style="width:16px;height:16px;accent-color:var(--green);"> Remember me
-      </label>
-      <div style="font-size:12.5px;color:var(--green-dk);font-weight:600;cursor:pointer;" onclick="forgotPassword()">Forgot password?</div>
     </div>
     <button class="auth-submit" onclick="doLogin()">Log In</button>
     <div class="auth-switch">Don't have an account? <a onclick="openAuth('register')">Sign Up</a></div>
@@ -1054,19 +905,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
   <div class="mode-banner" id="modeBanner">🎮 Demo Mode — you're trading with virtual funds</div>
   <div class="scroll" id="homeScroll">
-    <div class="home-greet">
-      <h1>Start using NextTrade!</h1>
-    </div>
+    <div class="home-greet"><h1>Start using NextTrade!</h1></div>
 
     <div class="welcome-card">
       <div class="wc-left">
         <div class="wc-h">Welcome to<br>NextTrade</div>
         <div class="wc-sub">A Global Digital Asset Trading Platform Built for the Future.</div>
       </div>
-      <div class="wc-badge">
-        <span class="check">✓</span>
-        N
-      </div>
+      <div class="wc-badge"><span class="check">✓</span>N</div>
     </div>
 
     <div class="quick-circle-row">
@@ -1077,27 +923,19 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="lbl">Deposit</div>
       </div>
       <div class="qc" onclick="openDeposit('withdraw')">
-        <div class="circle">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="lbl">Withdraw</div>
       </div>
       <div class="qc" onclick="openTransfer()">
-        <div class="circle">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div class="lbl">Swap</div>
       </div>
       <div class="qc" onclick="openTxHistory()">
-        <div class="circle">
-          <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </div>
+        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         <div class="lbl">History</div>
       </div>
       <div class="qc" onclick="openInvite()">
-        <div class="circle">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </div>
+        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         <div class="lbl">Referrals</div>
       </div>
     </div>
@@ -1125,9 +963,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 
     <div id="downloadAppCard" style="display:none;">
       <div class="dt">
-        <div class="di">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="di"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <div style="flex:1;min-width:0;">
           <div class="dh">Download the app</div>
           <div class="ds">Faster, full-screen, works offline</div>
@@ -1148,26 +984,19 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
     <input placeholder="Search" id="mkSearch" oninput="filterMarkets(this.value)">
   </div>
-
   <div class="mkt-tabs" id="mktTabs">
     <span class="mt on" data-mt="gainers">Top Gainers</span>
     <span class="mt" data-mt="losers">Top Losers</span>
     <span class="mt" data-mt="vol">Vol</span>
   </div>
   <div class="top-gainers" id="topGainers"></div>
-
   <div class="subtabs" id="mkSubtabs">
     <span class="st" data-class="favorites">Favorites</span>
     <span class="st on" data-class="crypto">Cryptocurrency</span>
     <span class="st" data-class="futures">Futures</span>
   </div>
-
   <div class="scroll">
-    <div class="mkt-head">
-      <span>Title/Vol</span>
-      <span class="r">Latest Price</span>
-      <span class="r">Day Change</span>
-    </div>
+    <div class="mkt-head"><span>Title/Vol</span><span class="r">Latest Price</span><span class="r">Day Change</span></div>
     <div id="mktTable"></div>
   </div>
   <nav class="bottomnav" data-nav></nav>
@@ -1293,7 +1122,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <div class="qr-wrap"><canvas id="myQrCanvas"></canvas></div>
       <div class="hint-line">Send only ETH or ERC-20 tokens (USDT, USDC) to this address.</div>
-      <div class="warn-hint" id="xpubWarn" style="display:none;"><b>No address yet.</b> Open the admin panel → XPUB Config → paste your ETH XPUB and save.</div>
     </div>
     <div class="sec-head" style="padding:0 16px 8px;"><span>My Assets</span><span class="more" onclick="refreshMyBalance()">Refresh</span></div>
     <div class="asset-list">
@@ -1312,7 +1140,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="lbl">
         <span>Total Asset Value</span>
         <span class="mode-tag real" id="assetModeTag">REAL</span>
-        <span style="background:var(--green-lt);color:var(--green-dk);font-size:10px;padding:2px 7px;border-radius:4px;font-weight:600">Insured</span>
       </div>
       <div class="big" id="totalAssets">0.00</div>
       <div class="usd">≈$0.00</div>
@@ -1328,7 +1155,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- Overlays -->
+<!-- PROFILE -->
 <div class="overlay" id="profile">
   <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
   <div class="scroll" style="padding-bottom:20px">
@@ -1395,19 +1222,25 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 </div>
 
 <div id="androidInstallBtn">
-  <div class="ic">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </div>
-  <div class="tx">
-    <div class="t">Install NextTrade</div>
-    <div class="s">Add to your home screen</div>
-  </div>
+  <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="tx"><div class="t">Install NextTrade</div><div class="s">Add to your home screen</div></div>
   <button class="go" id="androidInstallGo">Install</button>
   <div class="x" id="androidInstallX">✕</div>
 </div>
 </div>
 
 <script>
+/* ============================================================
+   SUPABASE INIT
+   ============================================================ */
+const cfg = window.NT_CONFIG || {};
+const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
+const COPY_PROFIT_PCT = cfg.COPY_PROFIT_PCT || 0.006;
+const DEMO_SEED = cfg.DEMO_SEED || 10000;
+
+/* ============================================================
+   THEME TOGGLE
+   ============================================================ */
 (function(){
   const btn = document.getElementById('themeToggle');
   if(!btn) return;
@@ -1425,51 +1258,176 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 })();
 
 let toastTimer = null;
-
-const ADMIN_KEY = 'nexttrade_admin_wallet_v1';
-const APPS_KEY = 'nexttrade_accounts_v1';
-const SESSION_KEY = 'nexttrade_session_v1';
-const TX_KEY = 'nexttrade_tx_v1';
-const COPY_KEY = 'nexttrade_copytrade_v1';
-const POS_KEY = 'nexttrade_positions_v1';
-const PARTS_KEY = 'nexttrade_copytrade_participants_v1';
-const SEEN_KEY = 'nexttrade_seen_signals_v1';
-const FOLLOWED_KEY = 'nexttrade_followed_signals_v1';
-const COPY_PROFIT_KEY = 'nexttrade_copy_profit_v1';
-const COPY_PROFIT_PCT = 0.006;
-const DEMO_SEED = 10000;
-
-function getAdminState(){ try { return JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"config":{},"clients":[]}'); } catch(e){ return {config:{},clients:[]}; } }
-function saveAdminState(s){ try { localStorage.setItem(ADMIN_KEY, JSON.stringify(s)); } catch(e){} }
-function deriveEthAddress(xpub, index){
-  try {
-    if(!xpub || typeof ethers === 'undefined') return null;
-    const hd = ethers.HDNodeWallet.fromExtendedKey(xpub);
-    return hd.deriveChild(index).address;
-  } catch(e){ return null; }
-}
-function getParticipants(){ try { return JSON.parse(localStorage.getItem(PARTS_KEY) || '{}'); } catch(e){ return {}; } }
-function saveParticipants(p){ try { localStorage.setItem(PARTS_KEY, JSON.stringify(p)); } catch(e){} }
-
+let currentUser = null;   // { id, username, email, uid, kyc_status, ... } from profiles table
 let currentMode = 'real';
+
+function toast(msg){
+  const el = document.getElementById('toast');
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add('on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
+}
+
+/* ============================================================
+   SUPABASE AUTH
+   ============================================================ */
+function genUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
+function genRef(){ return 'NT' + Math.floor(100000 + Math.random()*900000); }
+
+async function loadProfile(userId){
+  const { data, error } = await sb.from('profiles').select('*').eq('id', userId).single();
+  if(error) return null;
+  return data;
+}
+
+async function doRegisterStep1(){
+  const email = document.getElementById('suEmail').value.trim().toLowerCase();
+  const pw = document.getElementById('suPw').value;
+  const pw2 = document.getElementById('suPw2').value;
+  const username = document.getElementById('suUsername').value.trim();
+  const ref = document.getElementById('suReferral').value.trim();
+  const terms = document.getElementById('suTerms').checked;
+
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email address');
+  if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
+  if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters/numbers/_');
+  if(!terms) return toast('Please agree to the Terms of Service');
+
+  const btn = document.getElementById('registerBtn');
+  btn.disabled = true; btn.textContent = 'Creating account...';
+
+  const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
+
+  if(authErr){
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suEmail','suEmailErr', authErr.message);
+  }
+  if(!authData.user){
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suEmail','suEmailErr','Signup failed. Check Supabase email confirmation settings.');
+  }
+
+  const uid = genUID();
+  const profileRow = {
+    id: authData.user.id,
+    username, email, uid,
+    referral_code: genRef(),
+    referred_by: ref || null,
+    kyc_status: 'none',
+    mode: 'real',
+    balance: 0, funding: 0, spot: 0,
+    demo_funding: DEMO_SEED, demo_spot: 0
+  };
+  const { error: profErr } = await sb.from('profiles').insert(profileRow);
+  if(profErr){
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suUsername','suUsernameErr', profErr.message);
+  }
+
+  currentUser = profileRow;
+  currentMode = 'real';
+  btn.disabled = false; btn.textContent = 'Register →';
+  toast('Account created!');
+  openAuth('kyc');
+}
+
+async function doLogin(){
+  const id = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pw = document.getElementById('loginPw').value;
+  if(!id) return showErr('loginEmail','loginEmailErr','Enter email');
+  if(!pw) return showErr('loginPw','loginPwErr','Enter password');
+
+  const { data, error } = await sb.auth.signInWithPassword({ email: id, password: pw });
+  if(error) return showErr('loginPw','loginPwErr', error.message);
+
+  const profile = await loadProfile(data.user.id);
+  if(!profile) return showErr('loginPw','loginPwErr','Profile not found');
+
+  currentUser = profile;
+  currentMode = profile.mode === 'demo' ? 'demo' : 'real';
+  applyUserToUI();
+  updateModeUI();
+  closeAuth();
+  go('s-home');
+  toast('Welcome back!');
+}
+
+async function doLogout(){
+  await sb.auth.signOut();
+  currentUser = null; currentMode = 'real';
+  applyUserToUI();
+  closeProfile();
+  toast('Logged out');
+}
+
+function openAuth(mode){
+  document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
+  const target = mode === 'register' ? 'authRegister'
+              : mode === 'kyc' ? 'authKyc'
+              : 'authLogin';
+  document.getElementById(target).classList.add('active');
+}
+function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
+function backToLanding(){ window.location.href = '/'; }
+function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
+function scorePw(){
+  const v = document.getElementById('suPw').value;
+  const segs = document.querySelectorAll('#pwStrength .seg');
+  let s = 0;
+  if(v.length >= 8) s++;
+  if(/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
+  if(/\d/.test(v)) s++;
+  if(/[^a-zA-Z0-9]/.test(v)) s++;
+  segs.forEach((seg,i)=>{ seg.className='seg'; if(i<s) seg.classList.add('on-'+s); });
+}
+function showErr(f,e,m){
+  const fel = document.getElementById(f); if(fel) fel.style.borderColor = 'var(--red)';
+  const eel = document.getElementById(e); if(eel){ eel.textContent = m; eel.classList.add('show'); }
+}
+
+async function submitKycStep2(){
+  if(!currentUser){ openAuth('register'); return; }
+  const name = document.getElementById('kycName').value.trim();
+  const dob = document.getElementById('kycDob').value;
+  const country = document.getElementById('kycCountry').value.trim();
+  const idType = document.getElementById('kycIdType').value;
+  const idNum = document.getElementById('kycIdNum').value.trim();
+  if(!name || !dob || !country || !idNum){ toast('Please fill all fields'); return; }
+
+  const kycData = { fullName:name, dob, country, idType, idNumber:idNum, submittedAt: Date.now() };
+  const { error } = await sb.from('profiles').update({ kyc_status: 'pending', kyc_data: kycData }).eq('id', currentUser.id);
+  if(error){ toast('Error: ' + error.message); return; }
+
+  currentUser.kyc_status = 'pending';
+  currentUser.kyc_data = kycData;
+  updateKycBadge();
+  updateModeUI();
+  toast('Submitted for review!');
+  closeAuth();
+  go('s-home');
+}
+function skipKycStep2(){
+  if(!currentUser){ openAuth('register'); return; }
+  toast('You can verify later from Profile');
+  closeAuth();
+  go('s-home');
+}
+
+/* ============================================================
+   MODE / BALANCE
+   ============================================================ */
 function setMode(mode){
   if(!currentUser) return;
-  if(mode !== 'demo' && mode !== 'real') return;
   currentMode = mode;
   currentUser.mode = mode;
-  if(mode === 'demo'){
-    if(typeof currentUser.demoFunding !== 'number') currentUser.demoFunding = DEMO_SEED;
-    if(typeof currentUser.demoSpot !== 'number') currentUser.demoSpot = 0;
-  }
-  const accs = getAccounts();
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
+  sb.from('profiles').update({ mode }).eq('id', currentUser.id).then(()=>{});
   applyUserToUI();
-  renderWalletScreen();
-  renderAccounts();
   updateModeUI();
   renderTradeForm();
-  toast(mode === 'demo' ? 'Switched to Demo mode' : 'Switched to Real mode');
+  toast(mode === 'demo' ? 'Demo mode' : 'Real mode');
 }
 function updateModeUI(){
   document.querySelectorAll('#modePill .m').forEach(el => {
@@ -1482,685 +1440,62 @@ function updateModeUI(){
   if(banner) banner.classList.toggle('on', currentMode === 'demo');
   const lbl = document.getElementById('heroBalanceLabel');
   if(lbl) lbl.textContent = currentMode === 'demo' ? 'Demo Balance' : 'Total Balance';
-  const assetTag = document.getElementById('assetModeTag');
-  if(assetTag){
-    assetTag.className = 'mode-tag ' + (currentMode === 'demo' ? 'demo' : 'real');
-    assetTag.textContent = currentMode === 'demo' ? 'DEMO' : 'REAL';
-  }
   const kb = document.getElementById('kycPendingBanner');
   if(kb){
-    if(currentUser && currentUser.kycStatus === 'pending') kb.classList.add('on');
+    if(currentUser && currentUser.kyc_status === 'pending') kb.classList.add('on');
     else kb.classList.remove('on');
   }
 }
 function activeBalance(field){
   if(!currentUser) return 0;
-  return currentMode === 'demo'
-    ? (currentUser['demo' + field.charAt(0).toUpperCase() + field.slice(1)] || 0)
-    : (currentUser[field] || 0);
+  if(currentMode === 'demo'){
+    const k = 'demo_' + field;
+    return Number(currentUser[k] || 0);
+  }
+  return Number(currentUser[field] || 0);
 }
 function setActiveBalance(field, value){
   if(!currentUser) return;
-  const key = currentMode === 'demo' ? 'demo' + field.charAt(0).toUpperCase() + field.slice(1) : field;
+  const key = currentMode === 'demo' ? 'demo_' + field : field;
   currentUser[key] = value;
-  const accs = getAccounts();
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
+  const patch = {}; patch[key] = value;
+  sb.from('profiles').update(patch).eq('id', currentUser.id).then(()=>{});
 }
 
-function getAllTx(){ try { return JSON.parse(localStorage.getItem(TX_KEY) || '{}'); } catch(e){ return {}; } }
-function saveAllTx(t){ try { localStorage.setItem(TX_KEY, JSON.stringify(t)); } catch(e){} }
-function recordTx(type, detail){
-  if(!currentUser) return;
-  const all = getAllTx();
-  const email = currentUser.email;
-  all[email] = all[email] || [];
-  all[email].unshift({ id: 'tx' + Date.now() + Math.random().toString(36).slice(2,6), type, detail, time: Date.now(), mode: currentMode });
-  if(all[email].length > 200) all[email].length = 200;
-  saveAllTx(all);
-}
-function renderTxHistory(){
-  if(!currentUser){ document.getElementById('txList').innerHTML = '<div class="hint">Log in to view history</div>'; return; }
-  const list = (getAllTx()[currentUser.email] || []).filter(t => (t.mode || 'real') === currentMode);
-  if(!list.length){
-    document.getElementById('txList').innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px;font-size:13px;">No transactions yet</div>';
-    return;
+/* ============================================================
+   USER UI
+   ============================================================ */
+function applyUserToUI(){
+  const loggedIn = !!currentUser;
+  const av = document.getElementById('homeAvatar');
+  if(av){
+    if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
+    else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
   }
-  document.getElementById('txList').innerHTML = list.map(t => {
-    const icon = { deposit:'M12 4v12M7 11l5 5 5-5M4 20h16', withdraw:'M12 20V8M7 13l5-5 5 5M4 4h16',
-      trade:'M4 17l5-6 4 3 7-8', transfer:'M4 8h13l-3-3M20 16H7l3 3', copy:'M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z' }[t.type] || 'M12 3v18M3 12h18';
-    const color = { deposit:'var(--green)', withdraw:'var(--red)', trade:'var(--blue)', transfer:'var(--orange)', copy:'var(--purple)' }[t.type] || 'var(--text2)';
-    const label = t.type === 'copy' ? '📈 Copy Profit' : (t.type.charAt(0).toUpperCase() + t.type.slice(1));
-    return `<div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:center;">
-      <div style="width:36px;height:36px;border-radius:10px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="${icon}" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div style="flex:1;min-width:0;">
-        <div style="font-size:13.5px;font-weight:700;color:var(--text);">${label}</div>
-        <div style="font-size:11.5px;color:var(--text2);margin-top:3px;">${t.detail}</div>
-        <div style="font-size:10.5px;color:var(--text3);margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-function openTxHistory(){ renderTxHistory(); document.getElementById('txPanel').classList.add('active'); }
-function closeTxHistory(){ document.getElementById('txPanel').classList.remove('active'); }
-
-function getAllPositions(){ try { return JSON.parse(localStorage.getItem(POS_KEY) || '{}'); } catch(e){ return {}; } }
-function saveAllPositions(p){ try { localStorage.setItem(POS_KEY, JSON.stringify(p)); } catch(e){} }
-function getMyPosition(){
-  if(!currentUser) return null;
-  const raw = getAllPositions()[currentUser.email];
-  if(!raw) return null;
-  if((raw.mode || 'real') !== currentMode) return null;
-  return raw;
-}
-function saveMyPosition(pos){
-  if(!currentUser) return;
-  const all = getAllPositions();
-  if(pos){ pos.mode = currentMode; all[currentUser.email] = pos; }
-  else delete all[currentUser.email];
-  saveAllPositions(all);
-}
-
-function getCopyTrades(){ try { return JSON.parse(localStorage.getItem(COPY_KEY) || '[]'); } catch(e){ return []; } }
-function saveCopyTrades(list){ try { localStorage.setItem(COPY_KEY, JSON.stringify(list)); } catch(e){} }
-function openCopyTrading(){ renderCopyTrades(); document.getElementById('copyPanel').classList.add('active'); }
-function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
-
-function getSeenSignals(){ try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch(e){ return {}; } }
-function markSeenSignal(id){ const s = getSeenSignals(); s[id] = Date.now(); try{ localStorage.setItem(SEEN_KEY, JSON.stringify(s)); }catch(e){} }
-function getFollowedSignals(){ try { return JSON.parse(localStorage.getItem(FOLLOWED_KEY) || '{}'); } catch(e){ return {}; } }
-function saveFollowedSignals(f){ try { localStorage.setItem(FOLLOWED_KEY, JSON.stringify(f)); } catch(e){} }
-function markFollowedSignal(id, data){ const f = getFollowedSignals(); f[id] = data; saveFollowedSignals(f); }
-
-function activeSignals(){
-  const now = Date.now();
-  return getCopyTrades().filter(s => !s.expiresAt || s.expiresAt > now);
-}
-
-function getCopyProfitHistory(){ try { return JSON.parse(localStorage.getItem(COPY_PROFIT_KEY) || '{}'); } catch(e){ return {}; } }
-function saveCopyProfitHistory(h){ try { localStorage.setItem(COPY_PROFIT_KEY, JSON.stringify(h)); } catch(e){} }
-function addCopyProfitEntry(userEmail, entry){
-  if(!userEmail) return;
-  const all = getCopyProfitHistory();
-  all[userEmail] = all[userEmail] || [];
-  all[userEmail].unshift(entry);
-  if(all[userEmail].length > 200) all[userEmail].length = 200;
-  saveCopyProfitHistory(all);
-}
-function creditCopyProfit(signalId, amount, traderName, sym){
-  if(!currentUser) return;
-  const profit = amount * COPY_PROFIT_PCT;
-  const bal = activeBalance('spot');
-  setActiveBalance('spot', bal + profit);
-  currentUser = getAccounts()[currentUser.email];
-
-  const entry = {
-    id: 'cp' + Date.now() + Math.random().toString(36).slice(2,6),
-    signalId,
-    traderName: traderName || 'Analyst',
-    sym: sym || '—',
-    amount: Number(amount) || 0,
-    profit: Number(profit.toFixed(4)),
-    time: Date.now(),
-    mode: currentMode
-  };
-  addCopyProfitEntry(currentUser.email, entry);
-  recordTx('copy', `Copy profit · ${sym} · +$${profit.toFixed(2)} (0.6%)`);
-
-  applyUserToUI();
-  toast('✓ Copy profit credited: +$' + profit.toFixed(2));
-}
-
-(function(global){
-  'use strict';
-
-  function initialsOf(name){
-    if(!name) return '?';
-    const parts = name.split(/\s+/).filter(Boolean);
-    if(parts.length === 1) return parts[0][0].toUpperCase();
-    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  if(loggedIn){
+    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = currentUser.username[0].toUpperCase();
+    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = currentUser.email;
+  } else {
+    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = 'U';
+    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = 'Not signed in';
   }
-  function avatarColor(name){
-    let h = 0;
-    for(let i = 0; i < (name || '').length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
-    const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
-    return colors[Math.abs(h) % colors.length];
-  }
-
-  function buildTicker(signal){
-    return (getParticipants()[signal.id] || []).map(p => ({
-      name: p.username, uid: p.uid, amount: p.amountUsdt, mode: p.mode,
-      time: p.time, isReal: true
-    })).sort((a,b) => b.time - a.time);
-  }
-
-  function renderCopyCard(signal){
-    const pnl = (signal.pnl >= 0 ? '+' : '') + Number(signal.pnl || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    const roi = (signal.roi >= 0 ? '+' : '') + Number(signal.roi || 0).toFixed(2) + '%';
-    const cls = signal.pnl >= 0 ? 'up' : 'down';
-    const roiCls = signal.roi >= 0 ? 'up' : 'down';
-    const initial = initialsOf(signal.traderName);
-    const color = avatarColor(signal.traderName);
-    return `
-      <div class="copy-card" data-signal-id="${signal.id}">
-        <div class="copy-card-av" style="background:${color};">${initial}</div>
-        <div class="copy-card-info">
-          <div class="copy-card-name">${signal.traderName}</div>
-          <div class="copy-card-followers">👥 ${signal.followers || '0/0'}</div>
-          <div class="copy-card-stats">
-            <div class="copy-stat">
-              <span class="copy-stat-lbl">30D PnL (USD)</span>
-              <b class="copy-stat-val ${cls}">${pnl}</b>
-            </div>
-            <div class="copy-stat" style="text-align:right;">
-              <span class="copy-stat-lbl">30D ROI</span>
-              <b class="copy-stat-val ${roiCls}">${roi}</b>
-            </div>
-          </div>
-        </div>
-        <button class="copy-card-btn" onclick="NextTradeCopy.openFollowSheet('${signal.id}')">Copy</button>
-      </div>
-    `;
-  }
-
-  let currentSignal = null;
-  let tickerTimer = null;
-  let selectedVoucher = 'none';
-
-  function ensureSheet(){
-    let el = document.getElementById('nt-follow-sheet');
-    if(el) return el;
-    el = document.createElement('div');
-    el.id = 'nt-follow-sheet';
-    el.className = 'nt-follow-backdrop';
-    el.innerHTML = `
-      <div class="nt-follow-panel" onclick="event.stopPropagation()">
-        <div class="nt-follow-head">
-          <h3>Follow Signal</h3>
-          <div class="nt-follow-x" onclick="NextTradeCopy.closeFollowSheet()">✕</div>
-        </div>
-        <div class="nt-follow-body" id="nt-follow-body"></div>
-      </div>
-    `;
-    el.addEventListener('click', () => NextTradeCopy.closeFollowSheet());
-    document.body.appendChild(el);
-    return el;
-  }
-
-  function openFollowSheet(id){
-    const sig = getCopyTrades().find(s => s.id === id);
-    if(!sig){ toast('Signal not found'); return; }
-    const now = Date.now();
-    if(sig.expiresAt && sig.expiresAt < now){ toast('Signal expired'); return; }
-    if(!currentUser){ openAuth('register'); return; }
-    currentSignal = sig;
-    selectedVoucher = 'none';
-    const sheet = ensureSheet();
-    renderFollowBody(sig);
-    sheet.classList.add('on');
-    startTicker(sig);
-  }
-  function closeFollowSheet(){
-    const sheet = document.getElementById('nt-follow-sheet');
-    if(sheet) sheet.classList.remove('on');
-    if(tickerTimer){ clearInterval(tickerTimer); tickerTimer = null; }
-    currentSignal = null;
-  }
-
-  function renderFollowBody(sig){
-    const body = document.getElementById('nt-follow-body');
-    if(!body) return;
-    const bal = activeBalance('spot') || 0;
-    const sugAmount = Number(sig.amount || 100);
-    const pnl = (sig.pnl >= 0 ? '+' : '') + Number(sig.pnl || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    const roi = (sig.roi >= 0 ? '+' : '') + Number(sig.roi || 0).toFixed(2) + '%';
-    const color = avatarColor(sig.traderName);
-    const initial = initialsOf(sig.traderName);
-
-    body.innerHTML = `
-      <div class="nt-follow-analyst">
-        <div class="nt-follow-av" style="background:${color};">${initial}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="nt-follow-name">${sig.traderName}</div>
-          <div class="nt-follow-sub">${sig.sym}/USDT · ${sig.followers || '0/0'} followers</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-size:13px;font-weight:800;color:${sig.pnl>=0?'var(--green)':'var(--red)'};">${pnl}</div>
-          <div style="font-size:11px;font-weight:700;color:${sig.roi>=0?'var(--green)':'var(--red)'};">${roi} 30D</div>
-        </div>
-      </div>
-
-      <div class="nt-follow-msg">${sig.message || ''}</div>
-
-      <div class="nt-follow-live" id="nt-follow-live">
-        <div class="nt-live-head">
-          <span class="nt-live-dot"></span>
-          <b>Live</b> · <span id="nt-live-count">0</span> users copying
-        </div>
-        <div class="nt-live-list" id="nt-live-list"></div>
-      </div>
-
-      <div class="nt-follow-field">
-        <label>Signal Code</label>
-        <div class="nt-code-wrap">
-          <input id="nt-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="— — — —" autocomplete="off">
-        </div>
-        <div class="nt-code-hint" id="nt-code-hint">Enter the 4-digit code shown by ${sig.traderName}.</div>
-      </div>
-
-      <div class="nt-follow-field">
-        <label>Copy Trading Amount</label>
-        <div class="nt-amount-wrap">
-          <input id="nt-amount-input" type="text" inputmode="decimal" value="${sugAmount}" placeholder="0">
-          <span class="nt-amount-suf">USD</span>
-          <button class="nt-max-btn" onclick="NextTradeCopy.setMaxAmount()">Max</button>
-        </div>
-        <div class="nt-avail">Available Balance: <b>$${bal.toFixed(2)} USD</b></div>
-      </div>
-
-      <div class="nt-follow-field">
-        <label>Choose a voucher</label>
-        <select id="nt-voucher" onchange="NextTradeCopy.setVoucher(this.value)">
-          <option value="none">None</option>
-          <option value="welcome10">WELCOME10 — +$10 on first copy</option>
-          <option value="referral5">REFERRAL5 — +$5 bonus</option>
-        </select>
-      </div>
-
-      <label class="nt-agree">
-        <input type="checkbox" id="nt-agree-check" onchange="NextTradeCopy.refreshApplyBtn()">
-        <span>I have read and agree <b>Copy Trading Agreement</b></span>
-      </label>
-
-      <button class="nt-apply-btn" id="nt-apply-btn" disabled onclick="NextTradeCopy.applyCopy()">Apply to Copy Trading</button>
-    `;
-
-    document.getElementById('nt-code-input').addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
-      refreshApplyBtn();
-    });
-    document.getElementById('nt-amount-input').addEventListener('input', (e) => {
-      e.target.value = e.target.value.replace(/[^\d.]/g,'');
-      refreshApplyBtn();
-    });
-  }
-
-  function refreshApplyBtn(){
-    const btn = document.getElementById('nt-apply-btn');
-    if(!btn || !currentSignal) return;
-    const code = (document.getElementById('nt-code-input')?.value || '').trim();
-    const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
-    const agree = document.getElementById('nt-agree-check')?.checked;
-    const codeOk = /^\d{4}$/.test(code) && code === String(currentSignal.code);
-    const hint = document.getElementById('nt-code-hint');
-    if(hint){
-      if(!code){ hint.textContent = `Enter the 4-digit code shown by ${currentSignal.traderName}.`; hint.style.color = ''; }
-      else if(code.length < 4){ hint.textContent = 'Keep typing…'; hint.style.color = ''; }
-      else if(!codeOk){ hint.textContent = 'Incorrect code. Try again.'; hint.style.color = 'var(--red)'; }
-      else { hint.textContent = '✓ Code accepted'; hint.style.color = 'var(--green)'; }
-    }
-    btn.disabled = !(codeOk && amt > 0 && agree);
-  }
-
-  function setMaxAmount(){
-    const bal = activeBalance('spot') || 0;
-    const el = document.getElementById('nt-amount-input');
-    if(el) el.value = bal.toFixed(2);
-    refreshApplyBtn();
-  }
-  function setVoucher(v){ selectedVoucher = v; }
-
-  function startTicker(sig){
-    const render = () => {
-      const list = document.getElementById('nt-live-list');
-      const count = document.getElementById('nt-live-count');
-      const liveBox = document.getElementById('nt-follow-live');
-      if(!list || !sig) return;
-      const entries = buildTicker(sig);
-      const shown = entries.slice(0, 8);
-      if(liveBox) liveBox.style.display = shown.length ? 'block' : 'none';
-      if(count) count.textContent = entries.length;
-      list.innerHTML = shown.map((p, i) => {
-        const c = avatarColor(p.name);
-        const initial = initialsOf(p.name);
-        const ago = timeAgo(p.time);
-        return `
-          <div class="nt-live-row" style="animation-delay:${i*40}ms;">
-            <div class="nt-live-av" style="background:${c};">${initial}</div>
-            <div class="nt-live-txt">
-              <b>${p.name}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount).toFixed(0)}</span>
-            </div>
-            <div class="nt-live-ago">${ago}</div>
-          </div>
-        `;
-      }).join('');
-    };
-    render();
-    if(tickerTimer) clearInterval(tickerTimer);
-    tickerTimer = setInterval(render, 10000 + Math.random()*5000);
-  }
-
-  function timeAgo(ts){
-    const s = Math.floor((Date.now() - ts)/1000);
-    if(s < 60) return s + 's';
-    const m = Math.floor(s/60);
-    if(m < 60) return m + 'm';
-    const h = Math.floor(m/60);
-    if(h < 24) return h + 'h';
-    return Math.floor(h/24) + 'd';
-  }
-
-  function applyCopy(){
-    if(!currentSignal) return;
-    const code = (document.getElementById('nt-code-input')?.value || '').trim();
-    if(code !== String(currentSignal.code)){ toast('Incorrect code'); return; }
-    const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
-    if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
-    if(!document.getElementById('nt-agree-check')?.checked){ toast('Please agree to the Copy Trading Agreement'); return; }
-
-    const bal = activeBalance('spot') || 0;
-    if(bal < amt){ toast('Insufficient balance'); return; }
-
-    let bonus = 0;
-    if(selectedVoucher === 'welcome10') bonus = 10;
-    else if(selectedVoucher === 'referral5') bonus = 5;
-    const effectiveAmt = amt + bonus;
-
-    setActiveBalance('spot', bal - amt);
-
-    const parts = getParticipants();
-    parts[currentSignal.id] = parts[currentSignal.id] || [];
-    parts[currentSignal.id].unshift({
-      username: currentUser ? currentUser.username : 'You',
-      uid: currentUser ? currentUser.uid : '—',
-      email: currentUser ? currentUser.email : '',
-      amountUsdt: effectiveAmt,
-      mode: currentMode,
-      time: Date.now(),
-      voucher: selectedVoucher
-    });
-    if(parts[currentSignal.id].length > 500) parts[currentSignal.id].length = 500;
-    try { localStorage.setItem(PARTS_KEY, JSON.stringify(parts)); } catch(e){}
-
-    const m = findMarket(currentSignal.sym);
-    const entry = m ? m.price : 0;
-    markFollowedSignal(currentSignal.id, {
-      signalId: currentSignal.id,
-      traderName: currentSignal.traderName,
-      sym: currentSignal.sym,
-      amountUsdt: effectiveAmt,
-      entry,
-      qty: entry ? effectiveAmt / entry : 0,
-      slPrice: entry ? entry * (1 - Number(currentSignal.sl || 2)/100) : 0,
-      tpPrice: entry ? entry * (1 + Number(currentSignal.tp || 4)/100) : 0,
-      openedAt: Date.now(),
-      status: 'open'
-    });
-
-    const capturedSignalId = currentSignal.id;
-    const capturedTrader = currentSignal.traderName;
-    const capturedSym = currentSignal.sym;
-
-    markSeenSignal(currentSignal.id);
-    closeFollowSheet();
-    toast('✓ Copy trade placed — $' + effectiveAmt.toFixed(2) + (bonus ? ' (+$' + bonus + ' bonus)' : ''));
-
-    setTimeout(() => {
-      creditCopyProfit(capturedSignalId, effectiveAmt, capturedTrader, capturedSym);
-      const followed = getFollowedSignals();
-      if(followed[capturedSignalId]){
-        followed[capturedSignalId].status = 'closed';
-        followed[capturedSignalId].closedAt = Date.now();
-        saveFollowedSignals(followed);
-      }
-      if(typeof renderTradeForm === 'function') renderTradeForm();
-      if(typeof renderCopySection === 'function') renderCopySection();
-    }, 45000);
-
-    renderTradeForm();
-    applyUserToUI();
-    renderCopySection();
-  }
-
-  function renderFollowedCard(){
-    const followed = getFollowedSignals();
-    const ids = Object.keys(followed);
-    if(!ids.length) return null;
-    const latest = ids.map(id => followed[id]).filter(p => p.status === 'open').sort((a,b) => b.openedAt - a.openedAt)[0];
-    if(!latest) return null;
-    const m = findMarket(latest.sym);
-    const price = m ? m.price : latest.entry;
-    const pnl = (price - latest.entry) * latest.qty;
-    const pnlPct = latest.entry ? ((price - latest.entry) / latest.entry) * 100 : 0;
-    const cls = pnl >= 0 ? 'up' : 'down';
-    return `
-      <div class="copy-tracking-card">
-        <div class="ctc-top">
-          <span class="ctc-live"></span>
-          <b>${latest.sym}/USDT</b>
-          <span class="ctc-trader">Following ${latest.traderName}</span>
-          <span class="ctc-pnl ${cls}">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%)</span>
-        </div>
-        <div class="ctc-row">
-          <span>Entry <b>${latest.entry ? latest.entry.toFixed(2) : '—'}</b></span>
-          <span>Amount <b>$${latest.amountUsdt.toFixed(2)}</b></span>
-          <span>SL <b style="color:var(--red);">${latest.slPrice ? latest.slPrice.toFixed(2) : '—'}</b></span>
-          <span>TP <b style="color:var(--green);">${latest.tpPrice ? latest.tpPrice.toFixed(2) : '—'}</b></span>
-        </div>
-      </div>
-    `;
-  }
-
-  function getFollowedPosition(){
-    const followed = getFollowedSignals();
-    const ids = Object.keys(followed);
-    if(!ids.length) return null;
-    return ids.map(id => followed[id]).filter(p => p.status === 'open').sort((a,b) => b.openedAt - a.openedAt)[0] || null;
-  }
-
-  global.NextTradeCopy = {
-    getSignals: getCopyTrades,
-    activeSignals, renderCopyCard,
-    openFollowSheet, closeFollowSheet, refreshApplyBtn,
-    setMaxAmount, setVoucher, applyCopy,
-    renderFollowedCard, getFollowedPosition,
-    buildTicker, initialsOf, avatarColor, markSeenSignal
-  };
-})(window);
-
-function renderCopySection(){
-  const wrap = document.getElementById('copySection');
-  if(!wrap) return;
-  if(typeof NextTradeCopy === 'undefined') return;
-  const active = NextTradeCopy.activeSignals();
-  if(!active.length){
-    wrap.style.display = 'none';
-    return;
-  }
-  wrap.style.display = 'block';
-  document.getElementById('copySectionCards').innerHTML = active.map(s => NextTradeCopy.renderCopyCard(s)).join('');
-}
-
-function goCopyTab(){
-  const tab = document.querySelector('.tr-tab[data-tr="copy"]');
-  if(tab) tab.click();
-}
-
-let lastSeenSignalId = null;
-function checkForNewSignals(){
-  if(typeof NextTradeCopy === 'undefined') return;
-  const active = NextTradeCopy.activeSignals();
-  if(!active.length) return;
-  const newest = active[0];
-  const seen = getSeenSignals();
-  if(seen[newest.id]) return;
-  if(lastSeenSignalId === newest.id) return;
-  lastSeenSignalId = newest.id;
-  showCopySignalBanner(newest);
-}
-function showCopySignalBanner(sig){
-  let banner = document.getElementById('nt-signal-banner');
-  if(!banner){
-    banner = document.createElement('div');
-    banner.id = 'nt-signal-banner';
-    banner.className = 'nt-signal-banner';
-    banner.innerHTML = `
-      <div class="nt-sb-av" id="nt-sb-av"></div>
-      <div class="nt-sb-txt">
-        <div class="nt-sb-title" id="nt-sb-title"></div>
-        <div class="nt-sb-sub" id="nt-sb-sub"></div>
-      </div>
-      <button class="nt-sb-btn" id="nt-sb-btn">Follow</button>
-      <div class="nt-sb-x" onclick="dismissSignalBanner()">✕</div>
-    `;
-    document.body.appendChild(banner);
-  }
-  const initial = NextTradeCopy.initialsOf(sig.traderName);
-  const color = NextTradeCopy.avatarColor(sig.traderName);
-  document.getElementById('nt-sb-av').textContent = initial;
-  document.getElementById('nt-sb-av').style.background = color;
-  document.getElementById('nt-sb-title').textContent = `New signal from ${sig.traderName}`;
-  document.getElementById('nt-sb-sub').textContent = `${sig.sym}/USDT · tap to follow`;
-  document.getElementById('nt-sb-btn').onclick = () => {
-    dismissSignalBanner();
-    NextTradeCopy.openFollowSheet(sig.id);
-  };
-  banner.classList.add('on');
-  setTimeout(() => { if(banner.classList.contains('on')) banner.classList.remove('on'); }, 15000);
-}
-function dismissSignalBanner(){
-  const b = document.getElementById('nt-signal-banner');
-  if(b) b.classList.remove('on');
-}
-
-function renderCopyTrades(){
-  const list = getCopyTrades();
-  const el = document.getElementById('copyList');
-  if(!list.length){
-    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px;font-size:13px;">No copy-trade alerts yet</div>';
-    return;
-  }
-  el.innerHTML = list.map(ct => {
-    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
-    const trader = ct.traderName || 'Analyst';
-    const initial = trader[0].toUpperCase();
-    const expired = ct.expiresAt && ct.expiresAt < Date.now();
-    return `<div class="ct-card">
-      <div class="ct-top">
-        <div class="ct-av">${initial}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="ct-trader">${trader} ${expired ? '' : '<span class="verified">LIVE</span>'}</div>
-          <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
-        </div>
-      </div>
-      <div class="ct-msg">${ct.message || ''}</div>
-      <div class="ct-actions">
-        <button class="btn2" onclick="dismissCopy('${ct.id}')">Dismiss</button>
-        <button class="btn2 pri" ${expired?'disabled style="opacity:.4;cursor:not-allowed;"':''} onclick="${expired?'':'NextTradeCopy.openFollowSheet(\''+ct.id+'\')'}">Copy Trade</button>
-      </div>
-    </div>`;
-  }).join('');
-}
-function dismissCopy(id){
-  saveCopyTrades(getCopyTrades().filter(c => c.id !== id));
-  renderCopyTrades();
-  renderTrCopy();
-  renderCopySection();
-  updateNotifDot();
-}
-function updateNotifDot(){
-  const dot = document.getElementById('notifDot');
-  if(!dot) return;
-  dot.classList.toggle('show', activeSignals().length > 0);
-}
-
-function checkSlTp(){
-  const pos = getMyPosition();
-  if(!pos || pos.status !== 'open') return;
-  const m = findMarket(pos.sym);
-  if(!m) return;
-  if(m.price <= pos.slPrice){ closePosition('sl'); }
-  else if(m.price >= pos.tpPrice){ closePosition('tp'); }
-}
-function closePosition(reason){
-  const pos = getMyPosition();
-  if(!pos) return;
-  const m = findMarket(pos.sym) || {price:pos.entry};
-  const exit = m.price;
-  const pnl = (exit - pos.entry) * pos.qty;
-  const returned = pos.amountUsdt + pnl;
-  const savedMode = currentMode;
-  currentMode = pos.mode || 'real';
-  const bal = activeBalance('spot');
-  setActiveBalance('spot', bal + Math.max(0, returned));
-  currentMode = savedMode;
-  currentUser = getAccounts()[currentUser.email];
-  const pnlTxt = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2);
-  const reasonTxt = reason === 'tp' ? 'Take Profit hit' : reason === 'sl' ? 'Stop Loss hit' : 'Manual close';
-  recordTx('copy', `CLOSE ${pos.sym} @ ${fmt(exit)} · ${pnlTxt} (${reasonTxt})`);
-  saveMyPosition(null);
+  updateKycBadge();
+  renderAccounts();
   renderTradeForm();
-  applyUserToUI();
-  toast(reasonTxt + ' — ' + pnlTxt);
+}
+function updateKycBadge(){
+  const el = document.getElementById('profKycBadge');
+  if(!el || !currentUser) return;
+  const s = currentUser.kyc_status || 'none';
+  if(s === 'verified'){ el.textContent = 'Verified'; el.style.color = 'var(--green)'; }
+  else if(s === 'pending'){ el.textContent = 'Pending Review'; el.style.color = 'var(--orange)'; }
+  else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
+  else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
 }
 
-let liveNews = [];
-async function fetchLiveNews(){
-  try {
-    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
-    const data = await r.json();
-    const arr = (data && (data.Data || data.data || data.articles)) || [];
-    if(Array.isArray(arr) && arr.length){
-      liveNews = arr.map(a => ({
-        title: a.TITLE || a.title || '',
-        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
-        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
-        source: 'CoinDesk'
-      })).filter(x => x.title);
-      return true;
-    }
-  } catch(e){}
-  return false;
-}
-function buildGeneratedNews(){
-  const items = [];
-  Object.keys(MARKETS).forEach(cls => {
-    MARKETS[cls].forEach(m => {
-      const c = m.chg || 0;
-      items.push({ title: `${m.name} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(2)}% — now ${fmt(m.price)}`,
-        body: `${m.name} (${m.sym}) trading at ${fmt(m.price)} USDT, ${c>=0?'up':'down'} ${Math.abs(c).toFixed(2)}% in the last 24h.`,
-        source: 'NextTrade', ts: Date.now() });
-    });
-  });
-  items.sort((a,b) => Math.abs(b.chg || 0) - Math.abs(a.chg || 0));
-  return items.slice(0, 10);
-}
-function refreshNewsStrip(){
-  const list = liveNews.length ? liveNews : buildGeneratedNews();
-  if(!list.length) return;
-  const top = list[0];
-  const h = document.getElementById('newsHeadline');
-  const s = document.getElementById('newsSub');
-  const t = document.getElementById('newsTime');
-  if(h) h.textContent = top.title;
-  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
-  if(t) t.textContent = top.source || 'now';
-}
-function openNews(){
-  const list = liveNews.length ? liveNews : buildGeneratedNews();
-  document.getElementById('newsList').innerHTML = list.map(n => `
-    <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
-      <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
-      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}${(n.body || '').length > 220 ? '…' : ''}</div>
-      <div style="font-size:10.5px;color:var(--text3);margin-top:10px;">${n.source || 'NextTrade'} · ${new Date(n.ts).toLocaleString()}</div>
-    </div>
-  `).join('');
-  document.getElementById('newsPanel').classList.add('active');
-}
-function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
-
+/* ============================================================
+   MARKET DATA
+   ============================================================ */
 const MARKETS = {
   crypto: [
     {sym:'BTC', price:77845, base:77845, chg:0, color:'#F7931A', vol:'$2.8B', name:'Bitcoin', tv:'BINANCE:BTCUSDT'},
@@ -2206,16 +1541,12 @@ function symLogo(sym, sz=22){
   return `<span class="logo" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*0.5)}px;background:${col};${dark?'color:#000;':''}">${sym[0]}</span>`;
 }
 
-/* ---------- 66EX-style sparkline generator (tiny SVG) ---------- */
 function sparklineSVG(up, width=52, height=28){
   const points = [];
   const N = 16;
   let p = 50;
   const bias = up ? 0.55 : 0.45;
-  for(let i = 0; i < N; i++){
-    p += (Math.random() - (1 - bias)) * 6;
-    points.push(p);
-  }
+  for(let i = 0; i < N; i++){ p += (Math.random() - (1 - bias)) * 6; points.push(p); }
   const min = Math.min(...points), max = Math.max(...points), range = max - min || 1;
   const path = points.map((v, i) => {
     const x = (i/(N-1)) * width;
@@ -2231,7 +1562,6 @@ function sparklineSVG(up, width=52, height=28){
   </svg>`;
 }
 
-let lastBinanceTick = 0;
 function startBinanceStream(){
   if(typeof WebSocket === 'undefined') return;
   try {
@@ -2246,7 +1576,6 @@ function startBinanceStream(){
         m.price = p;
         m.chg = o ? ((p-o)/o)*100 : 0;
         m.vol = '$' + (parseFloat(d.q)/1e6).toFixed(1) + 'M';
-        lastBinanceTick = Date.now();
       } catch(e){}
     };
   } catch(e){}
@@ -2266,7 +1595,6 @@ function startSimulation(){
   }, 1500);
 }
 
-/* ---------- Home renderers (66EX style) ---------- */
 const HOME_GRID_COINS = ['BTC','USDC','TRX','ETH'];
 const HOME_LIST_COINS = ['BTC','USDC','TRX','ETH','BNB'];
 
@@ -2277,10 +1605,7 @@ function renderHomeCoinGrid(){
   el.innerHTML = symbols.map(m => {
     const up = (m.chg || 0) >= 0;
     return `<div class="coin-card" onclick="openInstrumentFromMarket('${m.sym}')">
-      <div class="row-top">
-        <span class="pair">${m.sym}</span>
-        <span class="tag">crypto</span>
-      </div>
+      <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">crypto</span></div>
       <div class="row-bottom">
         <div class="left">
           <div class="price">$${fmt(m.price)}</div>
@@ -2291,7 +1616,6 @@ function renderHomeCoinGrid(){
     </div>`;
   }).join('');
 }
-
 function renderHomeCoinList(){
   const el = document.getElementById('homeCoinList');
   if(!el) return;
@@ -2315,19 +1639,14 @@ function renderHomeCoinList(){
   }).join('');
 }
 
-/* ---------- Markets renderers (66EX style) ---------- */
 let mktTopTab = 'gainers';
 let mktSubTab = 'crypto';
 let mkFilter = '';
-
 function allCoins(){
   const out = [];
-  ['crypto','forex','commodities','stocks'].forEach(k => {
-    (MARKETS[k] || []).forEach(m => out.push(m));
-  });
+  ['crypto','forex','commodities','stocks'].forEach(k => { (MARKETS[k] || []).forEach(m => out.push(m)); });
   return out;
 }
-
 function renderTopGainers(){
   const el = document.getElementById('topGainers');
   if(!el) return;
@@ -2346,18 +1665,13 @@ function renderTopGainers(){
     </div>`;
   }).join('');
 }
-
 function renderMarketsTable(){
   const el = document.getElementById('mktTable');
   if(!el) return;
   let list;
-  if(mktSubTab === 'favorites'){
-    list = ['BTC','ETH','SOL','BNB'].map(s => findMarket(s)).filter(Boolean);
-  } else if(mktSubTab === 'futures'){
-    list = allCoins().filter(m => ['BTC','ETH','SOL','XRP','BNB','DOGE'].includes(m.sym));
-  } else {
-    list = (MARKETS.crypto || []).slice();
-  }
+  if(mktSubTab === 'favorites') list = ['BTC','ETH','SOL','BNB'].map(s => findMarket(s)).filter(Boolean);
+  else if(mktSubTab === 'futures') list = allCoins().filter(m => ['BTC','ETH','SOL','XRP','BNB','DOGE'].includes(m.sym));
+  else list = (MARKETS.crypto || []).slice();
   if(mkFilter){
     const q = mkFilter.toLowerCase();
     list = list.filter(m => m.sym.toLowerCase().includes(q) || (m.name||'').toLowerCase().includes(q));
@@ -2384,7 +1698,6 @@ function renderMarketsTable(){
     </div>`;
   }).join('');
 }
-
 function filterMarkets(v){ mkFilter = v; renderMarketsTable(); }
 
 document.getElementById('mktTabs')?.addEventListener('click', e => {
@@ -2401,358 +1714,11 @@ document.getElementById('mkSubtabs')?.addEventListener('click', e => {
   mktSubTab = t.dataset.class;
   renderMarketsTable();
 });
+function openInstrumentFromMarket(sym){ go('s-trade'); trSetSymbol(sym); }
 
-function renderAllPrices(){
-  renderHomeCoinGrid();
-  renderHomeCoinList();
-  renderTopGainers();
-  renderMarketsTable();
-  renderTrOrderBook();
-  renderTrHeader();
-  refreshNewsStrip();
-  checkSlTp();
-  renderCopySection();
-}
-setInterval(renderAllPrices, 1500);
-
-let currentUser = null;
-function getAccounts(){ try { return JSON.parse(localStorage.getItem(APPS_KEY) || '{}'); } catch(e){ return {}; } }
-function saveAccounts(accs){ try { localStorage.setItem(APPS_KEY, JSON.stringify(accs)); } catch(e){} }
-function hashPassword(pw){
-  let h = 5381;
-  for(let i=0;i<pw.length;i++) h = ((h<<5)+h+pw.charCodeAt(i)) & 0xFFFFFFFF;
-  return 'h' + Math.abs(h).toString(36);
-}
-function generateUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
-
-function openAuth(mode){
-  document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
-  const target = mode === 'register' ? 'authRegister'
-              : mode === 'kyc' ? 'authKyc'
-              : 'authLogin';
-  document.getElementById(target).classList.add('active');
-}
-function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
-function backToLanding(){ window.location.href = '/'; }
-function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
-function checkUsername(){
-  const v = document.getElementById('suUsername').value.trim();
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(v)) return;
-  const accs = getAccounts();
-  if(accs[v.toLowerCase()]) showErr('suUsername','suUsernameErr','Username taken');
-  else clearErr('suUsername','suUsernameErr');
-}
-function scorePw(){
-  const v = document.getElementById('suPw').value;
-  const segs = document.querySelectorAll('#pwStrength .seg');
-  let s = 0;
-  if(v.length >= 8) s++;
-  if(/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
-  if(/\d/.test(v)) s++;
-  if(/[^a-zA-Z0-9]/.test(v)) s++;
-  segs.forEach((seg,i)=>{ seg.className='seg'; if(i<s) seg.classList.add('on-'+s); });
-}
-function showErr(f,e,m){
-  const fel = document.getElementById(f); if(fel) fel.style.borderColor = 'var(--red)';
-  const eel = document.getElementById(e); if(eel){ eel.textContent = m; eel.classList.add('show'); }
-}
-function clearErr(f,e){
-  const fel = document.getElementById(f); if(fel) fel.style.borderColor = '';
-  const eel = document.getElementById(e); if(eel) eel.classList.remove('show');
-}
-
-function doRegisterStep1(){
-  const email = document.getElementById('suEmail').value.trim().toLowerCase();
-  const pw = document.getElementById('suPw').value;
-  const pw2 = document.getElementById('suPw2').value;
-  const username = document.getElementById('suUsername').value.trim();
-  const ref = document.getElementById('suReferral').value.trim();
-  const terms = document.getElementById('suTerms').checked;
-
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email address');
-  const accs = getAccounts();
-  if(accs[email]) return showErr('suEmail','suEmailErr','Email already registered');
-  if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
-  if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters/numbers/_');
-  if(accs[username.toLowerCase()]) return showErr('suUsername','suUsernameErr','Username taken');
-  if(!terms) return toast('Please agree to the Terms of Service');
-
-  const user = {
-    username, email, pwHash: hashPassword(pw), uid: generateUID(),
-    referralCode: 'NT' + Math.floor(100000 + Math.random()*900000),
-    referredBy: ref || null, createdAt: Date.now(),
-    balance: 0, funding: 0, spot: 0,
-    demoFunding: DEMO_SEED, demoSpot: 0, mode: 'real', kycStatus: 'none'
-  };
-  accs[email] = user;
-  saveAccounts(accs);
-
-  const admin = getAdminState();
-  admin.clients = admin.clients || [];
-  const used = admin.clients.map(c => c.derivationIndex);
-  let nextIndex = 0; while(used.includes(nextIndex)) nextIndex++;
-  const client = { id:'c'+Date.now()+Math.random().toString(36).slice(2,6),
-    name: username, email, derivationIndex: nextIndex, addresses:{}, createdAt: Date.now() };
-  if(admin.config && admin.config.ethXpub) client.addresses.eth = deriveEthAddress(admin.config.ethXpub, nextIndex);
-  admin.clients.push(client);
-  saveAdminState(admin);
-
-  currentUser = user;
-  currentMode = 'real';
-  localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email}));
-  applyUserToUI();
-  updateModeUI();
-  toast('Account created! Now verify your identity');
-  openAuth('kyc');
-}
-
-let kycUploads = {front:null, back:null, selfie:null};
-function handleKycFile(slot, input){
-  const file = input.files && input.files[0];
-  if(!file) return;
-  if(file.size > 5 * 1024 * 1024){ toast('File too large (max 5MB)'); return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    kycUploads[slot] = e.target.result;
-    const box = document.getElementById('up' + slot.charAt(0).toUpperCase() + slot.slice(1));
-    if(box){ box.classList.add('has'); box.querySelector('.t').textContent = file.name; box.querySelector('.s').textContent = 'Uploaded — tap to change'; }
-  };
-  reader.readAsDataURL(file);
-}
-function submitKycStep2(){
-  if(!currentUser){ openAuth('register'); return; }
-  const name = document.getElementById('kycName').value.trim();
-  const dob = document.getElementById('kycDob').value;
-  const country = document.getElementById('kycCountry').value.trim();
-  const idType = document.getElementById('kycIdType').value;
-  const idNum = document.getElementById('kycIdNum').value.trim();
-  if(!name || !dob || !country || !idNum){ toast('Please fill all fields'); return; }
-  if(!kycUploads.front || !kycUploads.back || !kycUploads.selfie){ toast('Please upload all three images'); return; }
-  currentUser.kycStatus = 'pending';
-  currentUser.kycData = { fullName:name, dob, country, idType, idNumber:idNum,
-    front:kycUploads.front, back:kycUploads.back, selfie:kycUploads.selfie, submittedAt: Date.now() };
-  const accs = getAccounts();
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
-  updateKycBadge();
-  updateModeUI();
-  toast('Submitted for review — welcome to NextTrade!');
-  closeAuth();
-  go('s-home');
-}
-function skipKycStep2(){
-  if(!currentUser){ openAuth('register'); return; }
-  toast('You can complete verification later from Profile');
-  closeAuth();
-  go('s-home');
-}
-
-let kpUploads = {front:null, back:null};
-function openKycPage(){
-  if(!currentUser){ openAuth('register'); return; }
-  if(currentUser.kycData){
-    const kd = currentUser.kycData;
-    const nn = document.getElementById('kpName'); if(nn) nn.value = kd.fullName || '';
-    const dn = document.getElementById('kpDocNum'); if(dn) dn.value = kd.idNumber || '';
-    const nat = document.getElementById('kpNationality'); if(nat) nat.textContent = kd.country || 'United States';
-  } else {
-    const nn = document.getElementById('kpName'); if(nn) nn.value = currentUser.username || '';
-  }
-  document.getElementById('kycPage').classList.add('active');
-}
-function closeKycPage(){ document.getElementById('kycPage').classList.remove('active'); }
-function clearKp(id){ const el = document.getElementById(id); if(el) el.value = ''; }
-function pickNationality(){
-  const cur = document.getElementById('kpNationality').textContent;
-  const list = ['United States','United Kingdom','Canada','Australia','Germany','France','Japan','Singapore','Kenya','Nigeria','South Africa','India','China','Brazil'];
-  const next = list[(list.indexOf(cur) + 1) % list.length];
-  document.getElementById('kpNationality').textContent = next;
-}
-function handleKpFile(slot, input){
-  const file = input.files && input.files[0];
-  if(!file) return;
-  if(file.size > 5 * 1024 * 1024){ toast('File too large (max 5MB)'); return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    kpUploads[slot] = e.target.result;
-    const box = document.getElementById(slot === 'front' ? 'kpUpFront' : 'kpUpBack');
-    if(box) box.classList.add('has');
-  };
-  reader.readAsDataURL(file);
-}
-function submitKycPage(){
-  if(!currentUser){ openAuth('register'); return; }
-  const name = document.getElementById('kpName').value.trim();
-  const doc = document.getElementById('kpDocNum').value.trim();
-  const nationality = document.getElementById('kpNationality').textContent;
-  if(!name || !doc){ toast('Please fill in your name and document number'); return; }
-  if(!kpUploads.front || !kpUploads.back){ toast('Please upload both front and back of your ID'); return; }
-  currentUser.kycStatus = 'pending';
-  currentUser.kycData = {
-    fullName: name, idNumber: doc, country: nationality,
-    idType: 'passport', front: kpUploads.front, back: kpUploads.back,
-    selfie: null, submittedAt: Date.now()
-  };
-  const accs = getAccounts();
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
-  updateKycBadge();
-  updateModeUI();
-  toast('Application submitted — pending review');
-  closeKycPage();
-}
-
-function doLogin(){
-  const id = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pw = document.getElementById('loginPw').value;
-  if(!id) return showErr('loginEmail','loginEmailErr','Enter email or username');
-  if(!pw) return showErr('loginPw','loginPwErr','Enter password');
-  const accs = getAccounts();
-  const user = Object.values(accs).find(a => a.email.toLowerCase() === id || a.username.toLowerCase() === id);
-  if(!user || user.pwHash !== hashPassword(pw)) return showErr('loginPw','loginPwErr','Incorrect credentials');
-  currentUser = user;
-  if(typeof currentUser.demoFunding !== 'number') currentUser.demoFunding = DEMO_SEED;
-  if(typeof currentUser.demoSpot !== 'number') currentUser.demoSpot = 0;
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
-  currentMode = user.mode === 'demo' ? 'demo' : 'real';
-  localStorage.setItem(SESSION_KEY, JSON.stringify({email:user.email}));
-  applyUserToUI();
-  updateModeUI();
-  closeAuth();
-  renderTradeForm();
-  toast('Welcome back!');
-}
-function doLogout(){
-  currentUser = null; currentMode = 'real';
-  localStorage.removeItem(SESSION_KEY);
-  applyUserToUI();
-  closeProfile();
-  renderTradeForm();
-  toast('Logged out');
-}
-function forgotPassword(){
-  document.getElementById('genericTitle').textContent = 'Reset Password';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6;">Enter your email and we'll send you a reset link.</div>
-    <input id="forgotEmail" type="email" placeholder="you@example.com" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;background:var(--card);color:var(--text);">
-    <button class="auth-submit" style="margin-top:14px;" onclick="toast('Reset link sent'); closeGeneric();">Send Reset Link</button>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function closeGeneric(){ document.querySelectorAll('.generic-modal').forEach(m => m.classList.remove('on')); }
-
-let heroMasked = false;
-function toggleHeroMask(){
-  heroMasked = !heroMasked;
-  const el = document.getElementById('heroBalance');
-  if(!el) return;
-  const bal = activeBalance('funding') + activeBalance('spot') + (currentUser && currentUser.balance || 0);
-  el.textContent = heroMasked ? '••••••' : ('$' + fmt(bal));
-  toast(heroMasked ? 'Balance hidden' : 'Balance shown');
-}
-function applyUserToUI(){
-  const loggedIn = !!currentUser;
-  const av = document.getElementById('homeAvatar');
-  if(av){
-    if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
-    else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
-  }
-  if(loggedIn){
-    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = currentUser.username[0].toUpperCase();
-    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = currentUser.email;
-  } else {
-    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = 'U';
-    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = 'Not signed in';
-  }
-  renderWalletScreen();
-  renderAccounts();
-  updateNotifDot();
-  updateKycBadge();
-  updateModeUI();
-  renderTradeForm();
-  updateDownloadCard();
-  renderCopySection();
-}
-
-function getMyAddress(){
-  if(!currentUser) return null;
-  const admin = getAdminState();
-  if(!admin.config || !admin.config.ethXpub) return null;
-  let client = (admin.clients || []).find(c =>
-    c.name.toLowerCase() === currentUser.username.toLowerCase() ||
-    (c.email && c.email.toLowerCase() === currentUser.email.toLowerCase()));
-  if(!client){
-    const used = (admin.clients || []).map(c => c.derivationIndex);
-    let nextIndex = 0; while(used.includes(nextIndex)) nextIndex++;
-    client = { id:'c'+Date.now(), name:currentUser.username, email:currentUser.email,
-      derivationIndex:nextIndex, addresses:{}, createdAt:Date.now() };
-    admin.clients = admin.clients || []; admin.clients.push(client);
-  }
-  if(!client.addresses.eth) client.addresses.eth = deriveEthAddress(admin.config.ethXpub, client.derivationIndex);
-  saveAdminState(admin);
-  return client.addresses.eth;
-}
-function renderWalletScreen(){
-  const warn = document.getElementById('xpubWarn');
-  if(!currentUser){
-    document.getElementById('myEthAddress').textContent = 'Log in to see your address';
-    document.getElementById('myQrCanvas').style.display = 'none';
-    if(warn) warn.style.display = 'none';
-    return;
-  }
-  const addr = getMyAddress();
-  const addrEl = document.getElementById('myEthAddress');
-  const qrCanvas = document.getElementById('myQrCanvas');
-  if(addr){ addrEl.textContent = addr; qrCanvas.style.display = 'block'; drawQR(addr, qrCanvas); if(warn) warn.style.display = 'none'; }
-  else { addrEl.textContent = 'Admin has not configured XPUB yet'; qrCanvas.style.display = 'none'; if(warn) warn.style.display = 'block'; }
-}
-function copyMyAddr(){
-  const addr = getMyAddress();
-  if(!addr) return toast('No address yet');
-  if(navigator.clipboard) navigator.clipboard.writeText(addr);
-  toast('Address copied');
-}
-async function refreshMyBalance(){
-  if(!currentUser) return toast('Log in first');
-  const addr = getMyAddress();
-  if(!addr) return toast('No address configured');
-  toast('Refreshing...');
-  const admin = getAdminState();
-  const rpcUrl = (admin.config && admin.config.rpcUrl) || 'https://eth.llamarpc.com';
-  try {
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
-    const bal = await provider.getBalance(addr);
-    const eth = parseFloat(ethers.formatEther(bal)).toFixed(6);
-    document.getElementById('myEthBal').textContent = eth;
-    document.getElementById('walletUsd').textContent = '≈ ' + eth + ' ETH';
-    document.getElementById('walletBalance').textContent = '$' + (parseFloat(eth) * 2446).toFixed(2);
-    toast('Balance updated');
-  } catch(e){ toast('RPC failed'); }
-}
-function drawQR(text, canvas){
-  if(!canvas) return;
-  const size = 160; canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d');
-  const grid = 21; const cell = size / grid;
-  ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
-  let h = 0;
-  for(let i = 0; i < text.length; i++) h = ((h<<5)-h+text.charCodeAt(i))|0;
-  function finder(x,y){
-    ctx.fillStyle = '#000'; ctx.fillRect(x*cell,y*cell,7*cell,7*cell);
-    ctx.fillStyle = '#fff'; ctx.fillRect((x+1)*cell,(y+1)*cell,5*cell,5*cell);
-    ctx.fillStyle = '#000'; ctx.fillRect((x+2)*cell,(y+2)*cell,3*cell,3*cell);
-  }
-  finder(0,0); finder(14,0); finder(0,14);
-  let seed = Math.abs(h);
-  for(let y=0;y<grid;y++) for(let x=0;x<grid;x++){
-    if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12)) continue;
-    seed = (seed*1103515245+12345)&0x7fffffff;
-    if(seed%100<45){ ctx.fillStyle='#000'; ctx.fillRect(x*cell,y*cell,cell,cell); }
-  }
-}
-
+/* ============================================================
+   NAV
+   ============================================================ */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
   {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
@@ -2779,35 +1745,9 @@ function go(id){
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
 function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
 
-function openInvite(){
-  if(!currentUser){ openAuth('register'); return; }
-  const code = currentUser.referralCode || ('NT' + currentUser.uid.slice(-6));
-  document.getElementById('genericTitle').textContent = 'Invite & Earn';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="text-align:center;padding:4px 0 6px;">
-      <div style="font-size:40px;">🎁</div>
-      <div style="font-size:14px;font-weight:700;margin-top:8px;color:var(--text);">Your unique referral code</div>
-      <div style="font-size:12px;color:var(--text2);margin-top:4px;">Share it and earn 20% of every trade fee</div>
-    </div>
-    <div style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;border-radius:12px;padding:20px;text-align:center;margin:14px 0;">
-      <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:3px;">${code}</div>
-    </div>
-    <div style="display:flex;gap:10px;">
-      <button class="auth-submit" style="flex:1;" onclick="copyInvite('${code}')">Copy Code</button>
-      <button class="auth-submit" style="flex:1;background:var(--card);color:var(--text);border:1.5px solid var(--line);" onclick="shareInvite('${code}')">Share</button>
-    </div>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Code copied'); }
-function shareInvite(code){
-  const txt = 'Join NextTrade with my code ' + code + '.';
-  if(navigator.share) navigator.share({title:'NextTrade', text:txt}).catch(()=>{});
-  else { if(navigator.clipboard) navigator.clipboard.writeText(txt); toast('Copied'); }
-}
-
-function openInstrumentFromMarket(sym){ go('s-trade'); trSetSymbol(sym); }
-
+/* ============================================================
+   TRADE SCREEN
+   ============================================================ */
 let trSymbol = 'BTC';
 let trSide = 'buy';
 let trOrderType = 'limit';
@@ -2831,16 +1771,12 @@ function renderTrHeader(){
   if(mid) mid.textContent = fmt(m.price);
   if(midSub) midSub.textContent = '≈' + fmt(m.price);
   const tag = document.getElementById('trTag');
-  if(tag){
-    tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'copy' ? 'Copy' : 'Spot';
-  }
+  if(tag) tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'copy' ? 'Copy' : 'Spot';
   const btn = document.getElementById('trBtn');
   if(btn){
     btn.textContent = trSide === 'buy' ? 'Buy' : 'Sell';
     btn.className = 'tr-action ' + (trSide === 'buy' ? 'buy' : 'sell');
   }
-  const cp = document.getElementById('chartPair'); if(cp) cp.textContent = trSymbol + '/USDT';
-  const cc = document.getElementById('chartChg'); if(cc){ cc.textContent = chgSign(m.chg); cc.style.color = m.chg>=0?'var(--green)':'var(--red)'; }
 }
 function renderTrOrderBook(){
   const m = findMarket(trSymbol) || {price:76650};
@@ -2896,108 +1832,550 @@ function trRecalc(){
 document.addEventListener('input', e => {
   if(e.target && (e.target.id === 'trQty' || e.target.id === 'trAmt')) trRecalc();
 });
+
+/* ---------- OPEN ORDERS / TRADE FORM ---------- */
 function renderTradeForm(){
   const avail = activeBalance('spot') || 0;
   const av = document.getElementById('trAvail');
   if(av) av.textContent = avail.toFixed(2);
-  const pos = getMyPosition();
-  const followed = NextTradeCopy.getFollowedPosition();
-  const cnt = (pos && pos.status === 'open' ? 1 : 0) + (followed ? 1 : 0);
-  const oc = document.getElementById('trOpenCount');
-  if(oc) oc.textContent = cnt;
   const hist = document.getElementById('trHistory');
   if(!hist) return;
-  const kind = hist.dataset.tab || 'open';
-  if(kind === 'assets'){
-    let html = `<div style="text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;">
-      <div style="color:var(--text2);font-size:12px;">Spot balance</div>
-      <div style="font-size:22px;font-weight:800;color:var(--text);">${avail.toFixed(2)} USDT</div>`;
-    if(pos && pos.status === 'open'){
-      const m = findMarket(pos.sym) || {price:pos.entry};
-      const pnl = (m.price - pos.entry) * pos.qty;
-      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      html += `<div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px;">
-        <div style="font-size:12.5px;font-weight:700;color:var(--text);">Open position · ${pos.sym}/USDT</div>
-        <div style="font-size:12px;color:${cls};font-weight:700;margin-top:4px;">P&L ${pnl>=0?'+':''}$${pnl.toFixed(2)}</div>
-      </div>`;
-    }
-    html += '</div>';
-    hist.innerHTML = html;
-  } else if(kind === 'history'){
-    const list = (getAllTx()[currentUser ? currentUser.email : ''] || []).filter(t => t.type === 'trade');
-    hist.innerHTML = list.length
-      ? list.map(t => `<div style="text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:8px;font-size:12.5px;">
-          <div style="font-weight:700;color:var(--text);">${t.detail}</div>
-          <div style="color:var(--text3);font-size:10.5px;margin-top:3px;">${new Date(t.time).toLocaleString()}</div>
-        </div>`).join('')
-      : '<div class="empty">No history yet</div>';
-  } else {
-    const tracking = NextTradeCopy.renderFollowedCard();
-    const pos2 = getMyPosition();
-    if(pos2 && pos2.status === 'open'){
-      const m = findMarket(pos2.sym) || {price:pos2.entry};
-      const pnl = (m.price - pos2.entry) * pos2.qty;
-      const pnlPct = ((m.price - pos2.entry) / pos2.entry) * 100;
-      const cls = pnl >= 0 ? 'var(--green)' : 'var(--red)';
-      hist.innerHTML = `<div style="text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;font-size:12.5px;">
-        <div style="display:flex;justify-content:space-between;"><span style="font-weight:700;color:var(--text);">${pos2.sym}/USDT · LONG</span><span style="font-weight:800;color:${cls};">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnl>=0?'+':''}${pnlPct.toFixed(2)}%)</span></div>
-        <div style="display:flex;gap:14px;color:var(--text2);margin-top:8px;">
-          <span>Entry ${fmt(pos2.entry)}</span><span>SL <b style="color:var(--red);">${fmt(pos2.slPrice)}</b></span><span>TP <b style="color:var(--green);">${fmt(pos2.tpPrice)}</b></span>
-        </div>
-        <button onclick="closePosition('manual')" style="margin-top:10px;width:100%;height:34px;border-radius:8px;border:none;background:var(--red);color:#fff;font-weight:700;font-family:inherit;cursor:pointer;">Close Position</button>
-      </div>`;
-      if(tracking) hist.insertAdjacentHTML('afterbegin', tracking);
-    } else if(tracking) {
-      hist.innerHTML = tracking;
-    } else {
-      hist.innerHTML = '<div class="empty">No orders yet</div>';
-    }
-  }
+  hist.innerHTML = '<div class="empty">No open orders</div>';
 }
+
 function trPlace(){
   if(!currentUser){ openAuth('register'); return; }
-  const qty = parseFloat(document.getElementById('trQty').value) || 0;
-  const price = parseFloat(document.getElementById('trPrice').value) || 0;
-  if(qty <= 0){ toast('Enter a valid quantity'); return; }
-  const m = findMarket(trSymbol) || {price};
-  const detail = `${trSide.toUpperCase()} ${qty} ${trSymbol} @ ${trOrderType === 'market' ? 'market' : price || m.price} (${trTab})`;
-  recordTx('trade', detail);
-  document.getElementById('trQty').value = '';
-  document.getElementById('trAmt').value = '';
-  trRecalc();
-  renderTradeForm();
-  toast('Order placed');
+  toast('Order placed (demo)');
+}
+
+/* ============================================================
+   COPY SIGNALS — real-time from Supabase
+   ============================================================ */
+let liveSignals = [];
+let liveParticipants = {};
+let signalsChannel = null;
+
+async function loadLiveSignals(){
+  const now = new Date().toISOString();
+  const { data, error } = await sb.from('signals')
+    .select('*')
+    .or(`expires_at.is.null,expires_at.gt.${now}`)
+    .order('created_at', { ascending: false })
+    .limit(30);
+  if(error){ liveSignals = []; return; }
+  liveSignals = data || [];
+  renderCopySection();
+  renderTrCopy();
+}
+
+async function loadLiveParticipants(){
+  const ids = liveSignals.map(s => s.id);
+  if(!ids.length){ liveParticipants = {}; return; }
+  const { data, error } = await sb.from('participants')
+    .select('signal_id, username, uid, amount_usdt, mode, created_at')
+    .in('signal_id', ids);
+  if(error){ liveParticipants = {}; return; }
+  liveParticipants = {};
+  (data || []).forEach(p => {
+    if(!liveParticipants[p.signal_id]) liveParticipants[p.signal_id] = [];
+    liveParticipants[p.signal_id].push(p);
+  });
+}
+
+function subscribeSignalsRealtime(){
+  if(signalsChannel) sb.removeChannel(signalsChannel);
+  signalsChannel = sb.channel('app-signals')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' }, () => {
+      loadLiveSignals().then(() => { loadLiveParticipants().then(() => { renderCopySection(); renderTrCopy(); }); });
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'participants' }, () => {
+      loadLiveParticipants().then(() => { renderCopySection(); renderTrCopy(); });
+    })
+    .subscribe();
+}
+
+function renderCopySection(){
+  const wrap = document.getElementById('copySection');
+  if(!wrap) return;
+  if(!liveSignals.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+  document.getElementById('copySectionCards').innerHTML = liveSignals.map(s => renderSignalCard(s)).join('');
+}
+
+function renderSignalCard(signal){
+  const pnl = (signal.pnl >= 0 ? '+' : '') + Number(signal.pnl || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const roi = (signal.roi >= 0 ? '+' : '') + Number(signal.roi || 0).toFixed(2) + '%';
+  const cls = signal.pnl >= 0 ? 'up' : 'down';
+  const roiCls = signal.roi >= 0 ? 'up' : 'down';
+  const initial = (signal.trader_name || '?')[0].toUpperCase();
+  const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
+  let h = 0; for(let i = 0; i < (signal.trader_name||'').length; i++) h = ((h<<5)-h+signal.trader_name.charCodeAt(i))|0;
+  const color = colors[Math.abs(h) % colors.length];
+  return `
+    <div class="copy-card">
+      <div class="copy-card-av" style="background:${color};">${initial}</div>
+      <div class="copy-card-info">
+        <div class="copy-card-name">${signal.trader_name}</div>
+        <div class="copy-card-followers">👥 ${signal.followers || '0/0'}</div>
+        <div class="copy-card-stats">
+          <div class="copy-stat">
+            <span class="copy-stat-lbl">30D PnL (USD)</span>
+            <b class="copy-stat-val ${cls}">${pnl}</b>
+          </div>
+          <div class="copy-stat" style="text-align:right;">
+            <span class="copy-stat-lbl">30D ROI</span>
+            <b class="copy-stat-val ${roiCls}">${roi}</b>
+          </div>
+        </div>
+      </div>
+      <button class="copy-card-btn" onclick="openFollowSheet('${signal.id}')">Copy</button>
+    </div>
+  `;
 }
 
 function renderTrCopy(){
-  const el = document.getElementById('trCopyList'); if(!el) return;
-  const list = activeSignals();
-  if(!list.length){
+  const el = document.getElementById('trCopyList');
+  if(!el) return;
+  if(!liveSignals.length){
     el.innerHTML = '<div class="tr-copy-empty">No live signals right now</div>';
     return;
   }
-  el.innerHTML = '<div class="tr-copy-head"><h3>Live Copy Signals</h3></div>' + list.map(ct => {
-    const m = findMarket(ct.sym) || {price:0, name:ct.sym};
-    const trader = ct.traderName || 'Analyst';
-    const initial = trader[0].toUpperCase();
-    const parts = getParticipants()[ct.id] || [];
+  el.innerHTML = '<div class="tr-copy-head"><h3>Live Copy Signals</h3></div>' + liveSignals.map(s => {
+    const parts = (liveParticipants[s.id] || []).length;
+    const initial = (s.trader_name || '?')[0].toUpperCase();
+    const m = findMarket(s.sym);
+    const px = m ? m.price : 0;
     return `<div class="ct-card">
       <div class="ct-top">
         <div class="ct-av">${initial}</div>
         <div style="flex:1;min-width:0;">
-          <div class="ct-trader">${trader} <span class="verified">LIVE</span></div>
-          <div class="ct-sym">${ct.sym}/USDT · ${m.name} · ${fmt(m.price)}</div>
+          <div class="ct-trader">${s.trader_name} <span class="verified">LIVE</span></div>
+          <div class="ct-sym">${s.sym}/USDT${m ? ' · ' + m.name + ' · ' + fmt(px) : ''}</div>
         </div>
       </div>
-      <div class="ct-msg">${ct.message || ''}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">👥 ${parts.length} users copying</div>
+      <div class="ct-msg">${s.message || ''}</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">👥 ${parts} users copying</div>
       <div class="ct-actions">
-        <button class="btn2 pri" onclick="NextTradeCopy.openFollowSheet('${ct.id}')">Follow Signal</button>
+        <button class="btn2 pri" onclick="openFollowSheet('${s.id}')">Follow Signal</button>
       </div>
     </div>`;
   }).join('');
 }
 
+function goCopyTab(){
+  const tab = document.querySelector('.tr-tab[data-tr="copy"]');
+  if(tab) tab.click();
+}
+
+/* ============================================================
+   FOLLOW SHEET
+   ============================================================ */
+let currentSignal = null;
+let selectedVoucher = 'none';
+
+function ensureSheet(){
+  let el = document.getElementById('nt-follow-sheet');
+  if(el) return el;
+  el = document.createElement('div');
+  el.id = 'nt-follow-sheet';
+  el.className = 'nt-follow-backdrop';
+  el.innerHTML = `
+    <div class="nt-follow-panel" onclick="event.stopPropagation()">
+      <div class="nt-follow-head">
+        <h3>Follow Signal</h3>
+        <div class="nt-follow-x" onclick="closeFollowSheet()">✕</div>
+      </div>
+      <div class="nt-follow-body" id="nt-follow-body"></div>
+    </div>`;
+  el.addEventListener('click', () => closeFollowSheet());
+  document.body.appendChild(el);
+  return el;
+}
+
+function openFollowSheet(id){
+  const sig = liveSignals.find(s => s.id === id);
+  if(!sig){ toast('Signal not found'); return; }
+  if(!currentUser){ openAuth('register'); return; }
+  currentSignal = sig;
+  selectedVoucher = 'none';
+  const sheet = ensureSheet();
+  renderFollowBody(sig);
+  sheet.classList.add('on');
+  renderLiveTicker(sig);
+}
+
+function closeFollowSheet(){
+  const sheet = document.getElementById('nt-follow-sheet');
+  if(sheet) sheet.classList.remove('on');
+  currentSignal = null;
+}
+
+function renderFollowBody(sig){
+  const body = document.getElementById('nt-follow-body');
+  if(!body) return;
+  const bal = activeBalance('spot') || 0;
+  const sugAmount = Number(sig.amount || 100);
+  const pnl = (sig.pnl >= 0 ? '+' : '') + Number(sig.pnl || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const roi = (sig.roi >= 0 ? '+' : '') + Number(sig.roi || 0).toFixed(2) + '%';
+  const initial = (sig.trader_name || '?')[0].toUpperCase();
+  const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
+  let h = 0; for(let i = 0; i < (sig.trader_name||'').length; i++) h = ((h<<5)-h+sig.trader_name.charCodeAt(i))|0;
+  const color = colors[Math.abs(h) % colors.length];
+
+  body.innerHTML = `
+    <div class="nt-follow-analyst">
+      <div class="nt-follow-av" style="background:${color};">${initial}</div>
+      <div style="flex:1;min-width:0;">
+        <div class="nt-follow-name">${sig.trader_name}</div>
+        <div class="nt-follow-sub">${sig.sym}/USDT · ${sig.followers || '0/0'} followers</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:13px;font-weight:800;color:${sig.pnl>=0?'var(--green)':'var(--red)'};">${pnl}</div>
+        <div style="font-size:11px;font-weight:700;color:${sig.roi>=0?'var(--green)':'var(--red)'};">${roi} 30D</div>
+      </div>
+    </div>
+    <div class="nt-follow-msg">${sig.message || ''}</div>
+    <div class="nt-follow-live" id="nt-follow-live">
+      <div class="nt-live-head"><span class="nt-live-dot"></span><b>Live</b> · <span id="nt-live-count">0</span> users copying</div>
+      <div class="nt-live-list" id="nt-live-list"></div>
+    </div>
+    <div class="nt-follow-field">
+      <label>Signal Code</label>
+      <div class="nt-code-wrap">
+        <input id="nt-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="— — — —" autocomplete="off">
+      </div>
+      <div class="nt-code-hint" id="nt-code-hint">Enter the 4-digit code shown by ${sig.trader_name}.</div>
+    </div>
+    <div class="nt-follow-field">
+      <label>Copy Trading Amount</label>
+      <div class="nt-amount-wrap">
+        <input id="nt-amount-input" type="text" inputmode="decimal" value="${sugAmount}" placeholder="0">
+        <span class="nt-amount-suf">USD</span>
+        <button class="nt-max-btn" onclick="setMaxAmount()">Max</button>
+      </div>
+      <div class="nt-avail">Available Balance: <b>$${bal.toFixed(2)} USD</b></div>
+    </div>
+    <div class="nt-follow-field">
+      <label>Choose a voucher</label>
+      <select id="nt-voucher" onchange="setVoucher(this.value)">
+        <option value="none">None</option>
+        <option value="welcome10">WELCOME10 — +$10 on first copy</option>
+        <option value="referral5">REFERRAL5 — +$5 bonus</option>
+      </select>
+    </div>
+    <label class="nt-agree">
+      <input type="checkbox" id="nt-agree-check" onchange="refreshApplyBtn()">
+      <span>I have read and agree <b>Copy Trading Agreement</b></span>
+    </label>
+    <button class="nt-apply-btn" id="nt-apply-btn" disabled onclick="applyCopy()">Apply to Copy Trading</button>
+  `;
+  document.getElementById('nt-code-input').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
+    refreshApplyBtn();
+  });
+  document.getElementById('nt-amount-input').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/[^\d.]/g,'');
+    refreshApplyBtn();
+  });
+}
+
+function renderLiveTicker(sig){
+  const render = () => {
+    const list = document.getElementById('nt-live-list');
+    const count = document.getElementById('nt-live-count');
+    const liveBox = document.getElementById('nt-follow-live');
+    if(!list) return;
+    const parts = liveParticipants[sig.id] || [];
+    if(liveBox) liveBox.style.display = parts.length ? 'block' : 'none';
+    if(count) count.textContent = parts.length;
+    list.innerHTML = parts.slice(0, 8).map((p, i) => `
+      <div class="nt-live-row" style="animation-delay:${i*40}ms;">
+        <div class="nt-live-av" style="background:#0ECB81;">${(p.username||'?')[0].toUpperCase()}</div>
+        <div class="nt-live-txt"><b>${p.username}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount_usdt).toFixed(0)}</span></div>
+        <div class="nt-live-ago">${timeAgo(new Date(p.created_at).getTime())}</div>
+      </div>
+    `).join('');
+  };
+  render();
+}
+
+function timeAgo(ts){
+  const s = Math.floor((Date.now() - ts)/1000);
+  if(s < 60) return s + 's';
+  const m = Math.floor(s/60);
+  if(m < 60) return m + 'm';
+  const h = Math.floor(m/60);
+  if(h < 24) return h + 'h';
+  return Math.floor(h/24) + 'd';
+}
+
+function refreshApplyBtn(){
+  const btn = document.getElementById('nt-apply-btn');
+  if(!btn || !currentSignal) return;
+  const code = (document.getElementById('nt-code-input')?.value || '').trim();
+  const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
+  const agree = document.getElementById('nt-agree-check')?.checked;
+  const codeOk = /^\d{4}$/.test(code) && code === String(currentSignal.code);
+  const hint = document.getElementById('nt-code-hint');
+  if(hint){
+    if(!code){ hint.textContent = `Enter the 4-digit code shown by ${currentSignal.trader_name}.`; hint.style.color = ''; }
+    else if(code.length < 4){ hint.textContent = 'Keep typing…'; hint.style.color = ''; }
+    else if(!codeOk){ hint.textContent = 'Incorrect code. Try again.'; hint.style.color = 'var(--red)'; }
+    else { hint.textContent = '✓ Code accepted'; hint.style.color = 'var(--green)'; }
+  }
+  btn.disabled = !(codeOk && amt > 0 && agree);
+}
+function setMaxAmount(){
+  const bal = activeBalance('spot') || 0;
+  const el = document.getElementById('nt-amount-input');
+  if(el) el.value = bal.toFixed(2);
+  refreshApplyBtn();
+}
+function setVoucher(v){ selectedVoucher = v; }
+
+async function applyCopy(){
+  if(!currentSignal || !currentUser) return;
+  const code = (document.getElementById('nt-code-input')?.value || '').trim();
+  if(code !== String(currentSignal.code)){ toast('Incorrect code'); return; }
+  const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
+  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
+  if(!document.getElementById('nt-agree-check')?.checked){ toast('Please agree to the Copy Trading Agreement'); return; }
+
+  const bal = activeBalance('spot') || 0;
+  if(bal < amt){ toast('Insufficient balance'); return; }
+
+  let bonus = 0;
+  if(selectedVoucher === 'welcome10') bonus = 10;
+  else if(selectedVoucher === 'referral5') bonus = 5;
+  const effectiveAmt = amt + bonus;
+
+  setActiveBalance('spot', bal - amt);
+
+  const { error: pErr } = await sb.from('participants').insert({
+    signal_id: currentSignal.id,
+    user_id: currentUser.id,
+    username: currentUser.username,
+    uid: currentUser.uid,
+    amount_usdt: effectiveAmt,
+    mode: currentMode,
+    voucher: selectedVoucher
+  });
+  if(pErr){ toast('Error: ' + pErr.message); return; }
+
+  const capturedSignalId = currentSignal.id;
+  const capturedTrader = currentSignal.trader_name;
+  const capturedSym = currentSignal.sym;
+
+  closeFollowSheet();
+  toast('✓ Copy trade placed — $' + effectiveAmt.toFixed(2) + (bonus ? ' (+$' + bonus + ' bonus)' : ''));
+
+  setTimeout(async () => {
+    const profit = effectiveAmt * COPY_PROFIT_PCT;
+    const newBal = activeBalance('spot') + profit;
+    setActiveBalance('spot', newBal);
+    await sb.from('copy_profits').insert({
+      user_id: currentUser.id,
+      signal_id: capturedSignalId,
+      trader_name: capturedTrader,
+      sym: capturedSym,
+      invested: effectiveAmt,
+      profit,
+      mode: currentMode
+    });
+    toast('✓ Copy profit credited: +$' + profit.toFixed(2));
+  }, (cfg.COPY_AUTO_CLOSE_SECONDS || 45) * 1000);
+
+  renderTradeForm();
+  applyUserToUI();
+  renderCopySection();
+}
+
+/* ============================================================
+   WALLET / TRANSFER / DEPOSIT
+   ============================================================ */
+function renderWalletScreen(){
+  if(!currentUser){
+    const el = document.getElementById('myEthAddress');
+    if(el) el.textContent = 'Log in to see your address';
+    return;
+  }
+  const el = document.getElementById('myEthAddress');
+  if(el) el.textContent = 'Not configured — set XPUB in admin';
+}
+function copyMyAddr(){ toast('No address configured'); }
+function refreshMyBalance(){ toast('Refresh not available'); }
+
+function renderAccounts(){
+  const funding = activeBalance('funding').toFixed(2);
+  const spot = activeBalance('spot').toFixed(2);
+  const accts = [
+    {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
+    {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
+  ];
+  const el = document.getElementById('acctList');
+  if(!el) return;
+  el.innerHTML = accts.map(a => `
+    <div class="acct-row" onclick="openTransfer()">
+      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
+      <div class="arrow">›</div>
+    </div>
+  `).join('');
+}
+function renderProfileMenu(){
+  const items = [
+    {l:'Identity Verification', sub:'Not verified', action:'openKycFromProfile()'},
+    {l:'Transaction History', action:'openTxHistory()'},
+    {l:'Copy Trading', action:'openCopyTrading()'},
+    {l:'Referral Program', action:'openInvite()'},
+    {l:'Security Center', action:"toast('Security')"},
+    {l:'Fee Schedule', action:"toast('Fees')"},
+    {l:'About Us', action:"toast('About')"}
+  ];
+  const el = document.getElementById('profileMenu');
+  if(!el) return;
+  el.innerHTML = items.map(it => `
+    <div class="menu-row" onclick="${it.action}">
+      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
+      <div class="mt">${it.l}</div>
+      ${it.sub ? `<div style="font-size:11px;color:var(--orange);font-weight:600;">${it.sub}</div>` : ''}
+      <div class="arrow">›</div>
+    </div>
+  `).join('');
+}
+function openKycFromProfile(){
+  if(!currentUser){ openAuth('register'); return; }
+  closeProfile();
+  openAuth('kyc');
+}
+function openTxHistory(){ document.getElementById('txPanel').classList.add('active'); }
+function closeTxHistory(){ document.getElementById('txPanel').classList.remove('active'); }
+function openCopyTrading(){ document.getElementById('copyPanel').classList.add('active'); }
+function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
+function openNews(){ document.getElementById('newsPanel').classList.add('active'); }
+function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
+function closeGeneric(){ document.querySelectorAll('.generic-modal').forEach(m => m.classList.remove('on')); }
+
+function openInvite(){
+  if(!currentUser){ openAuth('register'); return; }
+  const code = currentUser.referral_code || 'NT000000';
+  document.getElementById('genericTitle').textContent = 'Invite & Earn';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="text-align:center;padding:4px 0 6px;">
+      <div style="font-size:40px;">🎁</div>
+      <div style="font-size:14px;font-weight:700;margin-top:8px;color:var(--text);">Your referral code</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;border-radius:12px;padding:20px;text-align:center;margin:14px 0;">
+      <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:3px;">${code}</div>
+    </div>
+    <button class="auth-submit" onclick="copyInvite('${code}')">Copy Code</button>
+  `;
+  document.getElementById('genericModal').classList.add('on');
+}
+function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Copied'); }
+
+function openDeposit(mode){
+  if(!currentUser){ openAuth('register'); return; }
+  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
+  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Configure XPUB in admin to enable deposits.</div>';
+  document.getElementById('genericModal').classList.add('on');
+}
+function openTransfer(){
+  if(!currentUser){ openAuth('register'); return; }
+  document.getElementById('genericTitle').textContent = 'Transfer';
+  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Internal transfer coming soon.</div>';
+  document.getElementById('genericModal').classList.add('on');
+}
+
+/* ============================================================
+   NEWS
+   ============================================================ */
+let liveNews = [];
+async function fetchLiveNews(){
+  try {
+    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
+    const data = await r.json();
+    const arr = (data && (data.Data || data.data || data.articles)) || [];
+    if(Array.isArray(arr) && arr.length){
+      liveNews = arr.map(a => ({
+        title: a.TITLE || a.title || '',
+        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
+        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
+        source: 'CoinDesk'
+      })).filter(x => x.title);
+      return true;
+    }
+  } catch(e){}
+  return false;
+}
+function buildGeneratedNews(){
+  const items = [];
+  Object.keys(MARKETS).forEach(cls => {
+    MARKETS[cls].forEach(m => {
+      const c = m.chg || 0;
+      items.push({ title: `${m.name} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(2)}% — now ${fmt(m.price)}`,
+        body: `${m.name} (${m.sym}) trading at ${fmt(m.price)} USDT.`, source: 'NextTrade', ts: Date.now() });
+    });
+  });
+  items.sort((a,b) => Math.abs(b.chg || 0) - Math.abs(a.chg || 0));
+  return items.slice(0, 10);
+}
+function refreshNewsStrip(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  if(!list.length) return;
+  const top = list[0];
+  const h = document.getElementById('newsHeadline');
+  const s = document.getElementById('newsSub');
+  const t = document.getElementById('newsTime');
+  if(h) h.textContent = top.title;
+  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
+  if(t) t.textContent = top.source || 'now';
+}
+function openNews(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  document.getElementById('newsList').innerHTML = list.map(n => `
+    <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
+      <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
+      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}</div>
+    </div>
+  `).join('');
+  document.getElementById('newsPanel').classList.add('active');
+}
+
+/* ============================================================
+   CHART
+   ============================================================ */
+let chartWidget = null;
+let chartRetry = 0;
+function openChart(){
+  document.getElementById('chartOv').classList.add('active');
+  renderChartWidget();
+}
+function closeChart(){ document.getElementById('chartOv').classList.remove('active'); }
+function renderChartWidget(){
+  const slot = document.getElementById('chartSlot'); if(!slot) return;
+  const m = findMarket(trSymbol);
+  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
+  slot.innerHTML = '';
+  const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  if(typeof TradingView === 'undefined' || !TradingView.widget){
+    chartRetry++;
+    if(chartRetry < 6) setTimeout(renderChartWidget, 500);
+    return;
+  }
+  try {
+    chartWidget = new TradingView.widget({
+      container_id: 'chartSlot', autosize: true, symbol: tvSym,
+      interval: '15', timezone: 'Etc/UTC', theme: theme, style: '1', locale: 'en',
+      toolbar_bg: theme === 'dark' ? '#0B0E11' : '#ffffff',
+      enable_publishing: false, allow_symbol_change: false, save_image: false
+    });
+  } catch(e){}
+}
+
+/* ============================================================
+   TRADE TABS
+   ============================================================ */
 document.getElementById('trTabs').addEventListener('click', e => {
   const t = e.target.closest('.tr-tab'); if(!t) return;
   document.querySelectorAll('.tr-tab').forEach(x => x.classList.remove('on'));
@@ -3025,7 +2403,6 @@ document.getElementById('trTabs').addEventListener('click', e => {
     renderCopySection();
   }
 });
-
 document.getElementById('trSubtabs').addEventListener('click', e => {
   const st = e.target.closest('.st'); if(!st) return;
   document.querySelectorAll('.tr-subtabs .st').forEach(x => x.classList.remove('on'));
@@ -3036,102 +2413,12 @@ document.getElementById('trSubtabs').addEventListener('click', e => {
   renderTradeForm();
 });
 
-let chartWidget = null;
-let chartRetry = 0;
-function openChart(){
-  document.getElementById('chartOv').classList.add('active');
-  renderTrHeader();
-  renderChartWidget();
-}
-function closeChart(){ document.getElementById('chartOv').classList.remove('active'); }
-function renderChartWidget(){
-  const slot = document.getElementById('chartSlot'); if(!slot) return;
-  const m = findMarket(trSymbol);
-  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
-  slot.innerHTML = '';
-  const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  if(typeof TradingView === 'undefined' || !TradingView.widget){
-    chartRetry++;
-    if(chartRetry < 6) setTimeout(renderChartWidget, 500);
-    drawFallbackChart(slot, m, theme);
-    return;
-  }
-  try {
-    chartWidget = new TradingView.widget({
-      container_id: 'chartSlot', autosize: true, symbol: tvSym,
-      interval: '15', timezone: 'Etc/UTC', theme: theme, style: '1', locale: 'en',
-      toolbar_bg: theme === 'dark' ? '#0B0E11' : '#ffffff',
-      enable_publishing: false, allow_symbol_change: false,
-      hide_side_toolbar: false, hide_top_toolbar: false, save_image: false, withdateranges: true
-    });
-    setTimeout(() => {
-      const iframe = slot.querySelector('iframe');
-      if(!iframe || iframe.offsetHeight < 40) drawFallbackChart(slot, m, theme);
-    }, 3000);
-  } catch(e){ drawFallbackChart(slot, m, theme); }
-}
-function drawFallbackChart(slot, marketInfo, theme){
-  const oldCanvas = slot.querySelector('canvas.fallback');
-  if(oldCanvas) oldCanvas.remove();
-  const c = document.createElement('canvas');
-  c.className = 'fallback';
-  slot.appendChild(c);
-  setTimeout(() => {
-    const w = slot.clientWidth || 360;
-    const h = slot.clientHeight || 400;
-    c.width = w; c.height = h;
-    const ctx = c.getContext('2d');
-    const isDark = theme === 'dark';
-    const bg = isDark ? '#0B0E11' : '#ffffff';
-    const grid = isDark ? 'rgba(30,36,44,0.9)' : 'rgba(234,236,239,0.9)';
-    const mid = (marketInfo && marketInfo.price) || 77845;
-    const isUp = ((marketInfo && marketInfo.chg) || 0) >= 0;
-    const lineColor = isUp ? '#0ECB81' : '#F6465D';
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = grid;
-    ctx.lineWidth = 1;
-    for(let i = 1; i < 6; i++){
-      const y = (h / 6) * i;
-      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
-    }
-    let p = mid * 0.99;
-    const pts = [];
-    for(let i = 0; i < 90; i++){ p += (Math.random()-0.48)*mid*0.003; pts.push(p); }
-    pts[pts.length-1] = mid;
-    const min = Math.min(...pts), max = Math.max(...pts), range = max-min || 1;
-    ctx.strokeStyle = lineColor; ctx.lineWidth = 2;
-    ctx.beginPath();
-    pts.forEach((v, i) => {
-      const x = (i/(pts.length-1)) * w;
-      const y = 12 + (h-24) * (1 - (v-min)/range);
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    });
-    ctx.stroke();
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, isUp ? 'rgba(14,203,129,0.25)' : 'rgba(246,70,93,0.25)');
-    grad.addColorStop(1, isUp ? 'rgba(14,203,129,0)' : 'rgba(246,70,93,0)');
-    ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.closePath();
-    ctx.fillStyle = grad; ctx.fill();
-    ctx.fillStyle = bg; ctx.fillRect(8, 8, 110, 22);
-    ctx.strokeStyle = grid; ctx.strokeRect(8.5, 8.5, 109, 21);
-    ctx.fillStyle = lineColor;
-    ctx.font = 'bold 13px -apple-system,sans-serif';
-    ctx.fillText('$' + fmt(mid), 14, 23);
-  }, 30);
-}
-
 function openInstrumentPicker(){
-  const groups = [
-    {key:'crypto', label:'Crypto'},
-    {key:'forex', label:'Forex'},
-    {key:'commodities', label:'Commodities'},
-    {key:'stocks', label:'Stocks'}
-  ];
   document.getElementById('genericTitle').textContent = 'Choose Instrument';
-  document.getElementById('genericBody').innerHTML = groups.map(g => `
+  document.getElementById('genericBody').innerHTML = Object.keys(MARKETS).map(cls => `
     <div class="ins-group">
-      <div class="ins-group-title">${g.label}</div>
-      ${MARKETS[g.key].map(m => `
+      <div class="ins-group-title">${cls}</div>
+      ${MARKETS[cls].map(m => `
         <div class="ins-row" onclick="pickInstrument('${m.sym}')">
           ${symLogo(m.sym, 30)}
           <div style="flex:1;min-width:0;">
@@ -3154,91 +2441,22 @@ function pickInstrument(sym){
   toast('Switched to ' + sym);
 }
 
-function renderAccounts(){
-  const funding = activeBalance('funding').toFixed(2);
-  const spot = activeBalance('spot').toFixed(2);
-  const accts = [
-    {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
-    {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
-  ];
-  const el = document.getElementById('acctList');
-  if(!el) return;
-  el.innerHTML = accts.map(a => `
-    <div class="acct-row" onclick="openTransfer()">
-      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
+/* ============================================================
+   RENDER LOOP
+   ============================================================ */
+function renderAllPrices(){
+  renderHomeCoinGrid();
+  renderHomeCoinList();
+  renderTopGainers();
+  renderMarketsTable();
+  renderTrOrderBook();
+  renderTrHeader();
 }
-function renderProfileMenu(){
-  const items = [
-    {l:'Identity Verification', sub:'Not verified', action:'openKycFromProfile()'},
-    {l:'Transaction History', action:'openTxHistory()'},
-    {l:'Copy Trading', action:'openCopyTrading()'},
-    {l:'Reset Demo Balance', action:'resetDemo()'},
-    {l:'Referral Program', action:'openInvite()'},
-    {l:'Security Center', action:"toast('Security')"},
-    {l:'Price Alerts', action:"toast('Alerts')"},
-    {l:'Fee Schedule', action:"toast('Fees')"},
-    {l:'Contact Us', action:"toast('Contact')"},
-    {l:'About Us', action:"toast('About')"}
-  ];
-  const el = document.getElementById('profileMenu');
-  if(!el) return;
-  el.innerHTML = items.map(it => `
-    <div class="menu-row" onclick="${it.action}">
-      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
-      <div class="mt">${it.l}</div>
-      ${it.sub ? `<div style="font-size:11px;color:var(--orange);font-weight:600;">${it.sub}</div>` : ''}
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-function openKycFromProfile(){
-  if(!currentUser){ openAuth('register'); return; }
-  closeProfile();
-  openKycPage();
-}
-function resetDemo(){
-  if(!currentUser){ openAuth('register'); return; }
-  currentUser.demoFunding = DEMO_SEED;
-  currentUser.demoSpot = 0;
-  const accs = getAccounts();
-  accs[currentUser.email] = currentUser;
-  saveAccounts(accs);
-  const all = getAllPositions();
-  if(all[currentUser.email] && (all[currentUser.email].mode === 'demo')){
-    delete all[currentUser.email];
-    saveAllPositions(all);
-  }
-  applyUserToUI();
-  renderTradeForm();
-  toast('Demo reset — $' + DEMO_SEED.toLocaleString() + ' USDT');
-}
-function updateKycBadge(){
-  const el = document.getElementById('profKycBadge');
-  if(!el || !currentUser) return;
-  const s = currentUser.kycStatus || 'none';
-  if(s === 'verified'){ el.textContent = 'Verified'; el.style.color = 'var(--green)'; }
-  else if(s === 'pending'){ el.textContent = 'Pending Review'; el.style.color = 'var(--orange)'; }
-  else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
-  else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
-}
-function toast(msg){
-  const el = document.getElementById('toast');
-  if(!el) return;
-  el.textContent = msg;
-  el.classList.add('on');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
-}
+setInterval(renderAllPrices, 2000);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-  });
-}
+/* ============================================================
+   INSTALL BANNERS
+   ============================================================ */
 let deferredPrompt = null;
 const installBanner = document.getElementById('installBanner');
 const installBtn = document.getElementById('installBtn');
@@ -3262,7 +2480,7 @@ if (installBtn) installBtn.addEventListener('click', async () => {
     if (outcome === 'accepted') installBanner.style.display = 'none';
     deferredPrompt = null;
   } else if (isIOS) {
-    alert('To install on iPhone/iPad:\n\n1. Tap the Share button (box with arrow)\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"');
+    alert('To install on iPhone/iPad:\n\n1. Tap Share\n2. Add to Home Screen\n3. Tap Add');
   }
 });
 if (installClose) installClose.addEventListener('click', () => {
@@ -3279,21 +2497,9 @@ function updateDownloadCard(){
 }
 function downloadFor(platform){
   if(platform === 'android'){
-    if(window.deferredInstallPrompt){
-      window.deferredInstallPrompt.prompt();
-      window.deferredInstallPrompt.userChoice.then(({outcome}) => {
-        if(outcome === 'accepted'){
-          const banner = document.getElementById('androidInstallBtn');
-          if(banner) banner.style.display = 'none';
-        }
-        window.deferredInstallPrompt = null;
-      });
-      return;
-    }
     const a = document.createElement('a');
     a.href = APK_URL;
     a.download = 'NextTrade.apk';
-    a.rel = 'noopener';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -3301,7 +2507,6 @@ function downloadFor(platform){
   }
   window.location.href = '/download.html?platform=' + platform;
 }
-
 window.deferredInstallPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
@@ -3339,161 +2544,48 @@ window.addEventListener('appinstalled', () => {
   window.deferredInstallPrompt = null;
 });
 
-function openDeposit(mode){
-  if(!currentUser){ openAuth('register'); return; }
-  const addr = getMyAddress();
-  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="background:var(--input-bg);border-radius:10px;padding:14px;margin-bottom:14px;">
-      <div style="font-size:12px;color:var(--text2);margin-bottom:6px;">Your ${mode === 'withdraw' ? 'withdrawal' : 'deposit'} address</div>
-      <div style="font-family:'Courier New',monospace;font-size:12px;color:var(--green-dk);word-break:break-all;">${addr || 'Admin has not configured XPUB'}</div>
-    </div>
-    ${mode === 'deposit' ? `
-      <div style="text-align:center;"><canvas id="dmQr" style="width:160px;height:160px;"></canvas></div>
-      <div style="background:var(--orange-lt);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:11.5px;color:var(--orange);margin-top:12px;line-height:1.6;">
-        Send only ETH or ERC-20 tokens (USDT, USDC). Deposits credited after confirmation.
-      </div>
-    ` : `
-      <div style="margin-top:12px;">
-        <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:6px;">Destination address</label>
-        <input id="wdAddr" type="text" placeholder="0x..." style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;background:var(--card);color:var(--text);">
-        <label style="font-size:12px;color:var(--text2);display:block;margin:12px 0 6px;">Amount</label>
-        <input id="wdAmt" type="text" placeholder="0.00" style="width:100%;padding:12px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;background:var(--card);color:var(--text);">
-        <button class="auth-submit" style="margin-top:14px;" onclick="submitWithdraw()">Request Withdrawal</button>
-      </div>
-    `}
-  `;
-  document.getElementById('genericModal').classList.add('on');
-  if(mode === 'deposit' && addr) setTimeout(() => drawQR(addr, document.getElementById('dmQr')), 50);
-}
-function submitWithdraw(){
-  const addr = document.getElementById('wdAddr').value.trim();
-  const amt = document.getElementById('wdAmt').value.trim();
-  if(!addr || !amt){ toast('Fill all fields'); return; }
-  recordTx('withdraw', `${amt} to ${addr.slice(0,10)}…`);
-  toast('Withdrawal requested');
-  closeGeneric();
-}
-function openTransfer(){
-  if(!currentUser){ openAuth('register'); return; }
-  const funding = activeBalance('funding');
-  const spot = activeBalance('spot');
-  const tag = currentMode === 'demo' ? ' (Demo)' : '';
-  document.getElementById('genericTitle').textContent = 'Transfer' + tag;
-  document.getElementById('genericBody').innerHTML = `
-    <div class="tf-fromto">
-      <div class="box"><div class="k">From</div>
-        <select id="tfFrom" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;color:var(--text);">
-          <option value="funding">Funding (${funding.toFixed(2)} USDT)</option>
-          <option value="spot">Spot (${spot.toFixed(2)} USDT)</option>
-        </select>
-      </div>
-      <div class="arrow">⇄</div>
-      <div class="box"><div class="k">To</div>
-        <select id="tfTo" style="width:100%;border:none;background:transparent;font-size:14px;font-weight:700;outline:none;margin-top:3px;color:var(--text);">
-          <option value="spot">Spot</option>
-          <option value="funding">Funding</option>
-        </select>
-      </div>
-    </div>
-    <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px;">Amount</label>
-    <div style="display:flex;align-items:center;background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;">
-      <input id="tfAmt" type="text" inputmode="decimal" placeholder="0.00" style="border:none;outline:none;font-size:16px;flex:1;font-family:inherit;font-weight:700;background:transparent;color:var(--text);">
-      <span style="font-size:12px;color:var(--text2);font-weight:700;">USDT</span>
-    </div>
-    <button class="auth-submit" style="margin-top:16px;" onclick="doTransfer()">Confirm Transfer</button>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function doTransfer(){
-  const from = document.getElementById('tfFrom').value;
-  const to = document.getElementById('tfTo').value;
-  const amt = parseFloat(document.getElementById('tfAmt').value || '0');
-  if(from === to){ toast('Choose different accounts'); return; }
-  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
-  if(activeBalance(from) < amt){ toast('Insufficient balance'); return; }
-  setActiveBalance(from, activeBalance(from) - amt);
-  setActiveBalance(to, activeBalance(to) + amt);
-  currentUser = getAccounts()[currentUser.email];
-  recordTx('transfer', `${amt.toFixed(2)} USDT from ${from} → ${to}`);
-  closeGeneric();
-  renderAccounts();
-  applyUserToUI();
-  toast('Transfer complete');
-}
-
-(function boot(){
-  try {
-    const s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    if(s){
-      const accs = getAccounts();
-      if(accs[s.email]){
-        currentUser = accs[s.email];
-        currentMode = currentUser.mode === 'demo' ? 'demo' : 'real';
-      }
-    }
-  } catch(e){}
-  if(currentUser){
-    let dirty = false;
-    if(typeof currentUser.demoFunding !== 'number'){ currentUser.demoFunding = DEMO_SEED; dirty = true; }
-    if(typeof currentUser.demoSpot !== 'number'){ currentUser.demoSpot = 0; dirty = true; }
-    if(dirty){
-      const accs = getAccounts();
-      accs[currentUser.email] = currentUser;
-      saveAccounts(accs);
-    }
-  }
+/* ============================================================
+   BOOT
+   ============================================================ */
+(async function boot(){
+  startBinanceStream();
+  startSimulation();
   renderHomeCoinGrid();
   renderHomeCoinList();
   renderTopGainers();
   renderMarketsTable();
   renderAccounts();
   renderProfileMenu();
-  applyUserToUI();
-  updateKycBadge();
-  updateModeUI();
-  refreshNewsStrip();
-  updateNotifDot();
   trSetSymbol('BTC');
   renderTradeForm();
   renderTrOrderBook();
   renderTrHeader();
-  renderCopySection();
-  startBinanceStream();
-  startSimulation();
   fetchLiveNews().then(() => refreshNewsStrip());
-  setInterval(async () => { await fetchLiveNews(); refreshNewsStrip(); }, 60000);
-  setInterval(() => {
-    updateNotifDot();
-    renderCopySection();
-    renderTradeForm();
-    if(document.getElementById('copyPanel').classList.contains('active')) renderCopyTrades();
-    if(document.getElementById('s-trade').classList.contains('active') && trTab === 'copy') renderTrCopy();
-    checkForNewSignals();
-  }, 5000);
 
-  const hash = (location.hash || '').toLowerCase();
-
-  if(currentUser){
-    if(hash === '#markets'){ go('s-markets'); }
-    else if(hash === '#financial'){ go('s-wallet'); }
-    else if(hash.startsWith('#trade')){
-      go('s-trade');
-      let targetTab = 'spot';
-      if(hash === '#trade-perpetual') targetTab = 'perpetual';
-      else if(hash === '#trade-copy') targetTab = 'copy';
-      const tabBtn = document.querySelector(`.tr-tab[data-tr="${targetTab}"]`);
-      if(tabBtn) tabBtn.click();
+  const { data } = await sb.auth.getSession();
+  if(data && data.session && data.session.user){
+    const profile = await loadProfile(data.session.user.id);
+    if(profile){
+      currentUser = profile;
+      currentMode = profile.mode === 'demo' ? 'demo' : 'real';
+      applyUserToUI();
+      updateModeUI();
+      go('s-home');
+      await loadLiveSignals();
+      await loadLiveParticipants();
+      subscribeSignalsRealtime();
+      renderCopySection();
+      renderTrCopy();
     }
   } else {
-    if(hash === '#login'){
-      openAuth('login');
-    } else {
-      openAuth('register');
-    }
+    openAuth('register');
+    await loadLiveSignals();
+    renderCopySection();
   }
 
-  setTimeout(checkForNewSignals, 3000);
+  document.getElementById('loginPassword')?.addEventListener('keydown', e => {
+    if(e.key === 'Enter') doLogin();
+  });
 })();
 </script>
 </body>
