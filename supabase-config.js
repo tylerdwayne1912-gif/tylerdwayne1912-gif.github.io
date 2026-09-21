@@ -30,7 +30,7 @@ window.NT_CONFIG = {
 
   /* Your Supabase anon/public key. Found at:
      Supabase Dashboard → Settings → API → Project API keys → anon public */
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhiaHp3b2RseWFzY2VuaXRieHEiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4OTk5MzM1OSwiZXhwIjoyMTA1NTY5MzU5fQ.r5h_dmImuJuHcq6X-tLDRXl-Iw8Yg6P56Y3X8dKX_fA',
+  SUPABASE_ANON_KEY: 'sb_publishable_jUUGrofeuk35BM-5tFdxZg_-_xxfWLY',
 
   /* ⚠️ CHANGE THIS to your actual admin email.
      It must match EXACTLY what you created in
