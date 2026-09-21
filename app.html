@@ -152,7 +152,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
 .scroll::-webkit-scrollbar{width:0;}
 
-/* auth */
 .step-progress{display:flex;align-items:center;justify-content:center;
   padding:22px 20px 14px;background:var(--card);border-bottom:1px solid var(--line);flex-shrink:0;}
 .step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative;width:90px;}
@@ -179,11 +178,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .auth-body{flex:1;overflow-y:auto;padding:20px 22px 40px;}
 .auth-title{font-size:26px;font-weight:800;letter-spacing:-.7px;margin:0 0 6px;color:var(--text);}
 .auth-sub{font-size:13.5px;color:var(--text2);line-height:1.6;margin:0 0 22px;}
-.auth-method-toggle{display:flex;background:var(--input-bg);border-radius:10px;padding:4px;margin-bottom:22px;}
-.auth-method-toggle .mt{flex:1;text-align:center;padding:11px;font-size:14px;font-weight:600;
-  border-radius:8px;cursor:pointer;color:var(--text2);transition:.15s;}
-.auth-method-toggle .mt.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
-.auth-method-toggle .mt.disabled{color:var(--text3);cursor:not-allowed;opacity:.55;}
 .auth-field{margin-bottom:16px;}
 .auth-field label{display:block;font-size:13px;color:var(--text);margin-bottom:8px;font-weight:600;}
 .auth-field .wrap{position:relative;}
@@ -302,7 +296,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 
 .home-greet{padding:6px 16px 4px;}
 .home-greet h1{font-size:22px;font-weight:800;letter-spacing:-.6px;margin:0;color:var(--text);}
-.home-greet .sub{font-size:12.5px;color:var(--text2);margin-top:2px;}
 
 .welcome-card{margin:10px 14px 0;background:var(--welcome-bg);border-radius:16px;padding:18px 20px;
   display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);}
@@ -422,6 +415,26 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .addr-card .hint-line{font-size:11.5px;color:var(--text2);line-height:1.6;margin-top:8px;}
 .addr-card .warn-hint{background:var(--orange-lt);border:1px solid var(--line);border-radius:8px;
   padding:10px 12px;font-size:11.5px;color:var(--orange);line-height:1.6;margin-top:10px;}
+.addr-card .pending-hint{background:var(--orange-lt);border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;color:var(--orange);line-height:1.6;text-align:center;}
+.addr-card .refresh-btn{display:block;width:100%;height:44px;border-radius:10px;border:none;
+  background:var(--green);color:#fff;font-size:14px;font-weight:700;cursor:pointer;
+  font-family:inherit;margin-top:10px;transition:.15s;}
+.addr-card .refresh-btn:hover{background:var(--green-dk);}
+.addr-card .refresh-btn:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
+.wallet-gate{padding:60px 24px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;}
+.wallet-gate .wg-ic{width:80px;height:80px;border-radius:50%;
+  background:var(--green-lt);display:flex;align-items:center;justify-content:center;}
+.wallet-gate .wg-ic svg{width:40px;height:40px;stroke:var(--green-dk);}
+.wallet-gate h2{font-size:22px;font-weight:800;letter-spacing:-.4px;margin:0;color:var(--text);}
+.wallet-gate p{font-size:13.5px;color:var(--text2);line-height:1.6;margin:0;max-width:300px;}
+.wallet-gate .wg-btns{width:100%;max-width:320px;display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+.wallet-gate .wg-btn{width:100%;height:50px;border-radius:12px;border:none;
+  font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;}
+.wallet-gate .wg-btn.primary{background:var(--green);color:#fff;}
+.wallet-gate .wg-btn.primary:hover{background:var(--green-dk);}
+.wallet-gate .wg-btn.secondary{background:var(--card);color:var(--text);border:1.5px solid var(--line);}
+.wallet-gate .wg-btn.secondary:hover{background:var(--bg3);}
 .asset-list{margin:0 14px 14px;background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--line);}
 .asset-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);}
 .asset-row:last-child{border-bottom:none;}
@@ -786,7 +799,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <body>
 <div class="phone">
 
-<!-- REGISTER -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
@@ -824,7 +836,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- KYC STEP 2 -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -859,7 +870,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header">
     <div class="back" onclick="openAuth('register')">←</div>
@@ -868,7 +878,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <div class="auth-body">
     <h1 class="auth-title">Welcome back</h1>
     <p class="auth-sub">Sign in to access your account and start trading.</p>
-    <div class="auth-field"><label>Email or Username</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
+    <div class="auth-field"><label>Email</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
     <div class="auth-field">
       <label>Password</label>
       <div class="wrap">
@@ -882,7 +892,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- HOME -->
 <section class="screen active" id="s-home">
   <div class="topbar">
     <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
@@ -978,7 +987,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
-<!-- MARKETS -->
 <section class="screen" id="s-markets">
   <div class="mk-search">
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
@@ -1002,7 +1010,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- TRADE -->
 <section class="screen" id="s-trade">
   <div class="tr-tabs" id="trTabs">
     <div class="tr-tab" data-tr="perpetual">Perpetual</div>
@@ -1106,7 +1113,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- WALLET -->
 <section class="screen" id="s-wallet">
   <div class="wallet-hero">
     <div class="lab">Total Balance</div>
@@ -1114,26 +1120,53 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     <div class="usd" id="walletUsd">≈ 0.00 ETH</div>
   </div>
   <div class="scroll">
-    <div class="addr-card">
-      <div class="label">Your unique deposit address</div>
-      <div class="addr-row">
-        <span id="myEthAddress">Log in to see your address</span>
-        <span class="copy" onclick="copyMyAddr()">Copy</span>
+    <!-- LOGIN GATE: shown when not signed in -->
+    <div class="wallet-gate" id="walletGate" style="display:none;">
+      <div class="wg-ic">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="2" stroke-width="1.8"/><path d="M8 10V7a4 4 0 118 0v3" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
-      <div class="qr-wrap"><canvas id="myQrCanvas"></canvas></div>
-      <div class="hint-line">Send only ETH or ERC-20 tokens (USDT, USDC) to this address.</div>
+      <h2>Log in to view your wallet</h2>
+      <p>Your deposit address and balances are tied to your NextTrade account. Sign in to see them.</p>
+      <div class="wg-btns">
+        <button class="wg-btn primary" onclick="openAuth('login')">Log In</button>
+        <button class="wg-btn secondary" onclick="openAuth('register')">Create an Account</button>
+      </div>
     </div>
-    <div class="sec-head" style="padding:0 16px 8px;"><span>My Assets</span><span class="more" onclick="refreshMyBalance()">Refresh</span></div>
-    <div class="asset-list">
-      <div class="asset-row"><div class="logo" style="background:#627EEA">Ξ</div><div class="info"><div class="sym">Ethereum</div><div class="nm">ETH</div></div><div class="amount"><div class="amt" id="myEthBal">0.000000</div><div class="usd">≈ $0.00</div></div></div>
-      <div class="asset-row"><div class="logo" style="background:#26A69A">T</div><div class="info"><div class="sym">Tether</div><div class="nm">USDT (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
-      <div class="asset-row"><div class="logo" style="background:#2775CA">U</div><div class="info"><div class="sym">USD Coin</div><div class="nm">USDC (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
+
+    <!-- WALLET CONTENT: shown when signed in -->
+    <div id="walletContent">
+      <div class="addr-card">
+        <div class="label">Your unique deposit address</div>
+
+        <!-- Pending state: no address yet -->
+        <div id="addrPending" class="pending-hint" style="display:none;">
+          ⏳ Your deposit address is being prepared. This usually takes a few seconds.
+        </div>
+
+        <!-- Ready state: address derived -->
+        <div id="addrReady" style="display:none;">
+          <div class="addr-row">
+            <span id="myEthAddress">—</span>
+            <span class="copy" onclick="copyMyAddr()">Copy</span>
+          </div>
+          <div class="qr-wrap"><canvas id="myQrCanvas"></canvas></div>
+          <div class="hint-line">Send only ETH or ERC-20 tokens (USDT, USDC) to this address. Sending other assets may result in permanent loss.</div>
+        </div>
+
+        <button class="refresh-btn" id="refreshAddrBtn" onclick="refreshMyAddress()">Refresh</button>
+      </div>
+
+      <div class="sec-head" style="padding:0 16px 8px;"><span>My Assets</span></div>
+      <div class="asset-list">
+        <div class="asset-row"><div class="logo" style="background:#627EEA">Ξ</div><div class="info"><div class="sym">Ethereum</div><div class="nm">ETH</div></div><div class="amount"><div class="amt" id="myEthBal">0.000000</div><div class="usd">≈ $0.00</div></div></div>
+        <div class="asset-row"><div class="logo" style="background:#26A69A">T</div><div class="info"><div class="sym">Tether</div><div class="nm">USDT (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
+        <div class="asset-row"><div class="logo" style="background:#2775CA">U</div><div class="info"><div class="sym">USD Coin</div><div class="nm">USDC (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
+      </div>
     </div>
   </div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ASSETS -->
 <section class="screen" id="s-assets">
   <div class="scroll">
     <div class="asset-hero">
@@ -1155,7 +1188,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- PROFILE -->
 <div class="overlay" id="profile">
   <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
   <div class="scroll" style="padding-bottom:20px">
@@ -1238,6 +1270,8 @@ const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY)
 const COPY_PROFIT_PCT = cfg.COPY_PROFIT_PCT || 0.006;
 const DEMO_SEED = cfg.DEMO_SEED || 10000;
 
+let myAddressPoll = null;
+
 /* ============================================================
    THEME TOGGLE
    ============================================================ */
@@ -1258,7 +1292,7 @@ const DEMO_SEED = cfg.DEMO_SEED || 10000;
 })();
 
 let toastTimer = null;
-let currentUser = null;   // { id, username, email, uid, kyc_status, ... } from profiles table
+let currentUser = null;
 let currentMode = 'real';
 
 function toast(msg){
@@ -1271,7 +1305,7 @@ function toast(msg){
 }
 
 /* ============================================================
-   SUPABASE AUTH
+   AUTH
    ============================================================ */
 function genUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
 function genRef(){ return 'NT' + Math.floor(100000 + Math.random()*900000); }
@@ -1358,6 +1392,7 @@ async function doLogin(){
 async function doLogout(){
   await sb.auth.signOut();
   currentUser = null; currentMode = 'real';
+  if(myAddressPoll){ clearInterval(myAddressPoll); myAddressPoll = null; }
   applyUserToUI();
   closeProfile();
   toast('Logged out');
@@ -1430,16 +1465,8 @@ function setMode(mode){
   toast(mode === 'demo' ? 'Demo mode' : 'Real mode');
 }
 function updateModeUI(){
-  document.querySelectorAll('#modePill .m').forEach(el => {
-    el.classList.remove('on-demo','on-real');
-    if(el.dataset.mode === currentMode){
-      el.classList.add(currentMode === 'demo' ? 'on-demo' : 'on-real');
-    }
-  });
   const banner = document.getElementById('modeBanner');
   if(banner) banner.classList.toggle('on', currentMode === 'demo');
-  const lbl = document.getElementById('heroBalanceLabel');
-  if(lbl) lbl.textContent = currentMode === 'demo' ? 'Demo Balance' : 'Total Balance';
   const kb = document.getElementById('kycPendingBanner');
   if(kb){
     if(currentUser && currentUser.kyc_status === 'pending') kb.classList.add('on');
@@ -1449,8 +1476,7 @@ function updateModeUI(){
 function activeBalance(field){
   if(!currentUser) return 0;
   if(currentMode === 'demo'){
-    const k = 'demo_' + field;
-    return Number(currentUser[k] || 0);
+    return Number(currentUser['demo_' + field] || 0);
   }
   return Number(currentUser[field] || 0);
 }
@@ -1482,6 +1508,7 @@ function applyUserToUI(){
   updateKycBadge();
   renderAccounts();
   renderTradeForm();
+  renderWallet();
 }
 function updateKycBadge(){
   const el = document.getElementById('profKycBadge');
@@ -1491,6 +1518,112 @@ function updateKycBadge(){
   else if(s === 'pending'){ el.textContent = 'Pending Review'; el.style.color = 'var(--orange)'; }
   else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
   else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
+}
+
+/* ============================================================
+   WALLET (login gate + address fetch)
+   ============================================================ */
+function renderWallet(){
+  const gate = document.getElementById('walletGate');
+  const content = document.getElementById('walletContent');
+  const heroEl = document.getElementById('walletHero');
+
+  if(!currentUser){
+    if(heroEl) heroEl.style.display = 'none';
+    if(gate) gate.style.display = 'flex';
+    if(content) content.style.display = 'none';
+    if(myAddressPoll){ clearInterval(myAddressPoll); myAddressPoll = null; }
+    return;
+  }
+
+  if(heroEl) heroEl.style.display = 'block';
+  if(gate) gate.style.display = 'none';
+  if(content) content.style.display = 'block';
+
+  const funding = activeBalance('funding');
+  const spot = activeBalance('spot');
+  const total = funding + spot;
+  const balEl = document.getElementById('walletBalance');
+  if(balEl) balEl.textContent = '$' + total.toFixed(2);
+  const usdEl = document.getElementById('walletUsd');
+  if(usdEl) usdEl.textContent = '≈ ' + total.toFixed(2) + ' USDT';
+
+  renderMyAddress();
+}
+
+function renderMyAddress(){
+  if(!currentUser) return;
+  const addr = currentUser.derived_eth_address;
+  const pendingEl = document.getElementById('addrPending');
+  const readyEl = document.getElementById('addrReady');
+
+  if(addr){
+    if(pendingEl) pendingEl.style.display = 'none';
+    if(readyEl) readyEl.style.display = 'block';
+    document.getElementById('myEthAddress').textContent = addr;
+    setTimeout(() => drawQR(addr, document.getElementById('myQrCanvas')), 50);
+    if(myAddressPoll){ clearInterval(myAddressPoll); myAddressPoll = null; }
+  } else {
+    if(pendingEl) pendingEl.style.display = 'block';
+    if(readyEl) readyEl.style.display = 'none';
+    if(!myAddressPoll){
+      myAddressPoll = setInterval(async () => {
+        if(!currentUser) return;
+        const { data } = await sb.from('profiles').select('derived_eth_address, derivation_index').eq('id', currentUser.id).single();
+        if(data && data.derived_eth_address){
+          currentUser.derived_eth_address = data.derived_eth_address;
+          currentUser.derivation_index = data.derivation_index;
+          renderMyAddress();
+        }
+      }, 10000);
+    }
+  }
+}
+
+async function refreshMyAddress(){
+  if(!currentUser){ toast('Log in first'); return; }
+  const btn = document.getElementById('refreshAddrBtn');
+  if(btn){ btn.disabled = true; btn.textContent = 'Refreshing...'; }
+  const { data, error } = await sb.from('profiles').select('derived_eth_address, derivation_index').eq('id', currentUser.id).single();
+  if(btn){ btn.disabled = false; btn.textContent = 'Refresh'; }
+  if(error){ toast('Error: ' + error.message); return; }
+  if(data.derived_eth_address){
+    currentUser.derived_eth_address = data.derived_eth_address;
+    currentUser.derivation_index = data.derivation_index;
+    renderMyAddress();
+    toast('Address loaded');
+  } else {
+    toast('Still being prepared — try again in a moment');
+  }
+}
+
+function copyMyAddr(){
+  const addr = currentUser && currentUser.derived_eth_address;
+  if(!addr){ toast('No address yet'); return; }
+  if(navigator.clipboard) navigator.clipboard.writeText(addr);
+  toast('Address copied');
+}
+
+function drawQR(text, canvas){
+  if(!canvas || !text) return;
+  const size = 160; canvas.width = size; canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const grid = 21; const cell = size / grid;
+  ctx.fillStyle = '#fff'; ctx.fillRect(0,0,size,size);
+  let h = 0;
+  for(let i = 0; i < text.length; i++) h = ((h<<5)-h+text.charCodeAt(i))|0;
+  function finder(x,y){
+    ctx.fillStyle = '#000'; ctx.fillRect(x*cell,y*cell,7*cell,7*cell);
+    ctx.fillStyle = '#fff'; ctx.fillRect((x+1)*cell,(y+1)*cell,5*cell,5*cell);
+    ctx.fillStyle = '#000'; ctx.fillRect((x+2)*cell,(y+2)*cell,3*cell,3*cell);
+  }
+  finder(0,0); finder(14,0); finder(0,14);
+  let seed = Math.abs(h);
+  for(let y=0;y<grid;y++) for(let x=0;x<grid;x++){
+    if((x<8&&y<8)||(x>12&&y<8)||(x<8&&y>12)) continue;
+    seed = (seed*1103515245+12345)&0x7fffffff;
+    if(seed%100<45){ ctx.fillStyle='#000'; ctx.fillRect(x*cell,y*cell,cell,cell); }
+  }
 }
 
 /* ============================================================
@@ -1739,7 +1872,7 @@ function go(id){
   buildNav(document.getElementById('homeNav'), id);
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
-  if(id === 's-wallet') renderWalletScreen();
+  if(id === 's-wallet') renderWallet();
   if(id === 's-trade'){ renderTrOrderBook(); renderTrHeader(); renderTradeForm(); renderCopySection(); }
 }
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
@@ -1833,7 +1966,6 @@ document.addEventListener('input', e => {
   if(e.target && (e.target.id === 'trQty' || e.target.id === 'trAmt')) trRecalc();
 });
 
-/* ---------- OPEN ORDERS / TRADE FORM ---------- */
 function renderTradeForm(){
   const avail = activeBalance('spot') || 0;
   const av = document.getElementById('trAvail');
@@ -1849,7 +1981,7 @@ function trPlace(){
 }
 
 /* ============================================================
-   COPY SIGNALS — real-time from Supabase
+   COPY SIGNALS
    ============================================================ */
 let liveSignals = [];
 let liveParticipants = {};
@@ -2080,23 +2212,20 @@ function renderFollowBody(sig){
 }
 
 function renderLiveTicker(sig){
-  const render = () => {
-    const list = document.getElementById('nt-live-list');
-    const count = document.getElementById('nt-live-count');
-    const liveBox = document.getElementById('nt-follow-live');
-    if(!list) return;
-    const parts = liveParticipants[sig.id] || [];
-    if(liveBox) liveBox.style.display = parts.length ? 'block' : 'none';
-    if(count) count.textContent = parts.length;
-    list.innerHTML = parts.slice(0, 8).map((p, i) => `
-      <div class="nt-live-row" style="animation-delay:${i*40}ms;">
-        <div class="nt-live-av" style="background:#0ECB81;">${(p.username||'?')[0].toUpperCase()}</div>
-        <div class="nt-live-txt"><b>${p.username}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount_usdt).toFixed(0)}</span></div>
-        <div class="nt-live-ago">${timeAgo(new Date(p.created_at).getTime())}</div>
-      </div>
-    `).join('');
-  };
-  render();
+  const list = document.getElementById('nt-live-list');
+  const count = document.getElementById('nt-live-count');
+  const liveBox = document.getElementById('nt-follow-live');
+  if(!list) return;
+  const parts = liveParticipants[sig.id] || [];
+  if(liveBox) liveBox.style.display = parts.length ? 'block' : 'none';
+  if(count) count.textContent = parts.length;
+  list.innerHTML = parts.slice(0, 8).map((p, i) => `
+    <div class="nt-live-row" style="animation-delay:${i*40}ms;">
+      <div class="nt-live-av" style="background:#0ECB81;">${(p.username||'?')[0].toUpperCase()}</div>
+      <div class="nt-live-txt"><b>${p.username}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount_usdt).toFixed(0)}</span></div>
+      <div class="nt-live-ago">${timeAgo(new Date(p.created_at).getTime())}</div>
+    </div>
+  `).join('');
 }
 
 function timeAgo(ts){
@@ -2191,71 +2320,44 @@ async function applyCopy(){
 }
 
 /* ============================================================
-   WALLET / TRANSFER / DEPOSIT
+   DEPOSIT / TRANSFER / WITHDRAW
    ============================================================ */
-function renderWalletScreen(){
-  if(!currentUser){
-    const el = document.getElementById('myEthAddress');
-    if(el) el.textContent = 'Log in to see your address';
-    return;
-  }
-  const el = document.getElementById('myEthAddress');
-  if(el) el.textContent = 'Not configured — set XPUB in admin';
-}
-function copyMyAddr(){ toast('No address configured'); }
-function refreshMyBalance(){ toast('Refresh not available'); }
-
-function renderAccounts(){
-  const funding = activeBalance('funding').toFixed(2);
-  const spot = activeBalance('spot').toFixed(2);
-  const accts = [
-    {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
-    {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
-  ];
-  const el = document.getElementById('acctList');
-  if(!el) return;
-  el.innerHTML = accts.map(a => `
-    <div class="acct-row" onclick="openTransfer()">
-      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-function renderProfileMenu(){
-  const items = [
-    {l:'Identity Verification', sub:'Not verified', action:'openKycFromProfile()'},
-    {l:'Transaction History', action:'openTxHistory()'},
-    {l:'Copy Trading', action:'openCopyTrading()'},
-    {l:'Referral Program', action:'openInvite()'},
-    {l:'Security Center', action:"toast('Security')"},
-    {l:'Fee Schedule', action:"toast('Fees')"},
-    {l:'About Us', action:"toast('About')"}
-  ];
-  const el = document.getElementById('profileMenu');
-  if(!el) return;
-  el.innerHTML = items.map(it => `
-    <div class="menu-row" onclick="${it.action}">
-      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
-      <div class="mt">${it.l}</div>
-      ${it.sub ? `<div style="font-size:11px;color:var(--orange);font-weight:600;">${it.sub}</div>` : ''}
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-function openKycFromProfile(){
+function openDeposit(mode){
   if(!currentUser){ openAuth('register'); return; }
-  closeProfile();
-  openAuth('kyc');
+  if(mode === 'deposit'){
+    const addr = currentUser.derived_eth_address;
+    document.getElementById('genericTitle').textContent = 'Deposit';
+    if(!addr){
+      document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Your deposit address is being prepared. Open the Wallet tab and tap Refresh in a moment.</div>';
+    } else {
+      document.getElementById('genericBody').innerHTML = `
+        <div style="text-align:center;"><canvas id="dmQr" style="width:180px;height:180px;"></canvas></div>
+        <div style="font-family:monospace;font-size:12px;background:var(--input-bg);border-radius:10px;padding:12px;margin-top:12px;word-break:break-all;color:var(--green-dk);">${addr}</div>
+        <button class="auth-submit" style="margin-top:12px;" onclick="copyMyAddr()">Copy Address</button>
+        <div style="font-size:11.5px;color:var(--text2);margin-top:12px;line-height:1.6;text-align:center;">Send only ETH or ERC-20 tokens (USDT, USDC) to this address.</div>
+      `;
+      document.getElementById('genericModal').classList.add('on');
+      setTimeout(() => drawQR(addr, document.getElementById('dmQr')), 50);
+      return;
+    }
+    document.getElementById('genericModal').classList.add('on');
+  } else {
+    document.getElementById('genericTitle').textContent = 'Withdraw';
+    document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Withdrawals coming soon.</div>';
+    document.getElementById('genericModal').classList.add('on');
+  }
 }
-function openTxHistory(){ document.getElementById('txPanel').classList.add('active'); }
-function closeTxHistory(){ document.getElementById('txPanel').classList.remove('active'); }
-function openCopyTrading(){ document.getElementById('copyPanel').classList.add('active'); }
-function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
-function openNews(){ document.getElementById('newsPanel').classList.add('active'); }
-function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
+function openTransfer(){
+  if(!currentUser){ openAuth('register'); return; }
+  document.getElementById('genericTitle').textContent = 'Transfer';
+  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Transfers coming soon.</div>';
+  document.getElementById('genericModal').classList.add('on');
+}
 function closeGeneric(){ document.querySelectorAll('.generic-modal').forEach(m => m.classList.remove('on')); }
 
+/* ============================================================
+   PROFILE / INVITE / NEWS
+   ============================================================ */
 function openInvite(){
   if(!currentUser){ openAuth('register'); return; }
   const code = currentUser.referral_code || 'NT000000';
@@ -2274,79 +2376,39 @@ function openInvite(){
 }
 function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Copied'); }
 
-function openDeposit(mode){
-  if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Configure XPUB in admin to enable deposits.</div>';
-  document.getElementById('genericModal').classList.add('on');
-}
-function openTransfer(){
-  if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = 'Transfer';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Internal transfer coming soon.</div>';
-  document.getElementById('genericModal').classList.add('on');
-}
-
-/* ============================================================
-   NEWS
-   ============================================================ */
-let liveNews = [];
-async function fetchLiveNews(){
-  try {
-    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
-    const data = await r.json();
-    const arr = (data && (data.Data || data.data || data.articles)) || [];
-    if(Array.isArray(arr) && arr.length){
-      liveNews = arr.map(a => ({
-        title: a.TITLE || a.title || '',
-        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
-        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
-        source: 'CoinDesk'
-      })).filter(x => x.title);
-      return true;
-    }
-  } catch(e){}
-  return false;
-}
-function buildGeneratedNews(){
-  const items = [];
-  Object.keys(MARKETS).forEach(cls => {
-    MARKETS[cls].forEach(m => {
-      const c = m.chg || 0;
-      items.push({ title: `${m.name} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(2)}% — now ${fmt(m.price)}`,
-        body: `${m.name} (${m.sym}) trading at ${fmt(m.price)} USDT.`, source: 'NextTrade', ts: Date.now() });
-    });
-  });
-  items.sort((a,b) => Math.abs(b.chg || 0) - Math.abs(a.chg || 0));
-  return items.slice(0, 10);
-}
-function refreshNewsStrip(){
-  const list = liveNews.length ? liveNews : buildGeneratedNews();
-  if(!list.length) return;
-  const top = list[0];
-  const h = document.getElementById('newsHeadline');
-  const s = document.getElementById('newsSub');
-  const t = document.getElementById('newsTime');
-  if(h) h.textContent = top.title;
-  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
-  if(t) t.textContent = top.source || 'now';
-}
-function openNews(){
-  const list = liveNews.length ? liveNews : buildGeneratedNews();
-  document.getElementById('newsList').innerHTML = list.map(n => `
-    <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
-      <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
-      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}</div>
+function renderProfileMenu(){
+  const items = [
+    {l:'Identity Verification', action:'openKycFromProfile()'},
+    {l:'Copy Trading', action:'openCopyTrading()'},
+    {l:'Referral Program', action:'openInvite()'},
+    {l:'Security Center', action:"toast('Security')"},
+    {l:'About Us', action:"toast('About')"}
+  ];
+  const el = document.getElementById('profileMenu');
+  if(!el) return;
+  el.innerHTML = items.map(it => `
+    <div class="menu-row" onclick="${it.action}">
+      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
+      <div class="mt">${it.l}</div>
+      <div class="arrow">›</div>
     </div>
   `).join('');
-  document.getElementById('newsPanel').classList.add('active');
 }
+function openKycFromProfile(){
+  if(!currentUser){ openAuth('register'); return; }
+  closeProfile();
+  openAuth('kyc');
+}
+function openCopyTrading(){ document.getElementById('copyPanel').classList.add('active'); }
+function closeCopyTrading(){ document.getElementById('copyPanel').classList.remove('active'); }
+function openNews(){ document.getElementById('newsPanel').classList.add('active'); }
+function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
+function openTxHistory(){ document.getElementById('txPanel').classList.add('active'); }
+function closeTxHistory(){ document.getElementById('txPanel').classList.remove('active'); }
 
 /* ============================================================
-   CHART
+   CHART / INSTRUMENT PICKER
    ============================================================ */
-let chartWidget = null;
-let chartRetry = 0;
 function openChart(){
   document.getElementById('chartOv').classList.add('active');
   renderChartWidget();
@@ -2358,19 +2420,42 @@ function renderChartWidget(){
   const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
   slot.innerHTML = '';
   const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  if(typeof TradingView === 'undefined' || !TradingView.widget){
-    chartRetry++;
-    if(chartRetry < 6) setTimeout(renderChartWidget, 500);
-    return;
-  }
+  if(typeof TradingView === 'undefined' || !TradingView.widget) return;
   try {
-    chartWidget = new TradingView.widget({
+    new TradingView.widget({
       container_id: 'chartSlot', autosize: true, symbol: tvSym,
-      interval: '15', timezone: 'Etc/UTC', theme: theme, style: '1', locale: 'en',
+      interval: '15', timezone: 'Etc/UTC', theme, style: '1', locale: 'en',
       toolbar_bg: theme === 'dark' ? '#0B0E11' : '#ffffff',
       enable_publishing: false, allow_symbol_change: false, save_image: false
     });
   } catch(e){}
+}
+function openInstrumentPicker(){
+  document.getElementById('genericTitle').textContent = 'Choose Instrument';
+  document.getElementById('genericBody').innerHTML = Object.keys(MARKETS).map(cls => `
+    <div class="ins-group">
+      <div class="ins-group-title">${cls}</div>
+      ${MARKETS[cls].map(m => `
+        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
+          ${symLogo(m.sym, 30)}
+          <div style="flex:1;min-width:0;">
+            <div class="sym">${m.sym}/USDT</div>
+            <div class="nm">${m.name}</div>
+          </div>
+          <div>
+            <div class="px">${fmt(m.price)}</div>
+            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  document.getElementById('genericModal').classList.add('on');
+}
+function pickInstrument(sym){
+  closeGeneric();
+  trSetSymbol(sym);
+  toast('Switched to ' + sym);
 }
 
 /* ============================================================
@@ -2413,32 +2498,57 @@ document.getElementById('trSubtabs').addEventListener('click', e => {
   renderTradeForm();
 });
 
-function openInstrumentPicker(){
-  document.getElementById('genericTitle').textContent = 'Choose Instrument';
-  document.getElementById('genericBody').innerHTML = Object.keys(MARKETS).map(cls => `
-    <div class="ins-group">
-      <div class="ins-group-title">${cls}</div>
-      ${MARKETS[cls].map(m => `
-        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
-          ${symLogo(m.sym, 30)}
-          <div style="flex:1;min-width:0;">
-            <div class="sym">${m.sym}/USDT</div>
-            <div class="nm">${m.name}</div>
-          </div>
-          <div>
-            <div class="px">${fmt(m.price)}</div>
-            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-          </div>
-        </div>
-      `).join('')}
+/* ============================================================
+   NEWS
+   ============================================================ */
+let liveNews = [];
+async function fetchLiveNews(){
+  try {
+    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
+    const data = await r.json();
+    const arr = (data && (data.Data || data.data || data.articles)) || [];
+    if(Array.isArray(arr) && arr.length){
+      liveNews = arr.map(a => ({
+        title: a.TITLE || a.title || '',
+        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
+        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
+        source: 'CoinDesk'
+      })).filter(x => x.title);
+      return true;
+    }
+  } catch(e){}
+  return false;
+}
+function buildGeneratedNews(){
+  const items = [];
+  Object.keys(MARKETS).forEach(cls => {
+    MARKETS[cls].forEach(m => {
+      const c = m.chg || 0;
+      items.push({ title: `${m.name} ${c >= 0 ? 'up' : 'down'} ${Math.abs(c).toFixed(2)}% — now ${fmt(m.price)}`, body: `${m.name} (${m.sym}) trading at ${fmt(m.price)} USDT.`, source: 'NextTrade', ts: Date.now() });
+    });
+  });
+  return items.slice(0, 10);
+}
+function refreshNewsStrip(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  if(!list.length) return;
+  const top = list[0];
+  const h = document.getElementById('newsHeadline');
+  const s = document.getElementById('newsSub');
+  const t = document.getElementById('newsTime');
+  if(h) h.textContent = top.title;
+  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
+  if(t) t.textContent = top.source || 'now';
+}
+function openNews(){
+  const list = liveNews.length ? liveNews : buildGeneratedNews();
+  document.getElementById('newsList').innerHTML = list.map(n => `
+    <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
+      <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
+      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}</div>
     </div>
   `).join('');
-  document.getElementById('genericModal').classList.add('on');
-}
-function pickInstrument(sym){
-  closeGeneric();
-  trSetSymbol(sym);
-  toast('Switched to ' + sym);
+  document.getElementById('newsPanel').classList.add('active');
 }
 
 /* ============================================================
@@ -2583,7 +2693,7 @@ window.addEventListener('appinstalled', () => {
     renderCopySection();
   }
 
-  document.getElementById('loginPassword')?.addEventListener('keydown', e => {
+  document.getElementById('loginPw')?.addEventListener('keydown', e => {
     if(e.key === 'Enter') doLogin();
   });
 })();
