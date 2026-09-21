@@ -26,7 +26,7 @@ window.NT_CONFIG = {
 
   /* Your Supabase project URL. Found at:
      Supabase Dashboard → Settings → API → Project URL */
-  SUPABASE_URL: 'https://hbhzwodlyascenitbxq.supabase.co',
+  SUPABASE_URL: 'https://hbhzwodlyascenitbxql.supabase.co',
 
   /* Your Supabase anon/public key. Found at:
      Supabase Dashboard → Settings → API → Project API keys → anon public */
