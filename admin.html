@@ -346,6 +346,12 @@ tr:hover td{background:#FAFBFC;}
       <div class="card">
         <h2>User Wallets <span class="tag blue" id="uwCount">0 users</span></h2>
         <div class="sub">Every user signed up through the app. Wallet addresses are derived from your XPUB at each user's personal index.</div>
+
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+          <button class="btn primary" onclick="assignMissingAddresses()">Assign Addresses to Pending Users</button>
+          <span id="pendingAddressCount" style="font-size:12.5px;color:var(--text2);"></span>
+        </div>
+
         <div class="table-wrap">
           <table>
             <thead>
@@ -702,6 +708,101 @@ function testDerivation(){
 }
 
 /* ============================================================
+   ASSIGN ADDRESSES TO USERS
+   ============================================================ */
+async function assignMissingAddresses(){
+  const { data: cfg, error: cfgErr } = await sb
+    .from('config')
+    .select('value')
+    .eq('key', 'eth_xpub')
+    .maybeSingle();
+
+  if(cfgErr || !cfg || !cfg.value){
+    toast('No XPUB configured — set it in XPUB Config tab first');
+    return;
+  }
+
+  const { data: pending, error: pErr } = await sb
+    .from('profiles')
+    .select('id, username, derivation_index')
+    .is('derived_eth_address', null)
+    .order('created_at', { ascending: true });
+
+  if(pErr){
+    toast('Error: ' + pErr.message);
+    return;
+  }
+
+  if(!pending || !pending.length){
+    toast('All users already have addresses');
+    return;
+  }
+
+  const { data: maxRow } = await sb
+    .from('profiles')
+    .select('derivation_index')
+    .not('derivation_index', 'is', null)
+    .order('derivation_index', { ascending: false })
+    .limit(1);
+
+  let nextIndex = 0;
+  if(maxRow && maxRow[0] && typeof maxRow[0].derivation_index === 'number'){
+    nextIndex = maxRow[0].derivation_index + 1;
+  }
+
+  if(typeof ethers === 'undefined'){
+    toast('ethers.js not loaded — check the script tags');
+    return;
+  }
+
+  let hd;
+  try {
+    hd = ethers.HDNodeWallet.fromExtendedKey(cfg.value);
+  } catch(e){
+    toast('Invalid XPUB in config: ' + e.message);
+    return;
+  }
+
+  let assigned = 0;
+  let lastError = null;
+
+  for(const u of pending){
+    try {
+      const child = hd.deriveChild(0).deriveChild(nextIndex);
+      const address = child.address;
+
+      const { error: updErr } = await sb
+        .from('profiles')
+        .update({
+          derivation_index: nextIndex,
+          derived_eth_address: address
+        })
+        .eq('id', u.id);
+
+      if(updErr){
+        lastError = updErr.message;
+      } else {
+        assigned++;
+      }
+      nextIndex++;
+    } catch(e){
+      lastError = String(e);
+    }
+  }
+
+  if(assigned > 0){
+    toast('Assigned addresses to ' + assigned + ' user' + (assigned === 1 ? '' : 's'));
+  } else if(lastError){
+    toast('Error: ' + lastError);
+  } else {
+    toast('No addresses were assigned');
+  }
+
+  await loadUsers();
+  renderUserWallets();
+}
+
+/* ============================================================
    COPY SIGNALS
    ============================================================ */
 async function pushCopyTrade(){
@@ -809,6 +910,20 @@ function filterUserWallets(v){ filterQuery = v; renderUserWallets(); }
 function renderUserWallets(){
   const tbody = document.getElementById('userWalletsTable');
   if(!tbody) return;
+
+  // Update the pending-addresses counter
+  const pendingCount = allUsers.filter(u => !u.derived_eth_address).length;
+  const countEl = document.getElementById('pendingAddressCount');
+  if(countEl){
+    if(pendingCount){
+      countEl.textContent = pendingCount + ' user' + (pendingCount === 1 ? '' : 's') + ' waiting for an address';
+      countEl.style.color = 'var(--orange)';
+    } else {
+      countEl.textContent = 'All users have addresses';
+      countEl.style.color = 'var(--green)';
+    }
+  }
+
   let list = allUsers.slice();
   if(filterQuery){
     const q = filterQuery.toLowerCase();
