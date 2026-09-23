@@ -781,6 +781,121 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   font-size:12.5px;font-weight:800;cursor:pointer;font-family:inherit;flex-shrink:0;}
 .nt-sb-btn:active{transform:scale(.96);}
 .nt-sb-x{color:var(--text3);font-size:16px;cursor:pointer;padding:0 4px;flex-shrink:0;}
+
+/* ============================================================
+   NEW: Copy Trading screen styles
+   ============================================================ */
+.ct-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
+.ct-stat{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--line);
+  box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.ct-stat .lbl{font-size:12.5px;color:var(--text2);line-height:1.35;margin-bottom:8px;}
+.ct-stat .val{font-size:24px;font-weight:800;color:var(--green);letter-spacing:-.5px;line-height:1;}
+.ct-stat .unit{font-size:12px;color:var(--text2);margin-top:5px;}
+.ct-stat .arrow{position:absolute;top:14px;right:14px;color:var(--text3);font-size:16px;}
+.ct-stat.tint{background:linear-gradient(135deg,var(--green-lt) 0%,var(--card) 70%);}
+.ct-sec-head{padding:8px 16px 10px;}
+.ct-sec-head h2{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.ct-search-row{display:flex;gap:10px;padding:0 16px 14px;align-items:center;}
+.ct-search{flex:1;height:44px;background:var(--input-bg);border:1px solid var(--line);border-radius:22px;
+  display:flex;align-items:center;gap:8px;padding:0 16px;}
+.ct-search input{flex:1;background:transparent;border:none;outline:none;font-family:inherit;
+  font-size:13.5px;color:var(--text);min-width:0;}
+.ct-search input::placeholder{color:var(--text3);}
+.ct-signal-btn{height:44px;padding:0 16px;background:var(--card);border:1px solid var(--line);border-radius:22px;
+  display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--text);
+  cursor:pointer;flex-shrink:0;font-family:inherit;}
+.ct-signal-btn svg path{stroke:var(--icon-color);}
+.analyst-list{padding:0 16px 20px;display:flex;flex-direction:column;gap:12px;}
+.analyst-card{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--line);box-shadow:var(--shadow-sm);}
+.analyst-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
+.analyst-info{flex:1;min-width:0;}
+.analyst-name{font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.analyst-role{font-size:12.5px;color:var(--text2);margin-top:3px;}
+.analyst-av{width:48px;height:48px;border-radius:50%;background:var(--green-lt);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dk);font-size:16px;
+  border:1px solid var(--line);}
+.copy-btn{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 14px;
+  font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;flex-shrink:0;}
+.copy-btn:active{background:var(--input-bg);}
+.analyst-rates{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
+.analyst-rate{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
+.analyst-rate .k{color:var(--text2);}
+.analyst-rate .v{color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;}
+.analyst-intro{background:var(--input-bg);border-radius:12px;padding:12px 14px;position:relative;cursor:pointer;}
+.analyst-intro .lbl{font-size:12px;color:var(--text2);font-weight:700;margin-bottom:6px;letter-spacing:.2px;}
+.analyst-intro .txt{font-size:12.5px;color:var(--text2);line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.analyst-intro.open .txt{-webkit-line-clamp:unset;display:block;}
+.analyst-intro .caret{position:absolute;top:12px;right:14px;color:var(--text3);font-size:11px;transition:.2s;}
+.analyst-intro.open .caret{transform:rotate(180deg);}
+.no-more-data{display:flex;align-items:center;gap:12px;padding:22px 16px 30px;color:var(--text3);font-size:12.5px;}
+.no-more-data::before,.no-more-data::after{content:"";height:1px;background:var(--line);flex:1;}
+
+/* Follow Signal sheet (new design matching screenshots) */
+.fs-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;
+  align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
+.fs-backdrop.on{display:flex;}
+.fs-sheet{background:var(--card);width:100%;max-width:440px;border-radius:24px 24px 0 0;
+  max-height:94vh;overflow-y:auto;animation:fsUp .3s cubic-bezier(.2,.9,.3,1);}
+@keyframes fsUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.fs-head{background:linear-gradient(180deg,#DCFCE7 0%,var(--card) 100%);
+  padding:22px 20px 20px;text-align:center;position:relative;border-radius:24px 24px 0 0;}
+.fs-head h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.fs-head .x{position:absolute;top:20px;right:20px;font-size:22px;color:var(--text);
+  cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.fs-body{padding:18px 22px 26px;}
+.fs-field{margin-bottom:18px;}
+.fs-field .lbl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+.fs-field label{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.2px;}
+.fs-field .avail{font-size:12.5px;color:var(--text2);}
+.fs-field .avail b{color:var(--text);font-weight:800;}
+.fs-input{width:100%;height:56px;border:1.5px solid var(--line);border-radius:12px;padding:0 18px;
+  font-size:15px;font-family:inherit;outline:none;background:var(--card);color:var(--text);transition:.15s;}
+.fs-input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-lt);}
+.fs-input::placeholder{color:var(--text3);}
+.fs-amount-wrap{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;
+  padding:0 8px 0 18px;height:56px;transition:.15s;}
+.fs-amount-wrap:focus-within{border-color:var(--green);box-shadow:0 0 0 3px var(--green-lt);}
+.fs-amount-wrap input{flex:1;background:transparent;border:none;outline:none;font-family:inherit;
+  font-size:15px;color:var(--text);min-width:0;}
+.fs-amount-wrap input::placeholder{color:var(--text3);}
+.fs-amount-wrap .suf{font-size:13.5px;color:var(--text2);font-weight:700;}
+.fs-max-btn{background:var(--green-lt);color:var(--green-dk);border:1.5px solid var(--green);
+  border-radius:9px;padding:9px 16px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;}
+.fs-quick{display:flex;gap:10px;margin-top:10px;}
+.fs-quick button{background:var(--green-lt);border:1.5px solid var(--green);color:var(--green-dk);
+  border-radius:10px;padding:9px 20px;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+.fs-select{width:100%;height:52px;border:1.5px solid var(--line);border-radius:12px;padding:0 16px;
+  font-size:14px;font-family:inherit;outline:none;background:var(--card);color:var(--text);cursor:pointer;}
+.fs-agree{display:flex;align-items:flex-start;gap:10px;margin:6px 0 20px;font-size:13px;color:var(--text);
+  line-height:1.5;cursor:pointer;}
+.fs-agree input{margin-top:2px;width:18px;height:18px;accent-color:var(--text);cursor:pointer;flex-shrink:0;}
+.fs-agree a{color:var(--blue);font-weight:700;text-decoration:none;}
+.fs-apply{width:100%;height:56px;border-radius:14px;background:var(--green);color:#fff;
+  font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:.15s;}
+.fs-apply:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
+.fs-apply:not(:disabled):active{background:var(--green-dk);transform:scale(.99);}
+.fs-domain{text-align:center;padding:16px 0 6px;font-size:12px;color:var(--text3);}
+.fs-domain span{background:var(--input-bg);padding:5px 14px;border-radius:12px;display:inline-block;}
+
+/* Market tabs (new) */
+.mk-tabs{display:flex;gap:20px;padding:6px 16px 10px;border-bottom:1px solid var(--line);}
+.mk-tab{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
+  border-bottom:2px solid transparent;letter-spacing:-.3px;}
+.mk-tab.on{color:var(--text);border-bottom-color:var(--green);}
+.mk-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;background:var(--card);}
+.mk-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
+.mk-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.mk-row .pair{font-size:14.5px;font-weight:800;color:var(--text);}
+.mk-row .pair small{font-size:11px;font-weight:500;color:var(--text2);margin-left:2px;}
+.mk-row .vol{font-size:11.5px;color:var(--text2);margin-top:3px;}
+.mk-row .price{font-size:14.5px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;color:var(--text);}
+.mk-row .chg-pill{min-width:74px;text-align:center;padding:8px 12px;border-radius:8px;
+  color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;}
+.mk-row .chg-pill.up{background:var(--green);}
+.mk-row .chg-pill.down{background:var(--red);}
 </style>
 </head>
 <body>
@@ -978,130 +1093,67 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
-<!-- MARKETS -->
+<!-- MARKET (replaced from old MARKETS) -->
 <section class="screen" id="s-markets">
+  <div class="topbar"><div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Market</div></div>
   <div class="mk-search">
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-    <input placeholder="Search" id="mkSearch" oninput="filterMarkets(this.value)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
+    <input placeholder="Search instrument" id="mkSearch" oninput="filterMarket(this.value)">
   </div>
-  <div class="mkt-tabs" id="mktTabs">
-    <span class="mt on" data-mt="gainers">Top Gainers</span>
-    <span class="mt" data-mt="losers">Top Losers</span>
-    <span class="mt" data-mt="vol">Vol</span>
+  <div class="mk-tabs" id="mkTabs">
+    <div class="mk-tab on" data-tab="gainers">Top Gainers</div>
+    <div class="mk-tab" data-tab="losers">Top Losers</div>
+    <div class="mk-tab" data-tab="vol">Vol</div>
   </div>
-  <div class="top-gainers" id="topGainers"></div>
-  <div class="subtabs" id="mkSubtabs">
-    <span class="st" data-class="favorites">Favorites</span>
-    <span class="st on" data-class="crypto">Cryptocurrency</span>
-    <span class="st" data-class="futures">Futures</span>
-  </div>
-  <div class="scroll">
-    <div class="mkt-head"><span>Title/Vol</span><span class="r">Latest Price</span><span class="r">Day Change</span></div>
-    <div id="mktTable"></div>
-  </div>
+  <div class="scroll" id="mkTable"></div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- TRADE -->
+<!-- COPY TRADING (replaced from old TRADE) -->
 <section class="screen" id="s-trade">
-  <div class="tr-tabs" id="trTabs">
-    <div class="tr-tab" data-tr="perpetual">Perpetual</div>
-    <div class="tr-tab" data-tr="copy">Copy Trading</div>
-    <div class="tr-tab on" data-tr="spot">Spot Trading</div>
-  </div>
-  <div class="tr-head">
-    <span class="pair" id="trPair">BTC/USDT</span>
-    <span class="tag" id="trTag">Spot</span>
-    <span class="chg" id="trChg">+0.00%</span>
-    <div class="right">
-      <div class="candle" onclick="openChart()" title="Chart">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M7 4v3M7 17v3M17 4v3M17 17v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          <rect x="5" y="7" width="4" height="10" rx="1" stroke="currentColor" stroke-width="1.7"/>
-          <rect x="15" y="7" width="4" height="10" rx="1" stroke="currentColor" stroke-width="1.7"/>
-        </svg>
-      </div>
-      <div class="switch" onclick="openInstrumentPicker()" title="Switch pair">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path d="M4 8h13l-3-3M20 16H7l3 3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </div>
+  <div class="topbar">
+    <div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Copy Trading</div>
+    <div class="icon-btn" onclick="openMyCopy()" title="My Copy Trades">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 9h6M9 13h6M9 17h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </div>
   </div>
-  <div class="scroll" id="trScroll">
-    <div id="trForm">
-      <div class="tr-body">
-        <div class="tr-ob">
-          <div class="hd"><span>Price<br>(USDT)</span><span class="r">Number<br>(BTC)</span></div>
-          <div id="trAsks"></div>
-          <div class="mid">
-            <div class="mp" id="trMid">—</div>
-            <div class="mq" id="trMidSub">≈ —</div>
-          </div>
-          <div id="trBids"></div>
-        </div>
-        <div class="tr-form">
-          <div class="tr-buysell" id="trBuySell">
-            <div class="bs on-buy" data-side="buy" onclick="trSetSide('buy')">Buy</div>
-            <div class="bs" data-side="sell" onclick="trSetSide('sell')">Sell</div>
-          </div>
-          <div class="tr-otype on" id="trOTLimit" onclick="trSetOT('limit')"><span class="dot"><i></i></span> Limit</div>
-          <div class="tr-otype" id="trOTMarket" onclick="trSetOT('market')"><span class="dot"><i></i></span> Market</div>
-          <div class="tr-input" id="trPriceRow">
-            <input id="trPrice" placeholder="Price(USDT)" inputmode="decimal">
-            <span class="suf">USDT</span>
-          </div>
-          <div class="tr-input">
-            <div class="step" onclick="trStep('trQty',-1)">−</div>
-            <input id="trQty" placeholder="Number(BTC)" inputmode="decimal">
-            <div class="step" onclick="trStep('trQty',1)">+</div>
-          </div>
-          <div class="tr-pcts">
-            <div class="pc" onclick="trPct(25)">25%</div>
-            <div class="pc" onclick="trPct(50)">50%</div>
-            <div class="pc" onclick="trPct(75)">75%</div>
-            <div class="pc" onclick="trPct(100)">100%</div>
-          </div>
-          <div class="tr-input">
-            <div class="step" onclick="trStep('trAmt',-1)">−</div>
-            <input id="trAmt" placeholder="Number(USDT)" inputmode="decimal">
-            <div class="step" onclick="trStep('trAmt',1)">+</div>
-          </div>
-          <div class="tr-tpsl">
-            <input type="checkbox" id="trTpSl">
-            <label for="trTpSl">Take Profit and Stop Loss</label>
-          </div>
-          <div class="tr-info">
-            <div class="r"><span>Available balance</span><span class="v"><span id="trAvail">0</span> USDT <span class="plus" onclick="openDeposit('deposit')">+</span></span></div>
-            <div class="r"><span>Buy</span><span class="v" id="trInfoBuy">0 USDT</span></div>
-            <div class="r"><span>Handling fee</span><span class="v">0 USDT</span></div>
-          </div>
-          <button class="tr-action buy" id="trBtn" onclick="trPlace()">Buy</button>
-        </div>
+  <div class="scroll">
+    <div class="ct-stats">
+      <div class="ct-stat tint">
+        <div class="lbl">Total Profit and Loss</div>
+        <div class="val" id="copyPnl">0.00</div>
+        <div class="unit">USD</div>
       </div>
-      <div class="tr-toolbar">
-        <div class="lev" id="trLevBtn">Cross <span class="car">▼</span></div>
-        <div class="ladder"><i></i><i></i><i></i></div>
+      <div class="ct-stat">
+        <div class="lbl">Partner Commission</div>
+        <div class="val">0.00</div>
+        <div class="unit">USD</div>
+        <div class="arrow">›</div>
+      </div>
+      <div class="ct-stat tint">
+        <div class="lbl">Today's Profit and Loss</div>
+        <div class="val">0.00</div>
+        <div class="unit">USD</div>
+      </div>
+      <div class="ct-stat">
+        <div class="lbl">Keep the bottom position</div>
+        <div class="val">0.00</div>
+        <div class="unit">USD</div>
       </div>
     </div>
-    <div id="trCopy" style="display:none;">
-      <div class="tr-copy-wrap" id="trCopyList"></div>
-    </div>
-    <div class="tr-subtabs" id="trSubtabs">
-      <div class="st on" data-st="open">Open orders(<span id="trOpenCount">0</span>)</div>
-      <div class="st" data-st="history">Order history</div>
-      <div class="st" data-st="assets">Assets</div>
-      <div class="ico" onclick="openTxHistory()">📄</div>
-    </div>
-    <div class="tr-history" id="trHistory"><div class="empty">No orders yet</div></div>
-
-    <div class="copy-section" id="copySection" style="display:none;">
-      <div class="copy-section-head">
-        <span>You may be interested in – Copy</span>
-        <span class="more" onclick="goCopyTab()">See all ›</span>
+    <div class="ct-sec-head"><h2>Copy Trading Analyst</h2></div>
+    <div class="ct-search-row">
+      <div class="ct-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
+        <input placeholder="Please enter the analyst's name" id="analystSearch" oninput="filterAnalysts(this.value)">
       </div>
-      <div class="copy-cards" id="copySectionCards"></div>
+      <button class="ct-signal-btn" onclick="openSignalList()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Signal
+      </button>
     </div>
+    <div class="analyst-list" id="analystList"></div>
+    <div class="no-more-data" id="noMoreData" style="display:none;">No more data</div>
   </div>
   <nav class="bottomnav" data-nav></nav>
 </section>
@@ -1206,6 +1258,18 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
   <div class="slot" id="chartSlot"></div>
 </section>
+
+<!-- FOLLOW SIGNAL SHEET (new) -->
+<div class="fs-backdrop" id="fsSheet">
+  <div class="fs-sheet" onclick="event.stopPropagation()">
+    <div class="fs-head">
+      <h3>Follow Signal</h3>
+      <div class="x" onclick="closeFollowSheet()">✕</div>
+    </div>
+    <div class="fs-body" id="fsBody"></div>
+    <div class="fs-domain"><span>nnsadaqd.com</span></div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
@@ -1426,7 +1490,6 @@ function setMode(mode){
   sb.from('profiles').update({ mode }).eq('id', currentUser.id).then(()=>{});
   applyUserToUI();
   updateModeUI();
-  renderTradeForm();
   toast(mode === 'demo' ? 'Demo mode' : 'Real mode');
 }
 function updateModeUI(){
@@ -1481,7 +1544,6 @@ function applyUserToUI(){
   }
   updateKycBadge();
   renderAccounts();
-  renderTradeForm();
 }
 function updateKycBadge(){
   const el = document.getElementById('profKycBadge');
@@ -1639,90 +1701,57 @@ function renderHomeCoinList(){
   }).join('');
 }
 
-let mktTopTab = 'gainers';
-let mktSubTab = 'crypto';
+/* ---------- MARKET (new simple version) ---------- */
+let mktTab = 'gainers';
 let mkFilter = '';
 function allCoins(){
   const out = [];
   ['crypto','forex','commodities','stocks'].forEach(k => { (MARKETS[k] || []).forEach(m => out.push(m)); });
   return out;
 }
-function renderTopGainers(){
-  const el = document.getElementById('topGainers');
+function renderMarketsTable(){
+  const el = document.getElementById('mkTable');
   if(!el) return;
   let list = allCoins().slice();
-  if(mktTopTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
-  else if(mktTopTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
+  if(mktTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
+  else if(mktTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
   else list.sort((a,b) => parseFloat(String(b.vol||'').replace(/[^0-9.]/g,'')) - parseFloat(String(a.vol||'').replace(/[^0-9.]/g,'')));
-  const top = list.slice(0, 8);
-  el.innerHTML = top.map(m => {
-    const up = (m.chg || 0) >= 0;
-    return `<div class="tg-card" onclick="openInstrumentFromMarket('${m.sym}')">
-      ${symLogo(m.sym, 34)}
-      <div class="tg-sym">${m.sym}</div>
-      <div class="tg-price">${fmt(m.price)}</div>
-      <div class="tg-chg ${up?'':'down'}">${chgSign(m.chg || 0)}</div>
-    </div>`;
-  }).join('');
-}
-function renderMarketsTable(){
-  const el = document.getElementById('mktTable');
-  if(!el) return;
-  let list;
-  if(mktSubTab === 'favorites') list = ['BTC','ETH','SOL','BNB'].map(s => findMarket(s)).filter(Boolean);
-  else if(mktSubTab === 'futures') list = allCoins().filter(m => ['BTC','ETH','SOL','XRP','BNB','DOGE'].includes(m.sym));
-  else list = (MARKETS.crypto || []).slice();
   if(mkFilter){
     const q = mkFilter.toLowerCase();
     list = list.filter(m => m.sym.toLowerCase().includes(q) || (m.name||'').toLowerCase().includes(q));
   }
-  if(!list.length){
-    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No matches</div>';
-    return;
-  }
   el.innerHTML = list.map(m => {
     const up = (m.chg || 0) >= 0;
-    return `<div class="coin-row" onclick="openInstrumentFromMarket('${m.sym}')">
+    return `<div class="mk-row" onclick="openInstrumentFromMarket('${m.sym}')">
       <div class="left">
         ${symLogo(m.sym, 36)}
-        <div class="nm">
+        <div>
           <div class="pair">${m.sym}<small>/USDT</small></div>
           <div class="vol">${m.vol || '—'}</div>
         </div>
       </div>
-      <div class="price-col">
-        <div class="p">${fmt(m.price)}</div>
-        <div class="usd">$ ${fmt(m.price)}</div>
-      </div>
-      <div class="pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
+      <div class="price">${fmt(m.price)}</div>
+      <div class="chg-pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
     </div>`;
   }).join('');
 }
-function filterMarkets(v){ mkFilter = v; renderMarketsTable(); }
-
-document.getElementById('mktTabs')?.addEventListener('click', e => {
-  const t = e.target.closest('.mt'); if(!t) return;
-  document.querySelectorAll('#mktTabs .mt').forEach(x => x.classList.remove('on'));
+function filterMarket(v){ mkFilter = v; renderMarketsTable(); }
+document.getElementById('mkTabs')?.addEventListener('click', e => {
+  const t = e.target.closest('.mk-tab'); if(!t) return;
+  document.querySelectorAll('#mkTabs .mk-tab').forEach(x => x.classList.remove('on'));
   t.classList.add('on');
-  mktTopTab = t.dataset.mt;
-  renderTopGainers();
-});
-document.getElementById('mkSubtabs')?.addEventListener('click', e => {
-  const t = e.target.closest('.st'); if(!t) return;
-  document.querySelectorAll('#mkSubtabs .st').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  mktSubTab = t.dataset.class;
+  mktTab = t.dataset.tab;
   renderMarketsTable();
 });
-function openInstrumentFromMarket(sym){ go('s-trade'); trSetSymbol(sym); }
+function openInstrumentFromMarket(sym){ go('s-markets'); toast('Selected ' + sym); }
 
 /* ============================================================
    NAV
    ============================================================ */
 const NAV = [
   {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
-  {id:'s-markets', label:'Markets', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
-  {id:'s-trade', label:'Trade', icon:'M12 4v16M6 9l6-5 6 5'},
+  {id:'s-markets', label:'Market', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
+  {id:'s-trade', label:'Copy Trading', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
   {id:'s-wallet', label:'Wallet', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
   {id:'s-assets', label:'Assets', icon:'M3 7h18v12H3zM3 11h18'}
 ];
@@ -1740,454 +1769,224 @@ function go(id){
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-wallet') renderWalletScreen();
-  if(id === 's-trade'){ renderTrOrderBook(); renderTrHeader(); renderTradeForm(); renderCopySection(); }
+  if(id === 's-trade'){ loadLiveSignals(); renderAnalysts(); loadMyCopyTrades(); }
+  if(id === 's-markets') renderMarketsTable();
 }
 function openProfile(){ document.getElementById('profile').classList.add('active'); }
 function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
 
 /* ============================================================
-   TRADE SCREEN
+   COPY TRADING ANALYSTS — replaces old signal logic
    ============================================================ */
-let trSymbol = 'BTC';
-let trSide = 'buy';
-let trOrderType = 'limit';
-let trTab = 'spot';
-
-function trSetSymbol(sym){
-  trSymbol = sym;
-  const m = findMarket(sym); if(!m) return;
-  const pairEl = document.getElementById('trPair'); if(pairEl) pairEl.textContent = sym + '/USDT';
-  const priceInput = document.getElementById('trPrice'); if(priceInput) priceInput.value = fmt(m.price);
-  renderTrHeader();
-  renderTrOrderBook();
-  renderTradeForm();
-}
-function renderTrHeader(){
-  const m = findMarket(trSymbol); if(!m) return;
-  const chg = document.getElementById('trChg');
-  if(chg){ chg.textContent = chgSign(m.chg); chg.style.color = m.chg >= 0 ? 'var(--green)' : 'var(--red)'; }
-  const mid = document.getElementById('trMid');
-  const midSub = document.getElementById('trMidSub');
-  if(mid) mid.textContent = fmt(m.price);
-  if(midSub) midSub.textContent = '≈' + fmt(m.price);
-  const tag = document.getElementById('trTag');
-  if(tag) tag.textContent = trTab === 'perpetual' ? 'Perpetual' : trTab === 'copy' ? 'Copy' : 'Spot';
-  const btn = document.getElementById('trBtn');
-  if(btn){
-    btn.textContent = trSide === 'buy' ? 'Buy' : 'Sell';
-    btn.className = 'tr-action ' + (trSide === 'buy' ? 'buy' : 'sell');
-  }
-}
-function renderTrOrderBook(){
-  const m = findMarket(trSymbol) || {price:76650};
-  const mid = m.price;
-  const asks = [], bids = [];
-  for(let i = 0; i < 8; i++){
-    asks.push({p: mid * (1 + (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
-    bids.push({p: mid * (1 - (i+1)*0.0001), q: (Math.random()*2).toFixed(5)});
-  }
-  const a = document.getElementById('trAsks');
-  const b = document.getElementById('trBids');
-  if(a) a.innerHTML = asks.map(r => `<div class="row a"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
-  if(b) b.innerHTML = bids.map(r => `<div class="row b"><span class="p">${fmt(r.p)}</span><span class="q">${r.q}</span></div>`).join('');
-}
-function trSetSide(side){
-  trSide = side;
-  document.querySelectorAll('#trBuySell .bs').forEach(el => {
-    el.classList.remove('on-buy','on-sell');
-    if(el.dataset.side === side) el.classList.add(side === 'buy' ? 'on-buy' : 'on-sell');
-  });
-  renderTrHeader();
-}
-function trSetOT(ot){
-  trOrderType = ot;
-  document.getElementById('trOTLimit').classList.toggle('on', ot === 'limit');
-  document.getElementById('trOTMarket').classList.toggle('on', ot === 'market');
-  const priceRow = document.getElementById('trPriceRow');
-  if(priceRow) priceRow.style.display = ot === 'market' ? 'none' : 'flex';
-}
-function trStep(id, dir){
-  const el = document.getElementById(id); if(!el) return;
-  const cur = parseFloat(el.value) || 0;
-  const step = id === 'trQty' ? 0.0001 : 1;
-  el.value = (cur + dir*step).toFixed(id === 'trQty' ? 6 : 2);
-  trRecalc();
-}
-function trPct(p){
-  const bal = activeBalance('spot') || 0;
-  const amtEl = document.getElementById('trAmt');
-  const qtyEl = document.getElementById('trQty');
-  const m = findMarket(trSymbol);
-  if(amtEl) amtEl.value = (bal * p / 100).toFixed(2);
-  if(qtyEl && m) qtyEl.value = ((bal * p / 100) / m.price).toFixed(6);
-  trRecalc();
-}
-function trRecalc(){
-  const qty = parseFloat(document.getElementById('trQty').value) || 0;
-  const m = findMarket(trSymbol) || {price:0};
-  const total = qty * m.price;
-  const buyEl = document.getElementById('trInfoBuy');
-  if(buyEl) buyEl.textContent = total.toFixed(2) + ' USDT';
-}
-document.addEventListener('input', e => {
-  if(e.target && (e.target.id === 'trQty' || e.target.id === 'trAmt')) trRecalc();
-});
-
-/* ---------- OPEN ORDERS / TRADE FORM ---------- */
-function renderTradeForm(){
-  const avail = activeBalance('spot') || 0;
-  const av = document.getElementById('trAvail');
-  if(av) av.textContent = avail.toFixed(2);
-  const hist = document.getElementById('trHistory');
-  if(!hist) return;
-  hist.innerHTML = '<div class="empty">No open orders</div>';
-}
-
-function trPlace(){
-  if(!currentUser){ openAuth('register'); return; }
-  toast('Order placed (demo)');
-}
-
-/* ============================================================
-   COPY SIGNALS — real-time from Supabase
-   ============================================================ */
-let liveSignals = [];
-let liveParticipants = {};
-let signalsChannel = null;
+let ANALYSTS = [];
+let analystFilter = '';
 
 async function loadLiveSignals(){
-  const now = new Date().toISOString();
   const { data, error } = await sb.from('signals')
     .select('*')
-    .or(`expires_at.is.null,expires_at.gt.${now}`)
-    .order('created_at', { ascending: false })
-    .limit(30);
-  if(error){ liveSignals = []; return; }
-  liveSignals = data || [];
-  renderCopySection();
-  renderTrCopy();
+    .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
+    .order('created_at', { ascending: false });
+  if(error){ console.warn(error); ANALYSTS = []; renderAnalysts(); return; }
+  ANALYSTS = (data || []).map(s => ({
+    id: s.id,
+    name: s.trader_name,
+    role: s.role || 'Senior Analyst',
+    day: Number(s.day_return || 1.5),
+    week: Number(s.week_return || 10.5),
+    intro: s.message || '',
+    code: s.code,
+    sym: s.sym,
+    amount: Number(s.amount || 100)
+  }));
+  renderAnalysts();
 }
 
-async function loadLiveParticipants(){
-  const ids = liveSignals.map(s => s.id);
-  if(!ids.length){ liveParticipants = {}; return; }
-  const { data, error } = await sb.from('participants')
-    .select('signal_id, username, uid, amount_usdt, mode, created_at')
-    .in('signal_id', ids);
-  if(error){ liveParticipants = {}; return; }
-  liveParticipants = {};
-  (data || []).forEach(p => {
-    if(!liveParticipants[p.signal_id]) liveParticipants[p.signal_id] = [];
-    liveParticipants[p.signal_id].push(p);
-  });
-}
-
-function subscribeSignalsRealtime(){
-  if(signalsChannel) sb.removeChannel(signalsChannel);
-  signalsChannel = sb.channel('app-signals')
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' }, () => {
-      loadLiveSignals().then(() => { loadLiveParticipants().then(() => { renderCopySection(); renderTrCopy(); }); });
-    })
-    .on('postgres_changes', { event: '*', schema: 'public', table: 'participants' }, () => {
-      loadLiveParticipants().then(() => { renderCopySection(); renderTrCopy(); });
-    })
-    .subscribe();
-}
-
-function renderCopySection(){
-  const wrap = document.getElementById('copySection');
-  if(!wrap) return;
-  if(!liveSignals.length){ wrap.style.display = 'none'; return; }
-  wrap.style.display = 'block';
-  document.getElementById('copySectionCards').innerHTML = liveSignals.map(s => renderSignalCard(s)).join('');
-}
-
-function renderSignalCard(signal){
-  const pnl = (signal.pnl >= 0 ? '+' : '') + Number(signal.pnl || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-  const roi = (signal.roi >= 0 ? '+' : '') + Number(signal.roi || 0).toFixed(2) + '%';
-  const cls = signal.pnl >= 0 ? 'up' : 'down';
-  const roiCls = signal.roi >= 0 ? 'up' : 'down';
-  const initial = (signal.trader_name || '?')[0].toUpperCase();
-  const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
-  let h = 0; for(let i = 0; i < (signal.trader_name||'').length; i++) h = ((h<<5)-h+signal.trader_name.charCodeAt(i))|0;
-  const color = colors[Math.abs(h) % colors.length];
-  return `
-    <div class="copy-card">
-      <div class="copy-card-av" style="background:${color};">${initial}</div>
-      <div class="copy-card-info">
-        <div class="copy-card-name">${signal.trader_name}</div>
-        <div class="copy-card-followers">👥 ${signal.followers || '0/0'}</div>
-        <div class="copy-card-stats">
-          <div class="copy-stat">
-            <span class="copy-stat-lbl">30D PnL (USD)</span>
-            <b class="copy-stat-val ${cls}">${pnl}</b>
-          </div>
-          <div class="copy-stat" style="text-align:right;">
-            <span class="copy-stat-lbl">30D ROI</span>
-            <b class="copy-stat-val ${roiCls}">${roi}</b>
-          </div>
-        </div>
-      </div>
-      <button class="copy-card-btn" onclick="openFollowSheet('${signal.id}')">Copy</button>
-    </div>
-  `;
-}
-
-function renderTrCopy(){
-  const el = document.getElementById('trCopyList');
+function renderAnalysts(){
+  const el = document.getElementById('analystList');
+  const noMore = document.getElementById('noMoreData');
   if(!el) return;
-  if(!liveSignals.length){
-    el.innerHTML = '<div class="tr-copy-empty">No live signals right now</div>';
+  let list = ANALYSTS.slice();
+  if(analystFilter){
+    const q = analystFilter.toLowerCase();
+    list = list.filter(a => a.name.toLowerCase().includes(q));
+  }
+  if(!list.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No active signals</div>';
+    if(noMore) noMore.style.display = 'none';
     return;
   }
-  el.innerHTML = '<div class="tr-copy-head"><h3>Live Copy Signals</h3></div>' + liveSignals.map(s => {
-    const parts = (liveParticipants[s.id] || []).length;
-    const initial = (s.trader_name || '?')[0].toUpperCase();
-    const m = findMarket(s.sym);
-    const px = m ? m.price : 0;
-    return `<div class="ct-card">
-      <div class="ct-top">
-        <div class="ct-av">${initial}</div>
-        <div style="flex:1;min-width:0;">
-          <div class="ct-trader">${s.trader_name} <span class="verified">LIVE</span></div>
-          <div class="ct-sym">${s.sym}/USDT${m ? ' · ' + m.name + ' · ' + fmt(px) : ''}</div>
+  if(noMore) noMore.style.display = 'flex';
+  el.innerHTML = list.map((a, i) => {
+    const init = a.name.split(' ').map(w => w[0]).join('').slice(0,2);
+    return `<div class="analyst-card">
+      <div class="analyst-top">
+        <div class="analyst-info">
+          <div class="analyst-name">${a.name}</div>
+          <div class="analyst-role">${a.role}</div>
         </div>
+        <button class="copy-btn" onclick="openFollowSheet('${a.id}')">Copy Trading</button>
+        <div class="analyst-av">${init}</div>
       </div>
-      <div class="ct-msg">${s.message || ''}</div>
-      <div style="font-size:11px;color:var(--text3);margin-bottom:10px;">👥 ${parts} users copying</div>
-      <div class="ct-actions">
-        <button class="btn2 pri" onclick="openFollowSheet('${s.id}')">Follow Signal</button>
+      <div class="analyst-rates">
+        <div class="analyst-rate"><span class="k">1-Day Return Rate</span><span class="v">+${a.day.toFixed(1)}%</span></div>
+        <div class="analyst-rate"><span class="k">7-Day Return Rate</span><span class="v">+${a.week.toFixed(1)}%</span></div>
+      </div>
+      <div class="analyst-intro" onclick="toggleIntro(this)">
+        <div class="lbl">Analyst Introduction</div>
+        <div class="txt">${a.intro}</div>
+        <div class="caret">▼</div>
       </div>
     </div>`;
   }).join('');
 }
-
-function goCopyTab(){
-  const tab = document.querySelector('.tr-tab[data-tr="copy"]');
-  if(tab) tab.click();
-}
+function toggleIntro(el){ el.classList.toggle('open'); }
+function filterAnalysts(v){ analystFilter = v; renderAnalysts(); }
 
 /* ============================================================
-   FOLLOW SHEET
+   FOLLOW SIGNAL SHEET (new design)
    ============================================================ */
-let currentSignal = null;
-let selectedVoucher = 'none';
+let currentAnalyst = null;
 
-function ensureSheet(){
-  let el = document.getElementById('nt-follow-sheet');
-  if(el) return el;
-  el = document.createElement('div');
-  el.id = 'nt-follow-sheet';
-  el.className = 'nt-follow-backdrop';
-  el.innerHTML = `
-    <div class="nt-follow-panel" onclick="event.stopPropagation()">
-      <div class="nt-follow-head">
-        <h3>Follow Signal</h3>
-        <div class="nt-follow-x" onclick="closeFollowSheet()">✕</div>
-      </div>
-      <div class="nt-follow-body" id="nt-follow-body"></div>
-    </div>`;
-  el.addEventListener('click', () => closeFollowSheet());
-  document.body.appendChild(el);
-  return el;
-}
-
-function openFollowSheet(id){
-  const sig = liveSignals.find(s => s.id === id);
-  if(!sig){ toast('Signal not found'); return; }
+function openFollowSheet(signalId){
   if(!currentUser){ openAuth('register'); return; }
-  currentSignal = sig;
-  selectedVoucher = 'none';
-  const sheet = ensureSheet();
-  renderFollowBody(sig);
-  sheet.classList.add('on');
-  renderLiveTicker(sig);
-}
-
-function closeFollowSheet(){
-  const sheet = document.getElementById('nt-follow-sheet');
-  if(sheet) sheet.classList.remove('on');
-  currentSignal = null;
-}
-
-function renderFollowBody(sig){
-  const body = document.getElementById('nt-follow-body');
-  if(!body) return;
-  const bal = activeBalance('spot') || 0;
-  const sugAmount = Number(sig.amount || 100);
-  const pnl = (sig.pnl >= 0 ? '+' : '') + Number(sig.pnl || 0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  const roi = (sig.roi >= 0 ? '+' : '') + Number(sig.roi || 0).toFixed(2) + '%';
-  const initial = (sig.trader_name || '?')[0].toUpperCase();
-  const colors = ['#F6465D','#FA8C16','#722ED1','#1890FF','#0ECB81','#EB2F96','#13C2C2','#FAAD14'];
-  let h = 0; for(let i = 0; i < (sig.trader_name||'').length; i++) h = ((h<<5)-h+sig.trader_name.charCodeAt(i))|0;
-  const color = colors[Math.abs(h) % colors.length];
-
-  body.innerHTML = `
-    <div class="nt-follow-analyst">
-      <div class="nt-follow-av" style="background:${color};">${initial}</div>
-      <div style="flex:1;min-width:0;">
-        <div class="nt-follow-name">${sig.trader_name}</div>
-        <div class="nt-follow-sub">${sig.sym}/USDT · ${sig.followers || '0/0'} followers</div>
+  currentAnalyst = ANALYSTS.find(a => a.id === signalId);
+  if(!currentAnalyst) return toast('Signal not found');
+  const bal = Number(currentUser.balance || 0);
+  document.getElementById('fsBody').innerHTML = `
+    <div class="fs-field">
+      <div class="lbl-row"><label>Signal Code</label></div>
+      <input class="fs-input" id="fsCode" type="text" inputmode="numeric" maxlength="4" placeholder="Please Enter Signal Code" autocomplete="off">
+    </div>
+    <div class="fs-field">
+      <div class="lbl-row">
+        <label>Follow Amount</label>
+        <span class="avail">Available <b>${bal.toFixed(2)} USD</b></span>
       </div>
-      <div style="text-align:right;">
-        <div style="font-size:13px;font-weight:800;color:${sig.pnl>=0?'var(--green)':'var(--red)'};">${pnl}</div>
-        <div style="font-size:11px;font-weight:700;color:${sig.roi>=0?'var(--green)':'var(--red)'};">${roi} 30D</div>
+      <div class="fs-amount-wrap">
+        <input id="fsAmt" type="text" inputmode="decimal" placeholder="Please Enter the Amount">
+        <span class="suf">USD</span>
+        <button class="fs-max-btn" onclick="fsSetMax()">Max</button>
+      </div>
+      <div class="fs-quick">
+        <button onclick="fsQuick(1000)">1000</button>
+        <button onclick="fsQuick(2000)">2000</button>
       </div>
     </div>
-    <div class="nt-follow-msg">${sig.message || ''}</div>
-    <div class="nt-follow-live" id="nt-follow-live">
-      <div class="nt-live-head"><span class="nt-live-dot"></span><b>Live</b> · <span id="nt-live-count">0</span> users copying</div>
-      <div class="nt-live-list" id="nt-live-list"></div>
-    </div>
-    <div class="nt-follow-field">
-      <label>Signal Code</label>
-      <div class="nt-code-wrap">
-        <input id="nt-code-input" type="text" inputmode="numeric" maxlength="4" placeholder="— — — —" autocomplete="off">
-      </div>
-      <div class="nt-code-hint" id="nt-code-hint">Enter the 4-digit code shown by ${sig.trader_name}.</div>
-    </div>
-    <div class="nt-follow-field">
-      <label>Copy Trading Amount</label>
-      <div class="nt-amount-wrap">
-        <input id="nt-amount-input" type="text" inputmode="decimal" value="${sugAmount}" placeholder="0">
-        <span class="nt-amount-suf">USD</span>
-        <button class="nt-max-btn" onclick="setMaxAmount()">Max</button>
-      </div>
-      <div class="nt-avail">Available Balance: <b>$${bal.toFixed(2)} USD</b></div>
-    </div>
-    <div class="nt-follow-field">
-      <label>Choose a voucher</label>
-      <select id="nt-voucher" onchange="setVoucher(this.value)">
+    <div class="fs-field">
+      <label>Select Voucher</label>
+      <select class="fs-select" id="fsVoucher">
         <option value="none">None</option>
-        <option value="welcome10">WELCOME10 — +$10 on first copy</option>
+        <option value="welcome10">WELCOME10 — +$10 bonus</option>
         <option value="referral5">REFERRAL5 — +$5 bonus</option>
       </select>
     </div>
-    <label class="nt-agree">
-      <input type="checkbox" id="nt-agree-check" onchange="refreshApplyBtn()">
-      <span>I have read and agree <b>Copy Trading Agreement</b></span>
+    <label class="fs-agree">
+      <input type="checkbox" id="fsAgree" onchange="fsRefresh()">
+      <span>I have read and agree to <a onclick="event.preventDefault();toast('Copy Trading Agreement')">Copy Trading Agreement</a></span>
     </label>
-    <button class="nt-apply-btn" id="nt-apply-btn" disabled onclick="applyCopy()">Apply to Copy Trading</button>
+    <button class="fs-apply" id="fsApply" disabled onclick="fsApply()">Apply to Follow</button>
   `;
-  document.getElementById('nt-code-input').addEventListener('input', (e) => {
+  document.getElementById('fsCode').addEventListener('input', e => {
     e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
-    refreshApplyBtn();
+    fsRefresh();
   });
-  document.getElementById('nt-amount-input').addEventListener('input', (e) => {
+  document.getElementById('fsAmt').addEventListener('input', e => {
     e.target.value = e.target.value.replace(/[^\d.]/g,'');
-    refreshApplyBtn();
+    fsRefresh();
   });
+  document.getElementById('fsSheet').classList.add('on');
 }
-
-function renderLiveTicker(sig){
-  const render = () => {
-    const list = document.getElementById('nt-live-list');
-    const count = document.getElementById('nt-live-count');
-    const liveBox = document.getElementById('nt-follow-live');
-    if(!list) return;
-    const parts = liveParticipants[sig.id] || [];
-    if(liveBox) liveBox.style.display = parts.length ? 'block' : 'none';
-    if(count) count.textContent = parts.length;
-    list.innerHTML = parts.slice(0, 8).map((p, i) => `
-      <div class="nt-live-row" style="animation-delay:${i*40}ms;">
-        <div class="nt-live-av" style="background:#0ECB81;">${(p.username||'?')[0].toUpperCase()}</div>
-        <div class="nt-live-txt"><b>${p.username}</b> copied <span style="color:var(--green);font-weight:700;">$${Number(p.amount_usdt).toFixed(0)}</span></div>
-        <div class="nt-live-ago">${timeAgo(new Date(p.created_at).getTime())}</div>
-      </div>
-    `).join('');
-  };
-  render();
+function closeFollowSheet(){
+  document.getElementById('fsSheet').classList.remove('on');
+  currentAnalyst = null;
 }
-
-function timeAgo(ts){
-  const s = Math.floor((Date.now() - ts)/1000);
-  if(s < 60) return s + 's';
-  const m = Math.floor(s/60);
-  if(m < 60) return m + 'm';
-  const h = Math.floor(m/60);
-  if(h < 24) return h + 'h';
-  return Math.floor(h/24) + 'd';
+function fsSetMax(){
+  const bal = Number(currentUser?.balance || 0);
+  document.getElementById('fsAmt').value = bal.toFixed(2);
+  fsRefresh();
 }
-
-function refreshApplyBtn(){
-  const btn = document.getElementById('nt-apply-btn');
-  if(!btn || !currentSignal) return;
-  const code = (document.getElementById('nt-code-input')?.value || '').trim();
-  const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
-  const agree = document.getElementById('nt-agree-check')?.checked;
-  const codeOk = /^\d{4}$/.test(code) && code === String(currentSignal.code);
-  const hint = document.getElementById('nt-code-hint');
-  if(hint){
-    if(!code){ hint.textContent = `Enter the 4-digit code shown by ${currentSignal.trader_name}.`; hint.style.color = ''; }
-    else if(code.length < 4){ hint.textContent = 'Keep typing…'; hint.style.color = ''; }
-    else if(!codeOk){ hint.textContent = 'Incorrect code. Try again.'; hint.style.color = 'var(--red)'; }
-    else { hint.textContent = '✓ Code accepted'; hint.style.color = 'var(--green)'; }
-  }
-  btn.disabled = !(codeOk && amt > 0 && agree);
+function fsQuick(v){ document.getElementById('fsAmt').value = v; fsRefresh(); }
+function fsRefresh(){
+  if(!currentAnalyst) return;
+  const code = document.getElementById('fsCode').value.trim();
+  const amt = parseFloat(document.getElementById('fsAmt').value || '0');
+  const agree = document.getElementById('fsAgree').checked;
+  const codeOk = code.length === 4 && code === String(currentAnalyst.code);
+  const amtOk = amt > 0 && amt <= Number(currentUser?.balance || 0);
+  document.getElementById('fsApply').disabled = !(codeOk && amtOk && agree);
 }
-function setMaxAmount(){
-  const bal = activeBalance('spot') || 0;
-  const el = document.getElementById('nt-amount-input');
-  if(el) el.value = bal.toFixed(2);
-  refreshApplyBtn();
-}
-function setVoucher(v){ selectedVoucher = v; }
-
-async function applyCopy(){
-  if(!currentSignal || !currentUser) return;
-  const code = (document.getElementById('nt-code-input')?.value || '').trim();
-  if(code !== String(currentSignal.code)){ toast('Incorrect code'); return; }
-  const amt = parseFloat(document.getElementById('nt-amount-input')?.value || '0');
-  if(!amt || amt <= 0){ toast('Enter a valid amount'); return; }
-  if(!document.getElementById('nt-agree-check')?.checked){ toast('Please agree to the Copy Trading Agreement'); return; }
-
-  const bal = activeBalance('spot') || 0;
-  if(bal < amt){ toast('Insufficient balance'); return; }
+async function fsApply(){
+  if(!currentAnalyst || !currentUser) return;
+  const code = document.getElementById('fsCode').value.trim();
+  if(code !== String(currentAnalyst.code)) return toast('Incorrect code');
+  const amt = parseFloat(document.getElementById('fsAmt').value || '0');
+  const voucher = document.getElementById('fsVoucher').value;
+  const bal = Number(currentUser.balance || 0);
+  if(amt <= 0 || amt > bal) return toast('Invalid amount');
 
   let bonus = 0;
-  if(selectedVoucher === 'welcome10') bonus = 10;
-  else if(selectedVoucher === 'referral5') bonus = 5;
-  const effectiveAmt = amt + bonus;
+  if(voucher === 'welcome10') bonus = 10;
+  else if(voucher === 'referral5') bonus = 5;
+  const effective = amt + bonus;
 
-  setActiveBalance('spot', bal - amt);
+  const newBal = bal - amt;
+  const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
+  if(balErr) return toast('Error: ' + balErr.message);
+  currentUser.balance = newBal;
 
-  const { error: pErr } = await sb.from('participants').insert({
-    signal_id: currentSignal.id,
+  const { error: partErr } = await sb.from('participants').insert({
+    signal_id: currentAnalyst.id,
     user_id: currentUser.id,
     username: currentUser.username,
     uid: currentUser.uid,
-    amount_usdt: effectiveAmt,
-    mode: currentMode,
-    voucher: selectedVoucher
+    amount_usdt: effective,
+    mode: 'real',
+    voucher
   });
-  if(pErr){ toast('Error: ' + pErr.message); return; }
-
-  const capturedSignalId = currentSignal.id;
-  const capturedTrader = currentSignal.trader_name;
-  const capturedSym = currentSignal.sym;
+  if(partErr) return toast('Error: ' + partErr.message);
 
   closeFollowSheet();
-  toast('✓ Copy trade placed — $' + effectiveAmt.toFixed(2) + (bonus ? ' (+$' + bonus + ' bonus)' : ''));
+  toast('✓ Copy trade placed — $' + effective.toFixed(2));
+  loadMyCopyTrades();
+}
 
-  setTimeout(async () => {
-    const profit = effectiveAmt * COPY_PROFIT_PCT;
-    const newBal = activeBalance('spot') + profit;
-    setActiveBalance('spot', newBal);
-    await sb.from('copy_profits').insert({
-      user_id: currentUser.id,
-      signal_id: capturedSignalId,
-      trader_name: capturedTrader,
-      sym: capturedSym,
-      invested: effectiveAmt,
-      profit,
-      mode: currentMode
-    });
-    toast('✓ Copy profit credited: +$' + profit.toFixed(2));
-  }, (cfg.COPY_AUTO_CLOSE_SECONDS || 45) * 1000);
+function openSignalList(){
+  document.getElementById('genericTitle').textContent = 'Active Signals';
+  if(!ANALYSTS.length){
+    document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:30px;">No active signals right now.</div>';
+  } else {
+    document.getElementById('genericBody').innerHTML = ANALYSTS.map(a => `
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--input-bg);margin-bottom:8px;cursor:pointer;" onclick="closeGeneric();openFollowSheet('${a.id}')">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--green-lt);color:var(--green-dk);display:flex;align-items:center;justify-content:center;font-weight:800;">${a.name[0]}</div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">${a.name}</div>
+          <div style="font-size:12px;color:var(--text2);">${a.sym}/USDT · $${a.amount}</div>
+        </div>
+        <div style="color:var(--green);font-weight:800;font-size:14px;">+${a.day.toFixed(1)}%</div>
+      </div>
+    `).join('');
+  }
+  document.getElementById('genericModal').classList.add('on');
+}
 
-  renderTradeForm();
-  applyUserToUI();
-  renderCopySection();
+async function loadMyCopyTrades(){
+  if(!currentUser) return;
+  const { data } = await sb.from('participants')
+    .select('*')
+    .eq('user_id', currentUser.id);
+  const { data: profits } = await sb.from('copy_profits')
+    .select('*')
+    .eq('user_id', currentUser.id);
+  const totalPnl = (profits || []).reduce((a, b) => a + Number(b.profit || 0), 0);
+  const pnlEl = document.getElementById('copyPnl');
+  if(pnlEl) pnlEl.textContent = totalPnl.toFixed(2);
+}
+
+function openMyCopy(){
+  if(!currentUser){ openAuth('register'); return; }
+  document.getElementById('genericTitle').textContent = 'My Copy Trades';
+  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">Your copy trades will appear here.</div>';
+  document.getElementById('genericModal').classList.add('on');
 }
 
 /* ============================================================
@@ -2200,9 +1999,14 @@ function renderWalletScreen(){
     return;
   }
   const el = document.getElementById('myEthAddress');
-  if(el) el.textContent = 'Not configured — set XPUB in admin';
+  if(el) el.textContent = currentUser.derived_eth_address || 'Not assigned yet — contact admin';
 }
-function copyMyAddr(){ toast('No address configured'); }
+function copyMyAddr(){
+  const addr = currentUser && currentUser.derived_eth_address;
+  if(!addr) return toast('No address assigned yet');
+  if(navigator.clipboard) navigator.clipboard.writeText(addr);
+  toast('Copied');
+}
 function refreshMyBalance(){ toast('Refresh not available'); }
 
 function renderAccounts(){
@@ -2224,7 +2028,7 @@ function renderAccounts(){
 }
 function renderProfileMenu(){
   const items = [
-    {l:'Identity Verification', sub:'Not verified', action:'openKycFromProfile()'},
+    {l:'Identity Verification', sub: (currentUser && currentUser.kyc_status === 'pending') ? 'Pending Review' : '', action:'openKycFromProfile()'},
     {l:'Transaction History', action:'openTxHistory()'},
     {l:'Copy Trading', action:'openCopyTrading()'},
     {l:'Referral Program', action:'openInvite()'},
@@ -2343,102 +2147,17 @@ function openNews(){
 }
 
 /* ============================================================
-   CHART
+   MISC — chart overlay kept for future use
    ============================================================ */
-let chartWidget = null;
-let chartRetry = 0;
-function openChart(){
-  document.getElementById('chartOv').classList.add('active');
-  renderChartWidget();
-}
+function openChart(){ document.getElementById('chartOv').classList.add('active'); }
 function closeChart(){ document.getElementById('chartOv').classList.remove('active'); }
-function renderChartWidget(){
-  const slot = document.getElementById('chartSlot'); if(!slot) return;
-  const m = findMarket(trSymbol);
-  const tvSym = (m && m.tv) || 'BINANCE:BTCUSDT';
-  slot.innerHTML = '';
-  const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-  if(typeof TradingView === 'undefined' || !TradingView.widget){
-    chartRetry++;
-    if(chartRetry < 6) setTimeout(renderChartWidget, 500);
-    return;
-  }
-  try {
-    chartWidget = new TradingView.widget({
-      container_id: 'chartSlot', autosize: true, symbol: tvSym,
-      interval: '15', timezone: 'Etc/UTC', theme: theme, style: '1', locale: 'en',
-      toolbar_bg: theme === 'dark' ? '#0B0E11' : '#ffffff',
-      enable_publishing: false, allow_symbol_change: false, save_image: false
-    });
-  } catch(e){}
-}
+function openInstrumentPicker(){ toast('Instrument picker'); }
 
-/* ============================================================
-   TRADE TABS
-   ============================================================ */
-document.getElementById('trTabs').addEventListener('click', e => {
-  const t = e.target.closest('.tr-tab'); if(!t) return;
-  document.querySelectorAll('.tr-tab').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  trTab = t.dataset.tr;
-  const form = document.getElementById('trForm');
-  const copy = document.getElementById('trCopy');
-  const subtabs = document.getElementById('trSubtabs');
-  const hist = document.getElementById('trHistory');
-  const copySec = document.getElementById('copySection');
-  if(trTab === 'copy'){
-    form.style.display = 'none';
-    copy.style.display = 'block';
-    subtabs.style.display = 'none';
-    hist.style.display = 'none';
-    copySec.style.display = 'none';
-    renderTrCopy();
-  } else {
-    form.style.display = 'block';
-    copy.style.display = 'none';
-    subtabs.style.display = 'flex';
-    hist.style.display = 'block';
-    renderTrHeader();
-    renderTradeForm();
-    renderCopySection();
-  }
-});
-document.getElementById('trSubtabs').addEventListener('click', e => {
-  const st = e.target.closest('.st'); if(!st) return;
-  document.querySelectorAll('.tr-subtabs .st').forEach(x => x.classList.remove('on'));
-  st.classList.add('on');
-  const kind = st.dataset.st;
-  const hist = document.getElementById('trHistory');
-  hist.dataset.tab = kind;
-  renderTradeForm();
-});
-
-function openInstrumentPicker(){
-  document.getElementById('genericTitle').textContent = 'Choose Instrument';
-  document.getElementById('genericBody').innerHTML = Object.keys(MARKETS).map(cls => `
-    <div class="ins-group">
-      <div class="ins-group-title">${cls}</div>
-      ${MARKETS[cls].map(m => `
-        <div class="ins-row" onclick="pickInstrument('${m.sym}')">
-          ${symLogo(m.sym, 30)}
-          <div style="flex:1;min-width:0;">
-            <div class="sym">${m.sym}/USDT</div>
-            <div class="nm">${m.name}</div>
-          </div>
-          <div>
-            <div class="px">${fmt(m.price)}</div>
-            <div class="pc ${chgCls(m.chg)}">${chgSign(m.chg)}</div>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+function openMyCopy(){
+  if(!currentUser){ openAuth('register'); return; }
+  document.getElementById('genericTitle').textContent = 'My Copy Trades';
+  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">Your copy trades will appear here.</div>';
   document.getElementById('genericModal').classList.add('on');
-}
-function pickInstrument(sym){
-  closeGeneric();
-  trSetSymbol(sym);
-  toast('Switched to ' + sym);
 }
 
 /* ============================================================
@@ -2447,10 +2166,7 @@ function pickInstrument(sym){
 function renderAllPrices(){
   renderHomeCoinGrid();
   renderHomeCoinList();
-  renderTopGainers();
   renderMarketsTable();
-  renderTrOrderBook();
-  renderTrHeader();
 }
 setInterval(renderAllPrices, 2000);
 
@@ -2507,15 +2223,7 @@ function downloadFor(platform){
   }
   window.location.href = '/download.html?platform=' + platform;
 }
-window.deferredInstallPrompt = null;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  window.deferredInstallPrompt = e;
-  const banner = document.getElementById('androidInstallBtn');
-  if(banner && localStorage.getItem('androidInstallDismissed') !== '1'){
-    banner.style.display = 'flex';
-  }
-});
+
 document.getElementById('androidInstallGo')?.addEventListener('click', () => {
   const banner = document.getElementById('androidInstallBtn');
   if(!window.deferredInstallPrompt){
@@ -2538,11 +2246,6 @@ document.getElementById('androidInstallX')?.addEventListener('click', () => {
   if(banner) banner.style.display = 'none';
   localStorage.setItem('androidInstallDismissed', '1');
 });
-window.addEventListener('appinstalled', () => {
-  const banner = document.getElementById('androidInstallBtn');
-  if(banner) banner.style.display = 'none';
-  window.deferredInstallPrompt = null;
-});
 
 /* ============================================================
    BOOT
@@ -2552,14 +2255,9 @@ window.addEventListener('appinstalled', () => {
   startSimulation();
   renderHomeCoinGrid();
   renderHomeCoinList();
-  renderTopGainers();
   renderMarketsTable();
   renderAccounts();
   renderProfileMenu();
-  trSetSymbol('BTC');
-  renderTradeForm();
-  renderTrOrderBook();
-  renderTrHeader();
   fetchLiveNews().then(() => refreshNewsStrip());
 
   const { data } = await sb.auth.getSession();
@@ -2570,20 +2268,20 @@ window.addEventListener('appinstalled', () => {
       currentMode = profile.mode === 'demo' ? 'demo' : 'real';
       applyUserToUI();
       updateModeUI();
+      updateDownloadCard();
       go('s-home');
       await loadLiveSignals();
-      await loadLiveParticipants();
-      subscribeSignalsRealtime();
-      renderCopySection();
-      renderTrCopy();
+      renderAnalysts();
+      loadMyCopyTrades();
+      return;
     }
   } else {
     openAuth('register');
     await loadLiveSignals();
-    renderCopySection();
+    renderAnalysts();
   }
 
-  document.getElementById('loginPassword')?.addEventListener('keydown', e => {
+  document.getElementById('loginPw')?.addEventListener('keydown', e => {
     if(e.key === 'Enter') doLogin();
   });
 })();
