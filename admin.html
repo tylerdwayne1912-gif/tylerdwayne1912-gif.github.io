@@ -1,1679 +1,930 @@
 <!DOCTYPE html>
-<html lang="en" id="htmlRoot" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
-<title>NextTrade — App</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NextTrade — Admin</title>
 <link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#0B0E11">
+<meta name="theme-color" content="#0ECB81">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="NextTrade">
+<meta name="apple-mobile-web-app-title" content="NextTrade Admin">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-<script>
-(function(){
-  try{
-    var saved = localStorage.getItem('nt_theme');
-    var theme = (saved === 'light') ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-    var meta = document.querySelector('meta[name="theme-color"]');
-    if(meta) meta.setAttribute('content', theme === 'dark' ? '#0B0E11' : '#FFFFFF');
-  }catch(e){
-    document.documentElement.setAttribute('data-theme','dark');
-  }
-  var isMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry/i.test(navigator.userAgent)
-                 || ('ontouchstart' in window && window.innerWidth < 1024)
-                 || window.matchMedia('(pointer: coarse)').matches;
-  if(isMobile) document.documentElement.classList.add('is-mobile');
-})();
-</script>
 <style>
-:root,
-:root[data-theme="dark"]{
-  --green:#0ECB81;--green-dk:#0BB574;--green-lt:rgba(14,203,129,.14);
-  --red:#F6465D;--red-lt:rgba(246,70,93,.14);
-  --orange:#FA8C16;--orange-lt:rgba(250,140,22,.14);
-  --blue:#1890FF;--blue-lt:rgba(24,144,255,.14);
-  --purple:#722ED1;--purple-lt:rgba(114,46,209,.14);
-  --yellow:#F5C542;
-
-  --bg:#0B0E11;
-  --bg2:#12161C;
-  --bg3:#181D25;
-  --card:#12161C;
-  --card-elev:#161B22;
-  --input-bg:#181D25;
-
-  --text:#FFFFFF;
-  --text2:#8B95A5;
-  --text3:#5E6673;
-  --line:#1E242C;
-  --line2:#2A323D;
-
-  --overlay-bg:rgba(0,0,0,.6);
-  --sheet-bg:#12161C;
-  --modal-bg:rgba(0,0,0,.65);
-
-  --nav-bg:#0B0E11;
-  --topbar-grad:linear-gradient(180deg,#0F1A20 0%,#0B1218 55%,#0B0E11 100%);
-  --hero-grad:linear-gradient(180deg,#0F1A20 0%,#0B0E11 100%);
-  --asset-hero-grad:linear-gradient(180deg,#0F1A20 0%,#0B1218 40%,#0B0E11 100%);
-  --wallet-grad:linear-gradient(135deg,#0BB574 0%,#0a8b5a 100%);
-
-  --shadow-sm:0 1px 2px rgba(0,0,0,.35);
-  --shadow-md:0 8px 24px rgba(0,0,0,.35);
-  --shadow-lg:0 20px 50px rgba(0,0,0,.5);
-
-  --mock-bg:#0F141A;
-  --mock-line:#1E242C;
-
-  --icon-color:#FFFFFF;
-
-  --welcome-bg:var(--card);
-  --coin-card-bg:var(--card);
-  --quick-circle-bg:var(--card);
-  --quick-circle-ring:var(--line);
-}
-:root[data-theme="light"]{
+:root{
   --green:#0ECB81;--green-dk:#0BB574;--green-lt:#E7F9F1;
   --red:#F6465D;--red-lt:#FEF0F0;
-  --orange:#FA8C16;--orange-lt:#FFF7E6;
   --blue:#1890FF;--blue-lt:#E6F4FF;
+  --orange:#FA8C16;--orange-lt:#FFF7E6;
   --purple:#722ED1;--purple-lt:#F3E8FF;
-  --yellow:#F5C542;
-
-  --bg:#F5F6F8;
-  --bg2:#FFFFFF;
-  --bg3:#F1F3F6;
-  --card:#FFFFFF;
-  --card-elev:#FFFFFF;
-  --input-bg:#F5F6F8;
-
-  --text:#1E2329;
-  --text2:#707A8A;
-  --text3:#B7BDC6;
-  --line:#EAECEF;
-  --line2:#DDE1E6;
-
-  --overlay-bg:rgba(0,0,0,.55);
-  --sheet-bg:#FFFFFF;
-  --modal-bg:rgba(0,0,0,.55);
-
-  --nav-bg:#FFFFFF;
-  --topbar-grad:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);
-  --hero-grad:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);
-  --asset-hero-grad:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);
-  --wallet-grad:linear-gradient(135deg,#0ECB81 0%,#0a9e63 100%);
-
-  --shadow-sm:0 1px 2px rgba(0,0,0,.04);
-  --shadow-md:0 8px 24px rgba(0,0,0,.08);
-  --shadow-lg:0 20px 50px rgba(0,0,0,.15);
-
-  --mock-bg:#0F141A;
-  --mock-line:#1E242C;
-
-  --icon-color:#1E2329;
-
-  --welcome-bg:#F1F3F6;
-  --coin-card-bg:#F5F6F8;
-  --quick-circle-bg:#FFFFFF;
-  --quick-circle-ring:#EAECEF;
+  --bg:#F0F2F5;--text:#1E2329;--text2:#707A8A;--text3:#B7BDC6;--line:#EAECEF;
 }
-
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-html,body{margin:0;padding:0;height:100%;background:var(--nav-bg);}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  transition:background-color .25s ease, color .25s ease;}
-.phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);
-  transition:background-color .25s ease;}
-html.is-mobile,html.is-mobile body{background:var(--bg);overflow:hidden;height:100%;}
-html.is-mobile body{display:block;min-height:0;padding:0;margin:0;}
-html.is-mobile .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;
-  box-shadow:none;border-radius:0;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
-html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
-@media(max-width:820px){
-  body{display:block;min-height:0;overflow:hidden;background:var(--bg);}
-  .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;box-shadow:none;border-radius:0;}
-}
-@supports(padding: max(0px)){
-  .phone{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
-  .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
-}
-.screen{position:absolute;inset:0;display:none;flex-direction:column;overflow:hidden;}
-.screen.active{display:flex;}
-.scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:8px;}
-.scroll::-webkit-scrollbar{width:0;}
+html,body{margin:0;padding:0;background:var(--bg);}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);font-size:13px;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:#C1C7D0;border-radius:3px;}
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:230px;background:#001529;color:rgba(255,255,255,.7);flex-shrink:0;font-size:13px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;}
+.logo{display:flex;align-items:center;gap:10px;padding:18px 20px;color:#fff;font-weight:700;
+  font-size:15px;border-bottom:1px solid rgba(255,255,255,.08);}
+.logo .mk{width:26px;height:26px;border-radius:6px;background:linear-gradient(135deg,#1890ff,#0ECB81);
+  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:#04160f;}
+.group{padding:12px 0 4px;}
+.group-title{padding:8px 20px;font-size:11px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.7px;}
+.item{padding:11px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:.12s;
+  border-left:2px solid transparent;position:relative;}
+.item:hover{color:#fff;background:rgba(255,255,255,.05);}
+.item.on{background:#1890ff;color:#fff;border-left-color:#1890ff;}
+.item svg{flex-shrink:0;opacity:.85;}
+.item .badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700;}
 
-/* auth */
-.step-progress{display:flex;align-items:center;justify-content:center;
-  padding:22px 20px 14px;background:var(--card);border-bottom:1px solid var(--line);flex-shrink:0;}
-.step-progress .step{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;position:relative;width:90px;}
-.step-progress .circle{width:38px;height:38px;border-radius:50%;background:var(--input-bg);color:var(--text3);
-  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;
-  border:2px solid var(--input-bg);transition:.2s;}
-.step-progress .label{font-size:11.5px;color:var(--text3);font-weight:600;text-align:center;line-height:1.3;}
-.step-progress .step.done .circle{background:var(--green);color:#fff;border-color:var(--green);}
-.step-progress .step.done .label{color:var(--text2);}
-.step-progress .step.active .circle{background:var(--orange-lt);color:var(--orange);border-color:var(--orange);}
-.step-progress .step.active .label{color:var(--orange);font-weight:700;}
-.step-progress .line{height:2px;background:var(--line);flex:1;max-width:60px;margin:0 -8px;
-  align-self:flex-start;margin-top:18px;}
-.step-progress .line.done{background:var(--green);}
-.auth-screen{position:absolute;inset:0;background:var(--card);z-index:2000;display:none;flex-direction:column;}
-.auth-screen.active{display:flex;}
-.auth-header{padding:16px 20px 8px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
-.auth-header .back{width:36px;height:36px;border-radius:50%;background:var(--card);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid var(--line);color:var(--text);}
-.auth-header .logo-mini{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--text);}
-.auth-header .logo-mini .mk{width:26px;height:26px;border-radius:7px;
-  background:linear-gradient(135deg,#0ECB81,#0a9e63);display:flex;align-items:center;
-  justify-content:center;font-size:13px;font-weight:900;color:#04160f;}
-.auth-body{flex:1;overflow-y:auto;padding:20px 22px 40px;}
-.auth-title{font-size:26px;font-weight:800;letter-spacing:-.7px;margin:0 0 6px;color:var(--text);}
-.auth-sub{font-size:13.5px;color:var(--text2);line-height:1.6;margin:0 0 22px;}
-.auth-field{margin-bottom:16px;}
-.auth-field label{display:block;font-size:13px;color:var(--text);margin-bottom:8px;font-weight:600;}
-.auth-field .wrap{position:relative;}
-.auth-field input{width:100%;border:1.5px solid var(--line);border-radius:10px;
-  padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:var(--card);color:var(--text);transition:.15s;}
-.auth-field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(14,203,129,.12);}
-.auth-field input::placeholder{color:var(--text3);}
-.auth-field .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text2);}
-.auth-field .err{font-size:11.5px;color:var(--red);margin-top:6px;display:none;}
-.auth-field .err.show{display:block;}
-.pw-strength{display:flex;gap:4px;margin-top:8px;}
-.pw-strength .seg{flex:1;height:4px;border-radius:2px;background:var(--line);transition:.2s;}
-.pw-strength .seg.on-1{background:var(--red);}
-.pw-strength .seg.on-2{background:#FA8C16;}
-.pw-strength .seg.on-3{background:#F5C542;}
-.pw-strength .seg.on-4{background:var(--green);}
-.auth-check{display:flex;align-items:flex-start;gap:10px;margin:16px 0;}
-.auth-check input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
-.auth-check label{font-size:12.5px;color:var(--text2);line-height:1.55;cursor:pointer;}
-.auth-check a{color:var(--green-dk);font-weight:600;}
-.auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
-  font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
-.auth-submit:hover{background:var(--green-dk);}
-.auth-submit:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
-.auth-switch{text-align:center;font-size:13.5px;color:var(--text2);margin-top:22px;}
-.auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
-.skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
-.skip-link:hover{color:var(--text);}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{background:#fff;border-bottom:1px solid var(--line);padding:12px 24px;display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;z-index:50;}
+.crumb{font-size:13px;color:var(--text2);}
+.crumb b{color:var(--text);font-weight:600;}
+.topsearch{margin-left:auto;background:#F5F6F8;border-radius:8px;padding:8px 14px;display:flex;align-items:center;
+  gap:8px;font-size:13px;color:var(--text2);width:240px;}
+.topsearch input{border:none;background:transparent;outline:none;font-family:inherit;font-size:13px;
+  color:var(--text);width:100%;}
+.topicon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  color:var(--text2);cursor:pointer;position:relative;}
+.topicon:hover{background:#F5F6F8;}
+.topicon .av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);}
+.content{padding:20px 24px;flex:1;}
+.panel{display:none;}.panel.on{display:block;}
 
-.topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
-  background:var(--topbar-grad);}
-.avatar{width:34px;height:34px;border-radius:50%;background:var(--card);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;border:1px solid var(--line);cursor:pointer;
-  font-size:13px;font-weight:800;color:var(--green-dk);position:relative;}
-.avatar .status{position:absolute;bottom:0;right:0;width:10px;height:10px;border-radius:50%;
-  background:var(--green);border:2px solid var(--card);display:none;}
-.avatar.logged-in .status{display:block;}
-.search{flex:1;height:36px;border-radius:18px;background:var(--card);display:flex;align-items:center;
-  gap:8px;padding:0 14px;font-size:14px;color:var(--text2);border:1px solid var(--line);min-width:0;}
-.search span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--card);display:flex;align-items:center;
-  justify-content:center;flex-shrink:0;cursor:pointer;border:1px solid var(--line);position:relative;
-  color:var(--icon-color);transition:.15s;}
-.icon-btn:active{background:var(--bg3);}
-.icon-btn svg path,.icon-btn svg circle{stroke:var(--icon-color);}
-.theme-toggle{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
-  color:var(--icon-color);transition:.18s;}
-.theme-toggle:active{background:var(--bg3);transform:scale(.95);}
-.theme-toggle svg{width:17px;height:17px;display:block;stroke:var(--icon-color);}
-:root[data-theme="dark"] .theme-toggle .icon-moon{display:none;}
-:root[data-theme="dark"] .theme-toggle .icon-sun{display:block;}
-:root[data-theme="light"] .theme-toggle .icon-moon{display:block;}
-:root[data-theme="light"] .theme-toggle .icon-sun{display:none;}
-.kyc-pending-banner{display:none;background:var(--orange-lt);color:var(--orange);border-bottom:1px solid var(--line);
-  font-size:12px;font-weight:600;padding:8px 14px;text-align:center;}
-.kyc-pending-banner.on{display:block;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px;}
+.stat{background:#fff;border-radius:8px;padding:18px 20px;display:flex;align-items:center;gap:14px;}
+.stat .ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.stat .ic.g{background:rgba(14,203,129,.12);color:var(--green);}
+.stat .ic.r{background:rgba(246,70,93,.12);color:var(--red);}
+.stat .ic.b{background:rgba(24,144,255,.12);color:var(--blue);}
+.stat .ic.o{background:rgba(250,140,22,.12);color:var(--orange);}
+.stat .k{font-size:12px;color:var(--text2);}
+.stat .v{font-size:22px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;
+  margin-top:2px;letter-spacing:-.5px;}
 
-.home-greet{padding:6px 16px 4px;}
-.home-greet h1{font-size:22px;font-weight:800;letter-spacing:-.6px;margin:0;color:var(--text);}
+.btn{font-family:inherit;font-size:13px;border-radius:6px;padding:8px 18px;cursor:pointer;
+  border:1px solid #D9D9D9;background:#fff;color:var(--text);transition:.15s;font-weight:500;
+  display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+.btn:hover{border-color:var(--blue);color:var(--blue);}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff;}
+.btn.primary:hover{background:#40a9ff;color:#fff;}
+.btn.success{background:var(--green);border-color:var(--green);color:#fff;}
+.btn.danger{background:var(--red);border-color:var(--red);color:#fff;}
+.btn.sm{padding:5px 12px;font-size:12px;}
 
-.welcome-card{margin:10px 14px 0;background:var(--welcome-bg);border-radius:16px;padding:18px 20px;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);}
-.welcome-card .wc-left{flex:1;min-width:0;}
-.welcome-card .wc-h{font-size:20px;font-weight:800;letter-spacing:-.5px;color:var(--text);line-height:1.15;}
-.welcome-card .wc-sub{font-size:12.5px;color:var(--text2);line-height:1.5;margin-top:8px;max-width:200px;}
-.welcome-card .wc-badge{width:96px;height:96px;border-radius:16px;flex-shrink:0;
-  background:linear-gradient(135deg,#0ECB81,#0a9e63);display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:32px;font-weight:900;position:relative;box-shadow:0 8px 24px rgba(14,203,129,.25);}
-.welcome-card .wc-badge .check{position:absolute;top:-6px;right:-6px;width:26px;height:26px;border-radius:50%;
-  background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
-  border:2px solid var(--bg);}
+.card{background:#fff;border-radius:8px;padding:20px;margin-bottom:16px;}
+.card h2{margin:0 0 6px;font-size:16px;font-weight:700;}
+.card .sub{font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.5;}
 
-.quick-circle-row{display:flex;justify-content:space-between;gap:6px;padding:18px 14px 10px;}
-.qc{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;min-width:0;}
-.qc .circle{width:52px;height:52px;border-radius:50%;background:var(--quick-circle-bg);
-  border:1px solid var(--quick-circle-ring);display:flex;align-items:center;justify-content:center;transition:.15s;}
-.qc:active .circle{background:var(--bg3);transform:scale(.95);}
-.qc .circle svg{width:24px;height:24px;}
-.qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600;}
+.field input,.field textarea,.field select{width:100%;border:1.5px solid var(--line);border-radius:8px;
+  padding:11px 14px;font-size:13px;font-family:inherit;outline:none;color:var(--text);background:#fff;
+  font-variant-numeric:tabular-nums;transition:.15s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,144,255,.1);}
+.field .hint{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.5;}
+.field textarea{resize:vertical;min-height:60px;}
 
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;font-size:16px;font-weight:700;color:var(--text);}
-.sec-head .more{font-size:12px;color:var(--text2);font-weight:400;cursor:pointer;}
-.sec-pair{display:flex;align-items:center;gap:14px;padding:16px 16px 8px;}
-.sec-pair .on{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--text);}
-.sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:900px;}
+th{background:#FAFAFA;text-align:left;padding:11px 14px;font-weight:600;color:var(--text);
+  border-bottom:1px solid var(--line);white-space:nowrap;font-size:12px;}
+th.right,td.right{text-align:right;}
+td{padding:12px 14px;border-bottom:1px solid #F0F0F0;color:var(--text);
+  font-variant-numeric:tabular-nums;vertical-align:middle;}
+tr:hover td{background:#FAFBFC;}
+.mono{font-family:'Courier New',monospace;font-size:11.5px;}
 
-.coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
-.coin-card{background:var(--coin-card-bg);border-radius:12px;padding:14px;border:1px solid var(--line);
-  position:relative;cursor:pointer;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
-.coin-card:active{transform:scale(.98);}
-.coin-card .row-top{display:flex;align-items:center;gap:6px;}
-.coin-card .pair{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
-.coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;}
-.coin-card .row-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:10px;}
-.coin-card .left{min-width:0;}
-.coin-card .price{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;
-  letter-spacing:-.3px;white-space:nowrap;}
-.coin-card .chg{font-size:12px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums;}
-.coin-card .chg.up{color:var(--green);}
-.coin-card .chg.down{color:var(--red);}
-.coin-card .spark{width:52px;height:28px;flex-shrink:0;}
+.user-cell{display:flex;align-items:center;gap:10px;min-width:180px;}
+.user-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
+.user-info{min-width:0;}
+.user-name{font-size:13.5px;font-weight:700;line-height:1.2;}
+.user-email{font-size:11.5px;color:var(--text2);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.user-uid{font-size:10.5px;color:var(--text3);margin-top:2px;font-family:'Courier New',monospace;}
 
-.coin-list{background:transparent;border-radius:0;margin:0;overflow:hidden;}
-.coin-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
-.coin-row:last-child{border-bottom:none;}
-.coin-row:active{background:var(--bg2);}
-.coin-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
-.coin-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
-.coin-row .left .nm{min-width:0;}
-.coin-row .left .pair{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.2px;white-space:nowrap;}
-.coin-row .left .pair small{font-size:11px;font-weight:500;color:var(--text2);margin-left:1px;}
-.coin-row .left .vol{font-size:11.5px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
-.coin-row .price-col{text-align:right;min-width:0;}
-.coin-row .price-col .p{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.3px;white-space:nowrap;}
-.coin-row .price-col .usd{font-size:11px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.coin-row .pill{min-width:74px;text-align:center;padding:8px 12px;border-radius:8px;
-  color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.2px;white-space:nowrap;}
-.coin-row .pill.up{background:var(--green);}
-.coin-row .pill.down{background:var(--red);}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid;
+  font-weight:600;line-height:1.6;}
+.tag.green{background:var(--green-lt);border-color:var(--green);color:#0a9e63;}
+.tag.blue{background:var(--blue-lt);border-color:var(--blue);color:var(--blue);}
+.tag.orange{background:var(--orange-lt);border-color:var(--orange);color:var(--orange);}
+.tag.red{background:var(--red-lt);border-color:var(--red);color:var(--red);}
+.tag.purple{background:var(--purple-lt);border-color:var(--purple);color:var(--purple);}
+.tag.gray{background:#F5F6F8;border-color:var(--line);color:var(--text2);}
 
-.news-strip{margin:14px;background:var(--card);border-radius:12px;border:1px solid var(--line);
-  padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
-.news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
-  display:flex;align-items:center;justify-content:center;color:var(--green-dk);flex-shrink:0;}
-.news-strip .nt{flex:1;min-width:0;}
-.news-strip .nt .h{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
-.news-strip .nt .s{font-size:11px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.news-strip .nd{font-size:10.5px;color:var(--text3);flex-shrink:0;}
-.wallet-hero{background:var(--wallet-grad);color:#fff;
-  padding:22px 20px;text-align:center;flex-shrink:0;}
-.wallet-hero .lab{font-size:12px;opacity:.9;margin-bottom:6px;}
-.wallet-hero .bal{font-size:32px;font-weight:800;letter-spacing:-1px;font-variant-numeric:tabular-nums;}
-.wallet-hero .usd{font-size:13px;opacity:.85;margin-top:4px;}
-.addr-card{background:var(--card);margin:14px;border-radius:14px;padding:18px;border:1px solid var(--line);}
-.addr-card .label{font-size:12px;color:var(--text2);margin-bottom:6px;font-weight:600;}
-.addr-card .addr-row{display:flex;align-items:center;gap:8px;background:var(--input-bg);
-  border-radius:10px;padding:12px 14px;font-family:'Courier New',monospace;
-  font-size:11.5px;word-break:break-all;color:var(--green-dk);line-height:1.4;}
-.addr-card .addr-row .copy{margin-left:auto;color:var(--text2);cursor:pointer;
-  font-family:inherit;font-size:11px;font-weight:700;background:var(--card);padding:5px 10px;border-radius:6px;flex-shrink:0;}
-.addr-card .qr-wrap{background:#fff;border-radius:12px;padding:16px;display:flex;justify-content:center;margin:14px 0;}
-.addr-card .qr-wrap canvas{width:160px;height:160px;}
-.addr-card .hint-line{font-size:11.5px;color:var(--text2);line-height:1.6;margin-top:8px;}
-.asset-list{margin:0 14px 14px;background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--line);}
-.asset-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);}
-.asset-row:last-child{border-bottom:none;}
-.asset-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0;}
-.asset-row .info{flex:1;min-width:0;}
-.asset-row .sym{font-size:14px;font-weight:600;color:var(--text);}
-.asset-row .nm{font-size:11px;color:var(--text3);margin-top:2px;}
-.asset-row .amount{text-align:right;}
-.asset-row .amount .amt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--text);}
-.asset-row .amount .usd{font-size:11px;color:var(--text3);margin-top:2px;font-variant-numeric:tabular-nums;}
+.warn{background:#FFF8E6;border:1px solid #FFE9A8;border-radius:8px;padding:12px 16px;
+  font-size:12.5px;color:#7A5C00;line-height:1.6;margin-bottom:16px;}
+.warn.info{background:var(--blue-lt);border-color:#91CAFF;color:#0958D9;}
+.warn.err{background:var(--red-lt);border-color:#FFA39E;color:#a8071a;}
 
-.overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;max-width:430px;margin:0 auto;}
-.overlay.active{display:flex;}
-.ov-head{display:flex;align-items:center;padding:14px 16px;flex-shrink:0;}
-.ov-head .x{font-size:22px;line-height:1;cursor:pointer;width:30px;color:var(--text);}
-.ov-head .title{font-size:17px;font-weight:700;flex:1;text-align:center;margin-right:30px;color:var(--text);}
-.prof-user{display:flex;align-items:center;gap:12px;padding:6px 18px 16px;}
-.prof-user .av{width:52px;height:52px;border-radius:50%;background:var(--card);border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--green-dk);}
-.prof-user .addr{font-size:13px;font-weight:600;word-break:break-all;line-height:1.3;color:var(--text);}
-.prof-user .uid{font-size:12px;color:var(--text3);margin-top:3px;}
-.menu-row{display:flex;align-items:center;gap:12px;background:var(--card);padding:15px 16px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;color:var(--text);}
-.menu-row .mi{width:22px;display:flex;justify-content:center;color:var(--green);}
-.menu-row .mt{flex:1;}
-.menu-row .arrow{color:var(--text3);}
-.logout{margin:20px 16px;height:48px;border-radius:8px;background:var(--red);color:#fff;
-  display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;cursor:pointer;}
-.bottomnav{display:flex;background:var(--card);border-top:1px solid var(--line);flex-shrink:0;z-index:40;width:100%;box-sizing:border-box;}
-.bottomnav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;
-  font-size:11px;color:var(--text2);cursor:pointer;user-select:none;}
-.bottomnav .nb.on{color:var(--green);}
-.logo{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;
-  justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;}
-.generic-modal{position:fixed;inset:0;background:var(--modal-bg);z-index:1700;
-  display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
-.generic-modal.on{display:flex;}
-.generic-sheet{background:var(--sheet-bg);color:var(--text);width:100%;max-width:430px;border-radius:20px 20px 0 0;max-height:88%;overflow-y:auto;animation:slideUp .28s ease-out;}
-@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.generic-head{display:flex;align-items:center;padding:18px 20px 10px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--sheet-bg);z-index:2;border-radius:20px 20px 0 0;}
-.generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;color:var(--text);}
-.generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
-.generic-body{padding:16px 20px 20px;}
-#toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
-  background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
-  opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
+.ct-item{background:#F9FAFB;border-radius:8px;padding:12px 14px;margin-bottom:10px;
+  display:flex;align-items:flex-start;gap:12px;}
+.ct-item .ic{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
+  color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700;font-size:14px;
+  background-size:cover;background-position:center;}
+.ct-item .body{flex:1;min-width:0;}
+.ct-item .trader{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ct-item .sym{font-size:12px;font-weight:600;color:var(--text2);margin-top:2px;}
+.ct-item .msg{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;}
+.ct-item .meta{font-size:10.5px;color:var(--text3);margin-top:6px;}
+.ct-item .parts{font-size:11px;color:var(--blue);font-weight:700;margin-top:6px;cursor:pointer;display:inline-block;}
+.ct-item .rm{color:var(--red);cursor:pointer;font-size:11px;font-weight:700;flex-shrink:0;padding:2px 4px;}
+
+.code-pill{display:inline-block;font-family:'Courier New',monospace;font-weight:800;
+  letter-spacing:3px;font-size:13px;background:#1E2329;color:#fff;padding:3px 10px;border-radius:5px;}
+
+.xpub-preview{font-family:'Courier New',monospace;font-size:11.5px;line-height:2;}
+.xpub-preview .addr{color:var(--blue);font-weight:600;}
+.xpub-preview .idx{color:var(--text2);}
+
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:2000;padding:20px;}
+.modal-bg.on{display:flex;}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:12px 12px 0 0;}
+.modal-head h3{margin:0;font-size:16px;font-weight:700;}
+.modal-head .x{font-size:20px;cursor:pointer;color:var(--text2);padding:0 8px;line-height:1;}
+.modal-body{padding:20px 22px;}
+.modal-foot{display:flex;gap:10px;padding:14px 22px 20px;border-top:1px solid var(--line);}
+.modal-foot .btn{flex:1;justify-content:center;padding:11px;}
+
+#toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,20px);
+  background:rgba(30,35,41,.96);color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;
+  opacity:0;transition:.25s;pointer-events:none;z-index:3000;border:1px solid rgba(14,203,129,.3);}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 
-/* ============================================================
-   COPY TRADING screen styles
-   ============================================================ */
-.ct-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
-.ct-stat{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--line);
-  box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
-.ct-stat .lbl{font-size:12.5px;color:var(--text2);line-height:1.35;margin-bottom:8px;}
-.ct-stat .val{font-size:24px;font-weight:800;color:var(--green);letter-spacing:-.5px;line-height:1;}
-.ct-stat .unit{font-size:12px;color:var(--text2);margin-top:5px;}
-.ct-stat .arrow{position:absolute;top:14px;right:14px;color:var(--text3);font-size:16px;}
-.ct-stat.tint{background:linear-gradient(135deg,var(--green-lt) 0%,var(--card) 70%);}
-.ct-sec-head{padding:8px 16px 10px;}
-.ct-sec-head h2{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
-.ct-search-row{display:flex;gap:10px;padding:0 16px 14px;align-items:center;}
-.ct-search{flex:1;height:44px;background:var(--input-bg);border:1px solid var(--line);border-radius:22px;
-  display:flex;align-items:center;gap:8px;padding:0 16px;}
-.ct-search input{flex:1;background:transparent;border:none;outline:none;font-family:inherit;
-  font-size:13.5px;color:var(--text);min-width:0;}
-.ct-search input::placeholder{color:var(--text3);}
-.ct-signal-btn{height:44px;padding:0 16px;background:var(--card);border:1px solid var(--line);border-radius:22px;
-  display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--text);
-  cursor:pointer;flex-shrink:0;font-family:inherit;}
-.ct-signal-btn svg path{stroke:var(--icon-color);}
-.analyst-list{padding:0 16px 20px;display:flex;flex-direction:column;gap:12px;}
-.analyst-card{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--line);box-shadow:var(--shadow-sm);}
-.analyst-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
-.analyst-info{flex:1;min-width:0;}
-.analyst-name{font-size:16px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
-.analyst-role{font-size:12.5px;color:var(--text2);margin-top:3px;}
-.analyst-av{width:48px;height:48px;border-radius:50%;background:var(--green-lt);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dk);font-size:16px;
-  border:1px solid var(--line);}
-.copy-btn{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 14px;
-  font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;flex-shrink:0;}
-.copy-btn:active{background:var(--input-bg);}
-.analyst-rates{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
-.analyst-rate{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
-.analyst-rate .k{color:var(--text2);}
-.analyst-rate .v{color:var(--green);font-weight:700;font-variant-numeric:tabular-nums;}
-.analyst-intro{background:var(--input-bg);border-radius:12px;padding:12px 14px;position:relative;cursor:pointer;}
-.analyst-intro .lbl{font-size:12px;color:var(--text2);font-weight:700;margin-bottom:6px;letter-spacing:.2px;}
-.analyst-intro .txt{font-size:12.5px;color:var(--text2);line-height:1.55;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.analyst-intro.open .txt{-webkit-line-clamp:unset;display:block;}
-.analyst-intro .caret{position:absolute;top:12px;right:14px;color:var(--text3);font-size:11px;transition:.2s;}
-.analyst-intro.open .caret{transform:rotate(180deg);}
-.no-more-data{display:flex;align-items:center;gap:12px;padding:22px 16px 30px;color:var(--text3);font-size:12.5px;}
-.no-more-data::before,.no-more-data::after{content:"";height:1px;background:var(--line);flex:1;}
+.login-wrap{position:fixed;inset:0;background:linear-gradient(135deg,#0B0E11,#101820);
+  display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
+.login-card{background:#fff;border-radius:16px;width:100%;max-width:400px;padding:32px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);}
+.login-card .lg{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;margin-bottom:8px;color:#1E2329;}
+.login-card .lg .mk{width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,#0ECB81,#1890ff);display:flex;align-items:center;
+  justify-content:center;font-size:16px;font-weight:900;color:#04160f;}
+.login-card .sub{font-size:13px;color:#707A8A;margin-bottom:24px;line-height:1.5;}
+.login-card label{display:block;font-size:12.5px;color:#1E2329;font-weight:600;margin-bottom:6px;}
+.login-card input{width:100%;border:1.5px solid #EAECEF;border-radius:10px;padding:13px 15px;
+  font-size:14px;font-family:inherit;outline:none;transition:.15s;margin-bottom:14px;}
+.login-card input:focus{border-color:#0ECB81;box-shadow:0 0 0 3px rgba(14,203,129,.12);}
+.login-card button{width:100%;height:48px;border-radius:10px;background:#0ECB81;color:#fff;
+  font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.login-card button:disabled{background:#EAECEF;color:#B7BDC6;cursor:not-allowed;}
+.login-card .err{color:#F6465D;font-size:12px;margin-top:10px;display:none;}
+.login-card .err.show{display:block;}
 
-/* Follow Signal sheet */
-.fs-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;
-  align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
-.fs-backdrop.on{display:flex;}
-.fs-sheet{background:var(--card);width:100%;max-width:440px;border-radius:24px 24px 0 0;
-  max-height:94vh;overflow-y:auto;animation:fsUp .3s cubic-bezier(.2,.9,.3,1);}
-@keyframes fsUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-.fs-head{background:linear-gradient(180deg,#DCFCE7 0%,var(--card) 100%);
-  padding:22px 20px 20px;text-align:center;position:relative;border-radius:24px 24px 0 0;}
-.fs-head h3{margin:0;font-size:19px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
-.fs-head .x{position:absolute;top:20px;right:20px;font-size:22px;color:var(--text);
-  cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
-.fs-body{padding:18px 22px 26px;}
-.fs-field{margin-bottom:18px;}
-.fs-field .lbl-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
-.fs-field label{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.2px;}
-.fs-field .avail{font-size:12.5px;color:var(--text2);}
-.fs-field .avail b{color:var(--text);font-weight:800;}
-.fs-input{width:100%;height:56px;border:1.5px solid var(--line);border-radius:12px;padding:0 18px;
-  font-size:15px;font-family:inherit;outline:none;background:var(--card);color:var(--text);transition:.15s;}
-.fs-input:focus{border-color:var(--green);box-shadow:0 0 0 3px var(--green-lt);}
-.fs-input::placeholder{color:var(--text3);}
-.fs-amount-wrap{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;
-  padding:0 8px 0 18px;height:56px;transition:.15s;}
-.fs-amount-wrap:focus-within{border-color:var(--green);box-shadow:0 0 0 3px var(--green-lt);}
-.fs-amount-wrap input{flex:1;background:transparent;border:none;outline:none;font-family:inherit;
-  font-size:15px;color:var(--text);min-width:0;}
-.fs-amount-wrap input::placeholder{color:var(--text3);}
-.fs-amount-wrap .suf{font-size:13.5px;color:var(--text2);font-weight:700;}
-.fs-max-btn{background:var(--green-lt);color:var(--green-dk);border:1.5px solid var(--green);
-  border-radius:9px;padding:9px 16px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;}
-.fs-quick{display:flex;gap:10px;margin-top:10px;}
-.fs-quick button{background:var(--green-lt);border:1.5px solid var(--green);color:var(--green-dk);
-  border-radius:10px;padding:9px 20px;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;}
-.fs-select{width:100%;height:52px;border:1.5px solid var(--line);border-radius:12px;padding:0 16px;
-  font-size:14px;font-family:inherit;outline:none;background:var(--card);color:var(--text);cursor:pointer;}
-.fs-agree{display:flex;align-items:flex-start;gap:10px;margin:6px 0 20px;font-size:13px;color:var(--text);
-  line-height:1.5;cursor:pointer;}
-.fs-agree input{margin-top:2px;width:18px;height:18px;accent-color:var(--text);cursor:pointer;flex-shrink:0;}
-.fs-agree a{color:var(--blue);font-weight:700;text-decoration:none;}
-.fs-apply{width:100%;height:56px;border-radius:14px;background:var(--green);color:#fff;
-  font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:.15s;}
-.fs-apply:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
-.fs-apply:not(:disabled):active{background:var(--green-dk);transform:scale(.99);}
-.fs-domain{text-align:center;padding:16px 0 6px;font-size:12px;color:var(--text3);}
-.fs-domain span{background:var(--input-bg);padding:5px 14px;border-radius:12px;display:inline-block;}
-
-/* Market tabs */
-.mk-tabs{display:flex;gap:20px;padding:6px 16px 10px;border-bottom:1px solid var(--line);}
-.mk-tab{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
-  border-bottom:2px solid transparent;letter-spacing:-.3px;}
-.mk-tab.on{color:var(--text);border-bottom-color:var(--green);}
-.mk-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;background:var(--card);}
-.mk-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
-.mk-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
-.mk-row .pair{font-size:14.5px;font-weight:800;color:var(--text);}
-.mk-row .pair small{font-size:11px;font-weight:500;color:var(--text2);margin-left:2px;}
-.mk-row .vol{font-size:11.5px;color:var(--text2);margin-top:3px;}
-.mk-row .price{font-size:14.5px;font-weight:800;text-align:right;font-variant-numeric:tabular-nums;color:var(--text);}
-.mk-row .chg-pill{min-width:74px;text-align:center;padding:8px 12px;border-radius:8px;
-  color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;}
-.mk-row .chg-pill.up{background:var(--green);}
-.mk-row .chg-pill.down{background:var(--red);}
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:820px){.sidebar{width:60px;}
+  .sidebar .logo span,.sidebar .group-title,.sidebar .item span:not(.badge){display:none;}
+  .sidebar .item{justify-content:center;padding:14px 0;}
+  .stats-grid{grid-template-columns:1fr;}
+  .content{padding:16px;}
+}
 </style>
 </head>
 <body>
-<div class="phone">
 
-<!-- REGISTER -->
-<section class="auth-screen" id="authRegister">
-  <div class="auth-header">
-    <div class="back" onclick="backToLanding()">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="lg"><div class="mk">N</div>NextTrade Admin</div>
+    <div class="sub">Sign in with your admin account to manage the platform.</div>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="username">
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+    <button id="loginBtn" onclick="doLogin()">Sign In</button>
+    <div class="err" id="loginErr"></div>
   </div>
-  <div class="step-progress">
-    <div class="step active"><div class="circle">1</div><div class="label">Account<br>Registration</div></div>
-    <div class="line"></div>
-    <div class="step"><div class="circle">2</div><div class="label">Real-name<br>Authentication</div></div>
-    <div class="line"></div>
-    <div class="step"><div class="circle">3</div><div class="label">Trade</div></div>
-  </div>
-  <div class="auth-body">
-    <h1 class="auth-title">Account Registration</h1>
-    <p class="auth-sub">Create your free account in less than a minute.</p>
-    <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
-    <div class="auth-field"><label>Invitation code <span style="color:var(--text3);font-weight:400;">(optional)</span></label><div class="wrap"><input id="suReferral" type="text" placeholder="Please enter the invitation code"></div></div>
-    <div class="auth-field">
-      <label>Set password</label>
-      <div class="wrap">
-        <input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()">
-        <div class="eye-btn" onclick="togglePw('suPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
-      </div>
-      <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
-      <div class="err" id="suPwErr"></div>
-    </div>
-    <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
-    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
-    <div class="auth-check">
-      <input type="checkbox" id="suTerms">
-      <label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label>
-    </div>
-    <button class="auth-submit" id="registerBtn" onclick="doRegisterStep1()">Register →</button>
-    <div class="auth-switch">Already have an account? <a onclick="openAuth('login')">Log In</a></div>
-  </div>
-</section>
+</div>
 
-<!-- KYC STEP 2 -->
-<section class="auth-screen" id="authKyc">
-  <div class="auth-header">
-    <div class="back" onclick="openAuth('register')">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
-  </div>
-  <div class="step-progress">
-    <div class="step done"><div class="circle">✓</div><div class="label">Account<br>Registration</div></div>
-    <div class="line done"></div>
-    <div class="step active"><div class="circle">2</div><div class="label">Real-name<br>Authentication</div></div>
-    <div class="line"></div>
-    <div class="step"><div class="circle">3</div><div class="label">Trade</div></div>
-  </div>
-  <div class="auth-body">
-    <h1 class="auth-title">Real-name Authentication</h1>
-    <p class="auth-sub">Verify your identity to unlock deposits, withdrawals, and higher trading limits.</p>
-    <div class="auth-field"><label>Full legal name</label><div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div></div>
-    <div class="auth-field"><label>Date of birth</label><div class="wrap"><input id="kycDob" type="date"></div></div>
-    <div class="auth-field"><label>Country / Region</label><div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div></div>
-    <div class="auth-field">
-      <label>ID type</label>
-      <div class="wrap">
-        <select id="kycIdType" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:var(--card);color:var(--text);">
-          <option value="passport">Passport</option>
-          <option value="national_id">National ID</option>
-          <option value="drivers_license">Driver's License</option>
-        </select>
-      </div>
-    </div>
-    <div class="auth-field"><label>ID number</label><div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div></div>
-    <button class="auth-submit" onclick="submitKycStep2()">Submit for Review →</button>
-    <div class="skip-link" onclick="skipKycStep2()">Skip for now — do this later</div>
-  </div>
-</section>
+<div class="layout" id="appLayout" style="display:none;">
 
-<!-- LOGIN -->
-<section class="auth-screen" id="authLogin">
-  <div class="auth-header">
-    <div class="back" onclick="openAuth('register')">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
-  </div>
-  <div class="auth-body">
-    <h1 class="auth-title">Welcome back</h1>
-    <p class="auth-sub">Sign in to access your account and start trading.</p>
-    <div class="auth-field"><label>Email or Username</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
-    <div class="auth-field">
-      <label>Password</label>
-      <div class="wrap">
-        <input id="loginPw" type="password" placeholder="••••••••">
-        <div class="eye-btn" onclick="togglePw('loginPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
-      </div>
-      <div class="err" id="loginPwErr"></div>
-    </div>
-    <button class="auth-submit" onclick="doLogin()">Log In</button>
-    <div class="auth-switch">Don't have an account? <a onclick="openAuth('register')">Sign Up</a></div>
-  </div>
-</section>
+<aside class="sidebar">
+  <div class="logo"><div class="mk">N</div><span>NextTrade Admin</span></div>
 
-<!-- HOME -->
-<section class="screen active" id="s-home">
+  <div class="group">
+    <div class="item on" data-panel="dashboard">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span>Dashboard</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Wallet System</div>
+    <div class="item" data-panel="xpubs">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v4H4zM4 14h16v4H4z" stroke="currentColor" stroke-width="1.8"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="16" r="1.2" fill="currentColor"/></svg>
+      <span>XPUB Config</span>
+    </div>
+    <div class="item" data-panel="userwallets">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>User Wallets</span>
+      <span class="badge" id="userWalletsBadge">0</span>
+    </div>
+    <div class="item" data-panel="kyc">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span>KYC Queue</span>
+      <span class="badge" id="kycBadge">0</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">Trading</div>
+    <div class="item" data-panel="copytrade">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span>Copy Trade Signals</span>
+      <span class="badge" id="ctBadge">0</span>
+    </div>
+  </div>
+
+  <div class="group">
+    <div class="group-title">System</div>
+    <div class="item" data-panel="stats">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 19V9M9 19V5M14 19v-7M19 19V8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>App Stats</span>
+    </div>
+    <div class="item" data-panel="settings">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>Settings</span>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
   <div class="topbar">
-    <div class="avatar" id="homeAvatar" onclick="openProfile()">U<span class="status"></span></div>
-    <div class="search">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-      <span>Welcome to our platform~</span>
+    <div class="crumb" id="crumb">Dashboard</div>
+    <div class="topsearch">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#707A8A" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="#707A8A" stroke-width="2" stroke-linecap="round"/></svg>
+      <input placeholder="Search users..." id="topSearch" oninput="filterUserWallets(this.value)">
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
-    <div class="icon-btn" title="Support"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-    <div class="icon-btn" onclick="downloadFor('android')" title="Download"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="topicon" title="Refresh" onclick="location.reload()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M20 12a8 8 0 11-2.3-5.7M20 4v5h-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </div>
+    <div class="topicon" title="Sign out" onclick="doLogout()" style="margin-left:4px;">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M15 12H3M7 8l-4 4 4 4M12 3h7a2 2 0 012 2v14a2 2 0 01-2 2h-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="topicon"><div class="av"></div></div>
   </div>
-  <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
-  <div class="scroll" id="homeScroll">
-    <div class="home-greet"><h1>Start using NextTrade!</h1></div>
 
-    <div class="welcome-card">
-      <div class="wc-left">
-        <div class="wc-h">Welcome to<br>NextTrade</div>
-        <div class="wc-sub">A Global Digital Asset Trading Platform Built for the Future.</div>
+  <div class="content">
+
+    <div class="panel on" id="panel-dashboard">
+      <div class="warn info">
+        <b>Supabase connected.</b> Signals, participants, profits, and user profiles are stored in the cloud. XPUB config is stored securely and only visible to the admin.
       </div>
-      <div class="wc-badge"><span class="check">✓</span>N</div>
+      <div class="stats-grid">
+        <div class="stat"><div class="ic g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="k">Total Users</div><div class="v" id="stat-users">0</div></div></div>
+        <div class="stat"><div class="ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><div><div class="k">Active Signals</div><div class="v" id="stat-signals">0</div></div></div>
+        <div class="stat"><div class="ic o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M14 8l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Participants</div><div class="v" id="stat-participants">0</div></div></div>
+        <div class="stat"><div class="ic r"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Profit Paid Out</div><div class="v" id="stat-profit">$0</div></div></div>
+      </div>
+      <div class="card">
+        <h2>Connected Account</h2>
+        <div class="sub">You are signed in as the admin.</div>
+        <div style="font-size:14px;font-weight:700;" id="adminEmailDisplay">—</div>
+      </div>
     </div>
 
-    <div class="quick-circle-row">
-      <div class="qc" onclick="openDeposit('deposit')">
-        <div class="circle" style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="panel" id="panel-xpubs">
+      <div class="warn"><b>Security:</b> This XPUB generates every user's deposit address. It cannot spend funds. Only you (the admin email) can read or write it.</div>
+      <div class="card">
+        <h2>ETH Account XPUB</h2>
+        <div class="sub">Paste the "Account Extended Public Key" from Ian Coleman's BIP39 tool. Coin = <b>ETH - Ethereum</b>, Derivation Path = <b>BIP44</b>.</div>
+        <div class="field">
+          <label>XPUB</label>
+          <textarea id="xpubInput" rows="3" style="font-family:'Courier New',monospace;font-size:11.5px;" placeholder="xpub6..."></textarea>
+          <div class="hint">Should start with <code>xpub6</code>.</div>
         </div>
-        <div class="lbl">Deposit</div>
+        <button class="btn primary" onclick="saveXpub()">Save XPUB</button>
+        <button class="btn" onclick="testDerivation()" style="margin-left:10px;">Test Derivation</button>
+        <button class="btn danger" onclick="clearXpub()" style="margin-left:10px;">Clear XPUB</button>
+        <div id="xpubStatus" style="font-size:12.5px;color:var(--text2);margin-top:14px;"></div>
       </div>
-      <div class="qc" onclick="openDeposit('withdraw')">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="lbl">Withdraw</div>
-      </div>
-      <div class="qc" onclick="openTransfer()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="lbl">Swap</div>
-      </div>
-      <div class="qc" onclick="openTxHistory()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="lbl">History</div>
-      </div>
-      <div class="qc" onclick="openInvite()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="lbl">Referrals</div>
+      <div class="card" id="derivationTestCard" style="display:none;">
+        <h2>Derivation Test</h2>
+        <div class="sub">First five addresses generated from your XPUB.</div>
+        <div id="derivationPreview" class="xpub-preview"></div>
       </div>
     </div>
 
-    <div class="sec-pair">
-      <span class="on">Cryptocurrency</span>
-      <span class="off" onclick="go('s-markets')">Futures</span>
+    <div class="panel" id="panel-userwallets">
+      <div class="card">
+        <h2>User Wallets <span class="tag blue" id="uwCount">0 users</span></h2>
+        <div class="sub">Wallet addresses derived from your XPUB at each user's index.</div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+          <button class="btn primary" onclick="assignMissingAddresses()">Assign Addresses to Pending Users</button>
+          <span id="pendingAddressCount" style="font-size:12.5px;color:var(--text2);"></span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th>Index</th><th>Deposit Address</th><th>KYC Status</th><th>Joined</th></tr></thead>
+            <tbody id="userWalletsTable"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="coin-grid" id="homeCoinGrid"></div>
 
-    <div class="sec-pair" style="padding-top:6px;">
-      <span class="on">Top Movers</span>
-      <span class="off" onclick="go('s-markets')">View all ›</span>
+    <div class="panel" id="panel-kyc">
+      <div class="card">
+        <h2>KYC Submissions</h2>
+        <div class="sub">Users who submitted identity verification. Approve or reject.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th>Status</th><th class="right">Actions</th></tr></thead>
+            <tbody id="kycTable"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="coin-list" id="homeCoinList" style="margin:0 14px 14px;background:var(--card);border-radius:14px;border:1px solid var(--line);overflow:hidden;"></div>
 
-    <div class="news-strip" onclick="openNews()">
-      <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="nt">
-        <div class="h" id="newsHeadline">Loading market news…</div>
-        <div class="s" id="newsSub">Fetching from CoinDesk…</div>
-      </div>
-      <div class="nd" id="newsTime">now</div>
-    </div>
-  </div>
-  <nav class="bottomnav" id="homeNav"></nav>
-</section>
+    <div class="panel" id="panel-copytrade">
+      <div class="card">
+        <h2>Post Copy Trade Signal</h2>
+        <div class="sub">Users see this as an analyst card on their Copy Trading screen.</div>
 
-<!-- MARKET -->
-<section class="screen" id="s-markets">
-  <div class="topbar"><div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Market</div></div>
-  <div class="mk-search" style="margin:12px 14px 8px;height:44px;border-radius:12px;background:var(--input-bg);
-    display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--line);">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-    <input placeholder="Search instrument" id="mkSearch" oninput="filterMarket(this.value)" style="flex:1;background:transparent;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text);min-width:0;">
-  </div>
-  <div class="mk-tabs" id="mkTabs">
-    <div class="mk-tab on" data-tab="gainers">Top Gainers</div>
-    <div class="mk-tab" data-tab="losers">Top Losers</div>
-    <div class="mk-tab" data-tab="vol">Vol</div>
-  </div>
-  <div class="scroll" id="mkTable"></div>
-  <nav class="bottomnav" data-nav></nav>
-</section>
+        <div class="field">
+          <label>Analyst photo</label>
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div id="ctPhotoPreview" style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
+              display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;flex-shrink:0;
+              background-size:cover;background-position:center;">?</div>
+            <div style="flex:1;min-width:0;">
+              <input type="file" id="ctPhotoFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="uploadAnalystPhoto(this)">
+              <button type="button" class="btn primary" onclick="document.getElementById('ctPhotoFile').click()">Upload photo</button>
+              <button type="button" class="btn" onclick="clearAnalystPhoto()" id="ctPhotoClear" style="margin-left:6px;display:none;">Remove</button>
+              <div class="hint" style="margin-top:6px;">PNG / JPG / WebP, max 2 MB. Square works best.</div>
+            </div>
+          </div>
+          <input type="hidden" id="ctPhotoUrl" value="">
+        </div>
 
-<!-- COPY TRADING -->
-<section class="screen" id="s-trade">
-  <div class="topbar">
-    <div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Copy Trading</div>
-    <div class="icon-btn" onclick="openMyCopy()" title="My Copy Trades">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 9h6M9 13h6M9 17h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </div>
-  </div>
-  <div class="scroll">
-    <div class="ct-stats">
-      <div class="ct-stat tint">
-        <div class="lbl">Total Profit and Loss</div>
-        <div class="val" id="copyPnl">0.00</div>
-        <div class="unit">USD</div>
-      </div>
-      <div class="ct-stat">
-        <div class="lbl">Partner Commission</div>
-        <div class="val">0.00</div>
-        <div class="unit">USD</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="ct-stat tint">
-        <div class="lbl">Today's Profit and Loss</div>
-        <div class="val">0.00</div>
-        <div class="unit">USD</div>
-      </div>
-      <div class="ct-stat">
-        <div class="lbl">Keep the bottom position</div>
-        <div class="val">0.00</div>
-        <div class="unit">USD</div>
-      </div>
-    </div>
-    <div class="ct-sec-head"><h2>Copy Trading Analyst</h2></div>
-    <div class="ct-search-row">
-      <div class="ct-search">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-        <input placeholder="Please enter the analyst's name" id="analystSearch" oninput="filterAnalysts(this.value)">
-      </div>
-      <button class="ct-signal-btn" onclick="openFollowSheet()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 20V10M10 20V4M16 20v-7M22 20V8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-        Signal
-      </button>
-    </div>
-    <div class="analyst-list" id="analystList"></div>
-    <div class="no-more-data" id="noMoreData" style="display:none;">No more data</div>
-  </div>
-  <nav class="bottomnav" data-nav></nav>
-</section>
+        <div class="field"><label>Analyst / Trader name</label><input id="ctTrader" type="text" value="Michael Langford"></div>
+        <div class="field"><label>Role / Title</label><input id="ctRole" type="text" value="Senior Analyst"></div>
 
-<!-- WALLET -->
-<section class="screen" id="s-wallet">
-  <div class="wallet-hero">
-    <div class="lab">Total Balance</div>
-    <div class="bal" id="walletBalance">$0.00</div>
-    <div class="usd" id="walletUsd">≈ 0.00 ETH</div>
-  </div>
-  <div class="scroll">
-    <div class="addr-card">
-      <div class="label">Your unique deposit address</div>
-      <div class="addr-row">
-        <span id="myEthAddress">Log in to see your address</span>
-        <span class="copy" onclick="copyMyAddr()">Copy</span>
-      </div>
-      <div class="hint-line">Send only ETH or ERC-20 tokens (USDT, USDC) to this address.</div>
-    </div>
-    <div class="sec-head" style="padding:0 16px 8px;"><span>My Assets</span></div>
-    <div class="asset-list">
-      <div class="asset-row"><div class="logo" style="background:#627EEA">Ξ</div><div class="info"><div class="sym">Ethereum</div><div class="nm">ETH</div></div><div class="amount"><div class="amt" id="myEthBal">0.000000</div><div class="usd">≈ $0.00</div></div></div>
-      <div class="asset-row"><div class="logo" style="background:#26A69A">T</div><div class="info"><div class="sym">Tether</div><div class="nm">USDT (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
-      <div class="asset-row"><div class="logo" style="background:#2775CA">U</div><div class="info"><div class="sym">USD Coin</div><div class="nm">USDC (ERC-20)</div></div><div class="amount"><div class="amt">0.00</div><div class="usd">≈ $0.00</div></div></div>
-    </div>
-  </div>
-  <nav class="bottomnav" data-nav></nav>
-</section>
+        <div class="field">
+          <label>Instrument</label>
+          <select id="ctSymbol">
+            <option value="BTC">BTC / USDT</option>
+            <option value="ETH">ETH / USDT</option>
+            <option value="SOL">SOL / USDT</option>
+            <option value="XRP">XRP / USDT</option>
+            <option value="BNB">BNB / USDT</option>
+            <option value="DOGE">DOGE / USDT</option>
+            <option value="XAUUSD">XAU / USD</option>
+            <option value="EURUSD">EUR / USD</option>
+            <option value="AAPL">AAPL</option>
+          </select>
+        </div>
 
-<!-- ASSETS -->
-<section class="screen" id="s-assets">
-  <div class="scroll">
-    <div style="background:var(--asset-hero-grad);padding:8px 20px 18px;flex-shrink:0;">
-      <div style="font-size:13px;color:var(--text2);display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-        <span>Total Asset Value</span>
-        <span style="font-size:10px;padding:2px 8px;border-radius:4px;font-weight:800;letter-spacing:.5px;background:var(--green-lt);color:var(--green-dk);">REAL</span>
-      </div>
-      <div style="font-size:28px;font-weight:800;letter-spacing:-1px;margin:6px 0 4px;font-variant-numeric:tabular-nums;color:var(--text);" id="totalAssets">0.00</div>
-      <div style="font-size:13px;color:var(--text2);">≈$0.00</div>
-    </div>
-    <div class="sec-head">My Accounts</div>
-    <div id="acctList"></div>
-  </div>
-  <nav class="bottomnav" data-nav></nav>
-</section>
+        <div class="field">
+          <label>Signal Code (4 digits)</label>
+          <input id="ctCode" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 7733" style="font-family:'Courier New',monospace;font-size:18px;letter-spacing:6px;font-weight:800;">
+        </div>
 
-<!-- PROFILE -->
-<div class="overlay" id="profile">
-  <div class="ov-head"><div class="x" onclick="closeProfile()">✕</div></div>
-  <div class="scroll" style="padding-bottom:20px">
-    <div class="prof-user">
-      <div class="av" id="profileAvatar">U</div>
-      <div>
-        <div class="addr" id="profileAddr">Not signed in</div>
-        <div class="uid">UID: — · <span id="profKycBadge" style="color:var(--red)">Not Verified</span></div>
+        <div class="field"><label>Message shown to users</label><textarea id="ctMessage" rows="3"></textarea></div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+          <div class="field"><label>Suggested amount (USD)</label><input id="ctAmount" value="100"></div>
+          <div class="field"><label>Suggested SL %</label><input id="ctSl" value="2"></div>
+          <div class="field"><label>Suggested TP %</label><input id="ctTp" value="4"></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field"><label>1-Day Return Rate %</label><input id="ctDay" value="1.5"></div>
+          <div class="field"><label>7-Day Return Rate %</label><input id="ctWeek" value="10.5"></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div class="field"><label>30D PnL (USD)</label><input id="ctPnl" value="3277.10"></div>
+          <div class="field"><label>30D ROI %</label><input id="ctRoi" value="16.98"></div>
+        </div>
+
+        <div class="field"><label>Followers display</label><input id="ctFollowers" value="32/300"></div>
+        <div class="field"><label>Expires in (minutes)</label><input id="ctExpiry" type="text" inputmode="numeric" value="30"></div>
+
+        <button class="btn primary" onclick="pushCopyTrade()">Post Signal</button>
+        <button class="btn" onclick="clearExpiredSignals()" style="margin-left:10px;">Clear Expired</button>
+      </div>
+
+      <div class="card">
+        <h2>Active Signals <span class="tag purple" id="ctCount">0</span></h2>
+        <div class="sub">Signals currently visible on users' Copy Trading screens.</div>
+        <div id="ctList"></div>
       </div>
     </div>
-    <div id="profileMenu"></div>
-    <div class="logout" onclick="doLogout()">Log Out</div>
+
+    <div class="panel" id="panel-stats">
+      <div class="warn info">
+        These are the four stat numbers shown at the top of the <b>Copy Trading</b> screen in the app. Edit and save to update them live for all users.
+      </div>
+      <div class="card">
+        <h2>App Stats</h2>
+        <div class="sub">Values are stored in the <code>config</code> table under the key <code>app_stats</code>.</div>
+
+        <div class="field"><label>Total Profit and Loss (USD)</label><input id="stTotalPnl" value="0.00"></div>
+        <div class="field"><label>Partner Commission (USD)</label><input id="stPartner" value="0.00"></div>
+        <div class="field"><label>Today's Profit and Loss (USD)</label><input id="stTodayPnl" value="0.00"></div>
+        <div class="field"><label>Keep the bottom position (USD)</label><input id="stBottom" value="0.00"></div>
+
+        <button class="btn primary" onclick="saveAppStats()">Save Stats</button>
+        <button class="btn" onclick="loadAppStatsAdmin()" style="margin-left:10px;">Reload</button>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-settings">
+      <div class="card">
+        <h2>System Settings</h2>
+        <div class="sub">Configuration lives in <code>supabase-config.js</code>.</div>
+        <div class="warn info"><b>Signed in as:</b> <span id="settingsEmail">—</span></div>
+        <button class="btn danger" onclick="doLogout()">Sign Out</button>
+      </div>
+    </div>
+
   </div>
 </div>
-
-<div class="overlay" id="newsPanel">
-  <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
-  <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
-<div class="generic-modal" id="genericModal">
-  <div class="generic-sheet">
-    <div class="generic-head"><h3 id="genericTitle">Title</h3><div class="x" onclick="closeGeneric()">✕</div></div>
-    <div class="generic-body" id="genericBody"></div>
-  </div>
-</div>
-
-<!-- FOLLOW SIGNAL SHEET -->
-<div class="fs-backdrop" id="fsSheet">
-  <div class="fs-sheet" onclick="event.stopPropagation()">
-    <div class="fs-head">
-      <h3>Follow Signal</h3>
-      <div class="x" onclick="closeFollowSheet()">✕</div>
-    </div>
-    <div class="fs-body" id="fsBody"></div>
-    <div class="fs-domain"><span>nnsadaqd.com</span></div>
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle">Title</h3><div class="x" onclick="closeModal()">✕</div></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
   </div>
 </div>
 
 <div id="toast"></div>
-</div>
 
 <script>
-/* ============================================================
-   SUPABASE INIT
-   ============================================================ */
 const cfg = window.NT_CONFIG || {};
 const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
-const DEMO_SEED = cfg.DEMO_SEED || 10000;
 
-/* ============================================================
-   THEME TOGGLE
-   ============================================================ */
-(function(){
-  const btn = document.getElementById('themeToggle');
-  if(!btn) return;
-  btn.addEventListener('click', () => {
-    const html = document.documentElement;
-    const current = html.getAttribute('data-theme') || 'dark';
-    const next = current === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    try{ localStorage.setItem('nt_theme', next); }catch(e){}
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if(meta) meta.setAttribute('content', next === 'dark' ? '#0B0E11' : '#FFFFFF');
+let adminUser = null;
+let signals = [];
+let participantsBySignal = {};
+let realtimeChannel = null;
+
+/* AUTH */
+async function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginErr');
+  err.classList.remove('show');
+  if(!email || !password){ err.textContent = 'Enter email and password'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  btn.disabled = false; btn.textContent = 'Sign In';
+  if(error){ err.textContent = error.message; err.classList.add('show'); return; }
+  if(data.user.email !== cfg.ADMIN_EMAIL){
+    err.textContent = 'This account is not the admin account.';
+    err.classList.add('show');
+    await sb.auth.signOut();
+    return;
+  }
+  adminUser = data.user;
+  showApp();
+}
+async function doLogout(){
+  await sb.auth.signOut();
+  adminUser = null;
+  if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel = null; }
+  document.getElementById('appLayout').style.display = 'none';
+  document.getElementById('loginWrap').style.display = 'flex';
+}
+function showApp(){
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('appLayout').style.display = 'flex';
+  document.getElementById('adminEmailDisplay').textContent = adminUser.email;
+  document.getElementById('settingsEmail').textContent = adminUser.email;
+  refreshAll();
+  loadXpubPanel();
+  loadAppStatsAdmin();
+  subscribeRealtime();
+}
+
+/* NAV */
+const PANEL_TITLES = {
+  dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
+  kyc:'KYC Queue', copytrade:'Copy Trade Signals', stats:'App Stats', settings:'Settings'
+};
+document.querySelectorAll('.item').forEach(it => {
+  it.addEventListener('click', () => { if(it.dataset.panel) navTo(it.dataset.panel); });
+});
+function navTo(panel){
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  const el = document.getElementById('panel-' + panel);
+  if(el) el.classList.add('on');
+  document.querySelectorAll('.item').forEach(i => i.classList.toggle('on', i.dataset.panel === panel));
+  document.getElementById('crumb').innerHTML = 'Dashboard / <b>' + (PANEL_TITLES[panel] || panel) + '</b>';
+  window.scrollTo({top:0});
+  if(panel === 'xpubs') loadXpubPanel();
+  if(panel === 'userwallets') renderUserWallets();
+  if(panel === 'kyc') renderKyc();
+  if(panel === 'copytrade') renderCopyTradePanel();
+  if(panel === 'stats') loadAppStatsAdmin();
+}
+
+/* DATA */
+async function refreshAll(){
+  await Promise.all([loadSignals(), loadParticipants(), loadUsers()]);
+  updateStats();
+  renderCopyTradePanel();
+  renderUserWallets();
+  renderKyc();
+}
+async function loadSignals(){
+  const { data, error } = await sb.from('signals').select('*').order('created_at', { ascending: false }).limit(50);
+  if(error){ signals = []; return; }
+  signals = data || [];
+}
+async function loadParticipants(){
+  const { data, error } = await sb.from('participants').select('signal_id, username, uid, amount_usdt, mode, created_at').order('created_at', { ascending: false }).limit(1000);
+  if(error){ participantsBySignal = {}; return; }
+  participantsBySignal = {};
+  (data || []).forEach(p => {
+    if(!participantsBySignal[p.signal_id]) participantsBySignal[p.signal_id] = [];
+    participantsBySignal[p.signal_id].push(p);
   });
-})();
+}
+let allUsers = [];
+async function loadUsers(){
+  const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false }).limit(500);
+  if(error){ allUsers = []; return; }
+  allUsers = data || [];
+  document.getElementById('userWalletsBadge').textContent = allUsers.length;
+  document.getElementById('stat-users').textContent = allUsers.length;
+}
+async function updateStats(){
+  const now = Date.now();
+  const active = signals.filter(s => !s.expires_at || new Date(s.expires_at).getTime() > now);
+  document.getElementById('stat-signals').textContent = active.length;
+  document.getElementById('ctBadge').textContent = active.length;
+  document.getElementById('ctCount').textContent = active.length;
+  let totalParts = 0;
+  Object.values(participantsBySignal).forEach(arr => { totalParts += arr.length; });
+  document.getElementById('stat-participants').textContent = totalParts;
+  const { data: profits } = await sb.from('copy_profits').select('profit').limit(2000);
+  const sum = (profits || []).reduce((a, b) => a + Number(b.profit || 0), 0);
+  document.getElementById('stat-profit').textContent = '$' + sum.toFixed(2);
+}
 
-let toastTimer = null;
-let currentUser = null;
-let currentMode = 'real';
+function subscribeRealtime(){
+  if(realtimeChannel) sb.removeChannel(realtimeChannel);
+  realtimeChannel = sb.channel('admin-realtime')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'signals' }, () => {
+      loadSignals().then(() => { updateStats(); renderCopyTradePanel(); });
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'participants' }, () => {
+      loadParticipants().then(() => { updateStats(); renderCopyTradePanel(); });
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
+      loadUsers().then(() => { renderUserWallets(); renderKyc(); });
+    })
+    .subscribe();
+}
 
+/* XPUB */
+async function loadXpubPanel(){
+  const status = document.getElementById('xpubStatus');
+  const input = document.getElementById('xpubInput');
+  if(!status || !input) return;
+  const { data, error } = await sb.from('config').select('*').eq('key', 'eth_xpub').maybeSingle();
+  if(error || !data){
+    status.textContent = 'No XPUB configured yet.';
+    status.style.color = 'var(--orange)';
+    return;
+  }
+  input.value = data.value || '';
+  const short = data.value.slice(0, 20) + '…' + data.value.slice(-8);
+  status.innerHTML = '✓ XPUB saved — <span style="font-family:monospace;">' + short + '</span>';
+  status.style.color = 'var(--green)';
+}
+async function saveXpub(){
+  const xpub = (document.getElementById('xpubInput').value || '').trim();
+  if(!xpub.startsWith('xpub')){ toast('XPUB must start with "xpub"'); return; }
+  if(xpub.length < 100){ toast('XPUB looks too short'); return; }
+  const { error } = await sb.from('config').upsert({ key: 'eth_xpub', value: xpub, updated_at: new Date().toISOString() });
+  if(error){ toast('Error: ' + error.message); return; }
+  toast('XPUB saved');
+  loadXpubPanel();
+}
+async function clearXpub(){
+  if(!confirm('Clear the XPUB?')) return;
+  const { error } = await sb.from('config').delete().eq('key', 'eth_xpub');
+  if(error){ toast('Error: ' + error.message); return; }
+  toast('Cleared');
+  document.getElementById('derivationTestCard').style.display = 'none';
+  loadXpubPanel();
+}
+function testDerivation(){
+  const xpub = (document.getElementById('xpubInput').value || '').trim();
+  if(!xpub.startsWith('xpub')){ toast('Save a valid XPUB first'); return; }
+  const card = document.getElementById('derivationTestCard');
+  const preview = document.getElementById('derivationPreview');
+  card.style.display = 'block';
+  if(typeof ethers === 'undefined'){ preview.innerHTML = '<span style="color:var(--red);">ethers.js not loaded.</span>'; return; }
+  let html = '<b>ETH addresses (m/44\'/60\'/0\'/0/index):</b><br><br>';
+  try {
+    const hd = ethers.HDNodeWallet.fromExtendedKey(xpub);
+    for(let i = 0; i < 5; i++){
+      const child = hd.deriveChild(0).deriveChild(i);
+      html += `<span class="idx">index ${i}:</span> <span class="addr">${child.address}</span><br>`;
+    }
+  } catch(e){ html += '<span style="color:var(--red);">Error: ' + e.message + '</span>'; }
+  preview.innerHTML = html;
+}
+async function assignMissingAddresses(){
+  const { data: cfgData, error: cfgErr } = await sb.from('config').select('value').eq('key', 'eth_xpub').maybeSingle();
+  if(cfgErr || !cfgData || !cfgData.value){ toast('No XPUB configured'); return; }
+  const { data: pending, error: pErr } = await sb.from('profiles')
+    .select('id, username, derivation_index').is('derived_eth_address', null)
+    .order('created_at', { ascending: true });
+  if(pErr){ toast('Error: ' + pErr.message); return; }
+  if(!pending || !pending.length){ toast('All users already have addresses'); return; }
+  const { data: maxRow } = await sb.from('profiles').select('derivation_index')
+    .not('derivation_index', 'is', null).order('derivation_index', { ascending: false }).limit(1);
+  let nextIndex = 0;
+  if(maxRow && maxRow[0] && typeof maxRow[0].derivation_index === 'number') nextIndex = maxRow[0].derivation_index + 1;
+  if(typeof ethers === 'undefined'){ toast('ethers.js not loaded'); return; }
+  let hd;
+  try { hd = ethers.HDNodeWallet.fromExtendedKey(cfgData.value); } catch(e){ toast('Invalid XPUB'); return; }
+  let assigned = 0;
+  for(const u of pending){
+    try {
+      const child = hd.deriveChild(0).deriveChild(nextIndex);
+      const { error: updErr } = await sb.from('profiles').update({
+        derivation_index: nextIndex, derived_eth_address: child.address
+      }).eq('id', u.id);
+      if(!updErr) assigned++;
+      nextIndex++;
+    } catch(e){}
+  }
+  toast('Assigned to ' + assigned + ' user(s)');
+  await loadUsers();
+  renderUserWallets();
+}
+
+/* COPY SIGNALS */
+async function uploadAnalystPhoto(input){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 2 * 1024 * 1024){ toast('File too large — max 2 MB'); input.value = ''; return; }
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = 'analyst_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.' + ext;
+  toast('Uploading…');
+  const { error } = await sb.storage.from('analyst-photos').upload(path, file, { cacheControl: '3600', upsert: false });
+  if(error){ toast('Upload error: ' + error.message); input.value = ''; return; }
+  const { data: pub } = sb.storage.from('analyst-photos').getPublicUrl(path);
+  const url = pub && pub.publicUrl;
+  if(!url){ toast('Could not get URL'); return; }
+  document.getElementById('ctPhotoUrl').value = url;
+  const prev = document.getElementById('ctPhotoPreview');
+  prev.style.backgroundImage = `url('${url}')`;
+  prev.textContent = '';
+  document.getElementById('ctPhotoClear').style.display = 'inline-flex';
+  toast('Photo uploaded');
+}
+function clearAnalystPhoto(){
+  document.getElementById('ctPhotoUrl').value = '';
+  const prev = document.getElementById('ctPhotoPreview');
+  prev.style.backgroundImage = '';
+  prev.textContent = '?';
+  document.getElementById('ctPhotoClear').style.display = 'none';
+  const f = document.getElementById('ctPhotoFile'); if(f) f.value = '';
+}
+
+async function pushCopyTrade(){
+  const trader = (document.getElementById('ctTrader').value || 'Analyst').trim();
+  const role = (document.getElementById('ctRole').value || 'Senior Analyst').trim();
+  const sym = document.getElementById('ctSymbol').value;
+  const code = (document.getElementById('ctCode').value || '').trim();
+  const message = document.getElementById('ctMessage').value.trim();
+  const amount = parseFloat(document.getElementById('ctAmount').value || '100');
+  const sl = parseFloat(document.getElementById('ctSl').value || '2');
+  const tp = parseFloat(document.getElementById('ctTp').value || '4');
+  const day = parseFloat(document.getElementById('ctDay').value || '1.5');
+  const week = parseFloat(document.getElementById('ctWeek').value || '10.5');
+  const pnl = parseFloat(document.getElementById('ctPnl').value || '0');
+  const roi = parseFloat(document.getElementById('ctRoi').value || '0');
+  const followers = document.getElementById('ctFollowers').value.trim();
+  const expiryMin = parseInt(document.getElementById('ctExpiry').value || '30', 10);
+  const photoUrl = (document.getElementById('ctPhotoUrl')?.value || '').trim() || null;
+
+  if(!/^\d{4}$/.test(code)) return toast('Code must be 4 digits');
+  if(!message) return toast('Enter a message');
+
+  const expiresAt = new Date(Date.now() + expiryMin * 60 * 1000).toISOString();
+
+  const { error } = await sb.from('signals').insert({
+    trader_name: trader, role: role, sym, code, message, amount, sl, tp, pnl, roi,
+    day_return: day, week_return: week,
+    followers: followers || '0/0', target: 'all', photo_url: photoUrl, expires_at: expiresAt
+  });
+  if(error){ toast('Error: ' + error.message); return; }
+
+  document.getElementById('ctCode').value = '';
+  document.getElementById('ctMessage').value = '';
+  clearAnalystPhoto();
+  toast('Signal posted');
+}
+async function clearExpiredSignals(){
+  const { error } = await sb.from('signals').delete().lt('expires_at', new Date().toISOString());
+  if(error) return toast('Error: ' + error.message);
+  toast('Expired cleared');
+}
+async function deleteSignal(id){
+  if(!confirm('Delete this signal?')) return;
+  const { error } = await sb.from('signals').delete().eq('id', id);
+  if(error) return toast('Error: ' + error.message);
+  toast('Deleted');
+}
+function renderCopyTradePanel(){
+  const el = document.getElementById('ctList');
+  if(!el) return;
+  const now = Date.now();
+  const active = signals.filter(s => !s.expires_at || new Date(s.expires_at).getTime() > now);
+  if(!active.length){
+    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No active signals.</div>';
+    return;
+  }
+  el.innerHTML = active.map(ct => {
+    const participants = participantsBySignal[ct.id] || [];
+    const icStyle = ct.photo_url ? `background-image:url('${ct.photo_url}');background-size:cover;background-position:center;color:transparent;` : '';
+    return `
+      <div class="ct-item" style="border-left:3px solid var(--green);">
+        <div class="ic" style="${icStyle}">${ct.photo_url ? '' : (ct.trader_name || 'A')[0].toUpperCase()}</div>
+        <div class="body">
+          <div class="trader">${ct.trader_name} <span class="tag green" style="font-size:9px;">ACTIVE</span></div>
+          <div class="sym">${ct.sym}/USDT · Code <span class="code-pill">${ct.code}</span>${ct.role ? ' · ' + ct.role : ''}</div>
+          <div class="msg">${ct.message || ''}</div>
+          <div class="meta">Posted ${new Date(ct.created_at).toLocaleString()}</div>
+          <div class="parts" onclick="openParticipants('${ct.id}')">Participants: ${participants.length}</div>
+        </div>
+        <div class="rm" onclick="deleteSignal('${ct.id}')">DELETE</div>
+      </div>
+    `;
+  }).join('');
+}
+function openParticipants(signalId){
+  const parts = participantsBySignal[signalId] || [];
+  document.getElementById('modalTitle').textContent = 'Participants';
+  if(!parts.length){
+    document.getElementById('modalBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">No one yet.</div>';
+  } else {
+    document.getElementById('modalBody').innerHTML = parts.map(p => `
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 4px;border-bottom:1px solid var(--line);">
+        <div class="user-av">${(p.username || '?')[0].toUpperCase()}</div>
+        <div style="flex:1;"><div style="font-weight:700;">${p.username}</div><div style="font-size:11px;color:var(--text3);">${p.uid || ''}</div></div>
+        <div style="text-align:right;"><div style="font-weight:700;">$${parseFloat(p.amount_usdt || 0).toFixed(2)}</div></div>
+      </div>
+    `).join('');
+  }
+  document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+  document.getElementById('modal').classList.add('on');
+}
+
+/* USERS + KYC */
+let filterQuery = '';
+function filterUserWallets(v){ filterQuery = v; renderUserWallets(); }
+function renderUserWallets(){
+  const tbody = document.getElementById('userWalletsTable');
+  if(!tbody) return;
+  const pendingCount = allUsers.filter(u => !u.derived_eth_address).length;
+  const countEl = document.getElementById('pendingAddressCount');
+  if(countEl){
+    countEl.textContent = pendingCount ? (pendingCount + ' waiting') : 'All have addresses';
+    countEl.style.color = pendingCount ? 'var(--orange)' : 'var(--green)';
+  }
+  let list = allUsers.slice();
+  if(filterQuery){
+    const q = filterQuery.toLowerCase();
+    list = list.filter(u =>
+      (u.username || '').toLowerCase().includes(q) ||
+      (u.email || '').toLowerCase().includes(q) ||
+      (u.uid || '').toLowerCase().includes(q));
+  }
+  document.getElementById('uwCount').textContent = list.length + ' users';
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:60px;">No users yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(u => {
+    const addr = u.derived_eth_address || '';
+    const addrShort = addr ? addr.slice(0, 10) + '…' + addr.slice(-6) : '—';
+    const idx = (u.derivation_index === null || u.derivation_index === undefined) ? '—' : '#' + u.derivation_index;
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${u.username || '—'}</div>
+          <div class="user-email">${u.email || '—'}</div>
+          <div class="user-uid">${u.uid || ''}</div>
+        </div>
+      </div></td>
+      <td><span class="tag gray">${idx}</span></td>
+      <td>${addr ? `<span class="mono" onclick="copyText('${addr}')" style="cursor:pointer;color:var(--blue);">${addrShort}</span>` : '<span style="color:var(--text3);font-size:11px;">Pending</span>'}</td>
+      <td><span class="tag ${u.kyc_status === 'verified' ? 'green' : u.kyc_status === 'pending' ? 'orange' : u.kyc_status === 'rejected' ? 'red' : 'gray'}">${u.kyc_status || 'none'}</span></td>
+      <td>${u.created_at ? new Date(u.created_at).toLocaleString() : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+function copyText(text){ if(navigator.clipboard) navigator.clipboard.writeText(text); toast('Copied'); }
+function renderKyc(){
+  const tbody = document.getElementById('kycTable');
+  if(!tbody) return;
+  const pending = allUsers.filter(u => u.kyc_status === 'pending').length;
+  document.getElementById('kycBadge').textContent = pending;
+  if(!allUsers.length){
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:40px;">No users yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allUsers.map(u => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${u.username || '—'}</div>
+          <div class="user-email">${u.email || '—'}</div>
+        </div>
+      </div></td>
+      <td><span class="tag ${u.kyc_status === 'verified' ? 'green' : u.kyc_status === 'pending' ? 'orange' : u.kyc_status === 'rejected' ? 'red' : 'gray'}">${u.kyc_status || 'none'}</span></td>
+      <td class="right">
+        ${u.kyc_status === 'pending' ? `
+          <button class="btn sm success" onclick="approveKyc('${u.id}')">Approve</button>
+          <button class="btn sm danger" onclick="rejectKyc('${u.id}')">Reject</button>
+        ` : '—'}
+      </td>
+    </tr>
+  `).join('');
+}
+async function approveKyc(userId){
+  const { error } = await sb.from('profiles').update({ kyc_status: 'verified' }).eq('id', userId);
+  if(error) return toast('Error: ' + error.message);
+  toast('KYC approved');
+}
+async function rejectKyc(userId){
+  const { error } = await sb.from('profiles').update({ kyc_status: 'rejected' }).eq('id', userId);
+  if(error) return toast('Error: ' + error.message);
+  toast('KYC rejected');
+}
+
+/* APP STATS */
+async function loadAppStatsAdmin(){
+  try {
+    const { data } = await sb.from('config').select('value').eq('key', 'app_stats').maybeSingle();
+    let s = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
+    if(data && data.value){
+      try { s = JSON.parse(data.value); } catch(e){}
+    }
+    document.getElementById('stTotalPnl').value = Number(s.totalPnl || 0).toFixed(2);
+    document.getElementById('stPartner').value = Number(s.partner || 0).toFixed(2);
+    document.getElementById('stTodayPnl').value = Number(s.todayPnl || 0).toFixed(2);
+    document.getElementById('stBottom').value = Number(s.bottom || 0).toFixed(2);
+  } catch(e){ console.warn(e); }
+}
+async function saveAppStats(){
+  const s = {
+    totalPnl: parseFloat(document.getElementById('stTotalPnl').value || '0'),
+    partner: parseFloat(document.getElementById('stPartner').value || '0'),
+    todayPnl: parseFloat(document.getElementById('stTodayPnl').value || '0'),
+    bottom: parseFloat(document.getElementById('stBottom').value || '0')
+  };
+  const { error } = await sb.from('config').upsert({
+    key: 'app_stats', value: JSON.stringify(s), updated_at: new Date().toISOString()
+  });
+  if(error){ toast('Error: ' + error.message); return; }
+  toast('Stats saved — app will show new values within seconds');
+}
+
+/* MISC */
+function closeModal(){ document.getElementById('modal').classList.remove('on'); }
+document.getElementById('modal').addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
+let toastTimer;
 function toast(msg){
   const el = document.getElementById('toast');
-  if(!el) return;
   el.textContent = msg;
   el.classList.add('on');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 2600);
 }
 
-/* ============================================================
-   SUPABASE AUTH
-   ============================================================ */
-function genUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
-function genRef(){ return 'NT' + Math.floor(100000 + Math.random()*900000); }
-
-async function loadProfile(userId){
-  const { data, error } = await sb.from('profiles').select('*').eq('id', userId).single();
-  if(error) return null;
-  return data;
-}
-
-async function doRegisterStep1(){
-  const email = document.getElementById('suEmail').value.trim().toLowerCase();
-  const pw = document.getElementById('suPw').value;
-  const pw2 = document.getElementById('suPw2').value;
-  const username = document.getElementById('suUsername').value.trim();
-  const ref = document.getElementById('suReferral').value.trim();
-  const terms = document.getElementById('suTerms').checked;
-
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email address');
-  if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
-  if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters/numbers/_');
-  if(!terms) return toast('Please agree to the Terms of Service');
-
-  const btn = document.getElementById('registerBtn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
-
-  const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
-
-  if(authErr){
-    btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suEmail','suEmailErr', authErr.message);
-  }
-  if(!authData.user){
-    btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suEmail','suEmailErr','Signup failed.');
-  }
-
-  const uid = genUID();
-  const profileRow = {
-    id: authData.user.id,
-    username, email, uid,
-    referral_code: genRef(),
-    referred_by: ref || null,
-    kyc_status: 'none',
-    mode: 'real',
-    balance: 0, funding: 0, spot: 0,
-    demo_funding: DEMO_SEED, demo_spot: 0
-  };
-  const { error: profErr } = await sb.from('profiles').insert(profileRow);
-  if(profErr){
-    btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suUsername','suUsernameErr', profErr.message);
-  }
-
-  currentUser = profileRow;
-  currentMode = 'real';
-  btn.disabled = false; btn.textContent = 'Register →';
-  toast('Account created!');
-  openAuth('kyc');
-}
-
-async function doLogin(){
-  const id = document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pw = document.getElementById('loginPw').value;
-  if(!id) return showErr('loginEmail','loginEmailErr','Enter email');
-  if(!pw) return showErr('loginPw','loginPwErr','Enter password');
-
-  const { data, error } = await sb.auth.signInWithPassword({ email: id, password: pw });
-  if(error) return showErr('loginPw','loginPwErr', error.message);
-
-  const profile = await loadProfile(data.user.id);
-  if(!profile) return showErr('loginPw','loginPwErr','Profile not found');
-
-  currentUser = profile;
-  currentMode = profile.mode === 'demo' ? 'demo' : 'real';
-  applyUserToUI();
-  closeAuth();
-  go('s-home');
-  toast('Welcome back!');
-}
-
-async function doLogout(){
-  await sb.auth.signOut();
-  currentUser = null; currentMode = 'real';
-  applyUserToUI();
-  closeProfile();
-  toast('Logged out');
-}
-
-function openAuth(mode){
-  document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
-  const target = mode === 'register' ? 'authRegister'
-              : mode === 'kyc' ? 'authKyc'
-              : 'authLogin';
-  document.getElementById(target).classList.add('active');
-}
-function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
-function backToLanding(){ window.location.href = '/'; }
-function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
-function scorePw(){
-  const v = document.getElementById('suPw').value;
-  const segs = document.querySelectorAll('#pwStrength .seg');
-  let s = 0;
-  if(v.length >= 8) s++;
-  if(/[a-z]/.test(v) && /[A-Z]/.test(v)) s++;
-  if(/\d/.test(v)) s++;
-  if(/[^a-zA-Z0-9]/.test(v)) s++;
-  segs.forEach((seg,i)=>{ seg.className='seg'; if(i<s) seg.classList.add('on-'+s); });
-}
-function showErr(f,e,m){
-  const fel = document.getElementById(f); if(fel) fel.style.borderColor = 'var(--red)';
-  const eel = document.getElementById(e); if(eel){ eel.textContent = m; eel.classList.add('show'); }
-}
-
-async function submitKycStep2(){
-  if(!currentUser){ openAuth('register'); return; }
-  const name = document.getElementById('kycName').value.trim();
-  const dob = document.getElementById('kycDob').value;
-  const country = document.getElementById('kycCountry').value.trim();
-  const idType = document.getElementById('kycIdType').value;
-  const idNum = document.getElementById('kycIdNum').value.trim();
-  if(!name || !dob || !country || !idNum){ toast('Please fill all fields'); return; }
-
-  const kycData = { fullName:name, dob, country, idType, idNumber:idNum, submittedAt: Date.now() };
-  const { error } = await sb.from('profiles').update({ kyc_status: 'pending', kyc_data: kycData }).eq('id', currentUser.id);
-  if(error){ toast('Error: ' + error.message); return; }
-
-  currentUser.kyc_status = 'pending';
-  currentUser.kyc_data = kycData;
-  updateKycBadge();
-  toast('Submitted for review!');
-  closeAuth();
-  go('s-home');
-}
-function skipKycStep2(){
-  if(!currentUser){ openAuth('register'); return; }
-  toast('You can verify later from Profile');
-  closeAuth();
-  go('s-home');
-}
-
-/* ============================================================
-   USER UI
-   ============================================================ */
-function applyUserToUI(){
-  const loggedIn = !!currentUser;
-  const av = document.getElementById('homeAvatar');
-  if(av){
-    if(loggedIn){ av.firstChild.textContent = currentUser.username[0].toUpperCase(); av.classList.add('logged-in'); }
-    else { av.firstChild.textContent = 'U'; av.classList.remove('logged-in'); }
-  }
-  if(loggedIn){
-    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = currentUser.username[0].toUpperCase();
-    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = currentUser.email;
-  } else {
-    const pa = document.getElementById('profileAvatar'); if(pa) pa.textContent = 'U';
-    const pd = document.getElementById('profileAddr'); if(pd) pd.textContent = 'Not signed in';
-  }
-  updateKycBadge();
-  renderAccounts();
-  renderProfileMenu();
-  refreshWallet();
-}
-function updateKycBadge(){
-  const el = document.getElementById('profKycBadge');
-  if(!el || !currentUser) return;
-  const s = currentUser.kyc_status || 'none';
-  if(s === 'verified'){ el.textContent = 'Verified'; el.style.color = 'var(--green)'; }
-  else if(s === 'pending'){ el.textContent = 'Pending Review'; el.style.color = 'var(--orange)'; }
-  else if(s === 'rejected'){ el.textContent = 'Rejected'; el.style.color = 'var(--red)'; }
-  else { el.textContent = 'Not Verified'; el.style.color = 'var(--red)'; }
-}
-
-async function refreshWallet(){
-  const addrEls = [document.getElementById('myEthAddress')];
-  if(!currentUser){
-    addrEls.forEach(el => { if(el) el.textContent = 'Log in to see your address'; });
-    return;
-  }
-  try {
-    const { data: prof } = await sb.from('profiles').select('derived_eth_address, balance').eq('id', currentUser.id).single();
-    if(prof){
-      currentUser.derived_eth_address = prof.derived_eth_address;
-      currentUser.balance = prof.balance;
-      const addr = prof.derived_eth_address || 'Not assigned yet — contact admin';
-      addrEls.forEach(el => { if(el) el.textContent = addr; });
-    }
-  } catch(e){}
-  const bal = Number(currentUser.balance || 0);
-  const balEl = document.getElementById('walletBalance');
-  if(balEl) balEl.textContent = '$' + bal.toFixed(2);
-  const usdEl = document.getElementById('walletUsd');
-  if(usdEl) usdEl.textContent = '≈ ' + (bal / 2446).toFixed(4) + ' ETH';
-}
-function copyMyAddr(){
-  const addr = currentUser && currentUser.derived_eth_address;
-  if(!addr) return toast('No address assigned yet');
-  if(navigator.clipboard) navigator.clipboard.writeText(addr);
-  toast('Copied');
-}
-
-/* ============================================================
-   MARKET DATA
-   ============================================================ */
-const MARKETS = {
-  crypto: [
-    {sym:'BTC', price:77845, base:77845, chg:0, color:'#F7931A', vol:'$2.8B', name:'Bitcoin'},
-    {sym:'ETH', price:2446, base:2446, chg:0, color:'#627EEA', vol:'$1.4B', name:'Ethereum'},
-    {sym:'SOL', price:101.5, base:101.5, chg:0, color:'#9945FF', vol:'$760M', name:'Solana'},
-    {sym:'XRP', price:1.38, base:1.38, chg:0, color:'#23292F', vol:'$1.1B', name:'XRP'},
-    {sym:'BNB', price:717.5, base:717.5, chg:0, color:'#F3BA2F', vol:'$980M', name:'BNB'},
-    {sym:'USDT', price:1, base:1, chg:0, color:'#26A69A', vol:'$3.2B', name:'Tether'},
-    {sym:'USDC', price:1, base:1, chg:0, color:'#2775CA', vol:'$2.4B', name:'USD Coin'},
-    {sym:'DOGE', price:0.165, base:0.165, chg:0, color:'#C2A633', vol:'$640M', name:'Dogecoin'},
-  ],
-  forex: [
-    {sym:'EURUSD', price:1.1652, base:1.1652, chg:0, color:'#3B82F6', vol:'$180B', name:'EUR/USD'},
-    {sym:'GBPUSD', price:1.2734, base:1.2734, chg:0, color:'#EF4444', vol:'$98B', name:'GBP/USD'},
-    {sym:'USDJPY', price:151.2, base:151.2, chg:0, color:'#10B981', vol:'$120B', name:'USD/JPY'},
-  ],
-  commodities: [
-    {sym:'XAUUSD', price:4395.82, base:4395.82, chg:0, color:'#F59E0B', vol:'$88B', name:'Gold'},
-    {sym:'WTI', price:96.05, base:96.05, chg:0, color:'#1F2937', vol:'$64B', name:'Crude Oil'},
-    {sym:'XAGUSD', price:52.4, base:52.4, chg:0, color:'#9CA3AF', vol:'$18B', name:'Silver'},
-  ],
-  stocks: [
-    {sym:'AAPL', price:224.18, base:224.18, chg:0, color:'#111827', vol:'$9.2B', name:'Apple'},
-    {sym:'TSLA', price:242.65, base:242.65, chg:0, color:'#DC2626', vol:'$14.8B', name:'Tesla'},
-    {sym:'NVDA', price:138.9, base:138.9, chg:0, color:'#16A34A', vol:'$22.1B', name:'NVIDIA'},
-  ]
-};
-function findMarket(sym){
-  for(const k in MARKETS){ const f = MARKETS[k].find(x=>x.sym===sym); if(f) return f; }
-  return null;
-}
-function fmt(n){
-  if(n>=1000) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(n>=1) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4});
-  return n.toFixed(4);
-}
-const chgSign = c => (c>=0?'+':'') + c.toFixed(2) + '%';
-function symLogo(sym, sz=22){
-  const m = findMarket(sym);
-  const col = m ? m.color : '#0ECB81';
-  const dark = col === '#F3BA2F' || col === '#9CA3AF' || col === '#C2A633';
-  return `<span class="logo" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*0.5)}px;background:${col};${dark?'color:#000;':''}">${sym[0]}</span>`;
-}
-
-function sparklineSVG(up, width=52, height=28){
-  const points = [];
-  const N = 16;
-  let p = 50;
-  const bias = up ? 0.55 : 0.45;
-  for(let i = 0; i < N; i++){ p += (Math.random() - (1 - bias)) * 6; points.push(p); }
-  const min = Math.min(...points), max = Math.max(...points), range = max - min || 1;
-  const path = points.map((v, i) => {
-    const x = (i/(N-1)) * width;
-    const y = height - ((v - min) / range) * (height - 4) - 2;
-    return `${i ? 'L' : 'M'}${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(' ');
-  const color = up ? 'var(--green)' : 'var(--red)';
-  const fill = up ? 'rgba(14,203,129,0.10)' : 'rgba(246,70,93,0.10)';
-  const areaPath = `${path} L${width},${height} L0,${height} Z`;
-  return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
-    <path d="${areaPath}" fill="${fill}" stroke="none"/>
-    <path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-}
-
-function startBinanceStream(){
-  if(typeof WebSocket === 'undefined') return;
-  try {
-    const ws = new WebSocket('wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker/solusdt@ticker/xrpusdt@ticker/bnbusdt@ticker/dogeusdt@ticker');
-    ws.onmessage = ev => {
-      try {
-        const msg = JSON.parse(ev.data); const d = msg.data; if(!d || !d.s) return;
-        const sym = d.s.replace('USDT','');
-        const m = MARKETS.crypto.find(x => x.sym === sym); if(!m) return;
-        const p = parseFloat(d.c), o = parseFloat(d.o);
-        if(!isFinite(p) || p <= 0) return;
-        m.price = p;
-        m.chg = o ? ((p-o)/o)*100 : 0;
-        m.vol = '$' + (parseFloat(d.q)/1e6).toFixed(1) + 'M';
-      } catch(e){}
-    };
-  } catch(e){}
-}
-let simTimer = null;
-function startSimulation(){
-  if(simTimer) return;
-  simTimer = setInterval(() => {
-    Object.keys(MARKETS).forEach(cls => {
-      MARKETS[cls].forEach(m => {
-        if(m.sym === 'USDT' || m.sym === 'USDC'){ m.chg = 0; return; }
-        const drift = (Math.random() - 0.5) * m.base * 0.0025;
-        m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
-        m.chg = ((m.price - m.base) / m.base) * 100;
-      });
-    });
-  }, 1500);
-}
-
-const HOME_GRID_COINS = ['BTC','ETH','BNB','SOL'];
-const HOME_LIST_COINS = ['BTC','ETH','BNB','SOL','DOGE'];
-
-function renderHomeCoinGrid(){
-  const el = document.getElementById('homeCoinGrid');
-  if(!el) return;
-  const symbols = HOME_GRID_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81', name:s});
-  el.innerHTML = symbols.map(m => {
-    const up = (m.chg || 0) >= 0;
-    return `<div class="coin-card">
-      <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">crypto</span></div>
-      <div class="row-bottom">
-        <div class="left">
-          <div class="price">$${fmt(m.price)}</div>
-          <div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
-        </div>
-        ${sparklineSVG(up)}
-      </div>
-    </div>`;
-  }).join('');
-}
-function renderHomeCoinList(){
-  const el = document.getElementById('homeCoinList');
-  if(!el) return;
-  const symbols = HOME_LIST_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81', name:s, vol:'—'});
-  el.innerHTML = symbols.map(m => {
-    const up = (m.chg || 0) >= 0;
-    return `<div class="coin-row">
-      <div class="left">
-        ${symLogo(m.sym, 36)}
-        <div class="nm">
-          <div class="pair">${m.sym}<small>/USDT</small></div>
-          <div class="vol">${m.vol || '—'}</div>
-        </div>
-      </div>
-      <div class="price-col">
-        <div class="p">${fmt(m.price)}</div>
-        <div class="usd">$ ${fmt(m.price)}</div>
-      </div>
-      <div class="pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
-    </div>`;
-  }).join('');
-}
-
-/* ---------- MARKET ---------- */
-let mktTab = 'gainers';
-let mkFilter = '';
-function allCoins(){
-  const out = [];
-  ['crypto','forex','commodities','stocks'].forEach(k => { (MARKETS[k] || []).forEach(m => out.push(m)); });
-  return out;
-}
-function renderMarketsTable(){
-  const el = document.getElementById('mkTable');
-  if(!el) return;
-  let list = allCoins().slice();
-  if(mktTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
-  else if(mktTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
-  else list.sort((a,b) => parseFloat(String(b.vol||'').replace(/[^0-9.]/g,'')) - parseFloat(String(a.vol||'').replace(/[^0-9.]/g,'')));
-  if(mkFilter){
-    const q = mkFilter.toLowerCase();
-    list = list.filter(m => m.sym.toLowerCase().includes(q) || (m.name||'').toLowerCase().includes(q));
-  }
-  el.innerHTML = list.map(m => {
-    const up = (m.chg || 0) >= 0;
-    return `<div class="mk-row">
-      <div class="left">
-        ${symLogo(m.sym, 36)}
-        <div>
-          <div class="pair">${m.sym}<small>/USDT</small></div>
-          <div class="vol">${m.vol || '—'}</div>
-        </div>
-      </div>
-      <div class="price">${fmt(m.price)}</div>
-      <div class="chg-pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
-    </div>`;
-  }).join('');
-}
-function filterMarket(v){ mkFilter = v; renderMarketsTable(); }
-document.getElementById('mkTabs')?.addEventListener('click', e => {
-  const t = e.target.closest('.mk-tab'); if(!t) return;
-  document.querySelectorAll('#mkTabs .mk-tab').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  mktTab = t.dataset.tab;
-  renderMarketsTable();
-});
-
-/* ============================================================
-   NAV
-   ============================================================ */
-const NAV = [
-  {id:'s-home', label:'Home', icon:'M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10'},
-  {id:'s-markets', label:'Market', icon:'M4 19V9M9 19V5M14 19v-7M19 19V8'},
-  {id:'s-trade', label:'Copy Trading', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
-  {id:'s-wallet', label:'Wallet', icon:'M3 7h18v12H3zM3 11h18M7 15h3'},
-  {id:'s-assets', label:'Assets', icon:'M3 7h18v12H3zM3 11h18'}
-];
-function navIcon(d,on){return `<svg width="23" height="23" viewBox="0 0 24 24" fill="none"><path d="${d}" stroke="${on?'#0ECB81':'currentColor'}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>`;}
-function buildNav(el, active){
-  el.innerHTML = NAV.map(n => `<div class="nb ${n.id===active?'on':''}" onclick="go('${n.id}')">${navIcon(n.icon, n.id===active)}<span>${n.label}</span></div>`).join('');
-}
-document.querySelectorAll('[data-nav]').forEach(nav => buildNav(nav, nav.closest('.screen').id));
-buildNav(document.getElementById('homeNav'), 's-home');
-
-function go(id){
-  document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id===id));
-  document.querySelectorAll('[data-nav]').forEach(nav => { const s = nav.closest('.screen'); if(s) buildNav(nav, s.id); });
-  buildNav(document.getElementById('homeNav'), id);
-  document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
-  document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
-  if(id === 's-wallet') refreshWallet();
-  if(id === 's-trade'){ loadLiveSignals(); loadMyCopyTrades(); }
-  if(id === 's-markets') renderMarketsTable();
-}
-function openProfile(){ document.getElementById('profile').classList.add('active'); }
-function closeProfile(){ document.getElementById('profile').classList.remove('active'); }
-
-/* ============================================================
-   COPY TRADING ANALYSTS
-   ============================================================ */
-let ANALYSTS = [];
-let analystFilter = '';
-
-async function loadLiveSignals(){
-  let data = null;
-  try {
-    const res = await sb.from('signals')
-      .select('*')
-      .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
-      .order('created_at', { ascending: false });
-    data = res.data;
-    if(res.error) console.warn('signals error:', res.error);
-  } catch(e){
-    console.warn('signals fetch failed:', e);
-  }
-
-  if(data && data.length){
-    ANALYSTS = data.map(s => ({
-      id: s.id,
-      name: s.trader_name,
-      role: s.role || 'Senior Analyst',
-      day: Number(s.day_return || 1.5),
-      week: Number(s.week_return || 10.5),
-      intro: s.message || '',
-      code: s.code,
-      sym: s.sym,
-      amount: Number(s.amount || 100)
-    }));
-  } else {
-    ANALYSTS = [];
-  }
-  renderAnalysts();
-}
-
-function renderAnalysts(){
-  const el = document.getElementById('analystList');
-  const noMore = document.getElementById('noMoreData');
-  if(!el) return;
-  let list = ANALYSTS.slice();
-  if(analystFilter){
-    const q = analystFilter.toLowerCase();
-    list = list.filter(a => a.name.toLowerCase().includes(q));
-  }
-  if(!list.length){
-    el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">No active signals</div>';
-    if(noMore) noMore.style.display = 'none';
-    return;
-  }
-  if(noMore) noMore.style.display = 'flex';
-  el.innerHTML = list.map(a => {
-    const init = a.name.split(' ').map(w => w[0]).join('').slice(0,2);
-    return `<div class="analyst-card">
-      <div class="analyst-top">
-        <div class="analyst-info">
-          <div class="analyst-name">${a.name}</div>
-          <div class="analyst-role">${a.role}</div>
-        </div>
-        <button class="copy-btn" onclick="openFollowSheet('${a.id}')">Copy Trading</button>
-        <div class="analyst-av">${init}</div>
-      </div>
-      <div class="analyst-rates">
-        <div class="analyst-rate"><span class="k">1-Day Return Rate</span><span class="v">+${a.day.toFixed(1)}%</span></div>
-        <div class="analyst-rate"><span class="k">7-Day Return Rate</span><span class="v">+${a.week.toFixed(1)}%</span></div>
-      </div>
-      <div class="analyst-intro" onclick="toggleIntro(this)">
-        <div class="lbl">Analyst Introduction</div>
-        <div class="txt">${a.intro}</div>
-        <div class="caret">▼</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-function toggleIntro(el){ el.classList.toggle('open'); }
-function filterAnalysts(v){ analystFilter = v; renderAnalysts(); }
-
-/* ============================================================
-   FOLLOW SIGNAL SHEET
-   ============================================================ */
-let currentAnalyst = null;
-
-function openFollowSheet(signalId){
-  if(!currentUser){ openAuth('register'); return; }
-
-  if(!signalId){
-    if(ANALYSTS.length){
-      currentAnalyst = ANALYSTS[0];
-    } else {
-      currentAnalyst = { id: 'default', name: 'Copy Signal', sym: 'BTC', amount: 100, code: '0000' };
-    }
-  } else {
-    currentAnalyst = ANALYSTS.find(a => a.id === signalId);
-    if(!currentAnalyst) return toast('Signal not found');
-  }
-
-  const bal = Number(currentUser.balance || 0);
-  document.getElementById('fsBody').innerHTML = `
-    <div class="fs-field">
-      <div class="lbl-row"><label>Signal Code</label></div>
-      <input class="fs-input" id="fsCode" type="text" inputmode="numeric" maxlength="4" placeholder="Please Enter Signal Code" autocomplete="off">
-    </div>
-    <div class="fs-field">
-      <div class="lbl-row">
-        <label>Follow Amount</label>
-        <span class="avail">Available <b>${bal.toFixed(2)} USD</b></span>
-      </div>
-      <div class="fs-amount-wrap">
-        <input id="fsAmt" type="text" inputmode="decimal" placeholder="Please Enter the Amount">
-        <span class="suf">USD</span>
-        <button class="fs-max-btn" onclick="fsSetMax()">Max</button>
-      </div>
-      <div class="fs-quick">
-        <button onclick="fsQuick(1000)">1000</button>
-        <button onclick="fsQuick(2000)">2000</button>
-      </div>
-    </div>
-    <div class="fs-field">
-      <label>Select Voucher</label>
-      <select class="fs-select" id="fsVoucher">
-        <option value="none">None</option>
-        <option value="welcome10">WELCOME10 — +$10 bonus</option>
-        <option value="referral5">REFERRAL5 — +$5 bonus</option>
-      </select>
-    </div>
-    <label class="fs-agree">
-      <input type="checkbox" id="fsAgree" onchange="fsRefresh()">
-      <span>I have read and agree to <a onclick="event.preventDefault();toast('Copy Trading Agreement')">Copy Trading Agreement</a></span>
-    </label>
-    <button class="fs-apply" id="fsApply" disabled onclick="fsApply()">Apply to Follow</button>
-  `;
-  document.getElementById('fsCode').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
-    fsRefresh();
-  });
-  document.getElementById('fsAmt').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/[^\d.]/g,'');
-    fsRefresh();
-  });
-  document.getElementById('fsSheet').classList.add('on');
-}
-function closeFollowSheet(){
-  document.getElementById('fsSheet').classList.remove('on');
-  currentAnalyst = null;
-}
-function fsSetMax(){
-  const bal = Number(currentUser?.balance || 0);
-  document.getElementById('fsAmt').value = bal.toFixed(2);
-  fsRefresh();
-}
-function fsQuick(v){ document.getElementById('fsAmt').value = v; fsRefresh(); }
-function fsRefresh(){
-  if(!currentAnalyst) return;
-  const code = document.getElementById('fsCode').value.trim();
-  const amt = parseFloat(document.getElementById('fsAmt').value || '0');
-  const agree = document.getElementById('fsAgree').checked;
-  const codeOk = code.length === 4;
-  const amtOk = amt > 0;
-  document.getElementById('fsApply').disabled = !(codeOk && amtOk && agree);
-}
-async function fsApply(){
-  if(!currentAnalyst || !currentUser) return;
-  const code = document.getElementById('fsCode').value.trim();
-  if(code.length !== 4) return toast('Enter a 4-digit code');
-  const amt = parseFloat(document.getElementById('fsAmt').value || '0');
-  const voucher = document.getElementById('fsVoucher').value;
-  if(amt <= 0) return toast('Enter a valid amount');
-
-  let bonus = 0;
-  if(voucher === 'welcome10') bonus = 10;
-  else if(voucher === 'referral5') bonus = 5;
-  const effective = amt + bonus;
-
-  if(currentAnalyst.id && currentAnalyst.id !== 'default'){
-    const bal = Number(currentUser.balance || 0);
-    if(amt > bal) return toast('Insufficient balance');
-    const newBal = bal - amt;
-    const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
-    if(balErr) return toast('Error: ' + balErr.message);
-    currentUser.balance = newBal;
-
-    const { error: partErr } = await sb.from('participants').insert({
-      signal_id: currentAnalyst.id,
-      user_id: currentUser.id,
-      username: currentUser.username,
-      uid: currentUser.uid,
-      amount_usdt: effective,
-      mode: 'real',
-      voucher
-    });
-    if(partErr) console.warn('participant insert failed:', partErr);
-  }
-
-  closeFollowSheet();
-  toast('✓ Copy trade placed — $' + effective.toFixed(2));
-  loadMyCopyTrades();
-  refreshWallet();
-}
-
-async function loadMyCopyTrades(){
-  if(!currentUser) return;
-  const { data: profits } = await sb.from('copy_profits').select('*').eq('user_id', currentUser.id);
-  const totalPnl = (profits || []).reduce((a, b) => a + Number(b.profit || 0), 0);
-  const pnlEl = document.getElementById('copyPnl');
-  if(pnlEl) pnlEl.textContent = totalPnl.toFixed(2);
-}
-
-function openMyCopy(){
-  if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = 'My Copy Trades';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">Your copy trades will appear here.</div>';
-  document.getElementById('genericModal').classList.add('on');
-}
-
-/* ============================================================
-   WALLET / TRANSFER / DEPOSIT
-   ============================================================ */
-function renderAccounts(){
-  const funding = Number(currentUser?.funding || 0).toFixed(2);
-  const spot = Number(currentUser?.spot || 0).toFixed(2);
-  const accts = [
-    {n:'Funding Account', v:funding + ' USDT', ic:'M3 7h18v12H3zM3 11h18'},
-    {n:'Spot Account', v:spot + ' USDT', ic:'M4 6h16v12H4zM8 12h8'}
-  ];
-  const el = document.getElementById('acctList');
-  if(!el) return;
-  el.innerHTML = accts.map(a => `
-    <div class="acct-row" onclick="openTransfer()">
-      <div class="ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="${a.ic}" stroke="#0ECB81" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-      <div class="tx"><div class="n">${a.n}</div><div class="v">${a.v}</div></div>
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-function renderProfileMenu(){
-  const items = [
-    {l:'Identity Verification', sub: (currentUser && currentUser.kyc_status === 'pending') ? 'Pending Review' : '', action:'openKycFromProfile()'},
-    {l:'Transaction History', action:'openTxHistory()'},
-    {l:'Referral Program', action:'openInvite()'},
-    {l:'Security Center', action:"toast('Security')"},
-    {l:'Fee Schedule', action:"toast('Fees')"},
-    {l:'About Us', action:"toast('About')"}
-  ];
-  const el = document.getElementById('profileMenu');
-  if(!el) return;
-  el.innerHTML = items.map(it => `
-    <div class="menu-row" onclick="${it.action}">
-      <div class="mi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#0ECB81" stroke-width="1.8"/></svg></div>
-      <div class="mt">${it.l}</div>
-      ${it.sub ? `<div style="font-size:11px;color:var(--orange);font-weight:600;">${it.sub}</div>` : ''}
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-function openKycFromProfile(){
-  if(!currentUser){ openAuth('register'); return; }
-  closeProfile();
-  openAuth('kyc');
-}
-function openTxHistory(){
-  document.getElementById('genericTitle').textContent = 'Transaction History';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">No transactions yet.</div>';
-  document.getElementById('genericModal').classList.add('on');
-}
-function openNews(){
-  const list = liveNews.length ? liveNews : [];
-  document.getElementById('newsList').innerHTML = list.length ? list.map(n => `
-    <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
-      <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
-      <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}</div>
-    </div>
-  `).join('') : '<div style="text-align:center;color:var(--text3);padding:40px;">No news available.</div>';
-  document.getElementById('newsPanel').classList.add('active');
-}
-function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
-function closeGeneric(){ document.getElementById('genericModal').classList.remove('on'); }
-
-function openInvite(){
-  if(!currentUser){ openAuth('register'); return; }
-  const code = currentUser.referral_code || 'NT000000';
-  document.getElementById('genericTitle').textContent = 'Invite & Earn';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="text-align:center;padding:4px 0 6px;">
-      <div style="font-size:40px;">🎁</div>
-      <div style="font-size:14px;font-weight:700;margin-top:8px;color:var(--text);">Your referral code</div>
-    </div>
-    <div style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;border-radius:12px;padding:20px;text-align:center;margin:14px 0;">
-      <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:3px;">${code}</div>
-    </div>
-    <button class="auth-submit" onclick="copyInvite('${code}')">Copy Code</button>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Copied'); }
-
-function openDeposit(mode){
-  if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = mode === 'withdraw' ? 'Withdraw' : 'Deposit';
-  const addr = currentUser.derived_eth_address || 'Not assigned yet';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="text-align:center;padding:4px 0 6px;">
-      <div style="font-size:13px;color:var(--text2);margin-bottom:12px;">Send ETH or ERC-20 tokens (USDT, USDC) to:</div>
-      <div style="background:var(--input-bg);border-radius:10px;padding:14px;font-family:'Courier New',monospace;font-size:12px;word-break:break-all;color:var(--green-dk);">${addr}</div>
-    </div>
-  `;
-  document.getElementById('genericModal').classList.add('on');
-}
-function openTransfer(){
-  if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = 'Transfer';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;padding:20px;color:var(--text2);font-size:13px;">Internal transfer coming soon.</div>';
-  document.getElementById('genericModal').classList.add('on');
-}
-
-/* ============================================================
-   NEWS
-   ============================================================ */
-let liveNews = [];
-async function fetchLiveNews(){
-  try {
-    const r = await fetch('https://data-api.coindesk.com/news/v1/article/list?limit=20&lang=EN');
-    const data = await r.json();
-    const arr = (data && (data.Data || data.data || data.articles)) || [];
-    if(Array.isArray(arr) && arr.length){
-      liveNews = arr.map(a => ({
-        title: a.TITLE || a.title || '',
-        body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
-        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
-        source: 'CoinDesk'
-      })).filter(x => x.title);
-      return true;
-    }
-  } catch(e){}
-  return false;
-}
-function refreshNewsStrip(){
-  if(!liveNews.length) return;
-  const top = liveNews[0];
-  const h = document.getElementById('newsHeadline');
-  const s = document.getElementById('newsSub');
-  if(h) h.textContent = top.title;
-  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
-}
-
-/* ============================================================
-   RENDER LOOP
-   ============================================================ */
-setInterval(() => {
-  renderHomeCoinGrid();
-  renderHomeCoinList();
-  renderMarketsTable();
-}, 2000);
-
-/* ============================================================
-   BOOT
-   ============================================================ */
+/* BOOT */
 (async function boot(){
-  startBinanceStream();
-  startSimulation();
-  renderHomeCoinGrid();
-  renderHomeCoinList();
-  renderMarketsTable();
-  renderAccounts();
-  renderProfileMenu();
-  fetchLiveNews().then(() => refreshNewsStrip());
-
-  try {
-    const { data } = await sb.auth.getSession();
-    if(data && data.session && data.session.user){
-      const profile = await loadProfile(data.session.user.id);
-      if(profile){
-        currentUser = profile;
-        currentMode = profile.mode === 'demo' ? 'demo' : 'real';
-        applyUserToUI();
-        go('s-home');
-        await loadLiveSignals();
-        loadMyCopyTrades();
-        return;
-      }
-    }
-    openAuth('register');
-    await loadLiveSignals();
-  } catch(e){
-    console.error('boot error:', e);
-    openAuth('register');
+  document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+  const { data } = await sb.auth.getSession();
+  if(data && data.session && data.session.user && data.session.user.email === cfg.ADMIN_EMAIL){
+    adminUser = data.session.user;
+    showApp();
+    return;
   }
-
-  document.getElementById('loginPw')?.addEventListener('keydown', e => {
-    if(e.key === 'Enter') doLogin();
-  });
+  document.getElementById('loginWrap').style.display = 'flex';
 })();
 </script>
 </body>
