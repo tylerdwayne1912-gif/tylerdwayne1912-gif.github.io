@@ -84,8 +84,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   transition:background-color .25s ease, color .25s ease;}
 .phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);
-  transition:background-color .25s ease;}
+  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);}
 html.is-mobile,html.is-mobile body{background:var(--bg);overflow:hidden;height:100%;}
 html.is-mobile body{display:block;min-height:0;padding:0;margin:0;}
 html.is-mobile .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;max-height:none;
@@ -150,12 +149,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .auth-check a{color:var(--green-dk);font-weight:600;}
 .auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
   font-size:16px;font-weight:700;border:none;cursor:pointer;font-family:inherit;transition:.15s;margin-top:6px;}
-.auth-submit:hover{background:var(--green-dk);}
 .auth-submit:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
 .auth-switch{text-align:center;font-size:13.5px;color:var(--text2);margin-top:22px;}
 .auth-switch a{color:var(--green-dk);font-weight:700;cursor:pointer;}
 .skip-link{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--text2);cursor:pointer;}
-.skip-link:hover{color:var(--text);}
 
 .topbar{display:flex;align-items:center;gap:9px;padding:10px 14px 8px;flex-shrink:0;
   background:var(--topbar-grad);}
@@ -171,12 +168,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .icon-btn{width:36px;height:36px;border-radius:50%;background:var(--card);display:flex;align-items:center;
   justify-content:center;flex-shrink:0;cursor:pointer;border:1px solid var(--line);position:relative;
   color:var(--icon-color);transition:.15s;}
-.icon-btn:active{background:var(--bg3);}
 .icon-btn svg path,.icon-btn svg circle{stroke:var(--icon-color);}
 .theme-toggle{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;
-  color:var(--icon-color);transition:.18s;}
-.theme-toggle:active{background:var(--bg3);transform:scale(.95);}
+  color:var(--icon-color);}
 .theme-toggle svg{width:17px;height:17px;display:block;stroke:var(--icon-color);}
 :root[data-theme="dark"] .theme-toggle .icon-moon{display:none;}
 :root[data-theme="dark"] .theme-toggle .icon-sun{display:block;}
@@ -200,11 +195,85 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
   border:2px solid var(--bg);}
 
+/* ============================================================
+   BANNER CAROUSEL (adaptive height, auto-slide every 4s)
+   ============================================================ */
+.banner-wrap{
+  margin:14px 14px 0;
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--line);
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  transition:height .35s cubic-bezier(.2,.9,.3,1);
+  touch-action:pan-y;
+}
+.banner-track{
+  display:flex;
+  transition:transform .45s cubic-bezier(.2,.9,.3,1);
+  will-change:transform;
+}
+.banner-slide{
+  flex:0 0 100%;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+}
+.banner-slide img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-drag:none;
+  pointer-events:none;
+}
+.banner-dots{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  z-index:2;
+  pointer-events:none;
+}
+.banner-dots .d{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  transition:.2s;
+}
+.banner-dots .d.on{
+  background:#fff;
+  width:18px;
+  border-radius:3px;
+}
+.banner-title{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:20px 14px 26px;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.65));
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:-.2px;
+  z-index:1;
+  pointer-events:none;
+}
+
 .quick-circle-row{display:flex;justify-content:space-between;gap:6px;padding:18px 14px 10px;}
 .qc{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;min-width:0;}
 .qc .circle{width:52px;height:52px;border-radius:50%;background:var(--quick-circle-bg);
   border:1px solid var(--quick-circle-ring);display:flex;align-items:center;justify-content:center;transition:.15s;}
-.qc:active .circle{background:var(--bg3);transform:scale(.95);}
 .qc .circle svg{width:24px;height:24px;}
 .qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
@@ -213,7 +282,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
 .coin-card{background:var(--coin-card-bg);border-radius:12px;padding:14px;border:1px solid var(--line);
-  position:relative;cursor:pointer;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
+  min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
 .coin-card .row-top{display:flex;align-items:center;gap:6px;}
 .coin-card .pair{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
 .coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;}
@@ -224,24 +293,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .coin-card .chg.up{color:var(--green);}
 .coin-card .chg.down{color:var(--red);}
 .coin-card .spark{width:52px;height:28px;flex-shrink:0;}
-.coin-list{background:transparent;border-radius:0;margin:0;overflow:hidden;}
-.coin-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;}
-.coin-row:last-child{border-bottom:none;}
-.coin-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
-.coin-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
-  justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
-.coin-row .left .nm{min-width:0;}
-.coin-row .left .pair{font-size:14.5px;font-weight:800;color:var(--text);letter-spacing:-.2px;white-space:nowrap;}
-.coin-row .left .pair small{font-size:11px;font-weight:500;color:var(--text2);margin-left:1px;}
-.coin-row .left .vol{font-size:11.5px;color:var(--text2);margin-top:3px;}
-.coin-row .price-col{text-align:right;min-width:0;}
-.coin-row .price-col .p{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.3px;white-space:nowrap;}
-.coin-row .price-col .usd{font-size:11px;color:var(--text2);margin-top:3px;}
-.coin-row .pill{min-width:74px;text-align:center;padding:8px 12px;border-radius:8px;
-  color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;}
-.coin-row .pill.up{background:var(--green);}
-.coin-row .pill.down{background:var(--red);}
+
 .news-strip{margin:14px;background:var(--card);border-radius:12px;border:1px solid var(--line);
   padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
 .news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
@@ -256,10 +308,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .ov-head{display:flex;align-items:center;padding:14px 16px;flex-shrink:0;}
 .ov-head .x{font-size:22px;line-height:1;cursor:pointer;width:30px;color:var(--text);}
 .ov-head .title{font-size:17px;font-weight:700;flex:1;text-align:center;margin-right:30px;color:var(--text);}
-.menu-row{display:flex;align-items:center;gap:12px;background:var(--card);padding:15px 16px;border-bottom:1px solid var(--line);font-size:14px;cursor:pointer;color:var(--text);}
-.menu-row .mi{width:22px;display:flex;justify-content:center;color:var(--green);}
-.menu-row .mt{flex:1;}
-.menu-row .arrow{color:var(--text3);}
 .bottomnav{display:flex;background:var(--card);border-top:1px solid var(--line);flex-shrink:0;z-index:40;width:100%;box-sizing:border-box;}
 .bottomnav .nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:9px 0 8px;
   font-size:11px;color:var(--text2);cursor:pointer;user-select:none;}
@@ -280,7 +328,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 
-/* Copy Trading */
 .ct-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
 .ct-stat{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--line);
   box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
@@ -300,7 +347,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .ct-signal-btn{height:44px;padding:0 16px;background:var(--card);border:1px solid var(--line);border-radius:22px;
   display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--text);
   cursor:pointer;flex-shrink:0;font-family:inherit;}
-.ct-signal-btn svg path{stroke:var(--icon-color);}
 .analyst-list{padding:0 16px 20px;display:flex;flex-direction:column;gap:12px;}
 .analyst-card{background:var(--card);border-radius:16px;padding:16px;border:1px solid var(--line);box-shadow:var(--shadow-sm);}
 .analyst-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;}
@@ -309,10 +355,9 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .analyst-role{font-size:12.5px;color:var(--text2);margin-top:3px;}
 .analyst-av{width:48px;height:48px;border-radius:50%;background:var(--green-lt);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dk);font-size:16px;
-  border:1px solid var(--line);overflow:hidden;}
+  border:1px solid var(--line);overflow:hidden;background-size:cover;background-position:center;}
 .copy-btn{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:8px 14px;
   font-size:12.5px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit;flex-shrink:0;}
-.copy-btn:active{background:var(--input-bg);}
 .analyst-rates{display:flex;flex-direction:column;gap:6px;margin-bottom:12px;}
 .analyst-rate{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
 .analyst-rate .k{color:var(--text2);}
@@ -327,7 +372,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .no-more-data{display:flex;align-items:center;gap:12px;padding:22px 16px 30px;color:var(--text3);font-size:12.5px;}
 .no-more-data::before,.no-more-data::after{content:"";height:1px;background:var(--line);flex:1;}
 
-/* Follow Signal sheet */
 .fs-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;
   align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
 .fs-backdrop.on{display:flex;}
@@ -370,15 +414,13 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .fs-apply{width:100%;height:56px;border-radius:14px;background:var(--green);color:#fff;
   font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:.15s;}
 .fs-apply:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
-.fs-apply:not(:disabled):active{background:var(--green-dk);transform:scale(.99);}
 
-/* Market */
 .mk-tabs{display:flex;gap:20px;padding:6px 16px 10px;border-bottom:1px solid var(--line);}
 .mk-tab{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
   border-bottom:2px solid transparent;letter-spacing:-.3px;}
 .mk-tab.on{color:var(--text);border-bottom-color:var(--green);}
 .mk-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);cursor:pointer;background:var(--card);}
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card);}
 .mk-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
 .mk-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
@@ -391,9 +433,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .mk-row .chg-pill.up{background:var(--green);}
 .mk-row .chg-pill.down{background:var(--red);}
 
-/* ============ PROFILE (new) ============ */
 .pf-scroll{flex:1;overflow-y:auto;background:var(--bg);padding-bottom:20px;}
-.pf-scroll::-webkit-scrollbar{width:0;}
 .pf-top-icons{display:flex;align-items:center;gap:10px;padding:14px 16px 6px;}
 .pf-top-icons .pf-ic{width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--line);
   display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text);}
@@ -433,18 +473,15 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .pf-menu-row .mi{width:24px;display:flex;align-items:center;justify-content:center;}
 .pf-menu-row .mi svg{width:20px;height:20px;stroke:var(--text);}
 .pf-menu-row .arrow{margin-left:auto;color:var(--text3);font-size:16px;}
-.pf-about-note{margin:14px 16px 10px;text-align:center;font-size:12px;color:var(--text3);}
 .pf-logout{margin:10px 16px 30px;height:48px;border-radius:12px;background:var(--red);color:#fff;
   display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;cursor:pointer;}
 
-/* ============ DEPOSIT / WITHDRAW (new) ============ */
-.dw-scroll{flex:1;overflow-y:auto;background:var(--bg);padding:10px 16px 30px;}
-.dw-scroll::-webkit-scrollbar{width:0;}
 .dw-back{display:flex;align-items:center;padding:14px 16px 6px;}
 .dw-back .b{width:36px;height:36px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;color:var(--text);font-size:22px;}
 .dw-title{text-align:center;font-size:18px;font-weight:800;color:var(--text);margin:0 auto;flex:1;
   letter-spacing:-.3px;}
+.dw-scroll{flex:1;overflow-y:auto;background:var(--bg);padding:10px 16px 30px;}
 .dw-label{font-size:13px;font-weight:700;color:var(--text);margin:14px 2px 8px;}
 .dw-card{background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px 16px;
   display:flex;align-items:center;gap:12px;cursor:pointer;}
@@ -456,11 +493,9 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .dw-input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:12px;
   padding:16px 16px;font-size:16px;font-weight:700;font-family:inherit;outline:none;color:var(--text);
   font-variant-numeric:tabular-nums;}
-.dw-input:focus{border-color:var(--green);}
 .dw-input::placeholder{color:var(--text3);font-weight:500;}
 .dw-mini{font-size:12px;color:var(--text2);margin-top:6px;}
-.dw-table{background:var(--card);border-radius:12px;border:1px solid var(--line);padding:4px 16px;
-  margin-top:12px;}
+.dw-table{background:var(--card);border-radius:12px;border:1px solid var(--line);padding:4px 16px;margin-top:12px;}
 .dw-table .r{display:flex;align-items:center;justify-content:space-between;gap:8px;
   padding:12px 0;font-size:12.5px;color:var(--text2);border-bottom:1px solid var(--line);}
 .dw-table .r:last-child{border-bottom:none;}
@@ -476,58 +511,41 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .dw-note li{margin-bottom:6px;}
 .dw-note b{color:var(--text);}
 .dw-submit{width:100%;height:54px;border-radius:14px;background:var(--green);color:#fff;border:none;
-  font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:20px;
-  letter-spacing:.2px;}
-.dw-submit:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
+  font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:20px;}
 </style>
 </head>
 <body>
 <div class="phone">
 
-<!-- ============ AUTH: REGISTER ============ -->
+<!-- ============ REGISTER ============ -->
 <section class="auth-screen" id="authRegister">
   <div class="auth-header">
     <div class="back" onclick="backToLanding()">←</div>
     <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
   </div>
-  <div class="step-progress">
-    <div class="step active"><div class="circle">1</div><div class="label">Account<br>Registration</div></div>
-    <div class="line"></div>
-    <div class="step"><div class="circle">2</div><div class="label">Real-name<br>Authentication</div></div>
-    <div class="line"></div>
-    <div class="step"><div class="circle">3</div><div class="label">Trade</div></div>
-  </div>
   <div class="auth-body">
-    <h1 class="auth-title">Account Registration</h1>
-    <p class="auth-sub">Create your free account in less than a minute.</p>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Join NextTrade in less than a minute.</p>
     <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
-    <div class="auth-field"><label>Invitation code <span style="color:var(--text3);font-weight:400;">(optional)</span></label><div class="wrap"><input id="suReferral" type="text" placeholder="Please enter the invitation code"></div></div>
     <div class="auth-field">
       <label>Set password</label>
       <div class="wrap">
         <input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()">
-        <div class="eye-btn" onclick="togglePw('suPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
       </div>
       <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
       <div class="err" id="suPwErr"></div>
     </div>
     <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
     <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
-    <div class="auth-check">
-      <input type="checkbox" id="suTerms">
-      <label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label>
-    </div>
+    <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label></div>
     <button class="auth-submit" id="registerBtn" onclick="doRegisterStep1()">Register →</button>
     <div class="auth-switch">Already have an account? <a onclick="openAuth('login')">Log In</a></div>
   </div>
 </section>
 
-<!-- ============ AUTH: KYC ============ -->
+<!-- ============ KYC ============ -->
 <section class="auth-screen" id="authKyc">
-  <div class="auth-header">
-    <div class="back" onclick="openAuth('register')">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
-  </div>
+  <div class="auth-header"><div class="back" onclick="openAuth('register')">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="step-progress">
     <div class="step done"><div class="circle">✓</div><div class="label">Account<br>Registration</div></div>
     <div class="line done"></div>
@@ -541,40 +559,21 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     <div class="auth-field"><label>Full legal name</label><div class="wrap"><input id="kycName" type="text" placeholder="As shown on your ID"></div></div>
     <div class="auth-field"><label>Date of birth</label><div class="wrap"><input id="kycDob" type="date"></div></div>
     <div class="auth-field"><label>Country / Region</label><div class="wrap"><input id="kycCountry" type="text" placeholder="e.g. United States"></div></div>
-    <div class="auth-field">
-      <label>ID type</label>
-      <div class="wrap">
-        <select id="kycIdType" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:var(--card);color:var(--text);">
-          <option value="passport">Passport</option>
-          <option value="national_id">National ID</option>
-          <option value="drivers_license">Driver's License</option>
-        </select>
-      </div>
-    </div>
+    <div class="auth-field"><label>ID type</label><div class="wrap"><select id="kycIdType" style="width:100%;border:1.5px solid var(--line);border-radius:10px;padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:var(--card);color:var(--text);"><option value="passport">Passport</option><option value="national_id">National ID</option><option value="drivers_license">Driver's License</option></select></div></div>
     <div class="auth-field"><label>ID number</label><div class="wrap"><input id="kycIdNum" type="text" placeholder="Please enter your ID number"></div></div>
     <button class="auth-submit" onclick="submitKycStep2()">Submit for Review →</button>
     <div class="skip-link" onclick="skipKycStep2()">Skip for now — do this later</div>
   </div>
 </section>
 
-<!-- ============ AUTH: LOGIN ============ -->
+<!-- ============ LOGIN ============ -->
 <section class="auth-screen" id="authLogin">
-  <div class="auth-header">
-    <div class="back" onclick="openAuth('register')">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
-  </div>
+  <div class="auth-header"><div class="back" onclick="openAuth('register')">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="auth-body">
     <h1 class="auth-title">Welcome back</h1>
     <p class="auth-sub">Sign in to access your account and start trading.</p>
     <div class="auth-field"><label>Email or Username</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
-    <div class="auth-field">
-      <label>Password</label>
-      <div class="wrap">
-        <input id="loginPw" type="password" placeholder="••••••••">
-        <div class="eye-btn" onclick="togglePw('loginPw')"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg></div>
-      </div>
-      <div class="err" id="loginPwErr"></div>
-    </div>
+    <div class="auth-field"><label>Password</label><div class="wrap"><input id="loginPw" type="password" placeholder="••••••••"></div><div class="err" id="loginPwErr"></div></div>
     <button class="auth-submit" onclick="doLogin()">Log In</button>
     <div class="auth-switch">Don't have an account? <a onclick="openAuth('register')">Sign Up</a></div>
   </div>
@@ -588,16 +587,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
       <span>Welcome to our platform~</span>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
-      <svg class="icon-moon" viewBox="0 0 24 24" fill="none">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <svg class="icon-sun" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-    <div class="icon-btn" title="Support"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
     <div class="icon-btn" onclick="downloadFor('android')" title="Download"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   </div>
   <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
@@ -610,6 +603,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="wc-sub">A Global Digital Asset Trading Platform Built for the Future.</div>
       </div>
       <div class="wc-badge"><span class="check">✓</span>N</div>
+    </div>
+
+    <!-- ============ CONTINUOUS BANNER CAROUSEL ============ -->
+    <div class="banner-wrap" id="bannerWrap" style="display:none;">
+      <div class="banner-track" id="bannerTrack"></div>
+      <div class="banner-dots" id="bannerDots"></div>
     </div>
 
     <div class="quick-circle-row">
@@ -642,12 +641,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <span class="off" onclick="go('s-markets')">Futures</span>
     </div>
     <div class="coin-grid" id="homeCoinGrid"></div>
-
-    <div class="sec-pair" style="padding-top:6px;">
-      <span class="on">Top Movers</span>
-      <span class="off" onclick="go('s-markets')">View all ›</span>
-    </div>
-    <div class="coin-list" id="homeCoinList" style="margin:0 14px 14px;background:var(--card);border-radius:14px;border:1px solid var(--line);overflow:hidden;"></div>
 
     <div class="news-strip" onclick="openNews()">
       <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
@@ -682,9 +675,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <section class="screen" id="s-trade">
   <div class="topbar">
     <div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Copy Trading</div>
-    <div class="icon-btn" onclick="toast('My Copy Trades')" title="My Copy Trades">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M9 9h6M9 13h6M9 17h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-    </div>
   </div>
   <div class="scroll">
     <div class="ct-stats">
@@ -731,9 +721,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <section class="screen" id="s-profile">
   <div class="pf-scroll">
     <div class="pf-top-icons">
-      <div class="pf-ic" title="Language" onclick="toast('Language')">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.5 3 2.5 15 0 18M12 3c-2.5 3-2.5 15 0 18" stroke="currentColor" stroke-width="1.8"/></svg>
-      </div>
       <div class="pf-ic" title="Settings" onclick="toast('Settings')">
         <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </div>
@@ -745,7 +732,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <svg viewBox="0 0 24 24" fill="none"><path d="M15 12H3M7 8l-4 4 4 4M12 3h7a2 2 0 012 2v14a2 2 0 01-2 2h-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
     </div>
-
     <div style="position:relative;padding-right:80px;">
       <div class="pf-email-row">
         <span class="em" id="pfEmail">—</span>
@@ -753,7 +739,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <div class="pf-avatar-big" id="pfAvatar">U</div>
     </div>
-
     <div class="pf-code-row">
       <div class="pf-code-box green" onclick="copyPf('invite')">
         <div class="k">Invitation Code :</div>
@@ -766,12 +751,11 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="cp">⧉</div>
       </div>
     </div>
-
     <div class="pf-assets-card">
       <div>
         <div class="l">
           <span>Total Assets</span>
-          <svg class="eye" id="pfEye" viewBox="0 0 24 24" fill="none" onclick="togglePfBalance()">
+          <svg class="eye" viewBox="0 0 24 24" fill="none" onclick="togglePfBalance()">
             <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.8"/>
             <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
           </svg>
@@ -780,7 +764,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <button class="info-btn" onclick="toast('Asset information')">Asset Information</button>
     </div>
-
     <div class="pf-menu">
       <div class="pf-menu-row" onclick="openTxHistory()">
         <div class="mi"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
@@ -813,7 +796,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
         <div class="arrow">›</div>
       </div>
     </div>
-
     <div class="pf-logout" onclick="doLogout()">Log Out</div>
   </div>
   <nav class="bottomnav" data-nav></nav>
@@ -821,74 +803,43 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 
 <!-- ============ DEPOSIT ============ -->
 <section class="screen" id="s-deposit">
-  <div class="dw-back">
-    <div class="b" onclick="go('s-home')">‹</div>
-    <div class="dw-title">Deposit</div>
-  </div>
+  <div class="dw-back"><div class="b" onclick="go('s-home')">‹</div><div class="dw-title">Deposit</div></div>
   <div class="dw-scroll">
     <div class="dw-label">Please Select Deposit Currency</div>
-    <div class="dw-card">
-      <div class="dw-coin-ic">₮</div>
-      <div class="dw-coin-name">USDT</div>
-      <div class="dw-caret">⌄</div>
-    </div>
+    <div class="dw-card"><div class="dw-coin-ic">₮</div><div class="dw-coin-name">USDT</div><div class="dw-caret">⌄</div></div>
     <div class="dw-rate">Current Exchange Rate: 1 USDT = 1 USD</div>
-
     <div class="dw-label">Select Network</div>
-    <div class="dw-card">
-      <div class="dw-coin-name">ERC20</div>
-      <div class="dw-caret">⌄</div>
-    </div>
-
+    <div class="dw-card"><div class="dw-coin-name">ERC20</div><div class="dw-caret">⌄</div></div>
     <div class="dw-label">Deposit Amount (USD)</div>
     <input class="dw-input" id="depAmount" type="text" inputmode="decimal" placeholder="Please enter the deposit amount" oninput="updateDepositAmount()">
     <div class="dw-mini" id="depApprox">≈ 0.00 USDT</div>
     <div class="dw-mini">( Minimum recharge amount: 10 USDT ≈ 10 USD )</div>
-
     <div class="dw-note">
       <b>Note</b>
       <ul>
-        <li>Please do not deposit any non-USDT assets. Otherwise, these assets cannot be recovered.</li>
-        <li>USDT deposits only support the <b>simple send</b> method. Deposits made using other methods (<b>send all</b>) cannot be credited temporarily. Thank you for your understanding.</li>
-        <li>After depositing to the above address, network confirmations are required. Funds will be credited after 6 network confirmations.</li>
-        <li>Please ensure computer and browser security to prevent data tampering or leakage.</li>
+        <li>Please do not deposit any non-USDT assets.</li>
+        <li>USDT deposits only support the <b>simple send</b> method.</li>
+        <li>Funds will be credited after 6 network confirmations.</li>
+        <li>Please ensure computer and browser security to prevent data tampering.</li>
       </ul>
     </div>
-
     <div class="dw-label">Your Deposit Address (ERC20)</div>
-    <div class="dw-addr">
-      <span class="v" id="depAddress">Log in to see your address</span>
-      <span class="copy" onclick="copyDepositAddress()">Copy</span>
-    </div>
-
+    <div class="dw-addr"><span class="v" id="depAddress">Log in to see your address</span><span class="copy" onclick="copyDepositAddress()">Copy</span></div>
     <button class="dw-submit" onclick="submitDeposit()">Submit Deposit</button>
   </div>
 </section>
 
 <!-- ============ WITHDRAW ============ -->
 <section class="screen" id="s-withdraw">
-  <div class="dw-back">
-    <div class="b" onclick="go('s-home')">‹</div>
-    <div class="dw-title">Withdrawal</div>
-  </div>
+  <div class="dw-back"><div class="b" onclick="go('s-home')">‹</div><div class="dw-title">Withdrawal</div></div>
   <div class="dw-scroll">
     <div class="dw-label">Select Withdrawal Currency</div>
-    <div class="dw-card">
-      <div class="dw-coin-ic">₮</div>
-      <div class="dw-coin-name">USDT</div>
-      <div class="dw-caret">⌄</div>
-    </div>
+    <div class="dw-card"><div class="dw-coin-ic">₮</div><div class="dw-coin-name">USDT</div><div class="dw-caret">⌄</div></div>
     <div class="dw-rate">Current Exchange Rate: 1 USDT = 1 USD</div>
-
     <div class="dw-label">Withdrawal Method</div>
-    <div class="dw-card">
-      <div class="dw-coin-name">ERC20</div>
-      <div class="dw-caret">⌄</div>
-    </div>
-
+    <div class="dw-card"><div class="dw-coin-name">ERC20</div><div class="dw-caret">⌄</div></div>
     <div class="dw-label">Withdrawal Amount (USD)</div>
     <input class="dw-input" id="wdAmount" type="text" inputmode="decimal" placeholder="Please enter amount (USD)" oninput="updateWithdrawAmount()">
-
     <div class="dw-table">
       <div class="r"><span>Minimum transaction balance</span><span class="v">0 USD</span></div>
       <div class="r"><span>Non-Withdrawable Amount</span><span class="v">0 USD</span></div>
@@ -898,17 +849,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="r"><span>Minimum Withdrawal Fee</span><span class="v">20 USD</span></div>
       <div class="r"><span>Estimated Arrival</span><span class="v" id="wdArrival">0 USDT ≈ 0 USD</span></div>
     </div>
-
     <div class="dw-label">Withdrawal Address</div>
     <input class="dw-input" id="wdAddress" type="text" placeholder="Paste your ERC20 address" style="font-family:'Courier New',monospace;font-size:13px;">
-
     <div class="dw-label">Select Voucher</div>
     <select class="dw-input" id="wdVoucher" style="font-size:14px;font-weight:600;">
       <option value="none">None</option>
       <option value="welcome10">WELCOME10 — +$10 bonus</option>
       <option value="referral5">REFERRAL5 — +$5 bonus</option>
     </select>
-
     <button class="dw-submit" onclick="submitWithdraw()">Submit Withdrawal</button>
   </div>
 </section>
@@ -916,10 +864,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <!-- ============ FOLLOW SIGNAL SHEET ============ -->
 <div class="fs-backdrop" id="fsSheet">
   <div class="fs-sheet" onclick="event.stopPropagation()">
-    <div class="fs-head">
-      <h3>Follow Signal</h3>
-      <div class="x" onclick="closeFollowSheet()">✕</div>
-    </div>
+    <div class="fs-head"><h3>Follow Signal</h3><div class="x" onclick="closeFollowSheet()">✕</div></div>
     <div class="fs-body" id="fsBody"></div>
   </div>
 </div>
@@ -949,7 +894,6 @@ const cfg = window.NT_CONFIG || {};
 const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
 let currentUser = null;
-let currentMode = 'real';
 let liveNews = [];
 let appStats = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
 
@@ -997,10 +941,9 @@ async function doRegisterStep1(){
   const pw = document.getElementById('suPw').value;
   const pw2 = document.getElementById('suPw2').value;
   const username = document.getElementById('suUsername').value.trim();
-  const ref = document.getElementById('suReferral').value.trim();
   const terms = document.getElementById('suTerms').checked;
 
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email address');
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
   if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters/numbers/_');
@@ -1008,7 +951,6 @@ async function doRegisterStep1(){
 
   const btn = document.getElementById('registerBtn');
   btn.disabled = true; btn.textContent = 'Creating account...';
-
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
   if(authErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr', authErr.message); }
   if(!authData.user){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr','Signup failed'); }
@@ -1016,8 +958,7 @@ async function doRegisterStep1(){
   const uid = genUID();
   const profileRow = {
     id: authData.user.id, username, email, uid,
-    referral_code: genRef(), referred_by: ref || null,
-    kyc_status: 'none', mode: 'real',
+    referral_code: genRef(), kyc_status: 'none', mode: 'real',
     balance: 0, funding: 0, spot: 0
   };
   const { error: profErr } = await sb.from('profiles').insert(profileRow);
@@ -1037,19 +978,15 @@ async function submitKycStep2(){
   const idType = document.getElementById('kycIdType').value;
   const idNum = document.getElementById('kycIdNum').value.trim();
   if(!name || !dob || !country || !idNum){ toast('Please fill all fields'); return; }
-
   const kycData = { fullName:name, dob, country, idType, idNumber:idNum, submittedAt: Date.now() };
   const { error } = await sb.from('profiles').update({ kyc_status: 'pending', kyc_data: kycData }).eq('id', currentUser.id);
   if(error){ toast('Error: ' + error.message); return; }
-
   currentUser.kyc_status = 'pending';
-  currentUser.kyc_data = kycData;
   updateKycBadge();
   toast('Submitted for review!');
   closeAuth();
   go('s-home');
 }
-
 function skipKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   toast('You can verify later from Profile');
@@ -1062,15 +999,11 @@ async function doLogin(){
   const pw = document.getElementById('loginPw').value;
   if(!id) return showErr('loginEmail','loginEmailErr','Enter email');
   if(!pw) return showErr('loginPw','loginPwErr','Enter password');
-
   const { data, error } = await sb.auth.signInWithPassword({ email: id, password: pw });
   if(error) return showErr('loginPw','loginPwErr', error.message);
-
   const profile = await loadProfile(data.user.id);
   if(!profile) return showErr('loginPw','loginPwErr','Profile not found');
-
   currentUser = profile;
-  currentMode = profile.mode === 'demo' ? 'demo' : 'real';
   applyUserToUI();
   closeAuth();
   go('s-home');
@@ -1087,12 +1020,10 @@ async function doLogout(){
 
 function openAuth(mode){
   document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
-  const target = mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : 'authLogin';
-  document.getElementById(target).classList.add('active');
+  document.getElementById(mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : 'authLogin').classList.add('active');
 }
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
 function backToLanding(){ window.location.href = '/'; }
-function togglePw(id){ const i = document.getElementById(id); i.type = i.type === 'password' ? 'text' : 'password'; }
 function scorePw(){
   const v = document.getElementById('suPw').value;
   const segs = document.querySelectorAll('#pwStrength .seg');
@@ -1124,12 +1055,6 @@ function applyUserToUI(){
     const pi = document.getElementById('pfInviteCode'); if(pi) pi.textContent = currentUser.referral_code || '—';
     const pu = document.getElementById('pfUid'); if(pu) pu.textContent = currentUser.uid || '—';
     const pb = document.getElementById('pfBalance'); if(pb) pb.textContent = (Number(currentUser.balance||0)).toFixed(0) + ' USD';
-  } else {
-    const pe = document.getElementById('pfEmail'); if(pe) pe.textContent = 'Not signed in';
-    const pa = document.getElementById('pfAvatar'); if(pa) pa.textContent = 'U';
-    const pi = document.getElementById('pfInviteCode'); if(pi) pi.textContent = '—';
-    const pu = document.getElementById('pfUid'); if(pu) pu.textContent = '—';
-    const pb = document.getElementById('pfBalance'); if(pb) pb.textContent = '0 USD';
   }
   updateKycBadge();
 }
@@ -1141,8 +1066,7 @@ function updateKycBadge(){
   }
 }
 function togglePfBalance(){
-  const pb = document.getElementById('pfBalance');
-  if(!pb) return;
+  const pb = document.getElementById('pfBalance'); if(!pb) return;
   const bal = Number(currentUser?.balance || 0);
   if(pb.dataset.hidden === '1'){ pb.textContent = bal.toFixed(0) + ' USD'; pb.dataset.hidden = '0'; }
   else { pb.textContent = '****'; pb.dataset.hidden = '1'; }
@@ -1158,6 +1082,183 @@ function copyPf(kind){
 function openKycFromProfile(){
   if(!currentUser){ openAuth('register'); return; }
   openAuth('kyc');
+}
+
+/* ============================================================
+   BANNER CAROUSEL
+   ============================================================ */
+let banners = [];
+let bannerIndex = 0;
+let bannerTimer = null;
+let bannerPaused = false;
+const BANNER_INTERVAL_MS = 4000; // 4 seconds
+
+async function loadBanners(){
+  try {
+    const { data, error } = await sb.from('banners')
+      .select('*')
+      .eq('active', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+    if(error){ console.warn('banners', error); return; }
+    banners = data || [];
+    renderBannerCarousel();
+  } catch(e){ console.warn(e); }
+}
+
+function renderBannerCarousel(){
+  const wrap = document.getElementById('bannerWrap');
+  const track = document.getElementById('bannerTrack');
+  const dots = document.getElementById('bannerDots');
+  if(!wrap || !track || !dots) return;
+
+  if(!banners.length){ wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  track.innerHTML = banners.map(b => `
+    <div class="banner-slide" data-id="${b.id}">
+      <img src="${b.image_url}" alt="${(b.title||'').replace(/"/g,'&quot;')}" loading="lazy">
+    </div>
+  `).join('');
+
+  dots.innerHTML = banners.map((_, i) =>
+    `<div class="d ${i===0?'on':''}" data-i="${i}"></div>`
+  ).join('');
+
+  bannerIndex = 0;
+  setBannerPosition(false);
+  sizeBannerWrap();
+  startBannerAuto();
+
+  // Preload all images so height transitions smoothly
+  banners.forEach(b => { const img = new Image(); img.src = b.image_url; });
+}
+
+function sizeBannerWrap(){
+  const wrap = document.getElementById('bannerWrap');
+  if(!wrap || !banners.length) return;
+  const wrapWidth = wrap.clientWidth || wrap.offsetWidth;
+  if(!wrapWidth) return;
+
+  const current = banners[bannerIndex];
+  if(!current) return;
+
+  const img = new Image();
+  img.onload = () => {
+    const ratio = img.naturalHeight / img.naturalWidth;
+    const h = Math.round(wrapWidth * ratio);
+    // Clamp between 140px and 520px so tall certs don't eat whole screen
+    wrap.style.height = Math.min(520, Math.max(140, h)) + 'px';
+    // Lock each slide height so "object-fit: contain" works right
+    document.querySelectorAll('.banner-slide').forEach(sl => {
+      sl.style.height = wrap.style.height;
+    });
+  };
+  img.src = current.image_url;
+}
+
+function setBannerPosition(animate = true){
+  const track = document.getElementById('bannerTrack');
+  if(!track) return;
+  if(!animate) track.style.transition = 'none';
+  track.style.transform = `translateX(-${bannerIndex * 100}%)`;
+  if(!animate) {
+    // force reflow then re-enable transition
+    void track.offsetWidth;
+    track.style.transition = '';
+  }
+  document.querySelectorAll('#bannerDots .d').forEach((d, i) => {
+    d.classList.toggle('on', i === bannerIndex);
+  });
+  sizeBannerWrap();
+}
+
+function nextBanner(){
+  if(!banners.length) return;
+  bannerIndex = (bannerIndex + 1) % banners.length;
+  setBannerPosition(true);
+}
+
+function startBannerAuto(){
+  if(bannerTimer) clearInterval(bannerTimer);
+  bannerTimer = setInterval(() => {
+    if(!bannerPaused) nextBanner();
+  }, BANNER_INTERVAL_MS);
+}
+
+/* Pause auto-slide while user is swiping, resume after */
+function attachBannerSwipe(){
+  const wrap = document.getElementById('bannerWrap');
+  if(!wrap) return;
+  let startX = 0, startY = 0, dragging = false, dx = 0;
+
+  wrap.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    startX = t.clientX; startY = t.clientY;
+    dragging = true; dx = 0;
+    bannerPaused = true;
+  }, { passive: true });
+
+  wrap.addEventListener('touchmove', e => {
+    if(!dragging) return;
+    const t = e.touches[0];
+    dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10){
+      // Horizontal — prevent vertical scroll capture
+      e.preventDefault();
+      const track = document.getElementById('bannerTrack');
+      track.style.transition = 'none';
+      track.style.transform = `translateX(calc(-${bannerIndex * 100}% + ${dx}px))`;
+    }
+  }, { passive: false });
+
+  wrap.addEventListener('touchend', () => {
+    if(!dragging) return;
+    dragging = false;
+    const track = document.getElementById('bannerTrack');
+    track.style.transition = '';
+    const threshold = wrap.clientWidth * 0.2;
+    if(dx > threshold && bannerIndex > 0){
+      bannerIndex--;
+    } else if(dx < -threshold && bannerIndex < banners.length - 1){
+      bannerIndex++;
+    } else if(dx < -threshold && bannerIndex === banners.length - 1){
+      bannerIndex = 0; // loop
+    } else if(dx > threshold && bannerIndex === 0){
+      bannerIndex = banners.length - 1; // loop back
+    }
+    setBannerPosition(true);
+    // Resume auto after 2s of inactivity
+    setTimeout(() => { bannerPaused = false; }, 2000);
+  });
+
+  // Mouse drag for desktop
+  let mDown = false;
+  wrap.addEventListener('mousedown', e => {
+    mDown = true; startX = e.clientX; dx = 0; bannerPaused = true;
+  });
+  window.addEventListener('mousemove', e => {
+    if(!mDown) return;
+    dx = e.clientX - startX;
+    const track = document.getElementById('bannerTrack');
+    track.style.transition = 'none';
+    track.style.transform = `translateX(calc(-${bannerIndex * 100}% + ${dx}px))`;
+  });
+  window.addEventListener('mouseup', () => {
+    if(!mDown) return;
+    mDown = false;
+    const track = document.getElementById('bannerTrack');
+    track.style.transition = '';
+    const threshold = wrap.clientWidth * 0.2;
+    if(dx > threshold && bannerIndex > 0) bannerIndex--;
+    else if(dx < -threshold && bannerIndex < banners.length - 1) bannerIndex++;
+    setBannerPosition(true);
+    setTimeout(() => { bannerPaused = false; }, 2000);
+  });
+
+  // Recalculate on resize
+  window.addEventListener('resize', () => sizeBannerWrap());
 }
 
 /* ============================================================
@@ -1190,10 +1291,7 @@ const MARKETS = {
     {sym:'NVDA', price:138.9, base:138.9, chg:0, color:'#16A34A', vol:'$22.1B', name:'NVIDIA'},
   ]
 };
-function findMarket(sym){
-  for(const k in MARKETS){ const f = MARKETS[k].find(x=>x.sym===sym); if(f) return f; }
-  return null;
-}
+function findMarket(sym){ for(const k in MARKETS){ const f = MARKETS[k].find(x=>x.sym===sym); if(f) return f; } return null; }
 function fmt(n){
   if(n>=1000) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   if(n>=1) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4});
@@ -1219,12 +1317,8 @@ function sparklineSVG(up, width=52, height=28){
   const color = up ? 'var(--green)' : 'var(--red)';
   const fill = up ? 'rgba(14,203,129,0.10)' : 'rgba(246,70,93,0.10)';
   const areaPath = `${path} L${width},${height} L0,${height} Z`;
-  return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none">
-    <path d="${areaPath}" fill="${fill}" stroke="none"/>
-    <path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
+  return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><path d="${areaPath}" fill="${fill}" stroke="none"/><path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
-
 function startBinanceStream(){
   if(typeof WebSocket === 'undefined') return;
   try {
@@ -1236,8 +1330,7 @@ function startBinanceStream(){
         const m = MARKETS.crypto.find(x => x.sym === sym); if(!m) return;
         const p = parseFloat(d.c), o = parseFloat(d.o);
         if(!isFinite(p) || p <= 0) return;
-        m.price = p;
-        m.chg = o ? ((p-o)/o)*100 : 0;
+        m.price = p; m.chg = o ? ((p-o)/o)*100 : 0;
         m.vol = '$' + (parseFloat(d.q)/1e6).toFixed(1) + 'M';
       } catch(e){}
     };
@@ -1257,51 +1350,20 @@ function startSimulation(){
     });
   }, 1500);
 }
-
 const HOME_GRID_COINS = ['BTC','ETH','BNB','SOL'];
-const HOME_LIST_COINS = ['BTC','ETH','BNB','SOL','DOGE'];
-
 function renderHomeCoinGrid(){
-  const el = document.getElementById('homeCoinGrid');
-  if(!el) return;
+  const el = document.getElementById('homeCoinGrid'); if(!el) return;
   const symbols = HOME_GRID_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81'});
   el.innerHTML = symbols.map(m => {
     const up = (m.chg || 0) >= 0;
     return `<div class="coin-card">
       <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">crypto</span></div>
       <div class="row-bottom">
-        <div class="left">
-          <div class="price">$${fmt(m.price)}</div>
-          <div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
-        </div>
+        <div class="left"><div class="price">$${fmt(m.price)}</div><div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div></div>
         ${sparklineSVG(up)}
-      </div>
-    </div>`;
+      </div></div>`;
   }).join('');
 }
-function renderHomeCoinList(){
-  const el = document.getElementById('homeCoinList');
-  if(!el) return;
-  const symbols = HOME_LIST_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81', vol:'—'});
-  el.innerHTML = symbols.map(m => {
-    const up = (m.chg || 0) >= 0;
-    return `<div class="coin-row">
-      <div class="left">
-        ${symLogo(m.sym, 36)}
-        <div class="nm">
-          <div class="pair">${m.sym}<small>/USDT</small></div>
-          <div class="vol">${m.vol || '—'}</div>
-        </div>
-      </div>
-      <div class="price-col">
-        <div class="p">${fmt(m.price)}</div>
-        <div class="usd">$ ${fmt(m.price)}</div>
-      </div>
-      <div class="pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
-    </div>`;
-  }).join('');
-}
-
 let mktTab = 'gainers';
 let mkFilter = '';
 function allCoins(){
@@ -1310,8 +1372,7 @@ function allCoins(){
   return out;
 }
 function renderMarketsTable(){
-  const el = document.getElementById('mkTable');
-  if(!el) return;
+  const el = document.getElementById('mkTable'); if(!el) return;
   let list = allCoins().slice();
   if(mktTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
   else if(mktTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
@@ -1323,13 +1384,7 @@ function renderMarketsTable(){
   el.innerHTML = list.map(m => {
     const up = (m.chg || 0) >= 0;
     return `<div class="mk-row">
-      <div class="left">
-        ${symLogo(m.sym, 36)}
-        <div>
-          <div class="pair">${m.sym}<small>/USDT</small></div>
-          <div class="vol">${m.vol || '—'}</div>
-        </div>
-      </div>
+      <div class="left">${symLogo(m.sym, 36)}<div><div class="pair">${m.sym}<small>/USDT</small></div><div class="vol">${m.vol || '—'}</div></div></div>
       <div class="price">${fmt(m.price)}</div>
       <div class="chg-pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
     </div>`;
@@ -1339,9 +1394,7 @@ function filterMarket(v){ mkFilter = v; renderMarketsTable(); }
 document.getElementById('mkTabs')?.addEventListener('click', e => {
   const t = e.target.closest('.mk-tab'); if(!t) return;
   document.querySelectorAll('#mkTabs .mk-tab').forEach(x => x.classList.remove('on'));
-  t.classList.add('on');
-  mktTab = t.dataset.tab;
-  renderMarketsTable();
+  t.classList.add('on'); mktTab = t.dataset.tab; renderMarketsTable();
 });
 
 /* ============================================================
@@ -1359,7 +1412,6 @@ function buildNav(el, active){
 }
 document.querySelectorAll('[data-nav]').forEach(nav => buildNav(nav, nav.closest('.screen').id));
 buildNav(document.getElementById('homeNav'), 's-home');
-
 function go(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.toggle('active', s.id===id));
   document.querySelectorAll('[data-nav]').forEach(nav => { const s = nav.closest('.screen'); if(s) buildNav(nav, s.id); });
@@ -1367,19 +1419,16 @@ function go(id){
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-trade'){ loadLiveSignals(); loadAppStats(); }
-  if(id === 's-markets') renderMarketsTable();
   if(id === 's-deposit') updateDepositAddress();
 }
 
 /* ============================================================
-   APP STATS (from admin config)
+   APP STATS
    ============================================================ */
 async function loadAppStats(){
   try {
     const { data } = await sb.from('config').select('value').eq('key', 'app_stats').maybeSingle();
-    if(data && data.value){
-      try { appStats = JSON.parse(data.value); } catch(e){}
-    }
+    if(data && data.value){ try { appStats = JSON.parse(data.value); } catch(e){} }
     const el1 = document.getElementById('statTotalPnl');
     const el2 = document.getElementById('statPartner');
     const el3 = document.getElementById('statTodayPnl');
@@ -1388,7 +1437,7 @@ async function loadAppStats(){
     if(el2) el2.textContent = Number(appStats.partner || 0).toFixed(2);
     if(el3) el3.textContent = Number(appStats.todayPnl || 0).toFixed(2);
     if(el4) el4.textContent = Number(appStats.bottom || 0).toFixed(2);
-  } catch(e){ console.warn('appStats', e); }
+  } catch(e){}
 }
 
 /* ============================================================
@@ -1396,7 +1445,6 @@ async function loadAppStats(){
    ============================================================ */
 let ANALYSTS = [];
 let analystFilter = '';
-
 async function loadLiveSignals(){
   let data = null;
   try {
@@ -1404,25 +1452,15 @@ async function loadLiveSignals(){
       .or(`expires_at.is.null,expires_at.gt.${new Date().toISOString()}`)
       .order('created_at', { ascending: false });
     data = res.data;
-    if(res.error) console.warn(res.error);
-  } catch(e){ console.warn(e); }
-
+  } catch(e){}
   if(data && data.length){
     ANALYSTS = data.map(s => ({
-      id: s.id,
-      name: s.trader_name,
-      role: s.role || 'Senior Analyst',
-      day: Number(s.day_return || 1.5),
-      week: Number(s.week_return || 10.5),
-      intro: s.message || '',
-      code: s.code,
-      sym: s.sym,
-      amount: Number(s.amount || 100),
+      id: s.id, name: s.trader_name, role: s.role || 'Senior Analyst',
+      day: Number(s.day_return || 1.5), week: Number(s.week_return || 10.5),
+      intro: s.message || '', code: s.code, sym: s.sym, amount: Number(s.amount || 100),
       photo: s.photo_url || null
     }));
-  } else {
-    ANALYSTS = [];
-  }
+  } else ANALYSTS = [];
   renderAnalysts();
 }
 function renderAnalysts(){
@@ -1442,13 +1480,10 @@ function renderAnalysts(){
   if(noMore) noMore.style.display = 'flex';
   el.innerHTML = list.map(a => {
     const init = a.name.split(' ').map(w => w[0]).join('').slice(0,2);
-    const photoStyle = a.photo ? `background-image:url('${a.photo}');background-size:cover;background-position:center;color:transparent;` : '';
+    const photoStyle = a.photo ? `background-image:url('${a.photo}');color:transparent;` : '';
     return `<div class="analyst-card">
       <div class="analyst-top">
-        <div class="analyst-info">
-          <div class="analyst-name">${a.name}</div>
-          <div class="analyst-role">${a.role}</div>
-        </div>
+        <div class="analyst-info"><div class="analyst-name">${a.name}</div><div class="analyst-role">${a.role}</div></div>
         <button class="copy-btn" onclick="openFollowSheet('${a.id}')">Copy Trading</button>
         <div class="analyst-av" style="${photoStyle}">${a.photo ? '' : init}</div>
       </div>
@@ -1471,7 +1506,6 @@ function filterAnalysts(v){ analystFilter = v; renderAnalysts(); }
    FOLLOW SIGNAL SHEET
    ============================================================ */
 let currentAnalyst = null;
-
 function openFollowSheet(signalId){
   if(!currentUser){ openAuth('register'); return; }
   if(!signalId){
@@ -1487,19 +1521,13 @@ function openFollowSheet(signalId){
       <input class="fs-input" id="fsCode" type="text" inputmode="numeric" maxlength="4" placeholder="Please Enter Signal Code" autocomplete="off">
     </div>
     <div class="fs-field">
-      <div class="lbl-row">
-        <label>Follow Amount</label>
-        <span class="avail">Available <b>${bal.toFixed(2)} USD</b></span>
-      </div>
+      <div class="lbl-row"><label>Follow Amount</label><span class="avail">Available <b>${bal.toFixed(2)} USD</b></span></div>
       <div class="fs-amount-wrap">
         <input id="fsAmt" type="text" inputmode="decimal" placeholder="Please Enter the Amount">
         <span class="suf">USD</span>
         <button class="fs-max-btn" onclick="fsSetMax()">Max</button>
       </div>
-      <div class="fs-quick">
-        <button onclick="fsQuick(300)">300</button>
-        <button onclick="fsQuick(500)">500</button>
-      </div>
+      <div class="fs-quick"><button onclick="fsQuick(300)">300</button><button onclick="fsQuick(500)">500</button></div>
     </div>
     <div class="fs-field">
       <label>Select Voucher</label>
@@ -1516,24 +1544,15 @@ function openFollowSheet(signalId){
     <button class="fs-apply" id="fsApply" disabled onclick="fsApply()">Apply to Follow</button>
   `;
   document.getElementById('fsCode').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/\D/g,'').slice(0,4);
-    fsRefresh();
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,4); fsRefresh();
   });
   document.getElementById('fsAmt').addEventListener('input', e => {
-    e.target.value = e.target.value.replace(/[^\d.]/g,'');
-    fsRefresh();
+    e.target.value = e.target.value.replace(/[^\d.]/g,''); fsRefresh();
   });
   document.getElementById('fsSheet').classList.add('on');
 }
-function closeFollowSheet(){
-  document.getElementById('fsSheet').classList.remove('on');
-  currentAnalyst = null;
-}
-function fsSetMax(){
-  const bal = Number(currentUser?.balance || 0);
-  document.getElementById('fsAmt').value = bal.toFixed(2);
-  fsRefresh();
-}
+function closeFollowSheet(){ document.getElementById('fsSheet').classList.remove('on'); currentAnalyst = null; }
+function fsSetMax(){ const bal = Number(currentUser?.balance || 0); document.getElementById('fsAmt').value = bal.toFixed(2); fsRefresh(); }
 function fsQuick(v){ document.getElementById('fsAmt').value = v; fsRefresh(); }
 function fsRefresh(){
   if(!currentAnalyst) return;
@@ -1549,12 +1568,9 @@ async function fsApply(){
   const amt = parseFloat(document.getElementById('fsAmt').value || '0');
   const voucher = document.getElementById('fsVoucher').value;
   if(amt <= 0) return toast('Enter a valid amount');
-
   let bonus = 0;
-  if(voucher === 'welcome10') bonus = 10;
-  else if(voucher === 'referral5') bonus = 5;
+  if(voucher === 'welcome10') bonus = 10; else if(voucher === 'referral5') bonus = 5;
   const effective = amt + bonus;
-
   if(currentAnalyst.id && currentAnalyst.id !== 'default'){
     const bal = Number(currentUser.balance || 0);
     if(amt > bal) return toast('Insufficient balance');
@@ -1562,19 +1578,12 @@ async function fsApply(){
     const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
     if(balErr) return toast('Error: ' + balErr.message);
     currentUser.balance = newBal;
-
-    const { error: partErr } = await sb.from('participants').insert({
-      signal_id: currentAnalyst.id,
-      user_id: currentUser.id,
-      username: currentUser.username,
-      uid: currentUser.uid,
-      amount_usdt: effective,
-      mode: 'real',
-      voucher
+    await sb.from('participants').insert({
+      signal_id: currentAnalyst.id, user_id: currentUser.id,
+      username: currentUser.username, uid: currentUser.uid,
+      amount_usdt: effective, mode: 'real', voucher
     });
-    if(partErr) console.warn('participant insert failed:', partErr);
   }
-
   closeFollowSheet();
   toast('✓ Copy trade placed — $' + effective.toFixed(2));
 }
@@ -1584,19 +1593,15 @@ async function fsApply(){
    ============================================================ */
 function openDeposit(){ go('s-deposit'); }
 function openWithdraw(){ go('s-withdraw'); }
-
 async function updateDepositAddress(){
-  const el = document.getElementById('depAddress');
-  if(!el) return;
+  const el = document.getElementById('depAddress'); if(!el) return;
   if(!currentUser){ el.textContent = 'Log in to see your address'; return; }
   try {
     const { data } = await sb.from('profiles').select('derived_eth_address').eq('id', currentUser.id).single();
     if(data && data.derived_eth_address){
       currentUser.derived_eth_address = data.derived_eth_address;
       el.textContent = data.derived_eth_address;
-    } else {
-      el.textContent = 'Not assigned yet — contact admin';
-    }
+    } else el.textContent = 'Not assigned yet — contact admin';
   } catch(e){ el.textContent = '—'; }
 }
 function updateDepositAmount(){
@@ -1635,8 +1640,7 @@ function submitWithdraw(){
   const addr = document.getElementById('wdAddress').value.trim();
   if(amt < 100) return toast('Minimum withdrawal: 100 USDT');
   if(!addr) return toast('Enter withdrawal address');
-  const bal = Number(currentUser.balance || 0);
-  if(amt > bal) return toast('Insufficient balance');
+  if(amt > Number(currentUser.balance || 0)) return toast('Insufficient balance');
   toast('✓ Withdrawal submitted');
   go('s-home');
 }
@@ -1661,28 +1665,23 @@ function openInvite(){
   const code = currentUser.referral_code || 'NT000000';
   document.getElementById('genericTitle').textContent = 'Invite & Earn';
   document.getElementById('genericBody').innerHTML = `
-    <div style="text-align:center;padding:4px 0 6px;">
-      <div style="font-size:40px;">🎁</div>
-      <div style="font-size:14px;font-weight:700;margin-top:8px;color:var(--text);">Your referral code</div>
-    </div>
+    <div style="text-align:center;padding:4px 0 6px;"><div style="font-size:40px;">🎁</div>
+    <div style="font-size:14px;font-weight:700;margin-top:8px;color:var(--text);">Your referral code</div></div>
     <div style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;border-radius:12px;padding:20px;text-align:center;margin:14px 0;">
       <div style="font-family:'Courier New',monospace;font-size:26px;font-weight:900;letter-spacing:3px;">${code}</div>
     </div>
-    <button class="auth-submit" onclick="copyInvite('${code}')">Copy Code</button>
-  `;
+    <button class="auth-submit" onclick="copyInvite('${code}')">Copy Code</button>`;
   document.getElementById('genericModal').classList.add('on');
 }
 function copyInvite(code){ if(navigator.clipboard) navigator.clipboard.writeText(code); toast('Copied'); }
 function closeGeneric(){ document.getElementById('genericModal').classList.remove('on'); }
 function closeNews(){ document.getElementById('newsPanel').classList.remove('active'); }
-
 function openNews(){
   document.getElementById('newsList').innerHTML = liveNews.length ? liveNews.map(n => `
     <div style="background:var(--card);border-radius:12px;border:1px solid var(--line);padding:14px;margin-bottom:10px;">
       <div style="font-size:13.5px;font-weight:700;line-height:1.4;color:var(--text);">${n.title}</div>
       <div style="font-size:12.5px;color:var(--text2);line-height:1.55;margin-top:8px;">${(n.body || '').slice(0, 220)}</div>
-    </div>
-  `).join('') : '<div style="text-align:center;color:var(--text3);padding:40px;">No news available.</div>';
+    </div>`).join('') : '<div style="text-align:center;color:var(--text3);padding:40px;">No news available.</div>';
   document.getElementById('newsPanel').classList.add('active');
 }
 async function fetchLiveNews(){
@@ -1709,19 +1708,12 @@ function refreshNewsStrip(){
   if(h) h.textContent = top.title;
   if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
 }
-
-/* ============================================================
-   INSTALL / DOWNLOAD
-   ============================================================ */
 const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
 function downloadFor(platform){
   if(platform === 'android'){
     const a = document.createElement('a');
-    a.href = APK_URL;
-    a.download = 'NextTrade.apk';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    a.href = APK_URL; a.download = 'NextTrade.apk';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
     return;
   }
   window.location.href = '/download.html?platform=' + platform;
@@ -1730,11 +1722,7 @@ function downloadFor(platform){
 /* ============================================================
    RENDER LOOP
    ============================================================ */
-setInterval(() => {
-  renderHomeCoinGrid();
-  renderHomeCoinList();
-  renderMarketsTable();
-}, 2000);
+setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
 
 /* ============================================================
    BOOT
@@ -1743,10 +1731,11 @@ setInterval(() => {
   startBinanceStream();
   startSimulation();
   renderHomeCoinGrid();
-  renderHomeCoinList();
   renderMarketsTable();
   fetchLiveNews().then(() => refreshNewsStrip());
   loadAppStats();
+  attachBannerSwipe();
+  loadBanners();
 
   try {
     const { data } = await sb.auth.getSession();
