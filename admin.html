@@ -125,6 +125,19 @@ tr:hover td{background:#FAFBFC;}
 .warn.info{background:var(--blue-lt);border-color:#91CAFF;color:#0958D9;}
 .warn.err{background:var(--red-lt);border-color:#FFA39E;color:#a8071a;}
 
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:2000;padding:20px;}
+.modal-bg.on{display:flex;}
+.modal{background:#fff;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:12px 12px 0 0;}
+.modal-head h3{margin:0;font-size:16px;font-weight:700;}
+.modal-head .x{font-size:20px;cursor:pointer;color:var(--text2);padding:0 8px;line-height:1;}
+.modal-body{padding:20px 22px;}
+.modal-foot{display:flex;gap:10px;padding:14px 22px 20px;border-top:1px solid var(--line);}
+.modal-foot .btn{flex:1;justify-content:center;padding:11px;}
+
 .ct-item{background:#F9FAFB;border-radius:8px;padding:12px 14px;margin-bottom:10px;
   display:flex;align-items:flex-start;gap:12px;}
 .ct-item .ic{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#1890ff);
@@ -136,7 +149,10 @@ tr:hover td{background:#FAFBFC;}
 .ct-item .msg{font-size:12px;color:var(--text2);margin-top:6px;line-height:1.5;}
 .ct-item .meta{font-size:10.5px;color:var(--text3);margin-top:6px;}
 .ct-item .parts{font-size:11px;color:var(--blue);font-weight:700;margin-top:6px;cursor:pointer;display:inline-block;}
-.ct-item .rm{color:var(--red);cursor:pointer;font-size:11px;font-weight:700;flex-shrink:0;padding:2px 4px;}
+.ct-item .parts:hover{text-decoration:underline;}
+.ct-item .rm{color:var(--red);cursor:pointer;font-size:11px;font-weight:700;padding:2px 4px;cursor:pointer;}
+.ct-item .ed{color:var(--blue);cursor:pointer;font-size:11px;font-weight:700;padding:2px 4px;cursor:pointer;}
+.ct-item .actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
 
 .code-pill{display:inline-block;font-family:'Courier New',monospace;font-weight:800;
   letter-spacing:3px;font-size:13px;background:#1E2329;color:#fff;padding:3px 10px;border-radius:5px;}
@@ -144,18 +160,6 @@ tr:hover td{background:#FAFBFC;}
 .xpub-preview{font-family:'Courier New',monospace;font-size:11.5px;line-height:2;}
 .xpub-preview .addr{color:var(--blue);font-weight:600;}
 .xpub-preview .idx{color:var(--text2);}
-
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);
-  display:none;align-items:center;justify-content:center;z-index:2000;padding:20px;}
-.modal-bg.on{display:flex;}
-.modal{background:#fff;border-radius:12px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;}
-.modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;
-  border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2;border-radius:12px 12px 0 0;}
-.modal-head h3{margin:0;font-size:16px;font-weight:700;}
-.modal-head .x{font-size:20px;cursor:pointer;color:var(--text2);padding:0 8px;line-height:1;}
-.modal-body{padding:20px 22px;}
-.modal-foot{display:flex;gap:10px;padding:14px 22px 20px;border-top:1px solid var(--line);}
-.modal-foot .btn{flex:1;justify-content:center;padding:11px;}
 
 #toast{position:fixed;bottom:30px;left:50%;transform:translate(-50%,20px);
   background:rgba(30,35,41,.96);color:#fff;padding:12px 22px;border-radius:8px;font-size:13px;
@@ -275,6 +279,7 @@ tr:hover td{background:#FAFBFC;}
 
   <div class="content">
 
+    <!-- DASHBOARD -->
     <div class="panel on" id="panel-dashboard">
       <div class="warn info">
         <b>Supabase connected.</b> Signals, participants, profits, and user profiles are stored in the cloud. XPUB config is stored securely and only visible to the admin.
@@ -292,6 +297,7 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <!-- XPUB CONFIG -->
     <div class="panel" id="panel-xpubs">
       <div class="warn"><b>Security:</b> This XPUB generates every user's deposit address. It cannot spend funds. Only you (the admin email) can read or write it.</div>
       <div class="card">
@@ -314,6 +320,7 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <!-- USER WALLETS -->
     <div class="panel" id="panel-userwallets">
       <div class="card">
         <h2>User Wallets <span class="tag blue" id="uwCount">0 users</span></h2>
@@ -331,6 +338,7 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <!-- KYC -->
     <div class="panel" id="panel-kyc">
       <div class="card">
         <h2>KYC Submissions</h2>
@@ -344,6 +352,7 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <!-- COPY TRADE SIGNALS -->
     <div class="panel" id="panel-copytrade">
       <div class="card">
         <h2>Post Copy Trade Signal</h2>
@@ -415,11 +424,12 @@ tr:hover td{background:#FAFBFC;}
 
       <div class="card">
         <h2>Active Signals <span class="tag purple" id="ctCount">0</span></h2>
-        <div class="sub">Signals currently visible on users' Copy Trading screens.</div>
+        <div class="sub">Signals currently visible on users' Copy Trading screens. Click <b>EDIT</b> to modify any field.</div>
         <div id="ctList"></div>
       </div>
     </div>
 
+    <!-- APP STATS -->
     <div class="panel" id="panel-stats">
       <div class="warn info">
         These are the four stat numbers shown at the top of the <b>Copy Trading</b> screen in the app. Edit and save to update them live for all users.
@@ -427,17 +437,16 @@ tr:hover td{background:#FAFBFC;}
       <div class="card">
         <h2>App Stats</h2>
         <div class="sub">Values are stored in the <code>config</code> table under the key <code>app_stats</code>.</div>
-
         <div class="field"><label>Total Profit and Loss (USD)</label><input id="stTotalPnl" value="0.00"></div>
         <div class="field"><label>Partner Commission (USD)</label><input id="stPartner" value="0.00"></div>
         <div class="field"><label>Today's Profit and Loss (USD)</label><input id="stTodayPnl" value="0.00"></div>
         <div class="field"><label>Keep the bottom position (USD)</label><input id="stBottom" value="0.00"></div>
-
         <button class="btn primary" onclick="saveAppStats()">Save Stats</button>
         <button class="btn" onclick="loadAppStatsAdmin()" style="margin-left:10px;">Reload</button>
       </div>
     </div>
 
+    <!-- SETTINGS -->
     <div class="panel" id="panel-settings">
       <div class="card">
         <h2>System Settings</h2>
@@ -470,7 +479,9 @@ let signals = [];
 let participantsBySignal = {};
 let realtimeChannel = null;
 
-/* AUTH */
+/* ============================================================
+   AUTH
+   ============================================================ */
 async function doLogin(){
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
@@ -509,7 +520,9 @@ function showApp(){
   subscribeRealtime();
 }
 
-/* NAV */
+/* ============================================================
+   NAV
+   ============================================================ */
 const PANEL_TITLES = {
   dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
   kyc:'KYC Queue', copytrade:'Copy Trade Signals', stats:'App Stats', settings:'Settings'
@@ -531,7 +544,9 @@ function navTo(panel){
   if(panel === 'stats') loadAppStatsAdmin();
 }
 
-/* DATA */
+/* ============================================================
+   DATA LOADERS
+   ============================================================ */
 async function refreshAll(){
   await Promise.all([loadSignals(), loadParticipants(), loadUsers()]);
   updateStats();
@@ -575,6 +590,9 @@ async function updateStats(){
   document.getElementById('stat-profit').textContent = '$' + sum.toFixed(2);
 }
 
+/* ============================================================
+   REALTIME
+   ============================================================ */
 function subscribeRealtime(){
   if(realtimeChannel) sb.removeChannel(realtimeChannel);
   realtimeChannel = sb.channel('admin-realtime')
@@ -590,7 +608,9 @@ function subscribeRealtime(){
     .subscribe();
 }
 
-/* XPUB */
+/* ============================================================
+   XPUB CONFIG
+   ============================================================ */
 async function loadXpubPanel(){
   const status = document.getElementById('xpubStatus');
   const input = document.getElementById('xpubInput');
@@ -671,7 +691,9 @@ async function assignMissingAddresses(){
   renderUserWallets();
 }
 
-/* COPY SIGNALS */
+/* ============================================================
+   ANALYST PHOTO UPLOAD (post form + edit modal)
+   ============================================================ */
 async function uploadAnalystPhoto(input){
   const file = input.files && input.files[0];
   if(!file) return;
@@ -700,6 +722,29 @@ function clearAnalystPhoto(){
   const f = document.getElementById('ctPhotoFile'); if(f) f.value = '';
 }
 
+/* Edit-modal upload (separate file input inside the modal) */
+async function uploadEditPhoto(input, signalId){
+  const file = input.files && input.files[0];
+  if(!file) return;
+  if(file.size > 2 * 1024 * 1024){ toast('File too large — max 2 MB'); input.value = ''; return; }
+  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+  const path = 'analyst_' + Date.now() + '_' + Math.random().toString(36).slice(2,8) + '.' + ext;
+  toast('Uploading…');
+  const { error } = await sb.storage.from('analyst-photos').upload(path, file, { cacheControl: '3600', upsert: false });
+  if(error){ toast('Upload error: ' + error.message); input.value = ''; return; }
+  const { data: pub } = sb.storage.from('analyst-photos').getPublicUrl(path);
+  const url = pub && pub.publicUrl;
+  if(!url){ toast('Could not get URL'); return; }
+  document.getElementById('editPhotoUrl').value = url;
+  const prev = document.getElementById('editPhotoPreview');
+  prev.style.backgroundImage = `url('${url}')`;
+  prev.textContent = '';
+  toast('Photo uploaded — click Save to apply');
+}
+
+/* ============================================================
+   COPY SIGNALS — POST
+   ============================================================ */
 async function pushCopyTrade(){
   const trader = (document.getElementById('ctTrader').value || 'Analyst').trim();
   const role = (document.getElementById('ctRole').value || 'Senior Analyst').trim();
@@ -745,6 +790,137 @@ async function deleteSignal(id){
   if(error) return toast('Error: ' + error.message);
   toast('Deleted');
 }
+
+/* ============================================================
+   COPY SIGNALS — EDIT MODAL
+   ============================================================ */
+function openEditSignal(id){
+  const s = signals.find(x => x.id === id);
+  if(!s){ toast('Signal not found'); return; }
+
+  const expiryMin = s.expires_at
+    ? Math.max(0, Math.round((new Date(s.expires_at).getTime() - Date.now()) / 60000))
+    : 43200;
+
+  document.getElementById('modalTitle').textContent = 'Edit Analyst';
+  document.getElementById('modalBody').innerHTML = `
+    <div class="field">
+      <label>Analyst photo</label>
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div id="editPhotoPreview" style="width:64px;height:64px;border-radius:50%;
+          background:linear-gradient(135deg,#0ECB81,#1890ff);background-size:cover;background-position:center;
+          display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px;flex-shrink:0;
+          ${s.photo_url ? `background-image:url('${s.photo_url}');` : ''}">${s.photo_url ? '' : (s.trader_name||'?')[0].toUpperCase()}</div>
+        <div style="flex:1;min-width:0;">
+          <input type="file" id="editPhotoFile" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="uploadEditPhoto(this,'${s.id}')">
+          <button type="button" class="btn primary" onclick="document.getElementById('editPhotoFile').click()">Change photo</button>
+          <button type="button" class="btn" onclick="clearEditPhoto()" style="margin-left:6px;">Remove photo</button>
+          <input type="hidden" id="editPhotoUrl" value="${s.photo_url || ''}">
+        </div>
+      </div>
+    </div>
+
+    <div class="field"><label>Analyst / Trader name</label><input id="edTrader" value="${(s.trader_name||'').replace(/"/g,'&quot;')}"></div>
+    <div class="field"><label>Role / Title</label><input id="edRole" value="${(s.role||'Senior Analyst').replace(/"/g,'&quot;')}"></div>
+
+    <div class="field">
+      <label>Instrument</label>
+      <select id="edSymbol">
+        ${['BTC','ETH','SOL','XRP','BNB','DOGE','XAUUSD','EURUSD','AAPL'].map(x =>
+          `<option value="${x}" ${s.sym===x?'selected':''}>${x}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Signal Code (4 digits)</label>
+      <input id="edCode" inputmode="numeric" maxlength="4" value="${s.code||''}"
+        style="font-family:'Courier New',monospace;font-size:18px;letter-spacing:6px;font-weight:800;">
+    </div>
+
+    <div class="field"><label>Message shown to users</label><textarea id="edMessage" rows="4">${s.message||''}</textarea></div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div class="field"><label>Suggested amount (USD)</label><input id="edAmount" value="${s.amount||100}"></div>
+      <div class="field"><label>SL %</label><input id="edSl" value="${s.sl||2}"></div>
+      <div class="field"><label>TP %</label><input id="edTp" value="${s.tp||4}"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field"><label>1-Day Return Rate %</label><input id="edDay" value="${s.day_return ?? 1.5}"></div>
+      <div class="field"><label>7-Day Return Rate %</label><input id="edWeek" value="${s.week_return ?? 10.5}"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field"><label>30D PnL (USD)</label><input id="edPnl" value="${s.pnl ?? 0}"></div>
+      <div class="field"><label>30D ROI %</label><input id="edRoi" value="${s.roi ?? 0}"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="field"><label>Followers display</label><input id="edFollowers" value="${s.followers||'0/0'}"></div>
+      <div class="field"><label>Expires in (minutes)</label><input id="edExpiry" value="${expiryMin}"></div>
+    </div>
+  `;
+  document.getElementById('modalFoot').innerHTML = `
+    <button class="btn" onclick="closeModal()">Cancel</button>
+    <button class="btn primary" onclick="saveEditSignal('${s.id}')">Save Changes</button>
+  `;
+  document.getElementById('modal').classList.add('on');
+}
+function clearEditPhoto(){
+  document.getElementById('editPhotoUrl').value = '';
+  const prev = document.getElementById('editPhotoPreview');
+  prev.style.backgroundImage = '';
+  prev.textContent = '?';
+}
+async function saveEditSignal(id){
+  const trader = document.getElementById('edTrader').value.trim();
+  const role = document.getElementById('edRole').value.trim();
+  const sym = document.getElementById('edSymbol').value;
+  const code = document.getElementById('edCode').value.trim();
+  const message = document.getElementById('edMessage').value.trim();
+  const amount = parseFloat(document.getElementById('edAmount').value || '100');
+  const sl = parseFloat(document.getElementById('edSl').value || '2');
+  const tp = parseFloat(document.getElementById('edTp').value || '4');
+  const day = parseFloat(document.getElementById('edDay').value || '1.5');
+  const week = parseFloat(document.getElementById('edWeek').value || '10.5');
+  const pnl = parseFloat(document.getElementById('edPnl').value || '0');
+  const roi = parseFloat(document.getElementById('edRoi').value || '0');
+  const followers = document.getElementById('edFollowers').value.trim();
+  const expiryMin = parseInt(document.getElementById('edExpiry').value || '30', 10);
+  const photoUrl = (document.getElementById('editPhotoUrl')?.value || '').trim() || null;
+
+  if(!/^\d{4}$/.test(code)) return toast('Code must be 4 digits');
+  if(!trader) return toast('Enter analyst name');
+
+  const expiresAt = new Date(Date.now() + expiryMin * 60 * 1000).toISOString();
+
+  const { error } = await sb.from('signals').update({
+    trader_name: trader,
+    role: role,
+    sym: sym,
+    code: code,
+    message: message,
+    amount: amount,
+    sl: sl,
+    tp: tp,
+    pnl: pnl,
+    roi: roi,
+    day_return: day,
+    week_return: week,
+    followers: followers,
+    photo_url: photoUrl,
+    expires_at: expiresAt
+  }).eq('id', id);
+
+  if(error){ toast('Error: ' + error.message); return; }
+
+  closeModal();
+  toast('Analyst updated — app will refresh in a moment');
+}
+
+/* ============================================================
+   RENDER ACTIVE SIGNALS LIST
+   ============================================================ */
 function renderCopyTradePanel(){
   const el = document.getElementById('ctList');
   if(!el) return;
@@ -764,14 +940,21 @@ function renderCopyTradePanel(){
           <div class="trader">${ct.trader_name} <span class="tag green" style="font-size:9px;">ACTIVE</span></div>
           <div class="sym">${ct.sym}/USDT · Code <span class="code-pill">${ct.code}</span>${ct.role ? ' · ' + ct.role : ''}</div>
           <div class="msg">${ct.message || ''}</div>
-          <div class="meta">Posted ${new Date(ct.created_at).toLocaleString()}</div>
+          <div class="meta">Posted ${new Date(ct.created_at).toLocaleString()}${ct.day_return !== undefined ? ' · 1D: +' + Number(ct.day_return).toFixed(1) + '%' : ''}${ct.week_return !== undefined ? ' · 7D: +' + Number(ct.week_return).toFixed(1) + '%' : ''}</div>
           <div class="parts" onclick="openParticipants('${ct.id}')">Participants: ${participants.length}</div>
         </div>
-        <div class="rm" onclick="deleteSignal('${ct.id}')">DELETE</div>
+        <div class="actions">
+          <div class="ed" onclick="openEditSignal('${ct.id}')">EDIT</div>
+          <div class="rm" onclick="deleteSignal('${ct.id}')">DELETE</div>
+        </div>
       </div>
     `;
   }).join('');
 }
+
+/* ============================================================
+   PARTICIPANTS MODAL
+   ============================================================ */
 function openParticipants(signalId){
   const parts = participantsBySignal[signalId] || [];
   document.getElementById('modalTitle').textContent = 'Participants';
@@ -790,7 +973,9 @@ function openParticipants(signalId){
   document.getElementById('modal').classList.add('on');
 }
 
-/* USERS + KYC */
+/* ============================================================
+   USERS + KYC
+   ============================================================ */
 let filterQuery = '';
 function filterUserWallets(v){ filterQuery = v; renderUserWallets(); }
 function renderUserWallets(){
@@ -875,7 +1060,9 @@ async function rejectKyc(userId){
   toast('KYC rejected');
 }
 
-/* APP STATS */
+/* ============================================================
+   APP STATS
+   ============================================================ */
 async function loadAppStatsAdmin(){
   try {
     const { data } = await sb.from('config').select('value').eq('key', 'app_stats').maybeSingle();
@@ -900,10 +1087,12 @@ async function saveAppStats(){
     key: 'app_stats', value: JSON.stringify(s), updated_at: new Date().toISOString()
   });
   if(error){ toast('Error: ' + error.message); return; }
-  toast('Stats saved — app will show new values within seconds');
+  toast('Stats saved');
 }
 
-/* MISC */
+/* ============================================================
+   MISC
+   ============================================================ */
 function closeModal(){ document.getElementById('modal').classList.remove('on'); }
 document.getElementById('modal').addEventListener('click', e => { if(e.target.id === 'modal') closeModal(); });
 let toastTimer;
@@ -915,7 +1104,9 @@ function toast(msg){
   toastTimer = setTimeout(() => el.classList.remove('on'), 2600);
 }
 
-/* BOOT */
+/* ============================================================
+   BOOT
+   ============================================================ */
 (async function boot(){
   document.getElementById('loginPassword').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
   const { data } = await sb.auth.getSession();
