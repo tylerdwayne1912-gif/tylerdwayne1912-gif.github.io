@@ -1150,9 +1150,7 @@ function renderBannerList(){
   `).join('');
 }
 
-/* ============================================================
-   DEPOSITS
-   ============================================================ */
+/* DEPOSITS */
 async function loadDeposits(){
   const { data, error } = await sb.from('deposits').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ deposits = []; }
@@ -1247,9 +1245,7 @@ async function rejectDeposit(id){
   loadDeposits();
 }
 
-/* ============================================================
-   WITHDRAWALS
-   ============================================================ */
+/* WITHDRAWALS */
 async function loadWithdrawals(){
   const { data, error } = await sb.from('withdrawals').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ withdrawals = []; }
@@ -1390,14 +1386,11 @@ function renderUserWallets(){
 }
 function copyText(text){ if(navigator.clipboard) navigator.clipboard.writeText(text); toast('Copied'); }
 
-/* KYC FILTER */
 function setKycFilter(f){
   kycFilter = f;
   ['All','Pending','Verified','Rejected'].forEach(x => {
     const btn = document.getElementById('kycFilter' + x);
-    if(btn){
-      btn.classList.toggle('primary', x.toLowerCase() === f);
-    }
+    if(btn) btn.classList.toggle('primary', x.toLowerCase() === f);
   });
   renderKyc();
 }
@@ -1412,9 +1405,7 @@ function renderKyc(){
     return;
   }
   let list = allUsers.slice();
-  if(kycFilter !== 'all'){
-    list = list.filter(u => (u.kyc_status || 'none') === kycFilter);
-  }
+  if(kycFilter !== 'all') list = list.filter(u => (u.kyc_status || 'none') === kycFilter);
   if(!list.length){
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text3);">No ' + kycFilter + ' users.</td></tr>';
     return;
@@ -1446,7 +1437,6 @@ function renderKyc(){
     `;
   }).join('');
 }
-
 function viewKycDocs(userId){
   const u = allUsers.find(x => x.id === userId);
   if(!u){ toast('User not found'); return; }
@@ -1476,16 +1466,22 @@ function viewKycDocs(userId){
   document.getElementById('modal').classList.add('on');
 }
 async function approveKyc(userId){
+  const u = allUsers.find(x => x.id === userId);
   const { error } = await sb.from('profiles').update({ kyc_status: 'verified' }).eq('id', userId);
   if(error) return toast('Error: ' + error.message);
-  toast('✓ KYC approved — user notified live');
-  loadUsers().then(() => renderKyc());
+  toast('✓ ' + (u?.username || 'User') + ' verified — app updated live');
+  await loadUsers();
+  renderKyc();
+  renderUserWallets();
 }
 async function rejectKyc(userId){
+  const u = allUsers.find(x => x.id === userId);
   const { error } = await sb.from('profiles').update({ kyc_status: 'rejected' }).eq('id', userId);
   if(error) return toast('Error: ' + error.message);
-  toast('KYC rejected — user notified live');
-  loadUsers().then(() => renderKyc());
+  toast('✗ ' + (u?.username || 'User') + ' rejected — app updated live');
+  await loadUsers();
+  renderKyc();
+  renderUserWallets();
 }
 async function resetKyc(userId){
   if(!confirm('Reset this user\'s KYC? They will need to resubmit.')) return;
@@ -1495,7 +1491,8 @@ async function resetKyc(userId){
   }).eq('id', userId);
   if(error) return toast('Error: ' + error.message);
   toast('KYC reset — user must resubmit');
-  loadUsers().then(() => renderKyc());
+  await loadUsers();
+  renderKyc();
 }
 
 /* APP STATS */
