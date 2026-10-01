@@ -298,7 +298,6 @@ tr:hover td{background:#FAFBFC;}
 
   <div class="content">
 
-    <!-- DASHBOARD -->
     <div class="panel on" id="panel-dashboard">
       <div class="warn info">
         <b>Supabase connected.</b> Signals, participants, profits, user profiles, deposits, withdrawals, and home banners are stored in the cloud.
@@ -316,7 +315,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- XPUB CONFIG -->
     <div class="panel" id="panel-xpubs">
       <div class="warn"><b>Security:</b> This XPUB generates every user's deposit address. It cannot spend funds. Only you (the admin email) can read or write it.</div>
       <div class="card">
@@ -339,7 +337,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- USER WALLETS -->
     <div class="panel" id="panel-userwallets">
       <div class="card">
         <h2>User Wallets <span class="tag blue" id="uwCount">0 users</span></h2>
@@ -357,7 +354,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- KYC -->
     <div class="panel" id="panel-kyc">
       <div class="card">
         <h2>KYC Submissions</h2>
@@ -377,7 +373,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- DEPOSITS -->
     <div class="panel" id="panel-deposits">
       <div class="card">
         <h2>Pending Deposits <span class="tag orange" id="pendingDepCount">0</span></h2>
@@ -401,7 +396,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- WITHDRAWALS -->
     <div class="panel" id="panel-withdrawals">
       <div class="card">
         <h2>Pending Withdrawals <span class="tag orange" id="pendingWdCount">0</span></h2>
@@ -425,7 +419,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- COPY TRADE SIGNALS -->
     <div class="panel" id="panel-copytrade">
       <div class="card">
         <h2>Post Copy Trade Signal</h2>
@@ -517,7 +510,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- HOME BANNERS -->
     <div class="panel" id="panel-banners">
       <div class="card">
         <h2>Upload Home Banner</h2>
@@ -552,7 +544,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- APP STATS -->
     <div class="panel" id="panel-stats">
       <div class="warn info">
         These are the four stat numbers shown at the top of the <b>Copy Trading</b> screen in the app. Edit and save to update them live for all users.
@@ -569,7 +560,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- SETTINGS -->
     <div class="panel" id="panel-settings">
       <div class="card">
         <h2>System Settings</h2>
@@ -870,7 +860,7 @@ async function uploadEditPhoto(input){
   toast('Photo uploaded — click Save to apply');
 }
 
-/* COPY SIGNALS — POST */
+/* COPY SIGNALS */
 async function pushCopyTrade(){
   const trader = (document.getElementById('ctTrader').value || 'Analyst').trim();
   const role = (document.getElementById('ctRole').value || 'Senior Analyst').trim();
@@ -914,8 +904,6 @@ async function deleteSignal(id){
   if(error) return toast('Error: ' + error.message);
   toast('Deleted');
 }
-
-/* COPY SIGNALS — EDIT */
 function openEditSignal(id){
   const s = signals.find(x => x.id === id);
   if(!s){ toast('Signal not found'); return; }
@@ -1014,8 +1002,6 @@ async function saveEditSignal(id){
   closeModal();
   toast('Analyst updated');
 }
-
-/* RENDER ACTIVE SIGNALS */
 function renderCopyTradePanel(){
   const el = document.getElementById('ctList');
   if(!el) return;
@@ -1046,8 +1032,6 @@ function renderCopyTradePanel(){
     `;
   }).join('');
 }
-
-/* PARTICIPANTS */
 function openParticipants(signalId){
   const parts = participantsBySignal[signalId] || [];
   document.getElementById('modalTitle').textContent = 'Participants';
@@ -1066,7 +1050,7 @@ function openParticipants(signalId){
   document.getElementById('modal').classList.add('on');
 }
 
-/* HOME BANNERS */
+/* BANNERS */
 async function loadBanners(){
   const { data, error } = await sb.from('banners').select('*')
     .order('sort_order', { ascending: true }).order('created_at', { ascending: true });
@@ -1210,24 +1194,23 @@ function renderDeposits(){
 async function approveDeposit(id){
   const d = deposits.find(x => x.id === id);
   if(!d) return toast('Deposit not found');
-  if(!confirm(`Approve deposit of $${Number(d.amount).toFixed(2)} for ${d.username}?\n\nThis will ADD $${Number(d.amount).toFixed(2)} to their balance.`)) return;
+  if(!confirm(`Approve deposit of $${Number(d.amount).toFixed(2)} for ${d.username}?`)) return;
 
   const { data: prof, error: pErr } = await sb.from('profiles').select('balance').eq('id', d.user_id).single();
-  if(pErr){ toast('Error: ' + pErr.message); return; }
-  const currentBal = Number(prof?.balance || 0);
-  const newBal = currentBal + Number(d.amount);
+  if(pErr) return toast('Error reading balance: ' + pErr.message);
+  const newBal = Number(prof?.balance || 0) + Number(d.amount);
 
-  const { error: bErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', d.user_id);
-  if(bErr){ toast('Error updating balance: ' + bErr.message); return; }
+  const { data: upd, error: bErr } = await sb.from('profiles')
+    .update({ balance: newBal }).eq('id', d.user_id).select('id, balance');
+  if(bErr) return toast('Balance update error: ' + bErr.message);
+  if(!upd || !upd.length) return toast('❌ Balance update blocked — check RLS on profiles');
 
   const { error: dErr } = await sb.from('deposits').update({
-    status: 'approved',
-    approved_at: new Date().toISOString(),
-    approved_by: adminUser?.email || 'admin'
+    status: 'approved', approved_at: new Date().toISOString(), approved_by: adminUser?.email || 'admin'
   }).eq('id', id);
-  if(dErr){ toast('Deposit approved but status update failed: ' + dErr.message); return; }
+  if(dErr) return toast('Deposit status error: ' + dErr.message);
 
-  toast(`✓ Approved $${Number(d.amount).toFixed(2)} — balance now $${newBal.toFixed(2)}`);
+  toast(`✓ Approved $${Number(d.amount).toFixed(2)} — new balance $${newBal.toFixed(2)}`);
   loadDeposits();
   loadUsers();
 }
@@ -1236,11 +1219,9 @@ async function rejectDeposit(id){
   if(!d) return;
   if(!confirm('Reject this deposit?')) return;
   const { error } = await sb.from('deposits').update({
-    status: 'rejected',
-    approved_at: new Date().toISOString(),
-    approved_by: adminUser?.email || 'admin'
+    status: 'rejected', approved_at: new Date().toISOString(), approved_by: adminUser?.email || 'admin'
   }).eq('id', id);
-  if(error){ toast('Error: ' + error.message); return; }
+  if(error) return toast('Error: ' + error.message);
   toast('Deposit rejected');
   loadDeposits();
 }
@@ -1309,30 +1290,28 @@ async function approveWithdraw(id){
   if(!w) return toast('Not found');
   if(!confirm(`Approve withdrawal of $${Number(w.amount).toFixed(2)}?\n\nMake sure you've sent USDT to:\n${w.address}`)) return;
   const { error } = await sb.from('withdrawals').update({
-    status: 'approved',
-    approved_at: new Date().toISOString(),
-    approved_by: adminUser?.email || 'admin'
+    status: 'approved', approved_at: new Date().toISOString(), approved_by: adminUser?.email || 'admin'
   }).eq('id', id);
-  if(error){ toast('Error: ' + error.message); return; }
+  if(error) return toast('Error: ' + error.message);
   toast('Withdrawal approved');
   loadWithdrawals();
 }
 async function rejectWithdraw(id){
   const w = withdrawals.find(x => x.id === id);
   if(!w) return toast('Not found');
-  if(!confirm(`Reject this withdrawal and REFUND $${Number(w.amount).toFixed(2)} to ${w.username}?`)) return;
+  if(!confirm(`Reject and REFUND $${Number(w.amount).toFixed(2)} to ${w.username}?`)) return;
 
   const { data: prof } = await sb.from('profiles').select('balance').eq('id', w.user_id).single();
-  const currentBal = Number(prof?.balance || 0);
-  const refunded = currentBal + Number(w.amount);
-  await sb.from('profiles').update({ balance: refunded }).eq('id', w.user_id);
+  const refunded = Number(prof?.balance || 0) + Number(w.amount);
+  const { data: upd, error: bErr } = await sb.from('profiles')
+    .update({ balance: refunded }).eq('id', w.user_id).select('id, balance');
+  if(bErr) return toast('Refund error: ' + bErr.message);
+  if(!upd || !upd.length) return toast('❌ Refund blocked — check RLS on profiles');
 
   const { error } = await sb.from('withdrawals').update({
-    status: 'rejected',
-    approved_at: new Date().toISOString(),
-    approved_by: adminUser?.email || 'admin'
+    status: 'rejected', approved_at: new Date().toISOString(), approved_by: adminUser?.email || 'admin'
   }).eq('id', id);
-  if(error){ toast('Error: ' + error.message); return; }
+  if(error) return toast('Error: ' + error.message);
   toast(`✓ Refunded $${Number(w.amount).toFixed(2)} to ${w.username}`);
   loadWithdrawals();
   loadUsers();
@@ -1437,6 +1416,60 @@ function renderKyc(){
     `;
   }).join('');
 }
+
+async function approveKyc(userId){
+  const u = allUsers.find(x => x.id === userId);
+  const { data, error } = await sb
+    .from('profiles')
+    .update({ kyc_status: 'verified' })
+    .eq('id', userId)
+    .select('id, kyc_status');
+
+  if(error){ return toast('Error: ' + error.message); }
+  if(!data || !data.length){
+    return toast('❌ Update blocked — check RLS on profiles table');
+  }
+  toast('✓ ' + (u?.username || 'User') + ' verified');
+  await loadUsers();
+  renderKyc();
+  renderUserWallets();
+}
+
+async function rejectKyc(userId){
+  const u = allUsers.find(x => x.id === userId);
+  const { data, error } = await sb
+    .from('profiles')
+    .update({ kyc_status: 'rejected' })
+    .eq('id', userId)
+    .select('id, kyc_status');
+
+  if(error){ return toast('Error: ' + error.message); }
+  if(!data || !data.length){
+    return toast('❌ Update blocked — check RLS on profiles table');
+  }
+  toast('✗ ' + (u?.username || 'User') + ' rejected');
+  await loadUsers();
+  renderKyc();
+  renderUserWallets();
+}
+
+async function resetKyc(userId){
+  if(!confirm('Reset this user\'s KYC? They will need to resubmit.')) return;
+  const { data, error } = await sb
+    .from('profiles')
+    .update({ kyc_status: 'none', kyc_data: null })
+    .eq('id', userId)
+    .select('id, kyc_status');
+
+  if(error){ return toast('Error: ' + error.message); }
+  if(!data || !data.length){
+    return toast('❌ Reset blocked — check RLS on profiles table');
+  }
+  toast('KYC reset — user must resubmit');
+  await loadUsers();
+  renderKyc();
+}
+
 function viewKycDocs(userId){
   const u = allUsers.find(x => x.id === userId);
   if(!u){ toast('User not found'); return; }
@@ -1455,44 +1488,13 @@ function viewKycDocs(userId){
         <div><div style="font-size:11px;color:var(--text2);font-weight:600;">Country</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.country || '—'}</div></div>
         <div><div style="font-size:11px;color:var(--text2);font-weight:600;">Document type</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${(d.idType || '—').toUpperCase()}</div></div>
         <div><div style="font-size:11px;color:var(--text2);font-weight:600;">ID number</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.idNumber || '—'}</div></div>
-        <div style="grid-column:1/-1;"><div style="font-size:11px;color:var(--text2);font-weight:600;">Submitted</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.submittedAt ? new Date(d.submittedAt).toLocaleString() : '—'}</div></div>
       </div>
     </div>
     ${d.frontUrl ? `<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;">📄 Front of ID</div><div style="border-radius:8px;overflow:hidden;margin-bottom:18px;background:#000;"><img src="${d.frontUrl}" style="width:100%;display:block;cursor:zoom-in;" onclick="window.open('${d.frontUrl}','_blank')"></div>` : ''}
     ${d.selfieUrl ? `<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;">🤳 Selfie with ID</div><div style="border-radius:8px;overflow:hidden;margin-bottom:18px;background:#000;"><img src="${d.selfieUrl}" style="width:100%;display:block;cursor:zoom-in;" onclick="window.open('${d.selfieUrl}','_blank')"></div>` : ''}
-    <div style="font-size:11px;color:var(--text3);text-align:center;">Tap any image to open full size</div>
   `;
   document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
   document.getElementById('modal').classList.add('on');
-}
-async function approveKyc(userId){
-  const u = allUsers.find(x => x.id === userId);
-  const { error } = await sb.from('profiles').update({ kyc_status: 'verified' }).eq('id', userId);
-  if(error) return toast('Error: ' + error.message);
-  toast('✓ ' + (u?.username || 'User') + ' verified — app updated live');
-  await loadUsers();
-  renderKyc();
-  renderUserWallets();
-}
-async function rejectKyc(userId){
-  const u = allUsers.find(x => x.id === userId);
-  const { error } = await sb.from('profiles').update({ kyc_status: 'rejected' }).eq('id', userId);
-  if(error) return toast('Error: ' + error.message);
-  toast('✗ ' + (u?.username || 'User') + ' rejected — app updated live');
-  await loadUsers();
-  renderKyc();
-  renderUserWallets();
-}
-async function resetKyc(userId){
-  if(!confirm('Reset this user\'s KYC? They will need to resubmit.')) return;
-  const { error } = await sb.from('profiles').update({
-    kyc_status: 'none',
-    kyc_data: null
-  }).eq('id', userId);
-  if(error) return toast('Error: ' + error.message);
-  toast('KYC reset — user must resubmit');
-  await loadUsers();
-  renderKyc();
 }
 
 /* APP STATS */
@@ -1530,7 +1532,7 @@ function toast(msg){
   el.textContent = msg;
   el.classList.add('on');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove('on'), 2600);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 3500);
 }
 
 /* BOOT */
