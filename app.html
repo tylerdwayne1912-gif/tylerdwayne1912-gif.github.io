@@ -228,7 +228,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
 }
 .news-card .nc-img svg{width:60%;height:60%;}
-.news-card .nc-badge{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text);line-height:1.3;}
+.news-card .nc-badge{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text);line-height:1.3;cursor:pointer;}
 .news-card .nc-badge .chk{
   width:14px;height:14px;border-radius:3px;background:var(--green);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;
@@ -301,6 +301,50 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .generic-head h3{margin:0;font-size:17px;font-weight:700;flex:1;color:var(--text);}
 .generic-head .x{font-size:22px;color:var(--text2);cursor:pointer;padding:0 6px;}
 .generic-body{padding:16px 20px 20px;}
+
+/* Legal-style document modal */
+.doc-sheet{
+  background:var(--card);color:var(--text);
+  width:100%;max-width:560px;
+  height:96vh;max-height:96vh;
+  border-radius:20px 20px 0 0;
+  display:flex;flex-direction:column;
+  animation:slideUp .3s ease-out;
+  overflow:hidden;
+}
+.doc-head{
+  display:flex;align-items:center;padding:16px 20px 12px;
+  border-bottom:1px solid var(--line);
+  background:var(--card);flex-shrink:0;
+  border-radius:20px 20px 0 0;
+}
+.doc-head .back{
+  width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text);font-size:22px;flex-shrink:0;
+}
+.doc-head h3{margin:0;font-size:16px;font-weight:700;flex:1;text-align:center;margin-right:34px;color:var(--text);}
+.doc-body{
+  flex:1;overflow-y:auto;padding:18px 22px 32px;
+  font-size:14.5px;line-height:1.65;color:var(--text);
+}
+.doc-body::-webkit-scrollbar{width:0;}
+.doc-body h2{
+  font-size:17px;font-weight:800;margin:22px 0 10px;color:var(--text);
+  display:flex;align-items:center;gap:8px;letter-spacing:-.3px;
+}
+.doc-body h2:first-child{margin-top:0;}
+.doc-body p{margin:0 0 14px;color:var(--text);font-weight:500;}
+.doc-body p.lead{color:var(--text);font-weight:700;font-size:15px;line-height:1.55;}
+.doc-body ul{list-style:none;padding-left:0;margin:0 0 14px;}
+.doc-body ul li{
+  position:relative;padding-left:22px;margin-bottom:10px;color:var(--text);font-weight:500;
+}
+.doc-body ul li::before{
+  content:"✓";position:absolute;left:0;top:0;color:var(--text);font-weight:900;
+}
+.doc-body .muted{color:var(--text2);font-weight:500;}
+.doc-body strong{color:var(--text);font-weight:800;}
+
 #toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
   background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
   opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
@@ -388,7 +432,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .fs-agree{display:flex;align-items:flex-start;gap:10px;margin:6px 0 20px;font-size:13px;color:var(--text);
   line-height:1.5;cursor:pointer;}
 .fs-agree input{margin-top:2px;width:18px;height:18px;accent-color:var(--text);cursor:pointer;flex-shrink:0;}
-.fs-agree a{color:var(--blue);font-weight:700;text-decoration:none;}
+.fs-agree a{color:var(--blue);font-weight:700;text-decoration:none;cursor:pointer;}
 .fs-apply{width:100%;height:56px;border-radius:14px;background:var(--green);color:#fff;
   font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:.15s;}
 .fs-apply:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
@@ -493,9 +537,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .dw-submit{width:100%;height:54px;border-radius:14px;background:var(--green);color:#fff;border:none;
   font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:20px;}
 
-/* ============================================================
-   STOCK DETAILS SCREEN
-   ============================================================ */
 .details-wrap{flex:1;overflow-y:auto;background:var(--bg);padding:0 14px 100px;position:relative;}
 .details-wrap::-webkit-scrollbar{width:0;}
 .details-head{
@@ -517,17 +558,13 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .details-head .dh-chg.up{color:var(--green);}
 .details-head .dh-chg.down{color:var(--red);}
 
-.details-tabs{
-  display:flex;gap:8px;padding:14px 0 10px;
-}
+.details-tabs{display:flex;gap:8px;padding:14px 0 10px;}
 .details-tab{
   padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;color:var(--text2);
   background:transparent;border:1px solid transparent;cursor:pointer;letter-spacing:-.2px;
   font-family:inherit;
 }
-.details-tab.on{
-  background:var(--green-lt);color:var(--green-dk);border-color:rgba(14,203,129,.3);
-}
+.details-tab.on{background:var(--green-lt);color:var(--green-dk);border-color:rgba(14,203,129,.3);}
 
 .details-chart-card{
   background:var(--card);border-radius:16px;border:1px solid var(--line);
@@ -799,7 +836,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="pf-menu-row" onclick="openInvite()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 11v6M13 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="mt">Invite Friends</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="toast('Customer Service Center')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="mt">Customer Service Center</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="downloadFor('android')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">Download App</div><div class="arrow">›</div></div>
-      <div class="pf-menu-row" onclick="toast('About NextTrade')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">About NextTrade</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="showCopyTradingInfo()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">About Copy Trading</div><div class="arrow">›</div></div>
     </div>
     <div class="pf-logout" onclick="doLogout()">Log Out</div>
   </div>
@@ -866,11 +903,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- GENERIC MODAL -->
-<div class="generic-modal" id="genericModal">
-  <div class="generic-sheet">
-    <div class="generic-head"><h3 id="genericTitle">Title</h3><div class="x" onclick="closeGeneric()">✕</div></div>
-    <div class="generic-body" id="genericBody"></div>
+<!-- LEGAL DOC MODAL (What is Copy Trading) -->
+<div class="generic-modal" id="docModal">
+  <div class="doc-sheet" onclick="event.stopPropagation()">
+    <div class="doc-head">
+      <div class="back" onclick="closeDocModal()">‹</div>
+      <h3 id="docTitle">What is Copy Trading?</h3>
+    </div>
+    <div class="doc-body" id="docBody"></div>
   </div>
 </div>
 
@@ -908,7 +948,6 @@ let appStats = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
     try{ localStorage.setItem('nt_theme', next); }catch(e){}
     const meta = document.querySelector('meta[name="theme-color"]');
     if(meta) meta.setAttribute('content', next === 'dark' ? '#0B0E11' : '#FFFFFF');
-    // Redraw chart on theme toggle
     if(currentDetailSym) renderDetailsChart(currentDetailSym, currentDetailRange);
   });
 })();
@@ -1238,9 +1277,12 @@ function startSimulation(){
       m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
       m.chg = ((m.price - m.base) / m.base) * 100;
     });
-    // live update details screen if visible
+    // live-update details screen if visible
     if(currentDetailSym && document.getElementById('s-details').classList.contains('active')){
       renderDetailsHead(currentDetailSym);
+      // push a new tick to candles and redraw
+      tickCandles(currentDetailSym);
+      renderDetailsChart(currentDetailSym, currentDetailRange);
     }
   }, 1500);
 }
@@ -1289,26 +1331,30 @@ document.getElementById('mkTabs')?.addEventListener('click', e => {
 });
 
 /* ============================================================
-   STOCK DETAILS SCREEN
+   STOCK DETAILS SCREEN — LIVE CANDLES
    ============================================================ */
 let currentDetailSym = null;
 let currentDetailRange = '1m';
+let detailCandles = [];       // last candle updates with live price
+let detailBaseAt = 0;         // ms timestamp of last chart generation
+let detailLastPrice = 0;      // last close price stored
 
 function openDetails(sym){
   const m = findMarket(sym);
   if(!m){ toast('Stock not found'); return; }
   currentDetailSym = sym;
   currentDetailRange = '1m';
-  // reset tabs
   document.querySelectorAll('#dtTabs .details-tab').forEach(t => {
     t.classList.toggle('on', t.dataset.range === '1m');
   });
+  detailCandles = generateCandles(sym, '1m');
+  detailLastPrice = m.price;
   renderDetailsHead(sym);
   renderDetailsChart(sym, '1m');
-  // show screen
   go('s-details');
-  // redraw chart after layout settles (canvas needs real width)
-  setTimeout(() => { if(currentDetailSym === sym) renderDetailsChart(sym, currentDetailRange); }, 50);
+  setTimeout(() => {
+    if(currentDetailSym === sym) renderDetailsChart(sym, currentDetailRange);
+  }, 50);
 }
 
 function renderDetailsHead(sym){
@@ -1329,18 +1375,21 @@ document.getElementById('dtTabs')?.addEventListener('click', e => {
   document.querySelectorAll('#dtTabs .details-tab').forEach(x => x.classList.remove('on'));
   t.classList.add('on');
   currentDetailRange = t.dataset.range;
+  detailCandles = generateCandles(currentDetailSym, currentDetailRange);
   renderDetailsChart(currentDetailSym, currentDetailRange);
 });
 
-/* Generate OHLC candles from current price */
+/* Generate OHLC candles anchored to the stock's current price */
 function generateCandles(sym, range){
   const m = findMarket(sym);
   const basePrice = m ? m.price : 100;
-  const count = range === '1m' ? 40 : range === '1h' ? 40 : 40;
+  const count = 40;
   const volatility = range === '1m' ? 0.0008 : range === '1h' ? 0.0035 : 0.012;
   const candles = [];
-  let p = basePrice * (1 + (Math.random() - 0.5) * volatility * 5);
-  for(let i = 0; i < count; i++){
+  // Build forward from a starting price near base, ending close = current price
+  let start = basePrice * (1 + (Math.random() - 0.5) * volatility * 4);
+  let p = start;
+  for(let i = 0; i < count - 1; i++){
     const open = p;
     const move = (Math.random() - 0.48) * basePrice * volatility;
     const close = Math.max(open * 0.97, Math.min(open * 1.03, open + move));
@@ -1350,7 +1399,23 @@ function generateCandles(sym, range){
     candles.push({ open, high, low, close, volume });
     p = close;
   }
+  // Last candle closes exactly at the current live price
+  const lastOpen = p;
+  const lastClose = basePrice;
+  const lastHigh = Math.max(lastOpen, lastClose) + Math.random() * basePrice * volatility * 0.4;
+  const lastLow = Math.min(lastOpen, lastClose) - Math.random() * basePrice * volatility * 0.4;
+  candles.push({ open: lastOpen, high: lastHigh, low: lastLow, close: lastClose, volume: Math.round(50000 + Math.random() * 400000) });
   return candles;
+}
+
+/* Update just the last candle as price moves */
+function tickCandles(sym){
+  const m = findMarket(sym);
+  if(!m || !detailCandles.length) return;
+  const last = detailCandles[detailCandles.length - 1];
+  last.close = m.price;
+  last.high = Math.max(last.high, m.price);
+  last.low = Math.min(last.low, m.price);
 }
 
 function renderDetailsChart(sym, range){
@@ -1371,13 +1436,16 @@ function renderDetailsChart(sym, range){
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, cssW, cssH);
 
-  const candles = generateCandles(sym, range);
+  const candles = detailCandles.length ? detailCandles : generateCandles(sym, range);
   if(!candles.length) return;
 
   const highs = candles.map(c => c.high);
   const lows = candles.map(c => c.low);
-  const maxP = Math.max(...highs);
-  const minP = Math.min(...lows);
+  let maxP = Math.max(...highs);
+  let minP = Math.min(...lows);
+  // expand slightly so last candle isn't glued to edge
+  const pad = (maxP - minP) * 0.05 || 1;
+  maxP += pad; minP -= pad;
   const rangeP = maxP - minP || 1;
 
   const padding = { top: 8, right: 48, bottom: 24, left: 8 };
@@ -1392,7 +1460,6 @@ function renderDetailsChart(sym, range){
   const greenColor = '#0ECB81';
   const redColor = '#F6465D';
 
-  // grid horizontal + price labels
   ctx.font = '10px -apple-system, sans-serif';
   ctx.fillStyle = textColor;
   ctx.strokeStyle = gridColor;
@@ -1408,7 +1475,6 @@ function renderDetailsChart(sym, range){
     ctx.fillText(fmt(priceLabel), padding.left + chartW + 6, y + 3);
   }
 
-  // candles
   candles.forEach((c, i) => {
     const x = padding.left + gap * i + gap / 2;
     const yHigh = padding.top + (1 - (c.high - minP) / rangeP) * chartH;
@@ -1417,25 +1483,19 @@ function renderDetailsChart(sym, range){
     const yClose= padding.top + (1 - (c.close- minP) / rangeP) * chartH;
     const up = c.close >= c.open;
     const color = up ? greenColor : redColor;
-
-    // wick
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(x, yHigh);
     ctx.lineTo(x, yLow);
     ctx.stroke();
-
-    // body
     ctx.fillStyle = color;
     const bodyTop = Math.min(yOpen, yClose);
     const bodyH = Math.max(1, Math.abs(yClose - yOpen));
     ctx.fillRect(x - candleW/2, bodyTop, candleW, bodyH);
   });
 
-  // stats (last candle)
   const last = candles[candles.length - 1];
-  const first = candles[0];
   const timeLabel = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
   stats.innerHTML = `
     <span>Time: <b>${timeLabel}</b></span>
@@ -1444,17 +1504,17 @@ function renderDetailsChart(sym, range){
     <span>Low: <b>${fmt(Math.min(...lows))}</b></span>
     <span>Close: <b>${fmt(last.close)}</b></span>
     <span>Volume: <b>${(last.volume/1000).toFixed(2)}K</b></span>
-    <span>↗ <b>${fmt(Math.min(...lows))}</b></span>
   `;
 
-  // times row
   if(times){
-    const t1 = new Date(Date.now() - 60*60*1000);
-    const t2 = new Date(Date.now() - 40*60*1000);
-    const t3 = new Date(Date.now() - 20*60*1000);
-    const t4 = new Date();
+    const now = new Date();
     const ff = d => `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-    times.innerHTML = `<span>${ff(t1)}</span><span>${ff(t2)}</span><span>${ff(t3)}</span><span>${ff(t4)}</span>`;
+    times.innerHTML = `
+      <span>${ff(new Date(now - 60*60*1000))}</span>
+      <span>${ff(new Date(now - 40*60*1000))}</span>
+      <span>${ff(new Date(now - 20*60*1000))}</span>
+      <span>${ff(now)}</span>
+    `;
   }
 }
 
@@ -1490,7 +1550,9 @@ function go(id){
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-trade'){ loadLiveSignals(); loadAppStats(); }
   if(id === 's-deposit') updateDepositAddress();
-  if(id === 's-markets' && !mktTab) renderMarketsTable();
+  if(id === 's-markets') renderMarketsTable();
+  // clear detail when leaving
+  if(id !== 's-details') currentDetailSym = null;
 }
 
 /* ============================================================
@@ -1642,7 +1704,7 @@ function openFollowSheet(signalId){
     </div>
     <label class="fs-agree">
       <input type="checkbox" id="fsAgree" onchange="fsRefresh()">
-      <span>I have read and agree to <a onclick="event.preventDefault();toast('Copy Trading Agreement')">Copy Trading Agreement</a></span>
+      <span>I have read and agree to <a onclick="event.preventDefault();showCopyTradingInfo()">Copy Trading Agreement</a></span>
     </label>
     <button class="fs-apply" id="fsApply" disabled onclick="fsApply()">Apply to Follow</button>
   `;
@@ -1828,24 +1890,51 @@ function refreshNewsStrip(){
     </div>
   `).join('');
 }
+
+/* ============================================================
+   COPY TRADING INFO (full document like screenshots)
+   ============================================================ */
 function showCopyTradingInfo(){
-  document.getElementById('genericTitle').textContent = 'What is Copy Trading?';
-  document.getElementById('genericBody').innerHTML = `
-    <div style="font-size:13.5px;color:var(--text2);line-height:1.7;">
-      <p style="margin:0 0 12px;color:var(--text);font-weight:700;font-size:15px;">Copy the world's best traders — automatically.</p>
-      <p style="margin:0 0 12px;">Copy Trading lets you mirror the trades of experienced analysts in real time. When they open a position, your account opens the same position proportionally to your investment.</p>
-      <p style="margin:0 0 12px;"><b style="color:var(--text);">How it works:</b></p>
-      <ol style="padding-left:18px;margin:0 0 12px;">
-        <li>Pick an analyst from the Copy Trading screen</li>
-        <li>Enter their signal code and the amount you want to invest</li>
-        <li>Your account follows every position they open</li>
-        <li>Profits are credited to your balance automatically</li>
-      </ol>
-      <p style="margin:0;"><b style="color:var(--text);">Risk notice:</b> Trading involves risk. Only invest what you can afford to lose. Past performance does not guarantee future results.</p>
-    </div>
+  document.getElementById('docTitle').textContent = 'What is Copy Trading?';
+  document.getElementById('docBody').innerHTML = `
+    <h2>✅ What is Copy Trading?</h2>
+    <p class="lead">Copy Trading is an automated investment model where investors do not need to analyze the market themselves but simply follow experienced traders (or quantitative strategies). The system automatically replicates their trading operations.</p>
+
+    <h2>🌟 Key Advantages</h2>
+    <p><strong>Highly Convenient</strong> — eliminates the need for stock selection, market monitoring, and technical analysis; just follow with one click.</p>
+    <p><strong>No Self-Selection Required</strong> — directly copy strategies from professional traders, suitable for beginners or investors without time to conduct research.</p>
+    <p><strong>Diversify risk</strong> — follow multiple traders simultaneously to reduce the risk associated with a single strategy.</p>
+
+    <h2>📌 Suitable For</h2>
+    <ul>
+      <li>New investors seeking to reduce learning costs</li>
+      <li>Busy professionals without time for market monitoring</li>
+      <li>Investors aiming to diversify strategies and minimize risk</li>
+    </ul>
+
+    <h2>Disclaimer:</h2>
+    <p>Copy Trading involves financial market investments and carries inherent risks. Before participating, please carefully read and understand the following statements:</p>
+
+    <h2>1. Market Risk Warning</h2>
+    <p>Financial market investments (such as stocks, forex, cryptocurrency, etc.) carry high risks and may result in partial or total loss of capital. Copy trading does not guarantee profits, and past performance does not predict future results.</p>
+
+    <h2>2. Specific Risks of Copy Trading</h2>
+    <p>The strategy of the trader being copied may become ineffective due to market fluctuations, and their trades may not align with your risk tolerance.</p>
+    <p>Network latency, system failures, or platform rule adjustments may cause deviations in Copy Trading execution.</p>
+
+    <h2>3. Investor Responsibilities</h2>
+    <p>You are required to independently evaluate the strategies of the traders you copy and bear all consequences of your investment decisions. It is recommended to allocate funds reasonably based on your financial situation and risk tolerance to avoid excessive concentration.</p>
+
+    <h2>4. Platform Disclaimer</h2>
+    <p>The Copy Trading platform provides technical services only, does not guarantee earnings, and is not responsible for any investment losses. Trader data displayed on the platform is for reference only and does not constitute investment advice.</p>
   `;
-  document.getElementById('genericModal').classList.add('on');
+  document.getElementById('docModal').classList.add('on');
+  document.getElementById('docBody').scrollTop = 0;
 }
+function closeDocModal(){
+  document.getElementById('docModal').classList.remove('on');
+}
+
 const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
 function downloadFor(platform){
   if(platform === 'android'){
