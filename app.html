@@ -45,9 +45,6 @@
   --overlay-bg:rgba(0,0,0,.6);--sheet-bg:#12161C;--modal-bg:rgba(0,0,0,.65);
   --nav-bg:#0B0E11;
   --topbar-grad:linear-gradient(180deg,#0F1A20 0%,#0B1218 55%,#0B0E11 100%);
-  --hero-grad:linear-gradient(180deg,#0F1A20 0%,#0B0E11 100%);
-  --asset-hero-grad:linear-gradient(180deg,#0F1A20 0%,#0B1218 40%,#0B0E11 100%);
-  --wallet-grad:linear-gradient(135deg,#0BB574 0%,#0a8b5a 100%);
   --shadow-sm:0 1px 2px rgba(0,0,0,.35);
   --shadow-md:0 8px 24px rgba(0,0,0,.35);
   --shadow-lg:0 20px 50px rgba(0,0,0,.5);
@@ -67,9 +64,6 @@
   --overlay-bg:rgba(0,0,0,.55);--sheet-bg:#FFFFFF;--modal-bg:rgba(0,0,0,.55);
   --nav-bg:#FFFFFF;
   --topbar-grad:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 55%,#F5F6F8 100%);
-  --hero-grad:linear-gradient(180deg,#EDFBF5 0%,#F5F6F8 100%);
-  --asset-hero-grad:linear-gradient(180deg,#D9F7EA 0%,#EDFBF5 40%,#F5F6F8 100%);
-  --wallet-grad:linear-gradient(135deg,#0ECB81 0%,#0a9e63 100%);
   --shadow-sm:0 1px 2px rgba(0,0,0,.04);
   --shadow-md:0 8px 24px rgba(0,0,0,.08);
   --shadow-lg:0 20px 50px rgba(0,0,0,.15);
@@ -192,7 +186,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
   border:2px solid var(--bg);}
 
-/* BANNER CAROUSEL */
 .banner-wrap{margin:14px 14px 0;position:relative;border-radius:16px;overflow:hidden;
   background:var(--card);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.08);
   transition:height .35s cubic-bezier(.2,.9,.3,1);touch-action:pan-y;}
@@ -212,6 +205,95 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .qc .circle svg{width:24px;height:24px;}
 .qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+
+/* ============================================================
+   HOME — Financial News card
+   ============================================================ */
+.news-card{
+  margin:12px 14px 0;
+  background:var(--card);
+  border-radius:16px;
+  border:1px solid var(--line);
+  padding:16px;
+  display:flex;
+  gap:12px;
+  cursor:pointer;
+  box-shadow:var(--shadow-sm);
+}
+.news-card .nc-left{flex:1;min-width:0;}
+.news-card .nc-title{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;
+}
+.news-card .nc-title h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.news-card .nc-title .arrow{color:var(--text3);font-size:18px;}
+.news-card .nc-item{margin-bottom:10px;}
+.news-card .nc-item:last-child{margin-bottom:0;}
+.news-card .nc-headline{
+  font-size:13px;font-weight:700;color:var(--text);line-height:1.35;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.news-card .nc-time{font-size:11px;color:var(--text3);margin-top:4px;font-variant-numeric:tabular-nums;}
+.news-card .nc-right{
+  width:120px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:6px;
+}
+.news-card .nc-img{
+  width:100%;aspect-ratio:1/1;border-radius:12px;
+  background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 50%,#04160f 100%);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+}
+.news-card .nc-img svg{width:60%;height:60%;}
+.news-card .nc-badge{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;color:var(--text);line-height:1.3;
+}
+.news-card .nc-badge .chk{
+  width:14px;height:14px;border-radius:3px;background:var(--green);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;
+}
+
+/* ============================================================
+   HOME — Analyst cards (2×2)
+   ============================================================ */
+.analyst-home-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px 8px;
+}
+.analyst-home-head h2{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
+.analyst-home-head .more{font-size:12.5px;color:var(--text2);cursor:pointer;font-weight:600;}
+.analyst-home-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px;
+}
+.analyst-home-card{
+  background:var(--card);border-radius:14px;border:1px solid var(--line);
+  padding:12px;box-shadow:var(--shadow-sm);cursor:pointer;
+  display:flex;flex-direction:column;gap:8px;
+}
+.analyst-home-card .ah-top{display:flex;align-items:flex-start;gap:8px;}
+.analyst-home-card .ah-info{flex:1;min-width:0;}
+.analyst-home-card .ah-name{
+  font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.analyst-home-card .ah-role{
+  font-size:11.5px;color:var(--text2);margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.analyst-home-card .ah-av{
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:var(--green-lt);color:var(--green-dk);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;
+  border:1px solid var(--line);overflow:hidden;background-size:cover;background-position:center;
+}
+.analyst-home-card .ah-rate{
+  margin-top:auto;padding-top:8px;border-top:1px solid var(--line);
+}
+.analyst-home-card .ah-pct{
+  font-size:15px;font-weight:800;color:var(--green);letter-spacing:-.3px;
+  font-variant-numeric:tabular-nums;
+}
+.analyst-home-card .ah-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
+
 .sec-pair{display:flex;align-items:center;gap:14px;padding:16px 16px 8px;}
 .sec-pair .on{font-size:18px;font-weight:800;letter-spacing:-.4px;color:var(--text);}
 .sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
@@ -228,15 +310,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .coin-card .chg.up{color:var(--green);}
 .coin-card .chg.down{color:var(--red);}
 .coin-card .spark{width:52px;height:28px;flex-shrink:0;}
-
-.news-strip{margin:14px;background:var(--card);border-radius:12px;border:1px solid var(--line);
-  padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;}
-.news-strip .nb{width:36px;height:36px;border-radius:10px;background:var(--green-lt);
-  display:flex;align-items:center;justify-content:center;color:var(--green-dk);flex-shrink:0;}
-.news-strip .nt{flex:1;min-width:0;}
-.news-strip .nt .h{font-size:12.5px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);}
-.news-strip .nt .s{font-size:11px;color:var(--text2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.news-strip .nd{font-size:10.5px;color:var(--text3);flex-shrink:0;}
 
 .overlay{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column;max-width:430px;margin:0 auto;}
 .overlay.active{display:flex;}
@@ -350,9 +423,10 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;letter-spacing:.2px;transition:.15s;}
 .fs-apply:disabled{background:#D1FADF;color:#fff;cursor:not-allowed;}
 
-.mk-tabs{display:flex;gap:20px;padding:6px 16px 10px;border-bottom:1px solid var(--line);}
+.mk-tabs{display:flex;gap:20px;padding:6px 16px 10px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none;}
+.mk-tabs::-webkit-scrollbar{display:none;}
 .mk-tab{font-size:15px;font-weight:700;color:var(--text3);cursor:pointer;padding-bottom:8px;
-  border-bottom:2px solid transparent;letter-spacing:-.3px;}
+  border-bottom:2px solid transparent;letter-spacing:-.3px;white-space:nowrap;flex-shrink:0;}
 .mk-tab.on{color:var(--text);border-bottom-color:var(--green);}
 .mk-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
   padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card);}
@@ -367,8 +441,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;}
 .mk-row .chg-pill.up{background:var(--green);}
 .mk-row .chg-pill.down{background:var(--red);}
-.mk-flag{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;background:var(--input-bg);
-  color:var(--text3);margin-left:5px;letter-spacing:.3px;}
 
 .pf-scroll{flex:1;overflow-y:auto;background:var(--bg);padding-bottom:20px;}
 .pf-top-icons{display:flex;align-items:center;gap:10px;padding:14px 16px 6px;}
@@ -530,27 +602,54 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <div class="wc-badge"><span class="check">✓</span>N</div>
     </div>
+
     <div class="banner-wrap" id="bannerWrap" style="display:none;">
       <div class="banner-track" id="bannerTrack"></div>
       <div class="banner-dots" id="bannerDots"></div>
     </div>
+
     <div class="quick-circle-row">
       <div class="qc" onclick="openDeposit()"><div class="circle" style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Deposit</div></div>
       <div class="qc" onclick="openWithdraw()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Withdraw</div></div>
-      <div class="qc" onclick="openTransfer()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Swap</div></div>
       <div class="qc" onclick="openTxHistory()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="lbl">History</div></div>
       <div class="qc" onclick="openInvite()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="lbl">Referrals</div></div>
     </div>
+
+    <!-- Financial News card -->
+    <div class="news-card" onclick="openNews()">
+      <div class="nc-left">
+        <div class="nc-title"><h3>Financial News</h3><span class="arrow">›</span></div>
+        <div id="newsHomeList"></div>
+      </div>
+      <div class="nc-right">
+        <div class="nc-img">
+          <svg viewBox="0 0 100 100" fill="none">
+            <rect x="10" y="20" width="55" height="60" rx="4" fill="rgba(255,255,255,0.15)"/>
+            <rect x="15" y="28" width="30" height="4" rx="1" fill="rgba(255,255,255,0.7)"/>
+            <rect x="15" y="36" width="40" height="3" rx="1" fill="rgba(255,255,255,0.4)"/>
+            <rect x="15" y="42" width="35" height="3" rx="1" fill="rgba(255,255,255,0.4)"/>
+            <path d="M55 50L75 30L85 40L75 60L55 50Z" fill="rgba(255,255,255,0.85)"/>
+            <path d="M62 55L72 45L78 50L72 62L62 55Z" fill="#0B0E11"/>
+          </svg>
+        </div>
+        <div class="nc-badge"><span class="chk">✓</span><span>What is Copy Trading?</span></div>
+      </div>
+    </div>
+
+    <!-- Analyst cards from Copy Trading -->
+    <div class="analyst-home-head">
+      <h2>Copy Trading Analysts</h2>
+      <span class="more" onclick="go('s-trade')">See all ›</span>
+    </div>
+    <div class="analyst-home-grid" id="homeAnalystGrid"></div>
+
     <div class="sec-pair">
       <span class="on">Stock Market</span>
       <span class="off" onclick="go('s-markets')">View all ›</span>
     </div>
     <div class="coin-grid" id="homeCoinGrid"></div>
-    <div class="news-strip" onclick="openNews()">
-      <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="nt"><div class="h" id="newsHeadline">Loading market news…</div><div class="s" id="newsSub">Fetching…</div></div>
-      <div class="nd" id="newsTime">now</div>
-    </div>
+
+    <div style="height:20px;"></div>
   </div>
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
@@ -708,7 +807,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 
 <!-- NEWS OVERLAY -->
 <div class="overlay" id="newsPanel">
-  <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
+  <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Financial News</div></div>
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
@@ -1003,34 +1102,13 @@ function attachBannerSwipe(){
     setBannerPosition(true);
     setTimeout(() => { bannerPaused = false; }, 2000);
   });
-  let mDown = false;
-  wrap.addEventListener('mousedown', e => { mDown = true; startX = e.clientX; dx = 0; bannerPaused = true; });
-  window.addEventListener('mousemove', e => {
-    if(!mDown) return;
-    dx = e.clientX - startX;
-    const track = document.getElementById('bannerTrack');
-    track.style.transition = 'none';
-    track.style.transform = `translateX(calc(-${bannerIndex * 100}% + ${dx}px))`;
-  });
-  window.addEventListener('mouseup', () => {
-    if(!mDown) return;
-    mDown = false;
-    const track = document.getElementById('bannerTrack');
-    track.style.transition = '';
-    const threshold = wrap.clientWidth * 0.2;
-    if(dx > threshold && bannerIndex > 0) bannerIndex--;
-    else if(dx < -threshold && bannerIndex < banners.length - 1) bannerIndex++;
-    setBannerPosition(true);
-    setTimeout(() => { bannerPaused = false; }, 2000);
-  });
   window.addEventListener('resize', () => sizeBannerWrap());
 }
 
 /* ============================================================
-   MARKET DATA — US + UK STOCKS ONLY
+   MARKET DATA — US + UK STOCKS
    ============================================================ */
 const STOCKS = [
-  // US Stocks
   {sym:'AAPL',  name:'Apple Inc.',          region:'US', price:224.18, base:224.18, chg:0, color:'#111827', vol:'$9.2B'},
   {sym:'MSFT',  name:'Microsoft Corp.',     region:'US', price:421.65, base:421.65, chg:0, color:'#0078D4', vol:'$8.1B'},
   {sym:'GOOGL', name:'Alphabet Inc.',       region:'US', price:176.42, base:176.42, chg:0, color:'#4285F4', vol:'$6.8B'},
@@ -1041,8 +1119,6 @@ const STOCKS = [
   {sym:'NFLX',  name:'Netflix Inc.',        region:'US', price:728.40, base:728.40, chg:0, color:'#E50914', vol:'$3.2B'},
   {sym:'AMD',   name:'Advanced Micro Dev.', region:'US', price:154.28, base:154.28, chg:0, color:'#ED1C24', vol:'$4.1B'},
   {sym:'INTC',  name:'Intel Corp.',         region:'US', price:22.45,  base:22.45,  chg:0, color:'#0068B5', vol:'$2.7B'},
-
-  // UK Stocks (LSE)
   {sym:'HSBA',  name:'HSBC Holdings',       region:'UK', price:712.40, base:712.40, chg:0, color:'#DB0011', vol:'£420M'},
   {sym:'BP',    name:'BP plc',              region:'UK', price:398.75, base:398.75, chg:0, color:'#00A651', vol:'£310M'},
   {sym:'SHEL',  name:'Shell plc',           region:'UK', price:2634.5, base:2634.5, chg:0, color:'#FBCE07', vol:'£580M'},
@@ -1054,7 +1130,6 @@ const STOCKS = [
   {sym:'LLOY',  name:'Lloyds Banking Group',region:'UK', price:57.20,  base:57.20,  chg:0, color:'#006A4E', vol:'£240M'},
   {sym:'VOD',   name:'Vodafone Group',      region:'UK', price:72.85,  base:72.85,  chg:0, color:'#E60000', vol:'£180M'}
 ];
-
 function findMarket(sym){ return STOCKS.find(s => s.sym === sym); }
 function fmt(n){
   if(n>=1000) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -1083,8 +1158,6 @@ function sparklineSVG(up, width=52, height=28){
   const areaPath = `${path} L${width},${height} L0,${height} Z`;
   return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><path d="${areaPath}" fill="${fill}" stroke="none"/><path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
-
-/* Simulated price drift — updates every 1.5s */
 let simTimer = null;
 function startSimulation(){
   if(simTimer) return;
@@ -1096,8 +1169,6 @@ function startSimulation(){
     });
   }, 1500);
 }
-
-/* Home grid — top 4 stocks (2 US, 2 UK) */
 const HOME_GRID_COINS = ['AAPL','TSLA','HSBA','BP'];
 function renderHomeCoinGrid(){
   const el = document.getElementById('homeCoinGrid'); if(!el) return;
@@ -1112,8 +1183,6 @@ function renderHomeCoinGrid(){
       </div></div>`;
   }).join('');
 }
-
-/* Market tabs: gainers / losers / vol / uk / us */
 let mktTab = 'gainers';
 let mkFilter = '';
 function renderMarketsTable(){
@@ -1188,7 +1257,7 @@ async function loadAppStats(){
 }
 
 /* ============================================================
-   COPY TRADING
+   COPY TRADING ANALYSTS
    ============================================================ */
 let ANALYSTS = [];
 let analystFilter = '';
@@ -1209,6 +1278,7 @@ async function loadLiveSignals(){
     }));
   } else ANALYSTS = [];
   renderAnalysts();
+  renderHomeAnalysts();
 }
 function renderAnalysts(){
   const el = document.getElementById('analystList');
@@ -1248,6 +1318,38 @@ function renderAnalysts(){
 }
 function toggleIntro(el){ el.classList.toggle('open'); }
 function filterAnalysts(v){ analystFilter = v; renderAnalysts(); }
+
+/* Home analyst cards — Top 4, 2×2 grid */
+function renderHomeAnalysts(){
+  const el = document.getElementById('homeAnalystGrid');
+  const head = document.querySelector('.analyst-home-head');
+  if(!el) return;
+  const top4 = ANALYSTS.slice(0, 4);
+  if(!top4.length){
+    if(head) head.style.display = 'none';
+    el.style.display = 'none';
+    return;
+  }
+  if(head) head.style.display = 'flex';
+  el.style.display = 'grid';
+  el.innerHTML = top4.map(a => {
+    const init = a.name.split(' ').map(w => w[0]).join('').slice(0,2);
+    const photoStyle = a.photo ? `background-image:url('${a.photo}');color:transparent;` : '';
+    return `<div class="analyst-home-card" onclick="openFollowSheet('${a.id}')">
+      <div class="ah-top">
+        <div class="ah-info">
+          <div class="ah-name">${a.name}</div>
+          <div class="ah-role">${a.role}</div>
+        </div>
+        <div class="ah-av" style="${photoStyle}">${a.photo ? '' : init}</div>
+      </div>
+      <div class="ah-rate">
+        <div class="ah-pct">+${a.week.toFixed(1)}%</div>
+        <div class="ah-lbl">7-Day Return Rate</div>
+      </div>
+    </div>`;
+  }).join('');
+}
 
 /* ============================================================
    FOLLOW SIGNAL SHEET
@@ -1440,6 +1542,7 @@ async function fetchLiveNews(){
       liveNews = arr.map(a => ({
         title: a.TITLE || a.title || '',
         body: a.BODY || a.body || a.SUBTITLE || a.subtitle || '',
+        ts: (a.PUBLISHED_ON || a.published_on || 0) * 1000 || Date.now(),
         source: 'CoinDesk'
       })).filter(x => x.title);
       return true;
@@ -1447,13 +1550,26 @@ async function fetchLiveNews(){
   } catch(e){}
   return false;
 }
+function fmtNewsTime(ts){
+  const d = new Date(ts);
+  const pad = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
 function refreshNewsStrip(){
-  if(!liveNews.length) return;
-  const top = liveNews[0];
-  const h = document.getElementById('newsHeadline');
-  const s = document.getElementById('newsSub');
-  if(h) h.textContent = top.title;
-  if(s) s.textContent = (top.body || '').slice(0, 100) + '…';
+  // Render the two latest headlines on Home news card
+  const el = document.getElementById('newsHomeList');
+  if(!el) return;
+  const items = liveNews.slice(0, 2);
+  if(!items.length){
+    el.innerHTML = '<div style="font-size:12.5px;color:var(--text3);padding:8px 0;">Loading financial news…</div>';
+    return;
+  }
+  el.innerHTML = items.map(n => `
+    <div class="nc-item">
+      <div class="nc-headline">${n.title}</div>
+      <div class="nc-time">${fmtNewsTime(n.ts || Date.now())}</div>
+    </div>
+  `).join('');
 }
 const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
 function downloadFor(platform){
@@ -1478,10 +1594,12 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   startSimulation();
   renderHomeCoinGrid();
   renderMarketsTable();
-  fetchLiveNews().then(() => refreshNewsStrip());
+  loadBanners();
   loadAppStats();
   attachBannerSwipe();
-  loadBanners();
+  refreshNewsStrip();
+
+  fetchLiveNews().then(() => refreshNewsStrip());
 
   try {
     const { data } = await sb.auth.getSession();
@@ -1500,6 +1618,7 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   } catch(e){
     console.error('boot error:', e);
     openAuth('register');
+    loadLiveSignals();
   }
 
   document.getElementById('loginPw')?.addEventListener('keydown', e => {
