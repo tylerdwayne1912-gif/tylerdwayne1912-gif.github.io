@@ -240,6 +240,20 @@ tr:hover td{background:#FAFBFC;}
   </div>
 
   <div class="group">
+    <div class="group-title">Transactions</div>
+    <div class="item" data-panel="deposits">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Deposits</span>
+      <span class="badge" id="depositsBadge">0</span>
+    </div>
+    <div class="item" data-panel="withdrawals">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Withdrawals</span>
+      <span class="badge" id="withdrawalsBadge">0</span>
+    </div>
+  </div>
+
+  <div class="group">
     <div class="group-title">Trading</div>
     <div class="item" data-panel="copytrade">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
@@ -287,13 +301,13 @@ tr:hover td{background:#FAFBFC;}
     <!-- DASHBOARD -->
     <div class="panel on" id="panel-dashboard">
       <div class="warn info">
-        <b>Supabase connected.</b> Signals, participants, profits, user profiles, and home banners are stored in the cloud.
+        <b>Supabase connected.</b> Signals, participants, profits, user profiles, deposits, withdrawals, and home banners are stored in the cloud.
       </div>
       <div class="stats-grid">
         <div class="stat"><div class="ic g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="k">Total Users</div><div class="v" id="stat-users">0</div></div></div>
         <div class="stat"><div class="ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><div><div class="k">Active Signals</div><div class="v" id="stat-signals">0</div></div></div>
-        <div class="stat"><div class="ic o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M14 8l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Participants</div><div class="v" id="stat-participants">0</div></div></div>
-        <div class="stat"><div class="ic r"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Profit Paid Out</div><div class="v" id="stat-profit">$0</div></div></div>
+        <div class="stat"><div class="ic o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M14 8l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Pending Deposits</div><div class="v" id="stat-pending-deposits">0</div></div></div>
+        <div class="stat"><div class="ic r"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Pending Withdrawals</div><div class="v" id="stat-pending-withdrawals">0</div></div></div>
       </div>
       <div class="card">
         <h2>Connected Account</h2>
@@ -347,11 +361,59 @@ tr:hover td{background:#FAFBFC;}
     <div class="panel" id="panel-kyc">
       <div class="card">
         <h2>KYC Submissions</h2>
-        <div class="sub">Users who submitted identity verification. Approve or reject.</div>
+        <div class="sub">Users who submitted identity verification. Click <b>View documents</b> to see uploaded ID and selfie.</div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>User</th><th>Status</th><th class="right">Actions</th></tr></thead>
+            <thead><tr><th>User</th><th>Status</th><th class="right">Documents</th><th class="right">Actions</th></tr></thead>
             <tbody id="kycTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEPOSITS -->
+    <div class="panel" id="panel-deposits">
+      <div class="card">
+        <h2>Pending Deposits <span class="tag orange" id="pendingDepCount">0</span></h2>
+        <div class="sub">Users who submitted a deposit request. Verify the USDT has arrived on-chain, then approve to credit their balance.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th class="right">Amount (USDT)</th><th>Network</th><th>Submitted</th><th class="right">Actions</th></tr></thead>
+            <tbody id="depositsPendingTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>All Deposits</h2>
+        <div class="sub">Complete history of every deposit request.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th class="right">Amount</th><th>Status</th><th>Submitted</th><th>Approved</th></tr></thead>
+            <tbody id="depositsAllTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- WITHDRAWALS -->
+    <div class="panel" id="panel-withdrawals">
+      <div class="card">
+        <h2>Pending Withdrawals <span class="tag orange" id="pendingWdCount">0</span></h2>
+        <div class="sub">Users who requested a withdrawal. Balance was already held. Send USDT to the address, then approve.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th class="right">Amount</th><th>Address</th><th>Submitted</th><th class="right">Actions</th></tr></thead>
+            <tbody id="withdrawalsPendingTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>All Withdrawals</h2>
+        <div class="sub">Complete history of every withdrawal request.</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>User</th><th class="right">Amount</th><th>Address</th><th>Status</th><th>Submitted</th><th>Approved</th></tr></thead>
+            <tbody id="withdrawalsAllTable"></tbody>
           </table>
         </div>
       </div>
@@ -385,15 +447,30 @@ tr:hover td{background:#FAFBFC;}
         <div class="field">
           <label>Instrument</label>
           <select id="ctSymbol">
-            <option value="BTC">BTC / USDT</option>
-            <option value="ETH">ETH / USDT</option>
-            <option value="SOL">SOL / USDT</option>
-            <option value="XRP">XRP / USDT</option>
-            <option value="BNB">BNB / USDT</option>
-            <option value="DOGE">DOGE / USDT</option>
-            <option value="XAUUSD">XAU / USD</option>
-            <option value="EURUSD">EUR / USD</option>
-            <option value="AAPL">AAPL</option>
+            <optgroup label="US Stocks">
+              <option value="AAPL">AAPL — Apple Inc.</option>
+              <option value="MSFT">MSFT — Microsoft Corp.</option>
+              <option value="GOOGL">GOOGL — Alphabet Inc.</option>
+              <option value="AMZN">AMZN — Amazon.com Inc.</option>
+              <option value="TSLA">TSLA — Tesla Inc.</option>
+              <option value="NVDA">NVDA — NVIDIA Corp.</option>
+              <option value="META">META — Meta Platforms</option>
+              <option value="NFLX">NFLX — Netflix Inc.</option>
+              <option value="AMD">AMD — Advanced Micro Devices</option>
+              <option value="INTC">INTC — Intel Corp.</option>
+            </optgroup>
+            <optgroup label="UK Stocks (LSE)">
+              <option value="HSBA">HSBA — HSBC Holdings</option>
+              <option value="BP">BP — BP plc</option>
+              <option value="SHEL">SHEL — Shell plc</option>
+              <option value="AZN">AZN — AstraZeneca plc</option>
+              <option value="ULVR">ULVR — Unilever plc</option>
+              <option value="GSK">GSK — GSK plc</option>
+              <option value="RIO">RIO — Rio Tinto plc</option>
+              <option value="BARC">BARC — Barclays plc</option>
+              <option value="LLOY">LLOY — Lloyds Banking Group</option>
+              <option value="VOD">VOD — Vodafone Group</option>
+            </optgroup>
           </select>
         </div>
 
@@ -519,6 +596,8 @@ let signals = [];
 let participantsBySignal = {};
 let realtimeChannel = null;
 let banners = [];
+let deposits = [];
+let withdrawals = [];
 
 /* AUTH */
 async function doLogin(){
@@ -557,13 +636,16 @@ function showApp(){
   loadXpubPanel();
   loadAppStatsAdmin();
   loadBanners();
+  loadDeposits();
+  loadWithdrawals();
   subscribeRealtime();
 }
 
 /* NAV */
 const PANEL_TITLES = {
   dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
-  kyc:'KYC Queue', copytrade:'Copy Trade Signals', banners:'Home Banners',
+  kyc:'KYC Queue', deposits:'Deposits', withdrawals:'Withdrawals',
+  copytrade:'Copy Trade Signals', banners:'Home Banners',
   stats:'App Stats', settings:'Settings'
 };
 document.querySelectorAll('.item').forEach(it => {
@@ -579,6 +661,8 @@ function navTo(panel){
   if(panel === 'xpubs') loadXpubPanel();
   if(panel === 'userwallets') renderUserWallets();
   if(panel === 'kyc') renderKyc();
+  if(panel === 'deposits') loadDeposits();
+  if(panel === 'withdrawals') loadWithdrawals();
   if(panel === 'copytrade') renderCopyTradePanel();
   if(panel === 'banners') loadBanners();
   if(panel === 'stats') loadAppStatsAdmin();
@@ -586,7 +670,7 @@ function navTo(panel){
 
 /* DATA */
 async function refreshAll(){
-  await Promise.all([loadSignals(), loadParticipants(), loadUsers()]);
+  await Promise.all([loadSignals(), loadParticipants(), loadUsers(), loadDeposits(), loadWithdrawals()]);
   updateStats();
   renderCopyTradePanel();
   renderUserWallets();
@@ -621,12 +705,10 @@ async function updateStats(){
   document.getElementById('stat-signals').textContent = active.length;
   document.getElementById('ctBadge').textContent = active.length;
   document.getElementById('ctCount').textContent = active.length;
-  let totalParts = 0;
-  Object.values(participantsBySignal).forEach(arr => { totalParts += arr.length; });
-  document.getElementById('stat-participants').textContent = totalParts;
-  const { data: profits } = await sb.from('copy_profits').select('profit').limit(2000);
-  const sum = (profits || []).reduce((a, b) => a + Number(b.profit || 0), 0);
-  document.getElementById('stat-profit').textContent = '$' + sum.toFixed(2);
+  const pendingDeps = deposits.filter(d => d.status === 'pending').length;
+  const pendingWds = withdrawals.filter(w => w.status === 'pending').length;
+  document.getElementById('stat-pending-deposits').textContent = pendingDeps;
+  document.getElementById('stat-pending-withdrawals').textContent = pendingWds;
 }
 
 function subscribeRealtime(){
@@ -643,6 +725,12 @@ function subscribeRealtime(){
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'banners' }, () => {
       loadBanners();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'deposits' }, () => {
+      loadDeposits();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'withdrawals' }, () => {
+      loadWithdrawals();
     })
     .subscribe();
 }
@@ -848,7 +936,7 @@ function openEditSignal(id){
     <div class="field">
       <label>Instrument</label>
       <select id="edSymbol">
-        ${['BTC','ETH','SOL','XRP','BNB','DOGE','XAUUSD','EURUSD','AAPL'].map(x =>
+        ${['AAPL','MSFT','GOOGL','AMZN','TSLA','NVDA','META','NFLX','AMD','INTC','HSBA','BP','SHEL','AZN','ULVR','GSK','RIO','BARC','LLOY','VOD'].map(x =>
           `<option value="${x}" ${s.sym===x?'selected':''}>${x}</option>`).join('')}
       </select>
     </div>
@@ -938,7 +1026,7 @@ function renderCopyTradePanel(){
         <div class="ic" style="${icStyle}">${ct.photo_url ? '' : (ct.trader_name || 'A')[0].toUpperCase()}</div>
         <div class="body">
           <div class="trader">${ct.trader_name} <span class="tag green" style="font-size:9px;">ACTIVE</span></div>
-          <div class="sym">${ct.sym}/USDT · Code <span class="code-pill">${ct.code}</span>${ct.role ? ' · ' + ct.role : ''}</div>
+          <div class="sym">${ct.sym} · Code <span class="code-pill">${ct.code}</span>${ct.role ? ' · ' + ct.role : ''}</div>
           <div class="msg">${ct.message || ''}</div>
           <div class="meta">Posted ${new Date(ct.created_at).toLocaleString()}${ct.day_return !== undefined ? ' · 1D: +' + Number(ct.day_return).toFixed(1) + '%' : ''}${ct.week_return !== undefined ? ' · 7D: +' + Number(ct.week_return).toFixed(1) + '%' : ''}</div>
           <div class="parts" onclick="openParticipants('${ct.id}')">Participants: ${participants.length}</div>
@@ -971,13 +1059,10 @@ function openParticipants(signalId){
   document.getElementById('modal').classList.add('on');
 }
 
-/* ============================================================
-   HOME BANNERS
-   ============================================================ */
+/* HOME BANNERS */
 async function loadBanners(){
   const { data, error } = await sb.from('banners').select('*')
-    .order('sort_order', { ascending: true })
-    .order('created_at', { ascending: true });
+    .order('sort_order', { ascending: true }).order('created_at', { ascending: true });
   if(error){ banners = []; return; }
   banners = data || [];
   document.getElementById('bannersBadge').textContent = banners.filter(b => b.active).length;
@@ -1058,6 +1143,198 @@ function renderBannerList(){
   `).join('');
 }
 
+/* ============================================================
+   DEPOSITS
+   ============================================================ */
+async function loadDeposits(){
+  const { data, error } = await sb.from('deposits').select('*').order('created_at', { ascending: false }).limit(500);
+  if(error){ deposits = []; }
+  else { deposits = data || []; }
+  document.getElementById('depositsBadge').textContent = deposits.filter(d => d.status === 'pending').length;
+  renderDeposits();
+  updateStats();
+}
+function renderDeposits(){
+  const pending = deposits.filter(d => d.status === 'pending');
+  document.getElementById('pendingDepCount').textContent = pending.length;
+  const pendingBody = document.getElementById('depositsPendingTable');
+  const allBody = document.getElementById('depositsAllTable');
+  if(!pendingBody || !allBody) return;
+
+  if(!pending.length){
+    pendingBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No pending deposits.</td></tr>';
+  } else {
+    pendingBody.innerHTML = pending.map(d => `
+      <tr>
+        <td><div class="user-cell">
+          <div class="user-av">${(d.username || '?')[0].toUpperCase()}</div>
+          <div class="user-info">
+            <div class="user-name">${d.username || '—'}</div>
+            <div class="user-uid">${d.uid || ''}</div>
+          </div>
+        </div></td>
+        <td class="right"><b>$${Number(d.amount || 0).toFixed(2)}</b></td>
+        <td><span class="tag gray">${d.network || 'ERC20'}</span></td>
+        <td>${new Date(d.created_at).toLocaleString()}</td>
+        <td class="right">
+          <button class="btn sm success" onclick="approveDeposit('${d.id}')">Approve</button>
+          <button class="btn sm danger" onclick="rejectDeposit('${d.id}')">Reject</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  if(!deposits.length){
+    allBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No deposits yet.</td></tr>';
+    return;
+  }
+  allBody.innerHTML = deposits.map(d => {
+    const cls = d.status === 'approved' ? 'green' : d.status === 'rejected' ? 'red' : 'orange';
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(d.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info"><div class="user-name">${d.username || '—'}</div><div class="user-uid">${d.uid || ''}</div></div>
+      </div></td>
+      <td class="right"><b>$${Number(d.amount || 0).toFixed(2)}</b></td>
+      <td><span class="tag ${cls}">${d.status}</span></td>
+      <td>${new Date(d.created_at).toLocaleString()}</td>
+      <td>${d.approved_at ? new Date(d.approved_at).toLocaleString() : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+async function approveDeposit(id){
+  const d = deposits.find(x => x.id === id);
+  if(!d) return toast('Deposit not found');
+  if(!confirm(`Approve deposit of $${Number(d.amount).toFixed(2)} for ${d.username}?\n\nThis will ADD $${Number(d.amount).toFixed(2)} to their balance.`)) return;
+
+  const { data: prof, error: pErr } = await sb.from('profiles').select('balance').eq('id', d.user_id).single();
+  if(pErr){ toast('Error: ' + pErr.message); return; }
+  const currentBal = Number(prof?.balance || 0);
+  const newBal = currentBal + Number(d.amount);
+
+  const { error: bErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', d.user_id);
+  if(bErr){ toast('Error updating balance: ' + bErr.message); return; }
+
+  const { error: dErr } = await sb.from('deposits').update({
+    status: 'approved',
+    approved_at: new Date().toISOString(),
+    approved_by: adminUser?.email || 'admin'
+  }).eq('id', id);
+  if(dErr){ toast('Deposit approved but status update failed: ' + dErr.message); return; }
+
+  toast(`✓ Approved $${Number(d.amount).toFixed(2)} — balance now $${newBal.toFixed(2)}`);
+  loadDeposits();
+  loadUsers();
+}
+async function rejectDeposit(id){
+  const d = deposits.find(x => x.id === id);
+  if(!d) return;
+  if(!confirm('Reject this deposit?')) return;
+  const { error } = await sb.from('deposits').update({
+    status: 'rejected',
+    approved_at: new Date().toISOString(),
+    approved_by: adminUser?.email || 'admin'
+  }).eq('id', id);
+  if(error){ toast('Error: ' + error.message); return; }
+  toast('Deposit rejected');
+  loadDeposits();
+}
+
+/* ============================================================
+   WITHDRAWALS
+   ============================================================ */
+async function loadWithdrawals(){
+  const { data, error } = await sb.from('withdrawals').select('*').order('created_at', { ascending: false }).limit(500);
+  if(error){ withdrawals = []; }
+  else { withdrawals = data || []; }
+  document.getElementById('withdrawalsBadge').textContent = withdrawals.filter(w => w.status === 'pending').length;
+  renderWithdrawals();
+  updateStats();
+}
+function renderWithdrawals(){
+  const pending = withdrawals.filter(w => w.status === 'pending');
+  document.getElementById('pendingWdCount').textContent = pending.length;
+  const pendingBody = document.getElementById('withdrawalsPendingTable');
+  const allBody = document.getElementById('withdrawalsAllTable');
+  if(!pendingBody || !allBody) return;
+
+  if(!pending.length){
+    pendingBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No pending withdrawals.</td></tr>';
+  } else {
+    pendingBody.innerHTML = pending.map(w => {
+      const addr = w.address || '';
+      const addrShort = addr.slice(0, 10) + '…' + addr.slice(-6);
+      return `<tr>
+        <td><div class="user-cell">
+          <div class="user-av">${(w.username || '?')[0].toUpperCase()}</div>
+          <div class="user-info"><div class="user-name">${w.username || '—'}</div><div class="user-uid">${w.uid || ''}</div></div>
+        </div></td>
+        <td class="right"><b>$${Number(w.amount || 0).toFixed(2)}</b></td>
+        <td><span class="mono" style="cursor:pointer;color:var(--blue);" onclick="copyText('${addr}')" title="${addr}">${addrShort}</span></td>
+        <td>${new Date(w.created_at).toLocaleString()}</td>
+        <td class="right">
+          <button class="btn sm success" onclick="approveWithdraw('${w.id}')">Approve</button>
+          <button class="btn sm danger" onclick="rejectWithdraw('${w.id}')">Reject</button>
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  if(!withdrawals.length){
+    allBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3);">No withdrawals yet.</td></tr>';
+    return;
+  }
+  allBody.innerHTML = withdrawals.map(w => {
+    const cls = w.status === 'approved' ? 'green' : w.status === 'rejected' ? 'red' : 'orange';
+    const addr = w.address || '';
+    const addrShort = addr ? addr.slice(0, 8) + '…' + addr.slice(-6) : '—';
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(w.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info"><div class="user-name">${w.username || '—'}</div><div class="user-uid">${w.uid || ''}</div></div>
+      </div></td>
+      <td class="right"><b>$${Number(w.amount || 0).toFixed(2)}</b></td>
+      <td><span class="mono">${addrShort}</span></td>
+      <td><span class="tag ${cls}">${w.status}</span></td>
+      <td>${new Date(w.created_at).toLocaleString()}</td>
+      <td>${w.approved_at ? new Date(w.approved_at).toLocaleString() : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+async function approveWithdraw(id){
+  const w = withdrawals.find(x => x.id === id);
+  if(!w) return toast('Not found');
+  if(!confirm(`Approve withdrawal of $${Number(w.amount).toFixed(2)}?\n\nMake sure you've sent USDT to:\n${w.address}`)) return;
+  const { error } = await sb.from('withdrawals').update({
+    status: 'approved',
+    approved_at: new Date().toISOString(),
+    approved_by: adminUser?.email || 'admin'
+  }).eq('id', id);
+  if(error){ toast('Error: ' + error.message); return; }
+  toast('Withdrawal approved');
+  loadWithdrawals();
+}
+async function rejectWithdraw(id){
+  const w = withdrawals.find(x => x.id === id);
+  if(!w) return toast('Not found');
+  if(!confirm(`Reject this withdrawal and REFUND $${Number(w.amount).toFixed(2)} to ${w.username}?`)) return;
+
+  const { data: prof } = await sb.from('profiles').select('balance').eq('id', w.user_id).single();
+  const currentBal = Number(prof?.balance || 0);
+  const refunded = currentBal + Number(w.amount);
+  await sb.from('profiles').update({ balance: refunded }).eq('id', w.user_id);
+
+  const { error } = await sb.from('withdrawals').update({
+    status: 'rejected',
+    approved_at: new Date().toISOString(),
+    approved_by: adminUser?.email || 'admin'
+  }).eq('id', id);
+  if(error){ toast('Error: ' + error.message); return; }
+  toast(`✓ Refunded $${Number(w.amount).toFixed(2)} to ${w.username}`);
+  loadWithdrawals();
+  loadUsers();
+}
+
 /* USERS + KYC */
 let filterQuery = '';
 function filterUserWallets(v){ filterQuery = v; renderUserWallets(); }
@@ -1087,13 +1364,14 @@ function renderUserWallets(){
     const addr = u.derived_eth_address || '';
     const addrShort = addr ? addr.slice(0, 10) + '…' + addr.slice(-6) : '—';
     const idx = (u.derivation_index === null || u.derivation_index === undefined) ? '—' : '#' + u.derivation_index;
+    const bal = Number(u.balance || 0).toFixed(2);
     return `<tr>
       <td><div class="user-cell">
         <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
         <div class="user-info">
           <div class="user-name">${u.username || '—'}</div>
           <div class="user-email">${u.email || '—'}</div>
-          <div class="user-uid">${u.uid || ''}</div>
+          <div class="user-uid">${u.uid || ''} · $${bal}</div>
         </div>
       </div></td>
       <td><span class="tag gray">${idx}</span></td>
@@ -1104,33 +1382,68 @@ function renderUserWallets(){
   }).join('');
 }
 function copyText(text){ if(navigator.clipboard) navigator.clipboard.writeText(text); toast('Copied'); }
+
 function renderKyc(){
   const tbody = document.getElementById('kycTable');
   if(!tbody) return;
   const pending = allUsers.filter(u => u.kyc_status === 'pending').length;
   document.getElementById('kycBadge').textContent = pending;
   if(!allUsers.length){
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;padding:40px;">No users yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;">No users yet.</td></tr>';
     return;
   }
-  tbody.innerHTML = allUsers.map(u => `
-    <tr>
-      <td><div class="user-cell">
-        <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
-        <div class="user-info">
-          <div class="user-name">${u.username || '—'}</div>
-          <div class="user-email">${u.email || '—'}</div>
-        </div>
-      </div></td>
-      <td><span class="tag ${u.kyc_status === 'verified' ? 'green' : u.kyc_status === 'pending' ? 'orange' : u.kyc_status === 'rejected' ? 'red' : 'gray'}">${u.kyc_status || 'none'}</span></td>
-      <td class="right">
-        ${u.kyc_status === 'pending' ? `
-          <button class="btn sm success" onclick="approveKyc('${u.id}')">Approve</button>
-          <button class="btn sm danger" onclick="rejectKyc('${u.id}')">Reject</button>
-        ` : '—'}
-      </td>
-    </tr>
-  `).join('');
+  tbody.innerHTML = allUsers.map(u => {
+    const hasDocs = u.kyc_data && (u.kyc_data.frontUrl || u.kyc_data.selfieUrl);
+    return `
+      <tr>
+        <td><div class="user-cell">
+          <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
+          <div class="user-info">
+            <div class="user-name">${u.username || '—'}</div>
+            <div class="user-email">${u.email || '—'}</div>
+          </div>
+        </div></td>
+        <td><span class="tag ${u.kyc_status === 'verified' ? 'green' : u.kyc_status === 'pending' ? 'orange' : u.kyc_status === 'rejected' ? 'red' : 'gray'}">${u.kyc_status || 'none'}</span></td>
+        <td class="right">
+          ${hasDocs ? `<button class="btn sm primary" onclick="viewKycDocs('${u.id}')">View documents</button>` : `<span style="color:var(--text3);font-size:11px;">No docs</span>`}
+        </td>
+        <td class="right">
+          ${u.kyc_status === 'pending' ? `
+            <button class="btn sm success" onclick="approveKyc('${u.id}')">Approve</button>
+            <button class="btn sm danger" onclick="rejectKyc('${u.id}')">Reject</button>
+          ` : '—'}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+function viewKycDocs(userId){
+  const u = allUsers.find(x => x.id === userId);
+  if(!u){ toast('User not found'); return; }
+  const d = u.kyc_data || {};
+  document.getElementById('modalTitle').textContent = 'KYC — ' + (u.username || '');
+  if(!d.frontUrl && !d.selfieUrl){
+    document.getElementById('modalBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">No documents uploaded yet.</div>';
+    document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+    document.getElementById('modal').classList.add('on');
+    return;
+  }
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:#F9FAFB;border-radius:8px;padding:14px;margin-bottom:16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div><div style="font-size:11px;color:var(--text2);font-weight:600;">Full name</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.fullName || '—'}</div></div>
+        <div><div style="font-size:11px;color:var(--text2);font-weight:600;">Country</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.country || '—'}</div></div>
+        <div><div style="font-size:11px;color:var(--text2);font-weight:600;">Document type</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${(d.idType || '—').toUpperCase()}</div></div>
+        <div><div style="font-size:11px;color:var(--text2);font-weight:600;">ID number</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.idNumber || '—'}</div></div>
+        <div style="grid-column:1/-1;"><div style="font-size:11px;color:var(--text2);font-weight:600;">Submitted</div><div style="font-weight:700;font-size:13.5px;margin-top:2px;">${d.submittedAt ? new Date(d.submittedAt).toLocaleString() : '—'}</div></div>
+      </div>
+    </div>
+    ${d.frontUrl ? `<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;">📄 Front of ID</div><div style="border-radius:8px;overflow:hidden;margin-bottom:18px;background:#000;"><img src="${d.frontUrl}" style="width:100%;display:block;cursor:zoom-in;" onclick="window.open('${d.frontUrl}','_blank')"></div>` : ''}
+    ${d.selfieUrl ? `<div style="font-size:12px;color:var(--text2);font-weight:600;margin-bottom:8px;">🤳 Selfie with ID</div><div style="border-radius:8px;overflow:hidden;margin-bottom:18px;background:#000;"><img src="${d.selfieUrl}" style="width:100%;display:block;cursor:zoom-in;" onclick="window.open('${d.selfieUrl}','_blank')"></div>` : ''}
+    <div style="font-size:11px;color:var(--text3);text-align:center;">Tap any image to open full size</div>
+  `;
+  document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+  document.getElementById('modal').classList.add('on');
 }
 async function approveKyc(userId){
   const { error } = await sb.from('profiles').update({ kyc_status: 'verified' }).eq('id', userId);
@@ -1148,9 +1461,7 @@ async function loadAppStatsAdmin(){
   try {
     const { data } = await sb.from('config').select('value').eq('key', 'app_stats').maybeSingle();
     let s = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
-    if(data && data.value){
-      try { s = JSON.parse(data.value); } catch(e){}
-    }
+    if(data && data.value){ try { s = JSON.parse(data.value); } catch(e){} }
     document.getElementById('stTotalPnl').value = Number(s.totalPnl || 0).toFixed(2);
     document.getElementById('stPartner').value = Number(s.partner || 0).toFixed(2);
     document.getElementById('stTodayPnl').value = Number(s.todayPnl || 0).toFixed(2);
