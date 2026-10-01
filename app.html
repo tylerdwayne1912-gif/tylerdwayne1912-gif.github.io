@@ -206,24 +206,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .qc .lbl{font-size:11px;font-weight:600;color:var(--text);text-align:center;line-height:1.2;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
 
-/* ============================================================
-   HOME — Financial News card
-   ============================================================ */
 .news-card{
-  margin:12px 14px 0;
-  background:var(--card);
-  border-radius:16px;
-  border:1px solid var(--line);
-  padding:16px;
-  display:flex;
-  gap:12px;
-  cursor:pointer;
-  box-shadow:var(--shadow-sm);
+  margin:12px 14px 0;background:var(--card);border-radius:16px;border:1px solid var(--line);
+  padding:16px;display:flex;gap:12px;cursor:pointer;box-shadow:var(--shadow-sm);
 }
 .news-card .nc-left{flex:1;min-width:0;}
-.news-card .nc-title{
-  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;
-}
+.news-card .nc-title{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;}
 .news-card .nc-title h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
 .news-card .nc-title .arrow{color:var(--text3);font-size:18px;}
 .news-card .nc-item{margin-bottom:10px;}
@@ -233,37 +221,23 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
 }
 .news-card .nc-time{font-size:11px;color:var(--text3);margin-top:4px;font-variant-numeric:tabular-nums;}
-.news-card .nc-right{
-  width:120px;flex-shrink:0;
-  display:flex;flex-direction:column;gap:6px;
-}
+.news-card .nc-right{width:120px;flex-shrink:0;display:flex;flex-direction:column;gap:6px;}
 .news-card .nc-img{
   width:100%;aspect-ratio:1/1;border-radius:12px;
   background:linear-gradient(135deg,#0ECB81 0%,#0a9e63 50%,#04160f 100%);
   display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
 }
 .news-card .nc-img svg{width:60%;height:60%;}
-.news-card .nc-badge{
-  display:flex;align-items:center;gap:5px;
-  font-size:11px;font-weight:700;color:var(--text);line-height:1.3;
-}
+.news-card .nc-badge{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text);line-height:1.3;}
 .news-card .nc-badge .chk{
   width:14px;height:14px;border-radius:3px;background:var(--green);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:900;
 }
 
-/* ============================================================
-   HOME — Analyst cards (2×2)
-   ============================================================ */
-.analyst-home-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px 8px;
-}
+.analyst-home-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;}
 .analyst-home-head h2{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.3px;color:var(--text);}
 .analyst-home-head .more{font-size:12.5px;color:var(--text2);cursor:pointer;font-weight:600;}
-.analyst-home-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px;
-}
+.analyst-home-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px;}
 .analyst-home-card{
   background:var(--card);border-radius:14px;border:1px solid var(--line);
   padding:12px;box-shadow:var(--shadow-sm);cursor:pointer;
@@ -285,13 +259,8 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;
   border:1px solid var(--line);overflow:hidden;background-size:cover;background-position:center;
 }
-.analyst-home-card .ah-rate{
-  margin-top:auto;padding-top:8px;border-top:1px solid var(--line);
-}
-.analyst-home-card .ah-pct{
-  font-size:15px;font-weight:800;color:var(--green);letter-spacing:-.3px;
-  font-variant-numeric:tabular-nums;
-}
+.analyst-home-card .ah-rate{margin-top:auto;padding-top:8px;border-top:1px solid var(--line);}
+.analyst-home-card .ah-pct{font-size:15px;font-weight:800;color:var(--green);letter-spacing:-.3px;font-variant-numeric:tabular-nums;}
 .analyst-home-card .ah-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
 
 .sec-pair{display:flex;align-items:center;gap:14px;padding:16px 16px 8px;}
@@ -299,7 +268,8 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .sec-pair .off{font-size:18px;font-weight:700;letter-spacing:-.4px;color:var(--text3);cursor:pointer;}
 .coin-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px;}
 .coin-card{background:var(--coin-card-bg);border-radius:12px;padding:14px;border:1px solid var(--line);
-  min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
+  min-height:88px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:.15s;}
+.coin-card:active{transform:scale(.98);}
 .coin-card .row-top{display:flex;align-items:center;gap:6px;}
 .coin-card .pair{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
 .coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.4px;}
@@ -429,7 +399,8 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   border-bottom:2px solid transparent;letter-spacing:-.3px;white-space:nowrap;flex-shrink:0;}
 .mk-tab.on{color:var(--text);border-bottom-color:var(--green);}
 .mk-row{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
-  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card);}
+  padding:14px 16px;border-bottom:1px solid var(--line);background:var(--card);cursor:pointer;transition:.15s;}
+.mk-row:active{background:var(--bg3);}
 .mk-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
 .mk-row .logo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0;}
@@ -521,6 +492,66 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 .dw-note b{color:var(--text);}
 .dw-submit{width:100%;height:54px;border-radius:14px;background:var(--green);color:#fff;border:none;
   font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:20px;}
+
+/* ============================================================
+   STOCK DETAILS SCREEN
+   ============================================================ */
+.details-wrap{flex:1;overflow-y:auto;background:var(--bg);padding:0 14px 100px;position:relative;}
+.details-wrap::-webkit-scrollbar{width:0;}
+.details-head{
+  background:var(--card);border-radius:16px;border:1px solid var(--line);
+  padding:18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+  margin-top:8px;box-shadow:var(--shadow-sm);
+}
+.details-head .dh-left{flex:1;min-width:0;}
+.details-head .dh-sym{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--text);}
+.details-head .dh-name{font-size:13px;color:var(--text2);margin-top:4px;}
+.details-head .dh-right{text-align:right;flex-shrink:0;}
+.details-head .dh-price{font-size:22px;font-weight:800;letter-spacing:-.5px;color:var(--text);
+  font-variant-numeric:tabular-nums;}
+.details-head .dh-tag{
+  display:inline-block;margin-top:8px;font-size:11px;font-weight:700;color:var(--text2);
+  background:var(--input-bg);padding:4px 10px;border-radius:8px;letter-spacing:.2px;
+}
+.details-head .dh-chg{font-size:15px;font-weight:800;margin-top:8px;font-variant-numeric:tabular-nums;}
+.details-head .dh-chg.up{color:var(--green);}
+.details-head .dh-chg.down{color:var(--red);}
+
+.details-tabs{
+  display:flex;gap:8px;padding:14px 0 10px;
+}
+.details-tab{
+  padding:8px 16px;border-radius:20px;font-size:13px;font-weight:700;color:var(--text2);
+  background:transparent;border:1px solid transparent;cursor:pointer;letter-spacing:-.2px;
+  font-family:inherit;
+}
+.details-tab.on{
+  background:var(--green-lt);color:var(--green-dk);border-color:rgba(14,203,129,.3);
+}
+
+.details-chart-card{
+  background:var(--card);border-radius:16px;border:1px solid var(--line);
+  padding:14px;box-shadow:var(--shadow-sm);
+}
+.chart-stats{
+  display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--text2);
+  padding-bottom:12px;border-bottom:1px dashed var(--line);margin-bottom:10px;
+  font-variant-numeric:tabular-nums;line-height:1.5;
+}
+.chart-stats b{color:var(--text);font-weight:700;}
+.chart-canvas{width:100%;height:340px;display:block;}
+.chart-times{
+  display:flex;justify-content:space-between;font-size:10.5px;color:var(--text3);
+  padding-top:6px;font-variant-numeric:tabular-nums;
+}
+
+.details-copy-bar{
+  position:absolute;left:14px;right:14px;bottom:14px;
+  height:54px;border-radius:14px;background:var(--green);color:#fff;
+  font-size:16px;font-weight:800;font-family:inherit;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;letter-spacing:.2px;
+  box-shadow:0 8px 24px rgba(14,203,129,.35);
+}
 </style>
 </head>
 <body>
@@ -615,7 +646,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <div class="qc" onclick="openInvite()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="lbl">Referrals</div></div>
     </div>
 
-    <!-- Financial News card -->
     <div class="news-card" onclick="openNews()">
       <div class="nc-left">
         <div class="nc-title"><h3>Financial News</h3><span class="arrow">›</span></div>
@@ -632,11 +662,12 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
             <path d="M62 55L72 45L78 50L72 62L62 55Z" fill="#0B0E11"/>
           </svg>
         </div>
-        <div class="nc-badge"><span class="chk">✓</span><span>What is Copy Trading?</span></div>
+        <div class="nc-badge" onclick="event.stopPropagation();showCopyTradingInfo()">
+          <span class="chk">✓</span><span>What is Copy Trading?</span>
+        </div>
       </div>
     </div>
 
-    <!-- Analyst cards from Copy Trading -->
     <div class="analyst-home-head">
       <h2>Copy Trading Analysts</h2>
       <span class="more" onclick="go('s-trade')">See all ›</span>
@@ -671,6 +702,44 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
   <div class="scroll" id="mkTable"></div>
   <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- STOCK DETAILS -->
+<section class="screen" id="s-details">
+  <div class="topbar" style="background:var(--bg);">
+    <div class="icon-btn" onclick="go('s-markets')" style="background:transparent;border:none;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="title" style="font-size:18px;font-weight:800;text-align:center;flex:1;color:var(--text);">Details</div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="details-wrap" id="detailsWrap">
+    <div class="details-head">
+      <div class="dh-left">
+        <div class="dh-sym" id="dtSymbol">—</div>
+        <div class="dh-name" id="dtName">—</div>
+      </div>
+      <div class="dh-right">
+        <div class="dh-price" id="dtPrice">—</div>
+        <div class="dh-tag">At Close</div>
+        <div class="dh-chg up" id="dtChange">+0.00%</div>
+      </div>
+    </div>
+
+    <div class="details-tabs" id="dtTabs">
+      <button class="details-tab on" data-range="1m" type="button">1 Minute</button>
+      <button class="details-tab" data-range="1h" type="button">1 Hour</button>
+      <button class="details-tab" data-range="1d" type="button">1 Day</button>
+    </div>
+
+    <div class="details-chart-card">
+      <div class="chart-stats" id="dtStats"></div>
+      <canvas class="chart-canvas" id="dtChart" width="600" height="680"></canvas>
+      <div class="chart-times" id="dtTimes"></div>
+    </div>
+
+    <button class="details-copy-bar" onclick="detailsCopyTrading()">Copy Trading</button>
+  </div>
 </section>
 
 <!-- COPY TRADING -->
@@ -839,6 +908,8 @@ let appStats = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
     try{ localStorage.setItem('nt_theme', next); }catch(e){}
     const meta = document.querySelector('meta[name="theme-color"]');
     if(meta) meta.setAttribute('content', next === 'dark' ? '#0B0E11' : '#FFFFFF');
+    // Redraw chart on theme toggle
+    if(currentDetailSym) renderDetailsChart(currentDetailSym, currentDetailRange);
   });
 })();
 
@@ -1167,6 +1238,10 @@ function startSimulation(){
       m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
       m.chg = ((m.price - m.base) / m.base) * 100;
     });
+    // live update details screen if visible
+    if(currentDetailSym && document.getElementById('s-details').classList.contains('active')){
+      renderDetailsHead(currentDetailSym);
+    }
   }, 1500);
 }
 const HOME_GRID_COINS = ['AAPL','TSLA','HSBA','BP'];
@@ -1175,7 +1250,7 @@ function renderHomeCoinGrid(){
   const symbols = HOME_GRID_COINS.map(s => findMarket(s)).filter(Boolean);
   el.innerHTML = symbols.map(m => {
     const up = (m.chg || 0) >= 0;
-    return `<div class="coin-card">
+    return `<div class="coin-card" onclick="openDetails('${m.sym}')">
       <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">${m.region}</span></div>
       <div class="row-bottom">
         <div class="left"><div class="price">${fmt(m.price)}</div><div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div></div>
@@ -1199,7 +1274,7 @@ function renderMarketsTable(){
   }
   el.innerHTML = list.map(m => {
     const up = (m.chg || 0) >= 0;
-    return `<div class="mk-row">
+    return `<div class="mk-row" onclick="openDetails('${m.sym}')">
       <div class="left">${symLogo(m.sym, 36)}<div><div class="pair">${m.sym}<small>${m.region === 'UK' ? ' · LSE' : ' · NASDAQ/NYSE'}</small></div><div class="vol">${m.name} · ${m.vol || '—'}</div></div></div>
       <div class="price">${fmt(m.price)}</div>
       <div class="chg-pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
@@ -1212,6 +1287,185 @@ document.getElementById('mkTabs')?.addEventListener('click', e => {
   document.querySelectorAll('#mkTabs .mk-tab').forEach(x => x.classList.remove('on'));
   t.classList.add('on'); mktTab = t.dataset.tab; renderMarketsTable();
 });
+
+/* ============================================================
+   STOCK DETAILS SCREEN
+   ============================================================ */
+let currentDetailSym = null;
+let currentDetailRange = '1m';
+
+function openDetails(sym){
+  const m = findMarket(sym);
+  if(!m){ toast('Stock not found'); return; }
+  currentDetailSym = sym;
+  currentDetailRange = '1m';
+  // reset tabs
+  document.querySelectorAll('#dtTabs .details-tab').forEach(t => {
+    t.classList.toggle('on', t.dataset.range === '1m');
+  });
+  renderDetailsHead(sym);
+  renderDetailsChart(sym, '1m');
+  // show screen
+  go('s-details');
+  // redraw chart after layout settles (canvas needs real width)
+  setTimeout(() => { if(currentDetailSym === sym) renderDetailsChart(sym, currentDetailRange); }, 50);
+}
+
+function renderDetailsHead(sym){
+  const m = findMarket(sym);
+  if(!m) return;
+  document.getElementById('dtSymbol').textContent = m.sym;
+  document.getElementById('dtName').textContent = m.name;
+  document.getElementById('dtPrice').textContent = fmt(m.price) + ' USD';
+  const chg = document.getElementById('dtChange');
+  const up = (m.chg || 0) >= 0;
+  chg.textContent = chgSign(m.chg || 0);
+  chg.classList.toggle('up', up);
+  chg.classList.toggle('down', !up);
+}
+
+document.getElementById('dtTabs')?.addEventListener('click', e => {
+  const t = e.target.closest('.details-tab'); if(!t) return;
+  document.querySelectorAll('#dtTabs .details-tab').forEach(x => x.classList.remove('on'));
+  t.classList.add('on');
+  currentDetailRange = t.dataset.range;
+  renderDetailsChart(currentDetailSym, currentDetailRange);
+});
+
+/* Generate OHLC candles from current price */
+function generateCandles(sym, range){
+  const m = findMarket(sym);
+  const basePrice = m ? m.price : 100;
+  const count = range === '1m' ? 40 : range === '1h' ? 40 : 40;
+  const volatility = range === '1m' ? 0.0008 : range === '1h' ? 0.0035 : 0.012;
+  const candles = [];
+  let p = basePrice * (1 + (Math.random() - 0.5) * volatility * 5);
+  for(let i = 0; i < count; i++){
+    const open = p;
+    const move = (Math.random() - 0.48) * basePrice * volatility;
+    const close = Math.max(open * 0.97, Math.min(open * 1.03, open + move));
+    const high = Math.max(open, close) + Math.random() * basePrice * volatility * 0.5;
+    const low = Math.min(open, close) - Math.random() * basePrice * volatility * 0.5;
+    const volume = Math.round(50000 + Math.random() * 400000);
+    candles.push({ open, high, low, close, volume });
+    p = close;
+  }
+  return candles;
+}
+
+function renderDetailsChart(sym, range){
+  const m = findMarket(sym);
+  if(!m) return;
+  const canvas = document.getElementById('dtChart');
+  const stats = document.getElementById('dtStats');
+  const times = document.getElementById('dtTimes');
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth || 340;
+  const cssH = 340;
+  canvas.width = cssW * dpr;
+  canvas.height = cssH * dpr;
+  canvas.style.width = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  const candles = generateCandles(sym, range);
+  if(!candles.length) return;
+
+  const highs = candles.map(c => c.high);
+  const lows = candles.map(c => c.low);
+  const maxP = Math.max(...highs);
+  const minP = Math.min(...lows);
+  const rangeP = maxP - minP || 1;
+
+  const padding = { top: 8, right: 48, bottom: 24, left: 8 };
+  const chartW = cssW - padding.left - padding.right;
+  const chartH = cssH - padding.top - padding.bottom;
+  const candleW = Math.max(2, Math.floor(chartW / candles.length * 0.7));
+  const gap = chartW / candles.length;
+
+  const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const textColor = theme === 'light' ? '#707A8A' : '#8B95A5';
+  const gridColor = theme === 'light' ? '#EAECEF' : '#1E242C';
+  const greenColor = '#0ECB81';
+  const redColor = '#F6465D';
+
+  // grid horizontal + price labels
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.fillStyle = textColor;
+  ctx.strokeStyle = gridColor;
+  ctx.lineWidth = 1;
+  const gridLines = 5;
+  for(let i = 0; i <= gridLines; i++){
+    const y = padding.top + (chartH / gridLines) * i;
+    ctx.beginPath();
+    ctx.moveTo(padding.left, y);
+    ctx.lineTo(padding.left + chartW, y);
+    ctx.stroke();
+    const priceLabel = maxP - (rangeP / gridLines) * i;
+    ctx.fillText(fmt(priceLabel), padding.left + chartW + 6, y + 3);
+  }
+
+  // candles
+  candles.forEach((c, i) => {
+    const x = padding.left + gap * i + gap / 2;
+    const yHigh = padding.top + (1 - (c.high - minP) / rangeP) * chartH;
+    const yLow  = padding.top + (1 - (c.low  - minP) / rangeP) * chartH;
+    const yOpen = padding.top + (1 - (c.open - minP) / rangeP) * chartH;
+    const yClose= padding.top + (1 - (c.close- minP) / rangeP) * chartH;
+    const up = c.close >= c.open;
+    const color = up ? greenColor : redColor;
+
+    // wick
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(x, yHigh);
+    ctx.lineTo(x, yLow);
+    ctx.stroke();
+
+    // body
+    ctx.fillStyle = color;
+    const bodyTop = Math.min(yOpen, yClose);
+    const bodyH = Math.max(1, Math.abs(yClose - yOpen));
+    ctx.fillRect(x - candleW/2, bodyTop, candleW, bodyH);
+  });
+
+  // stats (last candle)
+  const last = candles[candles.length - 1];
+  const first = candles[0];
+  const timeLabel = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
+  stats.innerHTML = `
+    <span>Time: <b>${timeLabel}</b></span>
+    <span>Open: <b>${fmt(last.open)}</b></span>
+    <span>High: <b>${fmt(Math.max(...highs))}</b></span>
+    <span>Low: <b>${fmt(Math.min(...lows))}</b></span>
+    <span>Close: <b>${fmt(last.close)}</b></span>
+    <span>Volume: <b>${(last.volume/1000).toFixed(2)}K</b></span>
+    <span>↗ <b>${fmt(Math.min(...lows))}</b></span>
+  `;
+
+  // times row
+  if(times){
+    const t1 = new Date(Date.now() - 60*60*1000);
+    const t2 = new Date(Date.now() - 40*60*1000);
+    const t3 = new Date(Date.now() - 20*60*1000);
+    const t4 = new Date();
+    const ff = d => `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    times.innerHTML = `<span>${ff(t1)}</span><span>${ff(t2)}</span><span>${ff(t3)}</span><span>${ff(t4)}</span>`;
+  }
+}
+
+function detailsCopyTrading(){
+  if(!currentUser){ openAuth('register'); return; }
+  if(!ANALYSTS.length){
+    toast('No active signals right now');
+    return;
+  }
+  openFollowSheet();
+}
 
 /* ============================================================
    NAV
@@ -1236,6 +1490,7 @@ function go(id){
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
   if(id === 's-trade'){ loadLiveSignals(); loadAppStats(); }
   if(id === 's-deposit') updateDepositAddress();
+  if(id === 's-markets' && !mktTab) renderMarketsTable();
 }
 
 /* ============================================================
@@ -1319,7 +1574,6 @@ function renderAnalysts(){
 function toggleIntro(el){ el.classList.toggle('open'); }
 function filterAnalysts(v){ analystFilter = v; renderAnalysts(); }
 
-/* Home analyst cards — Top 4, 2×2 grid */
 function renderHomeAnalysts(){
   const el = document.getElementById('homeAnalystGrid');
   const head = document.querySelector('.analyst-home-head');
@@ -1555,21 +1809,42 @@ function fmtNewsTime(ts){
   const pad = n => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
 }
+const FALLBACK_NEWS = [
+  { title: 'US markets close higher as tech stocks rally on AI optimism', ts: Date.now() },
+  { title: 'Federal Reserve signals rate path depends on incoming inflation data', ts: Date.now() - 3600000 },
+  { title: 'UK FTSE 100 steady as banking sector leads gains', ts: Date.now() - 7200000 },
+  { title: 'Oil prices edge up amid supply concerns in the Middle East', ts: Date.now() - 10800000 },
+  { title: 'Dollar weakens against major currencies ahead of jobs report', ts: Date.now() - 14400000 }
+];
 function refreshNewsStrip(){
-  // Render the two latest headlines on Home news card
   const el = document.getElementById('newsHomeList');
   if(!el) return;
-  const items = liveNews.slice(0, 2);
-  if(!items.length){
-    el.innerHTML = '<div style="font-size:12.5px;color:var(--text3);padding:8px 0;">Loading financial news…</div>';
-    return;
-  }
+  let items = liveNews.slice(0, 2);
+  if(!items.length) items = FALLBACK_NEWS.slice(0, 2);
   el.innerHTML = items.map(n => `
     <div class="nc-item">
       <div class="nc-headline">${n.title}</div>
       <div class="nc-time">${fmtNewsTime(n.ts || Date.now())}</div>
     </div>
   `).join('');
+}
+function showCopyTradingInfo(){
+  document.getElementById('genericTitle').textContent = 'What is Copy Trading?';
+  document.getElementById('genericBody').innerHTML = `
+    <div style="font-size:13.5px;color:var(--text2);line-height:1.7;">
+      <p style="margin:0 0 12px;color:var(--text);font-weight:700;font-size:15px;">Copy the world's best traders — automatically.</p>
+      <p style="margin:0 0 12px;">Copy Trading lets you mirror the trades of experienced analysts in real time. When they open a position, your account opens the same position proportionally to your investment.</p>
+      <p style="margin:0 0 12px;"><b style="color:var(--text);">How it works:</b></p>
+      <ol style="padding-left:18px;margin:0 0 12px;">
+        <li>Pick an analyst from the Copy Trading screen</li>
+        <li>Enter their signal code and the amount you want to invest</li>
+        <li>Your account follows every position they open</li>
+        <li>Profits are credited to your balance automatically</li>
+      </ol>
+      <p style="margin:0;"><b style="color:var(--text);">Risk notice:</b> Trading involves risk. Only invest what you can afford to lose. Past performance does not guarantee future results.</p>
+    </div>
+  `;
+  document.getElementById('genericModal').classList.add('on');
 }
 const APK_URL = 'https://tylerdwayne1912-gif.github.io/downloads/nexttrade.apk';
 function downloadFor(platform){
@@ -1598,8 +1873,8 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   loadAppStats();
   attachBannerSwipe();
   refreshNewsStrip();
-
   fetchLiveNews().then(() => refreshNewsStrip());
+  setInterval(() => fetchLiveNews().then(() => refreshNewsStrip()), 60000);
 
   try {
     const { data } = await sb.auth.getSession();
