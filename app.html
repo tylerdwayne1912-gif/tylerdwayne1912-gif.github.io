@@ -132,9 +132,6 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   padding:14px 16px;font-size:14.5px;font-family:inherit;outline:none;background:var(--card);color:var(--text);transition:.15s;}
 .auth-field input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(14,203,129,.12);}
 .auth-field input::placeholder{color:var(--text3);}
-.auth-field .eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);
-  width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:var(--text2);}
 .auth-field .err{font-size:11.5px;color:var(--red);margin-top:6px;display:none;}
 .auth-field .err.show{display:block;}
 .pw-strength{display:flex;gap:4px;margin-top:8px;}
@@ -195,80 +192,18 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   background:#0EA5E9;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;
   border:2px solid var(--bg);}
 
-/* ============================================================
-   BANNER CAROUSEL (adaptive height, auto-slide every 4s)
-   ============================================================ */
-.banner-wrap{
-  margin:14px 14px 0;
-  position:relative;
-  border-radius:16px;
-  overflow:hidden;
-  background:var(--card);
-  border:1px solid var(--line);
-  box-shadow:0 4px 16px rgba(0,0,0,.08);
-  transition:height .35s cubic-bezier(.2,.9,.3,1);
-  touch-action:pan-y;
-}
-.banner-track{
-  display:flex;
-  transition:transform .45s cubic-bezier(.2,.9,.3,1);
-  will-change:transform;
-}
-.banner-slide{
-  flex:0 0 100%;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#000;
-}
-.banner-slide img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:contain;
-  user-select:none;
-  -webkit-user-drag:none;
-  pointer-events:none;
-}
-.banner-dots{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  z-index:2;
-  pointer-events:none;
-}
-.banner-dots .d{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:rgba(255,255,255,.5);
-  transition:.2s;
-}
-.banner-dots .d.on{
-  background:#fff;
-  width:18px;
-  border-radius:3px;
-}
-.banner-title{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:20px 14px 26px;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.65));
-  color:#fff;
-  font-size:13px;
-  font-weight:700;
-  letter-spacing:-.2px;
-  z-index:1;
-  pointer-events:none;
-}
+/* BANNER CAROUSEL */
+.banner-wrap{margin:14px 14px 0;position:relative;border-radius:16px;overflow:hidden;
+  background:var(--card);border:1px solid var(--line);box-shadow:0 4px 16px rgba(0,0,0,.08);
+  transition:height .35s cubic-bezier(.2,.9,.3,1);touch-action:pan-y;}
+.banner-track{display:flex;transition:transform .45s cubic-bezier(.2,.9,.3,1);will-change:transform;}
+.banner-slide{flex:0 0 100%;position:relative;display:flex;align-items:center;justify-content:center;background:#000;}
+.banner-slide img{width:100%;height:100%;display:block;object-fit:contain;
+  user-select:none;-webkit-user-drag:none;pointer-events:none;}
+.banner-dots{position:absolute;left:0;right:0;bottom:10px;display:flex;align-items:center;
+  justify-content:center;gap:6px;z-index:2;pointer-events:none;}
+.banner-dots .d{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.5);transition:.2s;}
+.banner-dots .d.on{background:#fff;width:18px;border-radius:3px;}
 
 .quick-circle-row{display:flex;justify-content:space-between;gap:6px;padding:18px 14px 10px;}
 .qc{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;min-width:0;}
@@ -285,7 +220,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   min-height:88px;display:flex;flex-direction:column;justify-content:space-between;}
 .coin-card .row-top{display:flex;align-items:center;gap:6px;}
 .coin-card .pair{font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.2px;}
-.coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;}
+.coin-card .tag{font-size:10px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.4px;}
 .coin-card .row-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-top:10px;}
 .coin-card .left{min-width:0;}
 .coin-card .price{font-size:15px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;letter-spacing:-.3px;white-space:nowrap;}
@@ -432,6 +367,8 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;}
 .mk-row .chg-pill.up{background:var(--green);}
 .mk-row .chg-pill.down{background:var(--red);}
+.mk-flag{font-size:10px;font-weight:800;padding:1px 5px;border-radius:3px;background:var(--input-bg);
+  color:var(--text3);margin-left:5px;letter-spacing:.3px;}
 
 .pf-scroll{flex:1;overflow-y:auto;background:var(--bg);padding-bottom:20px;}
 .pf-top-icons{display:flex;align-items:center;gap:10px;padding:14px 16px 6px;}
@@ -517,24 +454,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
 <body>
 <div class="phone">
 
-<!-- ============ REGISTER ============ -->
+<!-- REGISTER -->
 <section class="auth-screen" id="authRegister">
-  <div class="auth-header">
-    <div class="back" onclick="backToLanding()">←</div>
-    <div class="logo-mini"><div class="mk">N</div>NextTrade</div>
-  </div>
+  <div class="auth-header"><div class="back" onclick="backToLanding()">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="auth-body">
     <h1 class="auth-title">Create Account</h1>
     <p class="auth-sub">Join NextTrade in less than a minute.</p>
     <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
-    <div class="auth-field">
-      <label>Set password</label>
-      <div class="wrap">
-        <input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()">
-      </div>
-      <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
-      <div class="err" id="suPwErr"></div>
-    </div>
+    <div class="auth-field"><label>Set password</label><div class="wrap"><input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()"></div><div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div><div class="err" id="suPwErr"></div></div>
     <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
     <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
     <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label></div>
@@ -543,7 +470,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============ KYC ============ -->
+<!-- KYC -->
 <section class="auth-screen" id="authKyc">
   <div class="auth-header"><div class="back" onclick="openAuth('register')">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="step-progress">
@@ -566,7 +493,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============ LOGIN ============ -->
+<!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
   <div class="auth-header"><div class="back" onclick="openAuth('register')">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="auth-body">
@@ -579,7 +506,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============ HOME ============ -->
+<!-- HOME -->
 <section class="screen active" id="s-home">
   <div class="topbar">
     <div class="avatar" id="homeAvatar" onclick="go('s-profile')">U<span class="status"></span></div>
@@ -587,16 +514,15 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
       <span>Welcome to our platform~</span>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+    <button class="theme-toggle" id="themeToggle">
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-    <div class="icon-btn" onclick="downloadFor('android')" title="Download"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="icon-btn" onclick="downloadFor('android')"><svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   </div>
-  <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review — you'll be notified once it's approved.</div>
+  <div class="kyc-pending-banner" id="kycPendingBanner">⏳ Your identity verification is pending review.</div>
   <div class="scroll" id="homeScroll">
     <div class="home-greet"><h1>Start using NextTrade!</h1></div>
-
     <div class="welcome-card">
       <div class="wc-left">
         <div class="wc-h">Welcome to<br>NextTrade</div>
@@ -604,101 +530,59 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
       </div>
       <div class="wc-badge"><span class="check">✓</span>N</div>
     </div>
-
-    <!-- ============ CONTINUOUS BANNER CAROUSEL ============ -->
     <div class="banner-wrap" id="bannerWrap" style="display:none;">
       <div class="banner-track" id="bannerTrack"></div>
       <div class="banner-dots" id="bannerDots"></div>
     </div>
-
     <div class="quick-circle-row">
-      <div class="qc" onclick="openDeposit()">
-        <div class="circle" style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="lbl">Deposit</div>
-      </div>
-      <div class="qc" onclick="openWithdraw()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="lbl">Withdraw</div>
-      </div>
-      <div class="qc" onclick="openTransfer()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="lbl">Swap</div>
-      </div>
-      <div class="qc" onclick="openTxHistory()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="lbl">History</div>
-      </div>
-      <div class="qc" onclick="openInvite()">
-        <div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="lbl">Referrals</div>
-      </div>
+      <div class="qc" onclick="openDeposit()"><div class="circle" style="background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4v12M7 11l5 5 5-5M4 20h16" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Deposit</div></div>
+      <div class="qc" onclick="openWithdraw()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M12 20V8M7 13l5-5 5 5M4 4h16" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Withdraw</div></div>
+      <div class="qc" onclick="openTransfer()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 8h13l-3-3M20 16H7l3 3" stroke="var(--icon-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="lbl">Swap</div></div>
+      <div class="qc" onclick="openTxHistory()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="var(--icon-color)" stroke-width="1.8"/><path d="M8 9h8M8 13h5" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="lbl">History</div></div>
+      <div class="qc" onclick="openInvite()"><div class="circle"><svg viewBox="0 0 24 24" fill="none"><path d="M4 10v4a1 1 0 001 1h2l5 4V5L7 9H5a1 1 0 00-1 1z" stroke="var(--icon-color)" stroke-width="1.8" stroke-linejoin="round"/><path d="M16 9a4 4 0 010 6" stroke="var(--icon-color)" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="lbl">Referrals</div></div>
     </div>
-
     <div class="sec-pair">
-      <span class="on">Cryptocurrency</span>
-      <span class="off" onclick="go('s-markets')">Futures</span>
+      <span class="on">Stock Market</span>
+      <span class="off" onclick="go('s-markets')">View all ›</span>
     </div>
     <div class="coin-grid" id="homeCoinGrid"></div>
-
     <div class="news-strip" onclick="openNews()">
       <div class="nb"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 4h13a2 2 0 012 2v12a2 2 0 01-2 2H4a1 1 0 01-1-1V5a1 1 0 011-1z" stroke="currentColor" stroke-width="1.8"/><path d="M7 8h7M7 12h7M7 16h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <div class="nt">
-        <div class="h" id="newsHeadline">Loading market news…</div>
-        <div class="s" id="newsSub">Fetching from CoinDesk…</div>
-      </div>
+      <div class="nt"><div class="h" id="newsHeadline">Loading market news…</div><div class="s" id="newsSub">Fetching…</div></div>
       <div class="nd" id="newsTime">now</div>
     </div>
   </div>
   <nav class="bottomnav" id="homeNav"></nav>
 </section>
 
-<!-- ============ MARKET ============ -->
+<!-- MARKET -->
 <section class="screen" id="s-markets">
   <div class="topbar"><div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Market</div></div>
   <div class="mk-search" style="margin:12px 14px 8px;height:44px;border-radius:12px;background:var(--input-bg);
     display:flex;align-items:center;gap:10px;padding:0 14px;border:1px solid var(--line);">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="var(--text3)" stroke-width="2"/><path d="M16 16l4.5 4.5" stroke="var(--text3)" stroke-width="2" stroke-linecap="round"/></svg>
-    <input placeholder="Search instrument" id="mkSearch" oninput="filterMarket(this.value)" style="flex:1;background:transparent;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text);min-width:0;">
+    <input placeholder="Search stock ticker or name" id="mkSearch" oninput="filterMarket(this.value)" style="flex:1;background:transparent;border:none;outline:none;font-family:inherit;font-size:14px;color:var(--text);min-width:0;">
   </div>
   <div class="mk-tabs" id="mkTabs">
     <div class="mk-tab on" data-tab="gainers">Top Gainers</div>
     <div class="mk-tab" data-tab="losers">Top Losers</div>
     <div class="mk-tab" data-tab="vol">Vol</div>
+    <div class="mk-tab" data-tab="uk">UK</div>
+    <div class="mk-tab" data-tab="us">US</div>
   </div>
   <div class="scroll" id="mkTable"></div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ============ COPY TRADING ============ -->
+<!-- COPY TRADING -->
 <section class="screen" id="s-trade">
-  <div class="topbar">
-    <div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Copy Trading</div>
-  </div>
+  <div class="topbar"><div class="title" style="font-size:20px;font-weight:800;flex:1;color:var(--text);">Copy Trading</div></div>
   <div class="scroll">
     <div class="ct-stats">
-      <div class="ct-stat tint">
-        <div class="lbl">Total Profit and Loss</div>
-        <div class="val" id="statTotalPnl">0.00</div>
-        <div class="unit">USD</div>
-      </div>
-      <div class="ct-stat">
-        <div class="lbl">Partner Commission</div>
-        <div class="val" id="statPartner">0.00</div>
-        <div class="unit">USD</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="ct-stat tint">
-        <div class="lbl">Today's Profit and Loss</div>
-        <div class="val" id="statTodayPnl">0.00</div>
-        <div class="unit">USD</div>
-      </div>
-      <div class="ct-stat">
-        <div class="lbl">Keep the bottom position</div>
-        <div class="val" id="statBottom">0.00</div>
-        <div class="unit">USD</div>
-      </div>
+      <div class="ct-stat tint"><div class="lbl">Total Profit and Loss</div><div class="val" id="statTotalPnl">0.00</div><div class="unit">USD</div></div>
+      <div class="ct-stat"><div class="lbl">Partner Commission</div><div class="val" id="statPartner">0.00</div><div class="unit">USD</div><div class="arrow">›</div></div>
+      <div class="ct-stat tint"><div class="lbl">Today's Profit and Loss</div><div class="val" id="statTodayPnl">0.00</div><div class="unit">USD</div></div>
+      <div class="ct-stat"><div class="lbl">Keep the bottom position</div><div class="val" id="statBottom">0.00</div><div class="unit">USD</div></div>
     </div>
     <div class="ct-sec-head"><h2>Copy Trading Analyst</h2></div>
     <div class="ct-search-row">
@@ -717,91 +601,44 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ============ PROFILE ============ -->
+<!-- PROFILE -->
 <section class="screen" id="s-profile">
   <div class="pf-scroll">
     <div class="pf-top-icons">
-      <div class="pf-ic" title="Settings" onclick="toast('Settings')">
-        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </div>
-      <div class="pf-ic" title="Dark mode" onclick="document.getElementById('themeToggle').click()">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="pf-ic" onclick="toast('Settings')"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+      <div class="pf-ic" onclick="document.getElementById('themeToggle').click()"><svg viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div class="spacer"></div>
-      <div class="pf-ic" title="Log out" onclick="doLogout()">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M15 12H3M7 8l-4 4 4 4M12 3h7a2 2 0 012 2v14a2 2 0 01-2 2h-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="pf-ic" onclick="doLogout()"><svg viewBox="0 0 24 24" fill="none"><path d="M15 12H3M7 8l-4 4 4 4M12 3h7a2 2 0 012 2v14a2 2 0 01-2 2h-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
     <div style="position:relative;padding-right:80px;">
-      <div class="pf-email-row">
-        <span class="em" id="pfEmail">—</span>
-        <span class="vip">VIP 0</span>
-      </div>
+      <div class="pf-email-row"><span class="em" id="pfEmail">—</span><span class="vip">VIP 0</span></div>
       <div class="pf-avatar-big" id="pfAvatar">U</div>
     </div>
     <div class="pf-code-row">
-      <div class="pf-code-box green" onclick="copyPf('invite')">
-        <div class="k">Invitation Code :</div>
-        <div class="v" id="pfInviteCode">—</div>
-        <div class="cp">⧉</div>
-      </div>
-      <div class="pf-code-box" onclick="copyPf('uid')">
-        <div class="k">UID:</div>
-        <div class="v" id="pfUid">—</div>
-        <div class="cp">⧉</div>
-      </div>
+      <div class="pf-code-box green" onclick="copyPf('invite')"><div class="k">Invitation Code :</div><div class="v" id="pfInviteCode">—</div><div class="cp">⧉</div></div>
+      <div class="pf-code-box" onclick="copyPf('uid')"><div class="k">UID:</div><div class="v" id="pfUid">—</div><div class="cp">⧉</div></div>
     </div>
     <div class="pf-assets-card">
       <div>
-        <div class="l">
-          <span>Total Assets</span>
-          <svg class="eye" viewBox="0 0 24 24" fill="none" onclick="togglePfBalance()">
-            <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.8"/>
-            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/>
-          </svg>
-        </div>
+        <div class="l"><span>Total Assets</span><svg class="eye" viewBox="0 0 24 24" fill="none" onclick="togglePfBalance()"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></div>
         <div class="v" id="pfBalance">0 USD</div>
       </div>
       <button class="info-btn" onclick="toast('Asset information')">Asset Information</button>
     </div>
     <div class="pf-menu">
-      <div class="pf-menu-row" onclick="openTxHistory()">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <div class="mt">Account Transaction Records</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="pf-menu-row" onclick="openKycFromProfile()">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="mt">Identity Verification</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="pf-menu-row" onclick="openInvite()">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 11v6M13 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
-        <div class="mt">Invite Friends</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="pf-menu-row" onclick="toast('Customer Service Center')">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
-        <div class="mt">Customer Service Center</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="pf-menu-row" onclick="downloadFor('android')">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="mt">Download App</div>
-        <div class="arrow">›</div>
-      </div>
-      <div class="pf-menu-row" onclick="toast('About NextTrade')">
-        <div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <div class="mt">About NextTrade</div>
-        <div class="arrow">›</div>
-      </div>
+      <div class="pf-menu-row" onclick="openTxHistory()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="mt">Account Transaction Records</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="openKycFromProfile()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="mt">Identity Verification</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="openInvite()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 11v6M13 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="mt">Invite Friends</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="toast('Customer Service Center')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="mt">Customer Service Center</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="downloadFor('android')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">Download App</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="toast('About NextTrade')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">About NextTrade</div><div class="arrow">›</div></div>
     </div>
     <div class="pf-logout" onclick="doLogout()">Log Out</div>
   </div>
   <nav class="bottomnav" data-nav></nav>
 </section>
 
-<!-- ============ DEPOSIT ============ -->
+<!-- DEPOSIT -->
 <section class="screen" id="s-deposit">
   <div class="dw-back"><div class="b" onclick="go('s-home')">‹</div><div class="dw-title">Deposit</div></div>
   <div class="dw-scroll">
@@ -814,22 +651,14 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
     <input class="dw-input" id="depAmount" type="text" inputmode="decimal" placeholder="Please enter the deposit amount" oninput="updateDepositAmount()">
     <div class="dw-mini" id="depApprox">≈ 0.00 USDT</div>
     <div class="dw-mini">( Minimum recharge amount: 10 USDT ≈ 10 USD )</div>
-    <div class="dw-note">
-      <b>Note</b>
-      <ul>
-        <li>Please do not deposit any non-USDT assets.</li>
-        <li>USDT deposits only support the <b>simple send</b> method.</li>
-        <li>Funds will be credited after 6 network confirmations.</li>
-        <li>Please ensure computer and browser security to prevent data tampering.</li>
-      </ul>
-    </div>
+    <div class="dw-note"><b>Note</b><ul><li>Please do not deposit any non-USDT assets.</li><li>USDT deposits only support the <b>simple send</b> method.</li><li>Funds will be credited after 6 network confirmations.</li><li>Please ensure computer and browser security to prevent data tampering.</li></ul></div>
     <div class="dw-label">Your Deposit Address (ERC20)</div>
     <div class="dw-addr"><span class="v" id="depAddress">Log in to see your address</span><span class="copy" onclick="copyDepositAddress()">Copy</span></div>
     <button class="dw-submit" onclick="submitDeposit()">Submit Deposit</button>
   </div>
 </section>
 
-<!-- ============ WITHDRAW ============ -->
+<!-- WITHDRAW -->
 <section class="screen" id="s-withdraw">
   <div class="dw-back"><div class="b" onclick="go('s-home')">‹</div><div class="dw-title">Withdrawal</div></div>
   <div class="dw-scroll">
@@ -861,7 +690,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </section>
 
-<!-- ============ FOLLOW SIGNAL SHEET ============ -->
+<!-- FOLLOW SIGNAL SHEET -->
 <div class="fs-backdrop" id="fsSheet">
   <div class="fs-sheet" onclick="event.stopPropagation()">
     <div class="fs-head"><h3>Follow Signal</h3><div class="x" onclick="closeFollowSheet()">✕</div></div>
@@ -869,7 +698,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- ============ GENERIC MODAL ============ -->
+<!-- GENERIC MODAL -->
 <div class="generic-modal" id="genericModal">
   <div class="generic-sheet">
     <div class="generic-head"><h3 id="genericTitle">Title</h3><div class="x" onclick="closeGeneric()">✕</div></div>
@@ -877,7 +706,7 @@ html.is-mobile .bottomnav{padding-bottom:env(safe-area-inset-bottom);}
   </div>
 </div>
 
-<!-- ============ NEWS OVERLAY ============ -->
+<!-- NEWS OVERLAY -->
 <div class="overlay" id="newsPanel">
   <div class="ov-head"><div class="x" onclick="closeNews()">✕</div><div class="title">Market News</div></div>
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
@@ -929,47 +758,36 @@ function toast(msg){
    ============================================================ */
 function genUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
 function genRef(){ return 'NT' + Math.floor(100000 + Math.random()*900000); }
-
 async function loadProfile(userId){
   const { data, error } = await sb.from('profiles').select('*').eq('id', userId).single();
   if(error) return null;
   return data;
 }
-
 async function doRegisterStep1(){
   const email = document.getElementById('suEmail').value.trim().toLowerCase();
   const pw = document.getElementById('suPw').value;
   const pw2 = document.getElementById('suPw2').value;
   const username = document.getElementById('suUsername').value.trim();
   const terms = document.getElementById('suTerms').checked;
-
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters/numbers/_');
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars');
   if(!terms) return toast('Please agree to the Terms of Service');
-
   const btn = document.getElementById('registerBtn');
   btn.disabled = true; btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
   if(authErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr', authErr.message); }
   if(!authData.user){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr','Signup failed'); }
-
   const uid = genUID();
-  const profileRow = {
-    id: authData.user.id, username, email, uid,
-    referral_code: genRef(), kyc_status: 'none', mode: 'real',
-    balance: 0, funding: 0, spot: 0
-  };
+  const profileRow = { id: authData.user.id, username, email, uid, referral_code: genRef(), kyc_status: 'none', mode: 'real', balance: 0, funding: 0, spot: 0 };
   const { error: profErr } = await sb.from('profiles').insert(profileRow);
   if(profErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suUsername','suUsernameErr', profErr.message); }
-
   currentUser = profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
   toast('Account created!');
   openAuth('kyc');
 }
-
 async function submitKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   const name = document.getElementById('kycName').value.trim();
@@ -993,7 +811,6 @@ function skipKycStep2(){
   closeAuth();
   go('s-home');
 }
-
 async function doLogin(){
   const id = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pw = document.getElementById('loginPw').value;
@@ -1009,7 +826,6 @@ async function doLogin(){
   go('s-home');
   toast('Welcome back!');
 }
-
 async function doLogout(){
   await sb.auth.signOut();
   currentUser = null;
@@ -1017,7 +833,6 @@ async function doLogout(){
   go('s-home');
   toast('Logged out');
 }
-
 function openAuth(mode){
   document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : 'authLogin').classList.add('active');
@@ -1091,153 +906,105 @@ let banners = [];
 let bannerIndex = 0;
 let bannerTimer = null;
 let bannerPaused = false;
-const BANNER_INTERVAL_MS = 4000; // 4 seconds
+const BANNER_INTERVAL_MS = 4000;
 
 async function loadBanners(){
   try {
-    const { data, error } = await sb.from('banners')
-      .select('*')
-      .eq('active', true)
-      .order('sort_order', { ascending: true })
-      .order('created_at', { ascending: true });
+    const { data, error } = await sb.from('banners').select('*').eq('active', true)
+      .order('sort_order', { ascending: true }).order('created_at', { ascending: true });
     if(error){ console.warn('banners', error); return; }
     banners = data || [];
     renderBannerCarousel();
   } catch(e){ console.warn(e); }
 }
-
 function renderBannerCarousel(){
   const wrap = document.getElementById('bannerWrap');
   const track = document.getElementById('bannerTrack');
   const dots = document.getElementById('bannerDots');
   if(!wrap || !track || !dots) return;
-
   if(!banners.length){ wrap.style.display = 'none'; return; }
   wrap.style.display = 'block';
-
   track.innerHTML = banners.map(b => `
     <div class="banner-slide" data-id="${b.id}">
       <img src="${b.image_url}" alt="${(b.title||'').replace(/"/g,'&quot;')}" loading="lazy">
     </div>
   `).join('');
-
-  dots.innerHTML = banners.map((_, i) =>
-    `<div class="d ${i===0?'on':''}" data-i="${i}"></div>`
-  ).join('');
-
+  dots.innerHTML = banners.map((_, i) => `<div class="d ${i===0?'on':''}" data-i="${i}"></div>`).join('');
   bannerIndex = 0;
   setBannerPosition(false);
   sizeBannerWrap();
   startBannerAuto();
-
-  // Preload all images so height transitions smoothly
   banners.forEach(b => { const img = new Image(); img.src = b.image_url; });
 }
-
 function sizeBannerWrap(){
   const wrap = document.getElementById('bannerWrap');
   if(!wrap || !banners.length) return;
   const wrapWidth = wrap.clientWidth || wrap.offsetWidth;
   if(!wrapWidth) return;
-
   const current = banners[bannerIndex];
   if(!current) return;
-
   const img = new Image();
   img.onload = () => {
     const ratio = img.naturalHeight / img.naturalWidth;
     const h = Math.round(wrapWidth * ratio);
-    // Clamp between 140px and 520px so tall certs don't eat whole screen
     wrap.style.height = Math.min(520, Math.max(140, h)) + 'px';
-    // Lock each slide height so "object-fit: contain" works right
-    document.querySelectorAll('.banner-slide').forEach(sl => {
-      sl.style.height = wrap.style.height;
-    });
+    document.querySelectorAll('.banner-slide').forEach(sl => { sl.style.height = wrap.style.height; });
   };
   img.src = current.image_url;
 }
-
 function setBannerPosition(animate = true){
   const track = document.getElementById('bannerTrack');
   if(!track) return;
   if(!animate) track.style.transition = 'none';
   track.style.transform = `translateX(-${bannerIndex * 100}%)`;
-  if(!animate) {
-    // force reflow then re-enable transition
-    void track.offsetWidth;
-    track.style.transition = '';
-  }
-  document.querySelectorAll('#bannerDots .d').forEach((d, i) => {
-    d.classList.toggle('on', i === bannerIndex);
-  });
+  if(!animate) { void track.offsetWidth; track.style.transition = ''; }
+  document.querySelectorAll('#bannerDots .d').forEach((d, i) => { d.classList.toggle('on', i === bannerIndex); });
   sizeBannerWrap();
 }
-
 function nextBanner(){
   if(!banners.length) return;
   bannerIndex = (bannerIndex + 1) % banners.length;
   setBannerPosition(true);
 }
-
 function startBannerAuto(){
   if(bannerTimer) clearInterval(bannerTimer);
-  bannerTimer = setInterval(() => {
-    if(!bannerPaused) nextBanner();
-  }, BANNER_INTERVAL_MS);
+  bannerTimer = setInterval(() => { if(!bannerPaused) nextBanner(); }, BANNER_INTERVAL_MS);
 }
-
-/* Pause auto-slide while user is swiping, resume after */
 function attachBannerSwipe(){
   const wrap = document.getElementById('bannerWrap');
   if(!wrap) return;
   let startX = 0, startY = 0, dragging = false, dx = 0;
-
   wrap.addEventListener('touchstart', e => {
-    const t = e.touches[0];
-    startX = t.clientX; startY = t.clientY;
-    dragging = true; dx = 0;
-    bannerPaused = true;
+    const t = e.touches[0]; startX = t.clientX; startY = t.clientY;
+    dragging = true; dx = 0; bannerPaused = true;
   }, { passive: true });
-
   wrap.addEventListener('touchmove', e => {
     if(!dragging) return;
     const t = e.touches[0];
     dx = t.clientX - startX;
     const dy = t.clientY - startY;
     if(Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 10){
-      // Horizontal — prevent vertical scroll capture
       e.preventDefault();
       const track = document.getElementById('bannerTrack');
       track.style.transition = 'none';
       track.style.transform = `translateX(calc(-${bannerIndex * 100}% + ${dx}px))`;
     }
   }, { passive: false });
-
   wrap.addEventListener('touchend', () => {
     if(!dragging) return;
     dragging = false;
     const track = document.getElementById('bannerTrack');
     track.style.transition = '';
     const threshold = wrap.clientWidth * 0.2;
-    if(dx > threshold && bannerIndex > 0){
-      bannerIndex--;
-    } else if(dx < -threshold && bannerIndex < banners.length - 1){
-      bannerIndex++;
-    } else if(dx < -threshold && bannerIndex === banners.length - 1){
-      bannerIndex = 0; // loop
-    } else if(dx > threshold && bannerIndex === 0){
-      bannerIndex = banners.length - 1; // loop back
-    }
+    if(dx > threshold && bannerIndex > 0) bannerIndex--;
+    else if(dx < -threshold && bannerIndex < banners.length - 1) bannerIndex++;
+    else if(dx < -threshold && bannerIndex === banners.length - 1) bannerIndex = 0;
+    else if(dx > threshold && bannerIndex === 0) bannerIndex = banners.length - 1;
     setBannerPosition(true);
-    // Resume auto after 2s of inactivity
     setTimeout(() => { bannerPaused = false; }, 2000);
   });
-
-  // Mouse drag for desktop
   let mDown = false;
-  wrap.addEventListener('mousedown', e => {
-    mDown = true; startX = e.clientX; dx = 0; bannerPaused = true;
-  });
+  wrap.addEventListener('mousedown', e => { mDown = true; startX = e.clientX; dx = 0; bannerPaused = true; });
   window.addEventListener('mousemove', e => {
     if(!mDown) return;
     dx = e.clientX - startX;
@@ -1256,52 +1023,49 @@ function attachBannerSwipe(){
     setBannerPosition(true);
     setTimeout(() => { bannerPaused = false; }, 2000);
   });
-
-  // Recalculate on resize
   window.addEventListener('resize', () => sizeBannerWrap());
 }
 
 /* ============================================================
-   MARKET DATA
+   MARKET DATA — US + UK STOCKS ONLY
    ============================================================ */
-const MARKETS = {
-  crypto: [
-    {sym:'BTC', price:77845, base:77845, chg:0, color:'#F7931A', vol:'$2.8B', name:'Bitcoin'},
-    {sym:'ETH', price:2446, base:2446, chg:0, color:'#627EEA', vol:'$1.4B', name:'Ethereum'},
-    {sym:'SOL', price:101.5, base:101.5, chg:0, color:'#9945FF', vol:'$760M', name:'Solana'},
-    {sym:'XRP', price:1.38, base:1.38, chg:0, color:'#23292F', vol:'$1.1B', name:'XRP'},
-    {sym:'BNB', price:717.5, base:717.5, chg:0, color:'#F3BA2F', vol:'$980M', name:'BNB'},
-    {sym:'USDT', price:1, base:1, chg:0, color:'#26A69A', vol:'$3.2B', name:'Tether'},
-    {sym:'USDC', price:1, base:1, chg:0, color:'#2775CA', vol:'$2.4B', name:'USD Coin'},
-    {sym:'DOGE', price:0.165, base:0.165, chg:0, color:'#C2A633', vol:'$640M', name:'Dogecoin'},
-  ],
-  forex: [
-    {sym:'EURUSD', price:1.1652, base:1.1652, chg:0, color:'#3B82F6', vol:'$180B', name:'EUR/USD'},
-    {sym:'GBPUSD', price:1.2734, base:1.2734, chg:0, color:'#EF4444', vol:'$98B', name:'GBP/USD'},
-    {sym:'USDJPY', price:151.2, base:151.2, chg:0, color:'#10B981', vol:'$120B', name:'USD/JPY'},
-  ],
-  commodities: [
-    {sym:'XAUUSD', price:4395.82, base:4395.82, chg:0, color:'#F59E0B', vol:'$88B', name:'Gold'},
-    {sym:'WTI', price:96.05, base:96.05, chg:0, color:'#1F2937', vol:'$64B', name:'Crude Oil'},
-    {sym:'XAGUSD', price:52.4, base:52.4, chg:0, color:'#9CA3AF', vol:'$18B', name:'Silver'},
-  ],
-  stocks: [
-    {sym:'AAPL', price:224.18, base:224.18, chg:0, color:'#111827', vol:'$9.2B', name:'Apple'},
-    {sym:'TSLA', price:242.65, base:242.65, chg:0, color:'#DC2626', vol:'$14.8B', name:'Tesla'},
-    {sym:'NVDA', price:138.9, base:138.9, chg:0, color:'#16A34A', vol:'$22.1B', name:'NVIDIA'},
-  ]
-};
-function findMarket(sym){ for(const k in MARKETS){ const f = MARKETS[k].find(x=>x.sym===sym); if(f) return f; } return null; }
+const STOCKS = [
+  // US Stocks
+  {sym:'AAPL',  name:'Apple Inc.',          region:'US', price:224.18, base:224.18, chg:0, color:'#111827', vol:'$9.2B'},
+  {sym:'MSFT',  name:'Microsoft Corp.',     region:'US', price:421.65, base:421.65, chg:0, color:'#0078D4', vol:'$8.1B'},
+  {sym:'GOOGL', name:'Alphabet Inc.',       region:'US', price:176.42, base:176.42, chg:0, color:'#4285F4', vol:'$6.8B'},
+  {sym:'AMZN',  name:'Amazon.com Inc.',     region:'US', price:198.75, base:198.75, chg:0, color:'#FF9900', vol:'$7.4B'},
+  {sym:'TSLA',  name:'Tesla Inc.',          region:'US', price:242.65, base:242.65, chg:0, color:'#DC2626', vol:'$14.8B'},
+  {sym:'NVDA',  name:'NVIDIA Corp.',        region:'US', price:138.90, base:138.90, chg:0, color:'#16A34A', vol:'$22.1B'},
+  {sym:'META',  name:'Meta Platforms',      region:'US', price:582.30, base:582.30, chg:0, color:'#0866FF', vol:'$5.9B'},
+  {sym:'NFLX',  name:'Netflix Inc.',        region:'US', price:728.40, base:728.40, chg:0, color:'#E50914', vol:'$3.2B'},
+  {sym:'AMD',   name:'Advanced Micro Dev.', region:'US', price:154.28, base:154.28, chg:0, color:'#ED1C24', vol:'$4.1B'},
+  {sym:'INTC',  name:'Intel Corp.',         region:'US', price:22.45,  base:22.45,  chg:0, color:'#0068B5', vol:'$2.7B'},
+
+  // UK Stocks (LSE)
+  {sym:'HSBA',  name:'HSBC Holdings',       region:'UK', price:712.40, base:712.40, chg:0, color:'#DB0011', vol:'£420M'},
+  {sym:'BP',    name:'BP plc',              region:'UK', price:398.75, base:398.75, chg:0, color:'#00A651', vol:'£310M'},
+  {sym:'SHEL',  name:'Shell plc',           region:'UK', price:2634.5, base:2634.5, chg:0, color:'#FBCE07', vol:'£580M'},
+  {sym:'AZN',   name:'AstraZeneca plc',     region:'UK', price:10248,  base:10248,  chg:0, color:'#830051', vol:'£740M'},
+  {sym:'ULVR',  name:'Unilever plc',        region:'UK', price:4582.0, base:4582.0, chg:0, color:'#1F36C7', vol:'£280M'},
+  {sym:'GSK',   name:'GSK plc',             region:'UK', price:1512.8, base:1512.8, chg:0, color:'#E85B2A', vol:'£260M'},
+  {sym:'RIO',   name:'Rio Tinto plc',       region:'UK', price:5142.0, base:5142.0, chg:0, color:'#006A4D', vol:'£220M'},
+  {sym:'BARC',  name:'Barclays plc',        region:'UK', price:268.35, base:268.35, chg:0, color:'#00AEEF', vol:'£190M'},
+  {sym:'LLOY',  name:'Lloyds Banking Group',region:'UK', price:57.20,  base:57.20,  chg:0, color:'#006A4E', vol:'£240M'},
+  {sym:'VOD',   name:'Vodafone Group',      region:'UK', price:72.85,  base:72.85,  chg:0, color:'#E60000', vol:'£180M'}
+];
+
+function findMarket(sym){ return STOCKS.find(s => s.sym === sym); }
 function fmt(n){
   if(n>=1000) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  if(n>=1) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:4});
-  return n.toFixed(4);
+  if(n>=1) return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  return n.toFixed(2);
 }
 const chgSign = c => (c>=0?'+':'') + c.toFixed(2) + '%';
 function symLogo(sym, sz=22){
   const m = findMarket(sym);
   const col = m ? m.color : '#0ECB81';
-  const dark = col === '#F3BA2F' || col === '#9CA3AF' || col === '#C2A633';
+  const dark = col === '#FBCE07';
   return `<span class="logo" style="width:${sz}px;height:${sz}px;font-size:${Math.round(sz*0.5)}px;background:${col};${dark?'color:#000;':''}">${sym[0]}</span>`;
 }
 function sparklineSVG(up, width=52, height=28){
@@ -1319,64 +1083,47 @@ function sparklineSVG(up, width=52, height=28){
   const areaPath = `${path} L${width},${height} L0,${height} Z`;
   return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><path d="${areaPath}" fill="${fill}" stroke="none"/><path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
-function startBinanceStream(){
-  if(typeof WebSocket === 'undefined') return;
-  try {
-    const ws = new WebSocket('wss://stream.binance.com:9443/stream?streams=btcusdt@ticker/ethusdt@ticker/solusdt@ticker/xrpusdt@ticker/bnbusdt@ticker/dogeusdt@ticker');
-    ws.onmessage = ev => {
-      try {
-        const msg = JSON.parse(ev.data); const d = msg.data; if(!d || !d.s) return;
-        const sym = d.s.replace('USDT','');
-        const m = MARKETS.crypto.find(x => x.sym === sym); if(!m) return;
-        const p = parseFloat(d.c), o = parseFloat(d.o);
-        if(!isFinite(p) || p <= 0) return;
-        m.price = p; m.chg = o ? ((p-o)/o)*100 : 0;
-        m.vol = '$' + (parseFloat(d.q)/1e6).toFixed(1) + 'M';
-      } catch(e){}
-    };
-  } catch(e){}
-}
+
+/* Simulated price drift — updates every 1.5s */
 let simTimer = null;
 function startSimulation(){
   if(simTimer) return;
   simTimer = setInterval(() => {
-    Object.keys(MARKETS).forEach(cls => {
-      MARKETS[cls].forEach(m => {
-        if(m.sym === 'USDT' || m.sym === 'USDC'){ m.chg = 0; return; }
-        const drift = (Math.random() - 0.5) * m.base * 0.0025;
-        m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
-        m.chg = ((m.price - m.base) / m.base) * 100;
-      });
+    STOCKS.forEach(m => {
+      const drift = (Math.random() - 0.5) * m.base * 0.0035;
+      m.price = Math.max(m.base * 0.85, Math.min(m.base * 1.15, m.price + drift));
+      m.chg = ((m.price - m.base) / m.base) * 100;
     });
   }, 1500);
 }
-const HOME_GRID_COINS = ['BTC','ETH','BNB','SOL'];
+
+/* Home grid — top 4 stocks (2 US, 2 UK) */
+const HOME_GRID_COINS = ['AAPL','TSLA','HSBA','BP'];
 function renderHomeCoinGrid(){
   const el = document.getElementById('homeCoinGrid'); if(!el) return;
-  const symbols = HOME_GRID_COINS.map(s => findMarket(s) || {sym:s, price:0, chg:0, color:'#0ECB81'});
+  const symbols = HOME_GRID_COINS.map(s => findMarket(s)).filter(Boolean);
   el.innerHTML = symbols.map(m => {
     const up = (m.chg || 0) >= 0;
     return `<div class="coin-card">
-      <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">crypto</span></div>
+      <div class="row-top"><span class="pair">${m.sym}</span><span class="tag">${m.region}</span></div>
       <div class="row-bottom">
-        <div class="left"><div class="price">$${fmt(m.price)}</div><div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div></div>
+        <div class="left"><div class="price">${fmt(m.price)}</div><div class="chg ${up?'up':'down'}">${chgSign(m.chg || 0)}</div></div>
         ${sparklineSVG(up)}
       </div></div>`;
   }).join('');
 }
+
+/* Market tabs: gainers / losers / vol / uk / us */
 let mktTab = 'gainers';
 let mkFilter = '';
-function allCoins(){
-  const out = [];
-  ['crypto','forex','commodities','stocks'].forEach(k => { (MARKETS[k] || []).forEach(m => out.push(m)); });
-  return out;
-}
 function renderMarketsTable(){
   const el = document.getElementById('mkTable'); if(!el) return;
-  let list = allCoins().slice();
+  let list = STOCKS.slice();
   if(mktTab === 'gainers') list.sort((a,b) => (b.chg||0) - (a.chg||0));
   else if(mktTab === 'losers') list.sort((a,b) => (a.chg||0) - (b.chg||0));
-  else list.sort((a,b) => parseFloat(String(b.vol||'').replace(/[^0-9.]/g,'')) - parseFloat(String(a.vol||'').replace(/[^0-9.]/g,'')));
+  else if(mktTab === 'vol') list.sort((a,b) => parseFloat(String(b.vol||'').replace(/[^0-9.]/g,'')) - parseFloat(String(a.vol||'').replace(/[^0-9.]/g,'')));
+  else if(mktTab === 'uk') list = list.filter(m => m.region === 'UK');
+  else if(mktTab === 'us') list = list.filter(m => m.region === 'US');
   if(mkFilter){
     const q = mkFilter.toLowerCase();
     list = list.filter(m => m.sym.toLowerCase().includes(q) || (m.name||'').toLowerCase().includes(q));
@@ -1384,7 +1131,7 @@ function renderMarketsTable(){
   el.innerHTML = list.map(m => {
     const up = (m.chg || 0) >= 0;
     return `<div class="mk-row">
-      <div class="left">${symLogo(m.sym, 36)}<div><div class="pair">${m.sym}<small>/USDT</small></div><div class="vol">${m.vol || '—'}</div></div></div>
+      <div class="left">${symLogo(m.sym, 36)}<div><div class="pair">${m.sym}<small>${m.region === 'UK' ? ' · LSE' : ' · NASDAQ/NYSE'}</small></div><div class="vol">${m.name} · ${m.vol || '—'}</div></div></div>
       <div class="price">${fmt(m.price)}</div>
       <div class="chg-pill ${up?'up':'down'}">${chgSign(m.chg || 0)}</div>
     </div>`;
@@ -1441,7 +1188,7 @@ async function loadAppStats(){
 }
 
 /* ============================================================
-   COPY TRADING ANALYSTS
+   COPY TRADING
    ============================================================ */
 let ANALYSTS = [];
 let analystFilter = '';
@@ -1509,7 +1256,7 @@ let currentAnalyst = null;
 function openFollowSheet(signalId){
   if(!currentUser){ openAuth('register'); return; }
   if(!signalId){
-    currentAnalyst = ANALYSTS.length ? ANALYSTS[0] : { id:'default', name:'Copy Signal', sym:'BTC', amount:100, code:'0000' };
+    currentAnalyst = ANALYSTS.length ? ANALYSTS[0] : { id:'default', name:'Copy Signal', sym:'AAPL', amount:100, code:'0000' };
   } else {
     currentAnalyst = ANALYSTS.find(a => a.id === signalId);
     if(!currentAnalyst) return toast('Signal not found');
@@ -1728,7 +1475,6 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
    BOOT
    ============================================================ */
 (async function boot(){
-  startBinanceStream();
   startSimulation();
   renderHomeCoinGrid();
   renderMarketsTable();
