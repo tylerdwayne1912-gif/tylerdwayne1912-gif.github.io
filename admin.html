@@ -362,6 +362,12 @@ tr:hover td{background:#FAFBFC;}
       <div class="card">
         <h2>KYC Submissions</h2>
         <div class="sub">Users who submitted identity verification. Click <b>View documents</b> to see uploaded ID and selfie.</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="btn sm primary" id="kycFilterAll" onclick="setKycFilter('all')">All</button>
+          <button class="btn sm" id="kycFilterPending" onclick="setKycFilter('pending')">Pending</button>
+          <button class="btn sm" id="kycFilterVerified" onclick="setKycFilter('verified')">Verified</button>
+          <button class="btn sm" id="kycFilterRejected" onclick="setKycFilter('rejected')">Rejected</button>
+        </div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>User</th><th>Status</th><th class="right">Documents</th><th class="right">Actions</th></tr></thead>
@@ -598,6 +604,7 @@ let realtimeChannel = null;
 let banners = [];
 let deposits = [];
 let withdrawals = [];
+let kycFilter = 'all';
 
 /* AUTH */
 async function doLogin(){
@@ -1383,6 +1390,18 @@ function renderUserWallets(){
 }
 function copyText(text){ if(navigator.clipboard) navigator.clipboard.writeText(text); toast('Copied'); }
 
+/* KYC FILTER */
+function setKycFilter(f){
+  kycFilter = f;
+  ['All','Pending','Verified','Rejected'].forEach(x => {
+    const btn = document.getElementById('kycFilter' + x);
+    if(btn){
+      btn.classList.toggle('primary', x.toLowerCase() === f);
+    }
+  });
+  renderKyc();
+}
+
 function renderKyc(){
   const tbody = document.getElementById('kycTable');
   if(!tbody) return;
@@ -1392,7 +1411,15 @@ function renderKyc(){
     tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;">No users yet.</td></tr>';
     return;
   }
-  tbody.innerHTML = allUsers.map(u => {
+  let list = allUsers.slice();
+  if(kycFilter !== 'all'){
+    list = list.filter(u => (u.kyc_status || 'none') === kycFilter);
+  }
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text3);">No ' + kycFilter + ' users.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(u => {
     const hasDocs = u.kyc_data && (u.kyc_data.frontUrl || u.kyc_data.selfieUrl);
     return `
       <tr>
@@ -1411,12 +1438,15 @@ function renderKyc(){
           ${u.kyc_status === 'pending' ? `
             <button class="btn sm success" onclick="approveKyc('${u.id}')">Approve</button>
             <button class="btn sm danger" onclick="rejectKyc('${u.id}')">Reject</button>
+          ` : (u.kyc_status === 'verified' || u.kyc_status === 'rejected') ? `
+            <button class="btn sm" onclick="resetKyc('${u.id}')">Reset</button>
           ` : '—'}
         </td>
       </tr>
     `;
   }).join('');
 }
+
 function viewKycDocs(userId){
   const u = allUsers.find(x => x.id === userId);
   if(!u){ toast('User not found'); return; }
@@ -1448,12 +1478,24 @@ function viewKycDocs(userId){
 async function approveKyc(userId){
   const { error } = await sb.from('profiles').update({ kyc_status: 'verified' }).eq('id', userId);
   if(error) return toast('Error: ' + error.message);
-  toast('KYC approved');
+  toast('✓ KYC approved — user notified live');
+  loadUsers().then(() => renderKyc());
 }
 async function rejectKyc(userId){
   const { error } = await sb.from('profiles').update({ kyc_status: 'rejected' }).eq('id', userId);
   if(error) return toast('Error: ' + error.message);
-  toast('KYC rejected');
+  toast('KYC rejected — user notified live');
+  loadUsers().then(() => renderKyc());
+}
+async function resetKyc(userId){
+  if(!confirm('Reset this user\'s KYC? They will need to resubmit.')) return;
+  const { error } = await sb.from('profiles').update({
+    kyc_status: 'none',
+    kyc_data: null
+  }).eq('id', userId);
+  if(error) return toast('Error: ' + error.message);
+  toast('KYC reset — user must resubmit');
+  loadUsers().then(() => renderKyc());
 }
 
 /* APP STATS */
