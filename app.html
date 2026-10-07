@@ -16,7 +16,6 @@
 <script src="supabase-config.js"></script>
 <script>
 (function(){
-  /* ---------- Theme ---------- */
   try{
     var saved = localStorage.getItem('nt_theme');
     var theme = (saved === 'light') ? 'light' : 'dark';
@@ -29,7 +28,6 @@
     document.documentElement.setAttribute('data-theme','dark');
   }
 
-  /* ---------- Universal device detection ---------- */
   var ua = navigator.userAgent || '';
   var platform = navigator.platform || '';
   var isIOS = /iPhone|iPad|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -44,29 +42,20 @@
   if(isIOS)    html.classList.add('is-ios');
   if(isAndroid) html.classList.add('is-android');
 
-  /* ---------- THE CRITICAL FIX: dynamic viewport height ---------- */
   function setAppHeight(){
-    var h = window.innerHeight
-         || document.documentElement.clientHeight
-         || window.screen.height;
+    var h = window.innerHeight || document.documentElement.clientHeight || window.screen.height;
     html.style.setProperty('--app-height', h + 'px');
     html.style.setProperty('--vh', (h * 0.01) + 'px');
   }
   setAppHeight();
-
   window.addEventListener('resize', setAppHeight, { passive: true });
   window.addEventListener('orientationchange', function(){
-    setAppHeight();
-    setTimeout(setAppHeight, 100);
-    setTimeout(setAppHeight, 300);
-    setTimeout(setAppHeight, 600);
+    setAppHeight(); setTimeout(setAppHeight, 100); setTimeout(setAppHeight, 300); setTimeout(setAppHeight, 600);
   }, { passive: true });
-
   if(window.visualViewport){
     window.visualViewport.addEventListener('resize', setAppHeight, { passive: true });
     window.visualViewport.addEventListener('scroll', setAppHeight, { passive: true });
   }
-
   setTimeout(setAppHeight, 100);
   setTimeout(setAppHeight, 500);
 
@@ -836,6 +825,46 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 .tx-row .tx-status.approved{background:var(--green-lt);color:var(--green-dk);}
 .tx-row .tx-status.rejected{background:var(--red-lt);color:var(--red);}
 
+/* ============ SUPPORT TICKETS ============ */
+.sup-wrap{padding:0 16px 20px;}
+.sup-empty{text-align:center;color:var(--text3);font-size:13px;padding:50px 20px;line-height:1.7;}
+.sup-new-btn{display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
+  font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:inherit;margin-bottom:14px;}
+.sup-ticket{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:.15s;}
+.sup-ticket:active{background:var(--bg3);}
+.sup-ticket .st-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;}
+.sup-ticket .st-subj{font-size:14px;font-weight:800;color:var(--text);flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sup-ticket .st-time{font-size:11px;color:var(--text3);white-space:nowrap;}
+.sup-ticket .st-bottom{display:flex;align-items:center;gap:8px;}
+.sup-ticket .st-status{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:10px;letter-spacing:.3px;}
+.sup-ticket .st-status.open{background:var(--green-lt);color:var(--green-dk);}
+.sup-ticket .st-status.pending{background:var(--orange-lt);color:var(--orange);}
+.sup-ticket .st-status.resolved{background:var(--blue-lt);color:var(--blue);}
+.sup-ticket .st-status.closed{background:var(--input-bg);color:var(--text2);}
+.sup-ticket .st-unread{width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:auto;}
+
+.sup-thread{display:flex;flex-direction:column;gap:10px;padding:16px;flex:1;overflow-y:auto;}
+.sup-bubble{max-width:82%;padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;word-wrap:break-word;}
+.sup-bubble.user{align-self:flex-end;background:var(--green);color:#fff;border-bottom-right-radius:4px;}
+.sup-bubble.admin{align-self:flex-start;background:var(--card);border:1px solid var(--line);color:var(--text);border-bottom-left-radius:4px;}
+.sup-bubble .meta{font-size:10.5px;opacity:.7;margin-top:6px;}
+.sup-input-bar{display:flex;gap:8px;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0));
+  background:var(--card);border-top:1px solid var(--line);flex-shrink:0;}
+.sup-input-bar input{flex:1;height:44px;border-radius:22px;background:var(--input-bg);
+  border:1px solid var(--line);padding:0 16px;font-family:inherit;font-size:14px;
+  color:var(--text);outline:none;}
+.sup-input-bar button{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;}
+
+.sup-new-form{padding:16px 20px 20px;}
+.sup-new-form textarea{width:100%;min-height:120px;border:1.5px solid var(--line);
+  border-radius:12px;padding:14px 16px;font-family:inherit;font-size:14px;color:var(--text);
+  background:var(--card);outline:none;resize:vertical;margin-bottom:12px;}
+.sup-new-form textarea:focus{border-color:var(--green);}
+
 html.is-mobile input,
 html.is-mobile select,
 html.is-mobile textarea{font-size:16px !important;}
@@ -1141,13 +1170,33 @@ html.is-mobile textarea{font-size:16px !important;}
       <div class="pf-menu-row" onclick="openTxHistory()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h8M8 17h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="mt">Account Transaction Records</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="openKycFromProfile()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="mt">Identity Verification</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="openInvite()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 11v6M13 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><div class="mt">Invite Friends</div><div class="arrow">›</div></div>
-      <div class="pf-menu-row" onclick="toast('Customer Service Center')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="mt">Customer Service Center</div><div class="arrow">›</div></div>
+      <div class="pf-menu-row" onclick="openSupport()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 15v-3a8 8 0 0116 0v3M4 15a2 2 0 002 2h1v-5H6a2 2 0 00-2 2zm16 0a2 2 0 01-2 2h-1v-5h1a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div><div class="mt">Customer Service Center</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="downloadFor('any')"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12M7 10l5 5 5-5M4 20h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">Download App</div><div class="arrow">›</div></div>
       <div class="pf-menu-row" onclick="showCopyTradingInfo()"><div class="mi"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8h.01M11 12h1v5h1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="mt">About Copy Trading</div><div class="arrow">›</div></div>
     </div>
     <div class="pf-logout" onclick="doLogout()">Log Out</div>
   </div>
   <nav class="bottomnav" data-nav></nav>
+</section>
+
+<!-- SUPPORT -->
+<section class="screen" id="s-support">
+  <div class="topbar" style="background:var(--topbar-grad);">
+    <div class="icon-btn" onclick="go('s-profile')" style="background:transparent;border:none;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="title" style="font-size:18px;font-weight:800;text-align:center;flex:1;color:var(--text);">Customer Service</div>
+    <div style="width:36px;"></div>
+  </div>
+  <div class="scroll" style="padding:0 0 8px;">
+    <div class="sup-wrap">
+      <button class="sup-new-btn" onclick="openNewTicketForm()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+        New Support Ticket
+      </button>
+      <div id="supList"></div>
+    </div>
+  </div>
 </section>
 
 <!-- DEPOSIT -->
@@ -1576,6 +1625,169 @@ function openKycFromProfile(){
   openAuth('kyc');
 }
 
+/* SUPPORT */
+function openSupport(){
+  if(!currentUser){ openAuth('login'); return; }
+  go('s-support');
+  loadMyTickets();
+}
+let supTickets = [];
+let supCurrentTicket = null;
+
+async function loadMyTickets(){
+  if(!currentUser){ openAuth('login'); return; }
+  const el = document.getElementById('supList');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;font-size:13px;">Loading…</div>';
+  try {
+    const { data, error } = await sb.from('support_tickets')
+      .select('*')
+      .eq('user_id', currentUser.id)
+      .order('last_reply_at', { ascending: false });
+    if(error) throw error;
+    supTickets = data || [];
+    renderSupList();
+  } catch(e){
+    el.innerHTML = '<div class="sup-empty">Could not load tickets.<br><span style="font-size:11px;color:var(--text3);">' + e.message + '</span></div>';
+  }
+}
+
+function renderSupList(){
+  const el = document.getElementById('supList');
+  if(!el) return;
+  if(!supTickets.length){
+    el.innerHTML = '<div class="sup-empty">No tickets yet.<br>Tap <b>New Support Ticket</b> above to message our team.</div>';
+    return;
+  }
+  el.innerHTML = supTickets.map(t => {
+    const when = t.last_reply_at ? timeAgo(new Date(t.last_reply_at)) : '';
+    const unread = t.unread_for_user ? '<span class="st-unread"></span>' : '';
+    return `<div class="sup-ticket" onclick="openTicketThread('${t.id}')">
+      <div class="st-top">
+        <div class="st-subj">${escapeHtml(t.subject)}</div>
+        <div class="st-time">${when}</div>
+      </div>
+      <div class="st-bottom">
+        <span class="st-status ${t.status}">${t.status.toUpperCase()}</span>
+        ${unread}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escapeHtml(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function timeAgo(d){
+  const s = Math.floor((Date.now() - d.getTime()) / 1000);
+  if(s < 60) return s + 's ago';
+  if(s < 3600) return Math.floor(s/60) + 'm ago';
+  if(s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+function openNewTicketForm(){
+  document.getElementById('genericTitle').textContent = 'New Support Ticket';
+  document.getElementById('genericBody').innerHTML = `
+    <div class="sup-new-form">
+      <label style="display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">Subject</label>
+      <input id="supNewSubject" type="text" placeholder="e.g. Deposit not credited"
+        style="width:100%;height:52px;border:1.5px solid var(--line);border-radius:12px;
+        padding:0 16px;font-family:inherit;font-size:14px;color:var(--text);background:var(--card);
+        outline:none;margin-bottom:14px;">
+      <label style="display:block;font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;">Message</label>
+      <textarea id="supNewMessage" placeholder="Describe your issue…"></textarea>
+      <button class="sup-new-btn" onclick="submitNewTicket()" style="margin-bottom:0;">
+        Send Message
+      </button>
+    </div>`;
+  document.getElementById('genericModal').classList.add('on');
+}
+
+async function submitNewTicket(){
+  const subject = document.getElementById('supNewSubject').value.trim();
+  const body = document.getElementById('supNewMessage').value.trim();
+  if(!subject || subject.length < 3) return toast('Enter a subject');
+  if(!body || body.length < 5) return toast('Enter a message');
+  const { data, error } = await sb.from('support_tickets').insert({
+    user_id: currentUser.id,
+    username: currentUser.username,
+    uid: currentUser.uid,
+    subject, status: 'open', priority: 'normal'
+  }).select().single();
+  if(error) return toast('Error: ' + error.message);
+  await sb.from('support_messages').insert({
+    ticket_id: data.id,
+    sender_type: 'user',
+    sender_name: currentUser.username,
+    body
+  });
+  closeGeneric();
+  toast('✓ Ticket created');
+  await loadMyTickets();
+}
+
+async function openTicketThread(ticketId){
+  const t = supTickets.find(x => x.id === ticketId);
+  if(!t) return;
+  supCurrentTicket = t;
+
+  document.getElementById('genericTitle').textContent = t.subject;
+  document.getElementById('genericBody').innerHTML = `
+    <div class="sup-thread" id="supThread"></div>`;
+  const foot = document.getElementById('genericBody');
+  const bar = document.createElement('div');
+  bar.className = 'sup-input-bar';
+  bar.innerHTML = `
+    <input id="supReplyInput" placeholder="Type a message…">
+    <button onclick="sendTicketReply()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+    </button>`;
+  foot.appendChild(bar);
+
+  await loadThreadMessages(ticketId);
+  await sb.from('support_tickets').update({ unread_for_user: false }).eq('id', ticketId);
+}
+
+async function loadThreadMessages(ticketId){
+  const el = document.getElementById('supThread');
+  if(!el) return;
+  el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:20px;font-size:12px;">Loading…</div>';
+  const { data, error } = await sb.from('support_messages')
+    .select('*').eq('ticket_id', ticketId).order('created_at', { ascending: true });
+  if(error){ el.innerHTML = '<div style="text-align:center;color:var(--red);padding:20px;font-size:12px;">' + error.message + '</div>'; return; }
+  el.innerHTML = (data || []).map(m => {
+    const cls = m.sender_type === 'admin' ? 'admin' : 'user';
+    const when = new Date(m.created_at).toLocaleString();
+    return `<div class="sup-bubble ${cls}">
+      <div>${escapeHtml(m.body).replace(/\n/g, '<br>')}</div>
+      <div class="meta">${cls === 'admin' ? 'Support' : 'You'} · ${when}</div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;color:var(--text3);padding:20px;font-size:12px;">No messages yet.</div>';
+  el.scrollTop = el.scrollHeight;
+}
+
+async function sendTicketReply(){
+  if(!supCurrentTicket) return;
+  const input = document.getElementById('supReplyInput');
+  const body = input.value.trim();
+  if(!body) return;
+  input.value = '';
+  const { error } = await sb.from('support_messages').insert({
+    ticket_id: supCurrentTicket.id,
+    sender_type: 'user',
+    sender_name: currentUser.username,
+    body
+  });
+  if(error) return toast('Error: ' + error.message);
+  await loadThreadMessages(supCurrentTicket.id);
+  if(supCurrentTicket.status === 'closed' || supCurrentTicket.status === 'resolved'){
+    await sb.from('support_tickets').update({ status: 'open' }).eq('id', supCurrentTicket.id);
+  }
+}
+
 /* BANNER CAROUSEL */
 let banners = [], bannerIndex = 0, bannerTimer = null, bannerPaused = false;
 const BANNER_INTERVAL_MS = 4000;
@@ -1919,6 +2131,7 @@ function go(id){
   if(id === 's-markets') renderMarketsTable();
   if(id === 's-profile'){ updatePfBalance(); renderKycState(); }
   if(id === 's-withdraw'){ updateWithdrawAmount(); }
+  if(id === 's-support'){ loadMyTickets(); }
   if(id !== 's-details') currentDetailSym = null;
 }
 
@@ -1989,19 +2202,12 @@ async function closeExpiredTrades(){
 
   for(const p of due){
     try {
-      const { data: res, error } = await sb.rpc('close_copy_trade', {
-        p_participant_id: p.id
-      });
-      if(error){
-        console.warn('close RPC error:', error.message);
-        continue;
-      }
+      const { data: res, error } = await sb.rpc('close_copy_trade', { p_participant_id: p.id });
+      if(error){ console.warn('close RPC error:', error.message); continue; }
       const net = Number(res?.net || 0);
       const sign = net >= 0 ? '+' : '';
       toast(`✓ ${res?.trader_name || 'Trade'} closed — ${sign}$${net.toFixed(2)} profit`);
-    } catch(e){
-      console.warn('closeExpiredTrades', e);
-    }
+    } catch(e){ console.warn('closeExpiredTrades', e); }
   }
 
   await refreshCopyPanels();
