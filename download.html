@@ -7,13 +7,14 @@
 <meta name="theme-color" content="#FFFFFF">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="NextTrade">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0;}
 html,body{background:#FFFFFF;color:#1E2329;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,sans-serif;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 body{min-height:100dvh;padding-bottom:90px;}
 
+/* Top nav bar (fake Safari) */
 .topbar{display:flex;align-items:center;justify-content:space-between;
   padding:14px 20px;position:sticky;top:0;background:#fff;z-index:50;border-bottom:1px solid #F0F0F0;}
 .topbar .x{width:32px;height:32px;border-radius:50%;background:#F5F6F8;
@@ -23,6 +24,7 @@ body{min-height:100dvh;padding-bottom:90px;}
   display:flex;align-items:center;justify-content:center;cursor:pointer;}
 .topbar .menu svg{width:16px;height:16px;stroke:#1E2329;fill:none;stroke-width:1.8;}
 
+/* App header */
 .app-header{padding:24px 20px 8px;text-align:center;}
 .app-header .name-row{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;}
 .app-header .name{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#1E2329;}
@@ -44,6 +46,7 @@ body{min-height:100dvh;padding-bottom:90px;}
 .app-header .dl-btn.android{background:#0ECB81;}
 .app-header .dl-btn.android:active{background:#0BB574;}
 
+/* Rating block */
 .rating-block{display:grid;grid-template-columns:auto 1fr auto;gap:14px;
   align-items:center;padding:24px 20px 20px;border-bottom:1px solid #EAECEF;}
 .rating-block .score{font-size:40px;font-weight:800;color:#8B95A5;letter-spacing:-1px;line-height:1;}
@@ -55,11 +58,13 @@ body{min-height:100dvh;padding-bottom:90px;}
 .rating-block .age{font-size:22px;font-weight:800;color:#8B95A5;letter-spacing:-.5px;}
 .rating-block .age-label{font-size:11px;color:#B7BDC6;font-weight:500;margin-top:2px;text-align:right;}
 
+/* Install guide */
 .guide{padding:24px 20px 8px;border-bottom:1px solid #EAECEF;}
 .guide h2{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#1E2329;margin-bottom:18px;}
 .guide p{font-size:14.5px;line-height:1.65;color:#1E2329;margin-bottom:16px;}
 .guide p b{font-weight:700;}
 
+/* Info section */
 .info-section{padding:24px 20px 8px;border-bottom:1px solid #EAECEF;}
 .info-section h2{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#1E2329;margin-bottom:18px;}
 .info-table{display:flex;flex-direction:column;gap:0;}
@@ -70,10 +75,12 @@ body{min-height:100dvh;padding-bottom:90px;}
 .info-row .v{color:#1E2329;text-align:right;font-weight:500;word-break:break-word;max-width:65%;}
 .info-row .hand{font-size:22px;cursor:pointer;}
 
+/* Disclaimer */
 .disclaimer{background:#F5F6F8;padding:20px;font-size:12.5px;line-height:1.65;
   color:#5E6673;margin-top:24px;}
 .disclaimer b{color:#1E2329;font-weight:700;display:block;margin-bottom:8px;font-size:13px;}
 
+/* Safari-style bottom toolbar */
 .safari-toolbar{position:fixed;bottom:0;left:0;right:0;background:#F5F6F8;
   border-top:1px solid #EAECEF;padding:12px 20px calc(12px + env(safe-area-inset-bottom, 0px));
   display:flex;align-items:center;justify-content:space-between;z-index:100;}
@@ -84,11 +91,13 @@ body{min-height:100dvh;padding-bottom:90px;}
 .safari-toolbar .tb-mid{display:flex;gap:24px;flex:1;justify-content:center;}
 .safari-toolbar .tb-mid .tb{background:transparent;box-shadow:none;width:36px;height:36px;}
 
+/* Show correct guide per platform */
 .guide.android-only{display:none;}
 body.android-show .guide.android-only{display:block;}
 body.ios-show .guide.ios-only{display:block;}
 .guide.ios-only{display:none;}
 
+/* Desktop preview wrapper */
 .desktop-preview{max-width:520px;margin:0 auto;padding-bottom:120px;}
 </style>
 </head>
@@ -96,14 +105,16 @@ body.ios-show .guide.ios-only{display:block;}
 
 <div class="desktop-preview">
 
+<!-- Top bar -->
 <div class="topbar">
   <div class="x" onclick="history.back()">✕</div>
-  <div class="url" id="urlDisplay">nexttrade.com</div>
+  <div class="url" id="urlDisplay">66excompany.com</div>
   <div class="menu">
     <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
   </div>
 </div>
 
+<!-- App header + buttons -->
 <div class="app-header">
   <div class="name-row">
     <span class="name">NextTrade</span>
@@ -111,21 +122,36 @@ body.ios-show .guide.ios-only{display:block;}
   </div>
   <div class="logo-row">
     <div class="logo">N</div>
-    <a class="dl-btn" id="iosBtn" href="https://startling-kulfi-34fe8f.netlify.app/nexttrade.mobileconfig" style="display:none;">
+
+    <!-- iOS (mobile) -->
+    <a class="dl-btn" id="iosBtn"
+       href="https://startling-kulfi-34fe8f.netlify.app/nexttrade.mobileconfig"
+       style="display:none;">
       iOS Download
     </a>
-    <a class="dl-btn android" id="androidBtn" href="/nexttrade.apk" download style="display:none;">
+
+    <!-- Android (mobile) -->
+    <a class="dl-btn android" id="androidBtn"
+       href="nexttrade.apk" download
+       style="display:none;">
       Android Download
     </a>
-    <a class="dl-btn" id="iosBtnDesktop" href="https://startling-kulfi-34fe8f.netlify.app/nexttrade.mobileconfig" style="display:none;">
+
+    <!-- Desktop preview — both -->
+    <a class="dl-btn" id="iosBtnDesktop"
+       href="https://startling-kulfi-34fe8f.netlify.app/nexttrade.mobileconfig"
+       style="display:none;">
       iOS Download
     </a>
-    <a class="dl-btn android" id="androidBtnDesktop" href="/nexttrade.apk" download style="display:none;">
+    <a class="dl-btn android" id="androidBtnDesktop"
+       href="nexttrade.apk" download
+       style="display:none;">
       Android Download
     </a>
   </div>
 </div>
 
+<!-- Rating block -->
 <div class="rating-block">
   <div>
     <div class="score">5.0</div>
@@ -143,6 +169,7 @@ body.ios-show .guide.ios-only{display:block;}
   </div>
 </div>
 
+<!-- iOS guide -->
 <div class="guide ios-only">
   <h2>iOS Installation Guide</h2>
   <p><b>1.</b> After downloading on phones, tap Install directly</p>
@@ -150,6 +177,7 @@ body.ios-show .guide.ios-only{display:block;}
   <p><b>3.</b> If the profile fails to download, please use the Safari browser to re-download</p>
 </div>
 
+<!-- Android guide -->
 <div class="guide android-only">
   <h2>Android Installation Guide</h2>
   <p><b>1.</b> Tap <b>Android Download</b> above to start the download</p>
@@ -158,6 +186,7 @@ body.ios-show .guide.ios-only{display:block;}
   <p><b>4.</b> Tap <b>Install</b> and wait — the NextTrade app will appear on your Home Screen</p>
 </div>
 
+<!-- Ratings & Reviews block -->
 <div class="rating-block" style="padding-top:32px;padding-bottom:8px;border-bottom:none;">
   <div style="grid-column:1/-1;">
     <h2 style="font-size:22px;font-weight:800;letter-spacing:-.5px;color:#1E2329;margin-bottom:18px;">Ratings &amp; Reviews</h2>
@@ -188,6 +217,7 @@ body.ios-show .guide.ios-only{display:block;}
   </div>
 </div>
 
+<!-- Information -->
 <div class="info-section">
   <h2>Information</h2>
   <div class="info-table">
@@ -200,11 +230,13 @@ body.ios-show .guide.ios-only{display:block;}
   </div>
 </div>
 
+<!-- Disclaimer -->
 <div class="disclaimer">
   <b>Disclaimer:</b>
   This website only provides hosting for App download and installation. All content and operation matters within the App are the sole responsibility of the App developer and have nothing to do with this website.
 </div>
 
+<!-- Safari toolbar (visual only) -->
 <div class="safari-toolbar">
   <div class="tb" onclick="history.back()">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
@@ -225,6 +257,7 @@ body.ios-show .guide.ios-only{display:block;}
 </div>
 
 <script>
+/* ============ Device detection ============ */
 (function(){
   var ua = navigator.userAgent || '';
   var platform = navigator.platform || '';
@@ -245,6 +278,7 @@ body.ios-show .guide.ios-only{display:block;}
   }
 })();
 
+/* ============ Toast ============ */
 var _toastTimer = null;
 function toast(msg){
   var el = document.getElementById('_toast');
