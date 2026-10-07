@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NextTrade — Admin</title>
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0ECB81">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="NextTrade Admin">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -218,6 +218,24 @@ tr:hover td{background:#FAFBFC;}
 .calc-line.total{padding-top:12px;margin-top:6px;border-top:2px solid var(--line);border-bottom:none;font-size:14px;}
 .calc-line.total .v{color:var(--green);font-size:18px;font-weight:800;}
 .calc-line.locked .v{color:var(--orange);font-size:14px;font-weight:800;}
+
+/* === Analytics Dashboard === */
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+@media(max-width:900px){.chart-row{grid-template-columns:1fr;}}
+.chart-card{background:#fff;border-radius:8px;padding:20px;}
+.chart-card h3{margin:0 0 14px;font-size:14px;font-weight:700;color:var(--text);}
+.chart-card canvas{width:100%;height:180px;display:block;}
+.top-user-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #F0F0F0;}
+.top-user-row:last-child{border-bottom:none;}
+.top-user-row .rank{width:24px;height:24px;border-radius:50%;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:var(--text2);}
+.top-user-row.rank-1 .rank{background:#FFD700;color:#000;}
+.top-user-row.rank-2 .rank{background:#C0C0C0;color:#000;}
+.top-user-row.rank-3 .rank{background:#CD7F32;color:#fff;}
+.top-user-row .info{flex:1;min-width:0;}
+.top-user-row .name{font-size:13px;font-weight:700;}
+.top-user-row .email{font-size:11px;color:var(--text2);}
+.top-user-row .amt{font-size:14px;font-weight:800;color:var(--green);}
 </style>
 </head>
 <body>
@@ -343,6 +361,50 @@ tr:hover td{background:#FAFBFC;}
         <div class="stat"><div class="ic o"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h16M14 8l4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Pending Deposits</div><div class="v" id="stat-pending-deposits">0</div></div></div>
         <div class="stat"><div class="ic r"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Pending Withdrawals</div><div class="v" id="stat-pending-withdrawals">0</div></div></div>
       </div>
+
+      <!-- === ANALYTICS === -->
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3>📈 7-Day Signups</h3>
+          <canvas id="chartSignups"></canvas>
+        </div>
+        <div class="chart-card">
+          <h3>💰 Deposit vs Withdrawal (last 7 days)</h3>
+          <canvas id="chartDepWd"></canvas>
+        </div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-card">
+          <h3>🏆 Top 5 Users by Profit</h3>
+          <div id="topUsersList"></div>
+        </div>
+        <div class="chart-card">
+          <h3>📊 Platform Overview</h3>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:6px;">
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0F0;">
+              <span style="font-size:12.5px;color:var(--text2);">Total Platform AUM</span>
+              <span style="font-size:15px;font-weight:800;color:var(--blue);" id="statAum">$0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0F0;">
+              <span style="font-size:12.5px;color:var(--text2);">Total Commission Earned</span>
+              <span style="font-size:15px;font-weight:800;color:var(--red);" id="statCommission">$0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0F0;">
+              <span style="font-size:12.5px;color:var(--text2);">Total Paid to Users</span>
+              <span style="font-size:15px;font-weight:800;color:var(--green);" id="statPaid">$0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F0F0F0;">
+              <span style="font-size:12.5px;color:var(--text2);">Active Copy Trades</span>
+              <span style="font-size:15px;font-weight:800;" id="statActiveCopies">0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:10px 0;">
+              <span style="font-size:12.5px;color:var(--text2);">Total Deposited (approved)</span>
+              <span style="font-size:15px;font-weight:800;" id="statTotalDeposited">$0.00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card">
         <h2>Connected Account</h2>
         <div class="sub">You are signed in as the admin.</div>
@@ -741,9 +803,6 @@ tr:hover td{background:#FAFBFC;}
 const cfg = window.NT_CONFIG || {};
 const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
-/* ============================================================
-   HIDDEN LOCK RULES (must match app.html)
-   ============================================================ */
 const LOCK_TIER1_PCT = 0.40;
 const LOCK_TIER2_PCT = 0.70;
 const LOCK_TIER1_DAYS = 45;
@@ -837,6 +896,7 @@ function navTo(panel){
   if(panel === 'userprofits') loadUserProfits();
   if(panel === 'banners') loadBanners();
   if(panel === 'stats') loadAppStatsAdmin();
+  if(panel === 'dashboard') renderDashboardCharts();
 }
 
 /* DATA */
@@ -847,6 +907,7 @@ async function refreshAll(){
   renderUserWallets();
   renderKyc();
   loadBanners();
+  renderDashboardCharts();
 }
 async function loadSignals(){
   const { data, error } = await sb.from('signals').select('*').order('created_at', { ascending: false }).limit(50);
@@ -867,8 +928,6 @@ async function loadUsers(){
   const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ allUsers = []; return; }
   allUsers = data || [];
-
-  /* Augment with commission totals */
   try {
     const { data: commData } = await sb.from('copy_profits').select('user_id, commission').limit(5000);
     const commMap = {};
@@ -877,7 +936,6 @@ async function loadUsers(){
     });
     allUsers.forEach(u => { u.total_commission = commMap[u.id] || u.total_commission || 0; });
   } catch(e){}
-
   document.getElementById('userWalletsBadge').textContent = allUsers.length;
   document.getElementById('stat-users').textContent = allUsers.length;
 }
@@ -910,7 +968,7 @@ function subscribeRealtime(){
       loadUserProfits();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-      loadUsers().then(() => { renderUserWallets(); renderKyc(); renderUserProfits(); });
+      loadUsers().then(() => { renderUserWallets(); renderKyc(); renderUserProfits(); renderDashboardCharts(); });
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'banners' }, () => {
       loadBanners();
@@ -922,6 +980,190 @@ function subscribeRealtime(){
       loadWithdrawals();
     })
     .subscribe();
+}
+
+/* ============================================================
+   ANALYTICS DASHBOARD
+   ============================================================ */
+async function renderDashboardCharts(){
+  /* ---- 7-day signups ---- */
+  const days = [];
+  for(let i = 6; i >= 0; i--){
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    d.setHours(0,0,0,0);
+    days.push(d);
+  }
+  const signups = days.map(day => {
+    const next = new Date(day); next.setDate(next.getDate() + 1);
+    return allUsers.filter(u => {
+      if(!u.created_at) return false;
+      const cd = new Date(u.created_at);
+      return cd >= day && cd < next;
+    }).length;
+  });
+  drawBarChart('chartSignups', days.map(d => d.toLocaleDateString('en-US',{weekday:'short'})), signups, '#1890FF');
+
+  /* ---- Deposit vs Withdrawal (approved amounts, last 7 days) ---- */
+  const depArr = days.map(day => {
+    const next = new Date(day); next.setDate(next.getDate() + 1);
+    return deposits.filter(d => d.status === 'approved' && d.approved_at && new Date(d.approved_at) >= day && new Date(d.approved_at) < next)
+      .reduce((s, d) => s + Number(d.amount || 0), 0);
+  });
+  const wdArr = days.map(day => {
+    const next = new Date(day); next.setDate(next.getDate() + 1);
+    return withdrawals.filter(w => w.status === 'approved' && w.approved_at && new Date(w.approved_at) >= day && new Date(w.approved_at) < next)
+      .reduce((s, w) => s + Number(w.amount || 0), 0);
+  });
+  drawDualBarChart('chartDepWd', days.map(d => d.toLocaleDateString('en-US',{weekday:'short'})), depArr, wdArr);
+
+  /* ---- Top 5 users by profit ---- */
+  const top5 = allUsers.slice().sort((a,b) => Number(b.total_profit || 0) - Number(a.total_profit || 0)).slice(0, 5);
+  const topEl = document.getElementById('topUsersList');
+  if(topEl){
+    if(!top5.length){
+      topEl.innerHTML = '<div style="text-align:center;color:var(--text3);padding:30px;font-size:12.5px;">No profit data yet.</div>';
+    } else {
+      topEl.innerHTML = top5.map((u, i) => `
+        <div class="top-user-row rank-${i+1}">
+          <div class="rank">${i+1}</div>
+          <div class="info">
+            <div class="name">${u.username || '—'}</div>
+            <div class="email">${u.email || ''}</div>
+          </div>
+          <div class="amt">+$${Number(u.total_profit || 0).toFixed(2)}</div>
+        </div>`).join('');
+    }
+  }
+
+  /* ---- Platform overview stats ---- */
+  const aum = allUsers.reduce((s, u) => s + Number(u.balance || 0), 0);
+  const commission = copyProfits.reduce((s, c) => s + Number(c.commission || 0), 0);
+  const paid = copyProfits.reduce((s, c) => s + Number(c.net_profit || c.profit || 0), 0);
+  const activeCopies = copyTrades.filter(t => t.status === 'open').length;
+  const totalDeposited = deposits.filter(d => d.status === 'approved').reduce((s, d) => s + Number(d.amount || 0), 0);
+
+  const e1 = document.getElementById('statAum'); if(e1) e1.textContent = '$' + aum.toFixed(2);
+  const e2 = document.getElementById('statCommission'); if(e2) e2.textContent = '$' + commission.toFixed(2);
+  const e3 = document.getElementById('statPaid'); if(e3) e3.textContent = '$' + paid.toFixed(2);
+  const e4 = document.getElementById('statActiveCopies'); if(e4) e4.textContent = activeCopies;
+  const e5 = document.getElementById('statTotalDeposited'); if(e5) e5.textContent = '$' + totalDeposited.toFixed(2);
+}
+
+function drawBarChart(canvasId, labels, values, color){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 300, h = 180;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const max = Math.max(...values, 1);
+  const padL = 34, padR = 10, padT = 14, padB = 28;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const gap = chartW / values.length;
+  const barW = Math.max(6, gap * 0.55);
+
+  /* grid + y labels */
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.strokeStyle = '#F0F0F0'; ctx.fillStyle = '#B7BDC6'; ctx.lineWidth = 1;
+  for(let i = 0; i <= 4; i++){
+    const y = padT + (chartH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + chartW, y); ctx.stroke();
+    const v = Math.round(max - (max / 4) * i);
+    ctx.fillText(String(v), 6, y + 3);
+  }
+
+  /* bars */
+  values.forEach((v, i) => {
+    const x = padL + gap * i + (gap - barW) / 2;
+    const bh = (v / max) * chartH;
+    const y = padT + chartH - bh;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    const r = Math.min(4, barW / 2);
+    ctx.moveTo(x, y + bh);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.lineTo(x + barW - r, y);
+    ctx.quadraticCurveTo(x + barW, y, x + barW, y + r);
+    ctx.lineTo(x + barW, y + bh);
+    ctx.closePath();
+    ctx.fill();
+
+    if(v > 0){
+      ctx.fillStyle = '#5E6673';
+      ctx.font = 'bold 10px -apple-system, sans-serif';
+      ctx.fillText(String(v), x + barW / 2 - 4, y - 4);
+      ctx.font = '10px -apple-system, sans-serif';
+    }
+  });
+
+  /* x labels */
+  ctx.fillStyle = '#B7BDC6';
+  labels.forEach((lbl, i) => {
+    const x = padL + gap * i + gap / 2;
+    ctx.fillText(lbl, x - 10, h - 8);
+  });
+}
+
+function drawDualBarChart(canvasId, labels, arr1, arr2){
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = canvas.clientWidth || 300, h = 180;
+  canvas.width = w * dpr; canvas.height = h * dpr;
+  canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, w, h);
+
+  const max = Math.max(...arr1, ...arr2, 1);
+  const padL = 40, padR = 10, padT = 14, padB = 28;
+  const chartW = w - padL - padR;
+  const chartH = h - padT - padB;
+  const gap = chartW / labels.length;
+  const barW = Math.max(5, gap * 0.32);
+
+  ctx.font = '10px -apple-system, sans-serif';
+  ctx.strokeStyle = '#F0F0F0'; ctx.fillStyle = '#B7BDC6'; ctx.lineWidth = 1;
+  for(let i = 0; i <= 4; i++){
+    const y = padT + (chartH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + chartW, y); ctx.stroke();
+    const v = max - (max / 4) * i;
+    ctx.fillText(v >= 1000 ? '$' + (v/1000).toFixed(1) + 'k' : '$' + Math.round(v), 4, y + 3);
+  }
+
+  labels.forEach((lbl, i) => {
+    const baseX = padL + gap * i + gap / 2;
+    const x1 = baseX - barW - 2;
+    const x2 = baseX + 2;
+    const h1 = (arr1[i] / max) * chartH;
+    const h2 = (arr2[i] / max) * chartH;
+
+    ctx.fillStyle = '#0ECB81';
+    ctx.fillRect(x1, padT + chartH - h1, barW, h1);
+
+    ctx.fillStyle = '#F6465D';
+    ctx.fillRect(x2, padT + chartH - h2, barW, h2);
+
+    ctx.fillStyle = '#B7BDC6';
+    ctx.fillText(lbl, baseX - 10, h - 8);
+  });
+
+  /* legend */
+  ctx.fillStyle = '#0ECB81';
+  ctx.fillRect(w - 90, 4, 8, 8);
+  ctx.fillStyle = '#1E2329';
+  ctx.fillText('Deposit', w - 78, 12);
+  ctx.fillStyle = '#F6465D';
+  ctx.fillRect(w - 40, 4, 8, 8);
+  ctx.fillStyle = '#1E2329';
+  ctx.fillText('Withd', w - 28, 12);
 }
 
 /* XPUB */
@@ -1242,9 +1484,7 @@ function openParticipants(signalId){
   document.getElementById('modal').classList.add('on');
 }
 
-/* ============================================================
-   COPY TRADES PANEL
-   ============================================================ */
+/* COPY TRADES PANEL */
 async function loadCopyTrades(){
   try {
     const [tradesRes, profitsRes] = await Promise.all([
@@ -1265,6 +1505,7 @@ async function loadCopyTrades(){
   }
   renderCopyTradesPanel();
   startCtTicker();
+  renderDashboardCharts();
 }
 
 function renderCopyTradesPanel(){
@@ -1367,9 +1608,7 @@ function startCtTicker(){
   }, 1000);
 }
 
-/* ============================================================
-   USER PROFITS PANEL
-   ============================================================ */
+/* USER PROFITS */
 async function loadUserProfits(){
   try {
     const { data } = await sb.from('user_profit_ledger')
@@ -1659,6 +1898,7 @@ async function loadDeposits(){
   document.getElementById('depositsBadge').textContent = deposits.filter(d => d.status === 'pending').length;
   renderDeposits();
   updateStats();
+  renderDashboardCharts();
 }
 function renderDeposits(){
   const pending = deposits.filter(d => d.status === 'pending');
@@ -1751,6 +1991,7 @@ async function loadWithdrawals(){
   document.getElementById('withdrawalsBadge').textContent = withdrawals.filter(w => w.status === 'pending').length;
   renderWithdrawals();
   updateStats();
+  renderDashboardCharts();
 }
 function renderWithdrawals(){
   const pending = withdrawals.filter(w => w.status === 'pending');
