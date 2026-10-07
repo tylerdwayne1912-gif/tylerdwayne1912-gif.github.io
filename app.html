@@ -16,6 +16,7 @@
 <script src="supabase-config.js"></script>
 <script>
 (function(){
+  /* ---------- Theme ---------- */
   try{
     var saved = localStorage.getItem('nt_theme');
     var theme = (saved === 'light') ? 'light' : 'dark';
@@ -27,10 +28,46 @@
   }catch(e){
     document.documentElement.setAttribute('data-theme','dark');
   }
-  var isMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry/i.test(navigator.userAgent)
-                 || ('ontouchstart' in window && window.innerWidth < 1024)
-                 || window.matchMedia('(pointer: coarse)').matches;
-  if(isMobile) document.documentElement.classList.add('is-mobile');
+
+  /* ---------- Universal device detection ---------- */
+  var ua = navigator.userAgent || '';
+  var platform = navigator.platform || '';
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isAndroid = /Android/i.test(ua);
+  var isMobileUA = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|webOS|BlackBerry/i.test(ua);
+  var coarse = window.matchMedia('(pointer: coarse)').matches;
+  var smallViewport = Math.min(window.innerWidth, window.innerHeight) < 900;
+  var isMobile = isMobileUA || (coarse && smallViewport);
+
+  var html = document.documentElement;
+  if(isMobile) html.classList.add('is-mobile');
+  if(isIOS)    html.classList.add('is-ios');
+  if(isAndroid) html.classList.add('is-android');
+
+  function setVH(){
+    var vh = window.innerHeight * 0.01;
+    html.style.setProperty('--vh', vh + 'px');
+  }
+  setVH();
+  window.addEventListener('resize', setVH, { passive: true });
+  window.addEventListener('orientationchange', function(){ setTimeout(setVH, 120); }, { passive: true });
+  if(window.visualViewport){
+    window.visualViewport.addEventListener('resize', setVH, { passive: true });
+  }
+
+  try{
+    if(CSS && CSS.supports && CSS.supports('padding-top: env(safe-area-inset-top)')){
+      html.classList.add('has-safe-area');
+    }
+  }catch(e){}
+
+  function setOrientation(){
+    var isLandscape = window.innerWidth > window.innerHeight;
+    html.classList.toggle('is-landscape', isLandscape);
+    html.classList.toggle('is-portrait', !isLandscape);
+  }
+  setOrientation();
+  window.addEventListener('resize', setOrientation, { passive: true });
 })();
 </script>
 <style>
@@ -79,29 +116,146 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
   color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   transition:background-color .25s ease, color .25s ease;}
-.phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);}
-html.is-mobile,html.is-mobile body{background:var(--bg);overflow:hidden;height:100%;position:fixed;inset:0;width:100%;}
-html.is-mobile body{display:block;min-height:0;padding:0;margin:0;}
+
+/* =========================================================
+   UNIVERSAL DEVICE LAYOUT
+   ========================================================= */
+.phone{
+  width:390px;height:844px;max-height:100dvh;background:var(--bg);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+
+html.is-mobile,html.is-mobile body{
+  background:var(--bg);
+  overflow:hidden;
+  overscroll-behavior:none;
+  height:100%;
+  height:100dvh;
+  height:100svh;
+  height:-webkit-fill-available;
+  position:fixed;
+  inset:0;
+  width:100%;
+}
+html.is-mobile body{
+  display:block;
+  min-height:0;
+  padding:0;
+  margin:0;
+  touch-action:manipulation;
+}
+
 html.is-mobile .phone{
-  position:fixed;inset:0;width:100vw;width:100dvw;
-  height:100vh;height:100dvh;height:-webkit-fill-available;
-  max-height:none;box-shadow:none;border-radius:0;
-  padding-top:env(safe-area-inset-top);
+  position:fixed;
+  inset:0;
+  width:100vw;
+  width:100dvw;
+  height:100vh;
+  height:calc(var(--vh, 1vh) * 100);
+  height:100dvh;
+  height:100svh;
+  height:-webkit-fill-available;
+  max-height:none;
+  min-height:0;
+  box-shadow:none;
+  border-radius:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+html.is-mobile .screen,
+html.is-mobile .scroll,
+html.is-mobile .bottomnav,
+html.is-mobile .topbar,
+html.is-mobile .pf-scroll,
+html.is-mobile .dw-scroll,
+html.is-mobile .details-wrap,
+html.is-mobile .kyc-scroll{
+  min-height:0;
+  min-width:0;
+}
+html.is-mobile .scroll{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+
+html.is-mobile .topbar{
+  padding-top:max(10px, env(safe-area-inset-top));
+  padding-left:max(14px, env(safe-area-inset-left));
+  padding-right:max(14px, env(safe-area-inset-right));
+}
+html.is-mobile .bottomnav{
+  min-height:calc(58px + env(safe-area-inset-bottom, 0px));
+  padding-bottom:max(9px, env(safe-area-inset-bottom));
   padding-left:env(safe-area-inset-left);
   padding-right:env(safe-area-inset-right);
-  padding-bottom:0;box-sizing:border-box;overflow:hidden;
 }
-html.is-mobile .bottomnav{min-height:calc(58px + env(safe-area-inset-bottom, 0px));
-  padding-bottom:max(9px, env(safe-area-inset-bottom));}
-html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
+html.is-mobile .scroll{ padding-bottom:max(8px, env(safe-area-inset-bottom)); }
+html.is-mobile .pf-top-icons,
+html.is-mobile .home-greet,
+html.is-mobile .dw-back,
+html.is-mobile .kyc-scroll > :first-child,
+html.is-mobile .pf-scroll > :first-child{
+  padding-top:max(12px, env(safe-area-inset-top));
+}
+html.is-mobile .overlay .ov-head,
+html.is-mobile .auth-header{
+  padding-top:max(16px, env(safe-area-inset-top));
+}
+
+html.is-mobile.is-landscape .topbar{ padding-top:max(6px, env(safe-area-inset-top)); padding-bottom:6px; }
+html.is-mobile.is-landscape .home-greet{ padding:4px 16px 2px; }
+html.is-mobile.is-landscape .bottomnav{ min-height:calc(48px + env(safe-area-inset-bottom, 0px)); padding-bottom:max(4px, env(safe-area-inset-bottom)); }
+html.is-mobile.is-landscape .bottomnav .nb{ padding:5px 0 4px; font-size:10px; }
+html.is-mobile.is-landscape .welcome-card{ padding:12px 16px; }
+html.is-mobile.is-landscape .welcome-card .wc-badge{ width:64px;height:64px;font-size:22px; }
+
+@media (max-height:700px){
+  html.is-mobile .topbar{ padding-top:max(6px, env(safe-area-inset-top)); padding-bottom:6px; }
+  html.is-mobile .home-greet h1{ font-size:19px; }
+  html.is-mobile .welcome-card{ padding:14px 16px; }
+  html.is-mobile .welcome-card .wc-badge{ width:72px;height:72px;font-size:26px; }
+  html.is-mobile .ct-stat .val{ font-size:20px; }
+  html.is-mobile .bottomnav{ min-height:calc(52px + env(safe-area-inset-bottom, 0px)); }
+  html.is-mobile .bottomnav .nb{ padding:6px 0 5px; font-size:10.5px; }
+  html.is-mobile .bottomnav .nb svg{ width:20px;height:20px; }
+}
+
+@media (min-width:430px) and (max-width:820px){
+  html.is-mobile .scroll,
+  html.is-mobile .pf-scroll,
+  html.is-mobile .dw-scroll,
+  html.is-mobile .details-wrap{ padding-left:env(safe-area-inset-left); padding-right:env(safe-area-inset-right); }
+}
+
+@media (min-width:821px) and (max-width:1180px) and (pointer:coarse){
+  html.is-mobile .phone{
+    max-width:560px; margin:0 auto; border-radius:20px;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  }
+}
+
+@supports not (height: 100dvh){
+  html.is-mobile .phone{ height:calc(var(--vh, 1vh) * 100); }
+}
+
 @media(max-width:820px){
-  body{display:block;min-height:0;overflow:hidden;background:var(--bg);}
-  .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;height:-webkit-fill-available;
-    max-height:none;box-shadow:none;border-radius:0;
-    padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);
-    padding-right:env(safe-area-inset-right);box-sizing:border-box;}
+  body{display:block;min-height:0;height:100%;overflow:hidden;background:var(--bg);}
+  .phone{
+    width:100vw;width:100dvw;
+    height:100vh;height:calc(var(--vh, 1vh) * 100);height:100dvh;
+    max-height:none;min-height:0;
+    box-shadow:none;border-radius:0;
+    box-sizing:border-box;display:flex;flex-direction:column;
+  }
+  .screen,.scroll,.bottomnav,.topbar,.pf-scroll,.dw-scroll,.details-wrap,.kyc-scroll{
+    min-height:0;min-width:0;
+  }
 }
+
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
   opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease;}
 .screen.active{opacity:1;visibility:visible;pointer-events:auto;}
@@ -417,7 +571,6 @@ html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
 .no-more-data{display:flex;align-items:center;gap:12px;padding:22px 16px 30px;color:var(--text3);font-size:12.5px;}
 .no-more-data::before,.no-more-data::after{content:"";height:1px;background:var(--line);flex:1;}
 
-/* === NEW: Active copies + history rows === */
 .ac-wrap{display:flex;flex-direction:column;gap:10px;padding:0 16px 14px;}
 .ac-row{background:var(--card);border-radius:14px;border:1px solid var(--line);
   padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
@@ -436,19 +589,23 @@ html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
 .ac-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--green);transition:width .95s linear;}
 
-.hist-row{background:var(--card);border-radius:12px;border:1px solid var(--line);
-  padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s;}
+.hist-row{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:12px;
+  border:1px solid var(--line);padding:12px 14px;cursor:pointer;transition:.15s;}
 .hist-row:active{background:var(--bg3);}
-.hist-row .hchk{width:26px;height:26px;border-radius:50%;background:var(--green-lt);
-  color:var(--green-dk);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
+.hist-row .ac-av{width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#0ECB81,#0a9e63);color:#fff;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:14px;flex-shrink:0;background-size:cover;background-position:center;}
 .hist-row .hbody{flex:1;min-width:0;}
 .hist-row .htitle{font-size:13.5px;font-weight:700;color:var(--text);
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-row .hist-pair{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.4px;
+  padding:2px 8px;border-radius:6px;background:var(--green-lt);color:var(--green-dk);
+  margin-left:6px;vertical-align:middle;}
 .hist-row .hsub{font-size:11px;color:var(--text3);margin-top:3px;}
-.hist-row .hnet{font-size:14px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;text-align:right;}
+.hist-row .hnet{font-size:14px;font-weight:800;color:var(--green);
+  font-variant-numeric:tabular-nums;text-align:right;flex-shrink:0;}
 .hist-empty{text-align:center;color:var(--text3);font-size:12.5px;padding:20px 16px;}
 
-/* Breakdown sheet */
 .bd-grid{display:flex;flex-direction:column;gap:10px;padding:4px 0 4px;}
 .bd-row{display:flex;align-items:center;justify-content:space-between;font-size:14px;padding:10px 0;border-bottom:1px solid var(--line);}
 .bd-row:last-child{border-bottom:none;}
@@ -618,6 +775,29 @@ html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
   font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:20px;}
 .dw-submit:disabled{background:var(--line);color:var(--text3);cursor:not-allowed;}
 
+/* Fee schedule card */
+.fee-schedule{background:var(--card);border-radius:14px;border:1px solid var(--line);
+  padding:16px;margin-top:12px;}
+.fee-schedule .fh{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;
+  color:var(--text);margin-bottom:12px;}
+.fee-schedule .fr{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;font-size:12.5px;color:var(--text2);border-bottom:1px dashed var(--line);}
+.fee-schedule .fr:last-of-type{border-bottom:none;}
+.fee-schedule .fr .fv{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;}
+.fee-schedule .fnote{font-size:11.5px;color:var(--text3);line-height:1.55;margin-top:10px;
+  padding-top:10px;border-top:1px solid var(--line);}
+
+/* Live net-receive breakdown */
+.net-receive{background:linear-gradient(135deg,var(--green-lt) 0%, var(--card) 60%);
+  border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:12px;}
+.net-receive .nr{display:flex;align-items:center;justify-content:space-between;
+  font-size:12.5px;color:var(--text2);padding:6px 0;}
+.net-receive .nr .v{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;}
+.net-receive .nr.ded .v{color:var(--red);}
+.net-receive .nr.total{padding-top:12px;margin-top:6px;border-top:1px solid var(--line);
+  font-size:14px;}
+.net-receive .nr.total .v{color:var(--green);font-size:17px;font-weight:800;}
+
 .details-wrap{flex:1;overflow-y:auto;background:var(--bg);padding:0 14px 100px;position:relative;}
 .details-wrap::-webkit-scrollbar{width:0;}
 .details-head{background:var(--card);border-radius:16px;border:1px solid var(--line);
@@ -675,7 +855,7 @@ html.is-mobile textarea{font-size:16px !important;}
 
 <!-- REGISTER -->
 <section class="auth-screen" id="authRegister">
-  <div class="auth-header"><div class="back" onclick="backToLanding()">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
+  <div class="auth-header"><div style="width:36px;"></div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="auth-body">
     <h1 class="auth-title">Create Account</h1>
     <p class="auth-sub">Join NextTrade in less than a minute.</p>
@@ -762,7 +942,7 @@ html.is-mobile textarea{font-size:16px !important;}
 
 <!-- LOGIN -->
 <section class="auth-screen" id="authLogin">
-  <div class="auth-header"><div class="back" onclick="openAuth('register')">←</div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
+  <div class="auth-header"><div style="width:36px;"></div><div class="logo-mini"><div class="mk">N</div>NextTrade</div></div>
   <div class="auth-body">
     <h1 class="auth-title">Welcome back</h1>
     <p class="auth-sub">Sign in to access your account and start trading.</p>
@@ -908,11 +1088,9 @@ html.is-mobile textarea{font-size:16px !important;}
       <div class="ct-stat"><div class="lbl">Keep the bottom position</div><div class="val" id="statBottom">0.00</div><div class="unit">USD</div></div>
     </div>
 
-    <!-- NEW: My Active Copies -->
     <div class="ct-sec-head" id="activeCopiesHead" style="display:none;"><h2>My Active Copies</h2></div>
     <div class="ac-wrap" id="activeCopiesList"></div>
 
-    <!-- NEW: Copy History -->
     <div class="ct-sec-head" id="copyHistoryHead" style="display:none;"><h2>Copy History</h2></div>
     <div class="ac-wrap" id="copyHistoryList"></div>
 
@@ -1013,15 +1191,30 @@ html.is-mobile textarea{font-size:16px !important;}
     <div class="dw-card"><div class="dw-coin-name">ERC20</div><div class="dw-caret">⌄</div></div>
     <div class="dw-label">Withdrawal Amount (USD)</div>
     <input class="dw-input" id="wdAmount" type="text" inputmode="decimal" placeholder="Please enter amount (USD)" oninput="updateWithdrawAmount()">
+
     <div class="dw-table">
-      <div class="r"><span>Minimum transaction balance</span><span class="v">0 USD</span></div>
-      <div class="r"><span>Non-Withdrawable Amount</span><span class="v">0 USD</span></div>
-      <div class="r"><span>Withdrawable Amount</span><span class="v" id="wdWithdrawable">0 USD</span></div>
-      <div class="r"><span>Minimum Withdrawal Amount</span><span class="v">100 USDT ≈ 100 USD</span></div>
-      <div class="r"><span>Withdrawal Fee</span><span class="v">20 %</span></div>
-      <div class="r"><span>Minimum Withdrawal Fee</span><span class="v">20 USD</span></div>
-      <div class="r"><span>Estimated Arrival</span><span class="v" id="wdArrival">0 USDT ≈ 0 USD</span></div>
+      <div class="r"><span>Available to withdraw</span><span class="v" id="wdWithdrawable">0 USD</span></div>
+      <div class="r"><span>Minimum withdrawal</span><span class="v">100 USDT</span></div>
+      <div class="r"><span>Estimated arrival</span><span class="v">24–72h after approval</span></div>
     </div>
+
+    <div class="fee-schedule">
+      <div class="fh">💳 Fee Schedule</div>
+      <div class="fr"><span>Withdrawal fee</span><span class="fv">20 %</span></div>
+      <div class="fr"><span>Processing fee</span><span class="fv">2 %</span></div>
+      <div class="fr"><span>Network / gas fee</span><span class="fv">5 USDT</span></div>
+      <div class="fr"><span>Minimum withdrawal</span><span class="fv">100 USDT</span></div>
+      <div class="fnote">All fees are deducted from the amount you request. Your wallet receives the net amount after fees.</div>
+    </div>
+
+    <div class="net-receive" id="netReceive" style="display:none;">
+      <div class="nr"><span>You request</span><span class="v" id="nrRequest">$0.00</span></div>
+      <div class="nr ded"><span>Withdrawal fee (20%)</span><span class="v" id="nrWf">-$0.00</span></div>
+      <div class="nr ded"><span>Processing fee (2%)</span><span class="v" id="nrPf">-$0.00</span></div>
+      <div class="nr ded"><span>Network fee</span><span class="v" id="nrNf">-$5.00</span></div>
+      <div class="nr total"><span>You will receive</span><span class="v" id="nrNet">$0.00 USDT</span></div>
+    </div>
+
     <div class="dw-label">Withdrawal Address</div>
     <input class="dw-input" id="wdAddress" type="text" placeholder="Paste your ERC20 address" style="font-family:'Courier New',monospace;font-size:13px;">
     <div class="dw-label">Select Voucher</div>
@@ -1031,7 +1224,7 @@ html.is-mobile textarea{font-size:16px !important;}
       <option value="referral5">REFERRAL5 — +$5 bonus</option>
     </select>
     <button class="dw-submit" id="wdSubmitBtn" onclick="submitWithdraw()">Submit Withdrawal</button>
-    <div class="dw-mini" style="text-align:center;margin-top:12px;">Your request will be reviewed by the admin. Balance is held until approval.</div>
+    <div class="dw-mini" style="text-align:center;margin-top:12px;">Your request will be reviewed and processed within 24–72 hours after approval.</div>
   </div>
 </section>
 
@@ -1079,6 +1272,22 @@ const CT_PROFIT_RATE = 0.015;      // 1.5% per cycle
 const CT_COMMISSION_RATE = 0.25;   // 25% of gross
 const CT_CYCLE_MS = 60 * 1000;     // 60 seconds
 
+/* ============================================================
+   WITHDRAWAL FEE STACK
+   ============================================================ */
+const WD_FEE_RATE        = 0.20;   // 20% withdrawal fee
+const WD_PROC_RATE       = 0.02;   // 2% processing fee
+const WD_NETWORK_FLAT    = 5;      // 5 USDT flat
+const WD_MIN             = 100;    // min withdrawal 100 USDT
+
+/* ============================================================
+   HIDDEN LOCK RULES (users never see these)
+   ============================================================ */
+const LOCK_TIER1_PCT = 0.40;  // 0-45 days: 40% of principal
+const LOCK_TIER2_PCT = 0.70;  // 46-90 days: 70%
+const LOCK_TIER1_DAYS = 45;
+const LOCK_TIER2_DAYS = 90;
+
 let currentUser = null;
 let liveNews = [];
 let appStats = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
@@ -1086,11 +1295,10 @@ const kycUploads = { front: null, selfie: null };
 let kycBannerTimer = null;
 let userRealtimeChannel = null;
 
-/* === NEW: copy-trade state === */
-let myOpenCopies = [];       // participants rows with status='open'
-let myCopyHistory = [];      // copy_profits rows
-let copyTickInterval = null; // UI countdown ticker
-let copyCloseInterval = null;// backend close loop
+let myOpenCopies = [];
+let myCopyHistory = [];
+let copyTickInterval = null;
+let copyCloseInterval = null;
 
 /* THEME */
 (function(){
@@ -1304,14 +1512,14 @@ async function doLogin(){
   currentUser = profile;
   applyUserToUI();
   subscribeUserProfile();
-  startCopyEngine(); /* NEW */
+  startCopyEngine();
   closeAuth();
   go('s-home');
   toast('Welcome back!');
 }
 async function doLogout(){
   if(userRealtimeChannel){ sb.removeChannel(userRealtimeChannel); userRealtimeChannel = null; }
-  stopCopyEngine(); /* NEW */
+  stopCopyEngine();
   await sb.auth.signOut();
   currentUser = null;
   myOpenCopies = [];
@@ -1333,7 +1541,10 @@ function openAuth(mode){
   }
 }
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
-function backToLanding(){ window.location.href = '/'; }
+function backToLanding(){
+  if(currentUser) return;
+  openAuth('register');
+}
 function scorePw(){
   const v = document.getElementById('suPw').value;
   const segs = document.querySelectorAll('#pwStrength .seg');
@@ -1737,14 +1948,13 @@ function go(id){
   if(id === 's-deposit') updateDepositAddress();
   if(id === 's-markets') renderMarketsTable();
   if(id === 's-profile'){ updatePfBalance(); renderKycState(); }
+  if(id === 's-withdraw'){ updateWithdrawAmount(); }
   if(id !== 's-details') currentDetailSym = null;
 }
 
 /* ============================================================
-   === NEW: COPY-TRADE ENGINE ================================
+   COPY-TRADE ENGINE
    ============================================================ */
-
-/* ---- Load open positions + history for current user ---- */
 async function refreshCopyPanels(){
   if(!currentUser) return;
   try {
@@ -1764,7 +1974,6 @@ async function refreshCopyPanels(){
   } catch(e){ console.warn('refreshCopyPanels', e); }
 }
 
-/* ---- Render "My Active Copies" ---- */
 function renderActiveCopies(){
   const head = document.getElementById('activeCopiesHead');
   const list = document.getElementById('activeCopiesList');
@@ -1801,7 +2010,6 @@ function renderActiveCopies(){
   }).join('');
 }
 
-/* ---- UI countdown tick (fast, no DB) ---- */
 function tickCopyCountdowns(){
   const now = Date.now();
   document.querySelectorAll('.ac-row[data-close-at]').forEach(row => {
@@ -1816,7 +2024,6 @@ function tickCopyCountdowns(){
   });
 }
 
-/* ---- Backend close loop: every 2s check for expired open trades ---- */
 async function closeExpiredTrades(){
   if(!currentUser) return;
   const now = Date.now();
@@ -1828,7 +2035,6 @@ async function closeExpiredTrades(){
 
   for(const p of due){
     try {
-      // Guard: re-fetch to ensure still open
       const { data: check } = await sb.from('participants').select('status')
         .eq('id', p.id).single();
       if(!check || check.status !== 'open') continue;
@@ -1838,35 +2044,51 @@ async function closeExpiredTrades(){
       const commission = +(gross * CT_COMMISSION_RATE).toFixed(6);
       const net = +(gross - commission).toFixed(6);
 
-      // 1. Credit user: principal + net profit
-      const { data: prof } = await sb.from('profiles').select('balance')
+      const { data: prof } = await sb.from('profiles')
+        .select('balance, total_invested, total_profit, total_commission, first_invested_at')
         .eq('id', currentUser.id).single();
+
+      const prevInvested = Number(prof?.total_invested || 0);
+      const prevProfit = Number(prof?.total_profit || 0);
+      const prevComm = Number(prof?.total_commission || 0);
+
       const newBal = Number(prof?.balance || 0) + invested + net;
-      await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
+      const newInvested = prevInvested + invested;
+      const newProfit = prevProfit + net;
+      const newComm = prevComm + commission;
+
+      await sb.from('profiles').update({
+        balance: newBal,
+        total_invested: newInvested,
+        total_profit: newProfit,
+        total_commission: newComm,
+        first_invested_at: prof?.first_invested_at || new Date().toISOString()
+      }).eq('id', currentUser.id);
       currentUser.balance = newBal;
 
-      // 2. Insert copy_profits row
       await sb.from('copy_profits').insert({
         user_id: currentUser.id,
         trader_name: p.trader_name || null,
         sym: p.sym || null,
-        invested: invested,
-        gross_profit: gross,
-        net_profit: net,
-        profit: net,          // legacy column
-        commission: commission
+        invested, gross_profit: gross, net_profit: net, profit: net, commission
       });
 
-      // 3. Mark participant closed
+      await sb.from('user_profit_ledger').insert({
+        user_id: currentUser.id,
+        username: currentUser.username,
+        uid: currentUser.uid,
+        source: 'copy_trade',
+        amount: net,
+        commission, gross,
+        meta: { trader_name: p.trader_name, sym: p.sym, invested }
+      });
+
       await sb.from('participants').update({
         status: 'closed',
-        gross_profit: gross,
-        net_profit: net,
-        commission: commission,
+        gross_profit: gross, net_profit: net, commission,
         closed_at: new Date().toISOString()
       }).eq('id', p.id);
 
-      // 4. Toast (net only)
       const sign = net >= 0 ? '+' : '';
       toast(`✓ ${p.trader_name || 'Trade'} closed — ${sign}$${net.toFixed(2)} profit`);
     } catch(e){
@@ -1874,12 +2096,10 @@ async function closeExpiredTrades(){
     }
   }
 
-  // Refresh from server
   await refreshCopyPanels();
   await updatePfBalance();
 }
 
-/* ---- Render "Copy History" ---- */
 function renderCopyHistory(){
   const head = document.getElementById('copyHistoryHead');
   const list = document.getElementById('copyHistoryList');
@@ -1893,21 +2113,30 @@ function renderCopyHistory(){
   list.innerHTML = myCopyHistory.map(cp => {
     const net = Number(cp.net_profit || cp.profit || 0);
     const sign = net >= 0 ? '+' : '';
-    const initial = (cp.trader_name || 'A').charAt(0).toUpperCase();
     const when = cp.created_at ? new Date(cp.created_at).toLocaleString() : '';
-    const sym = cp.sym || '';
+    const invested = Number(cp.invested || 0);
+    const traderName = cp.trader_name || 'Analyst';
+    const sym = cp.sym || '—';
+
+    const analyst = ANALYSTS.find(a => a.name === traderName);
+    const photo = analyst?.photo || null;
+    const initial = traderName.charAt(0).toUpperCase();
+    const photoStyle = photo ? `background-image:url('${photo}');color:transparent;` : '';
+
     return `<div class="hist-row" onclick="showBreakdown('${cp.id}')">
-      <div class="hchk">✓</div>
+      <div class="ac-av" style="${photoStyle}">${photo ? '' : initial}</div>
       <div class="hbody">
-        <div class="htitle">${cp.trader_name || 'Analyst'}${sym ? ' · ' + sym : ''}</div>
-        <div class="hsub">${when}</div>
+        <div class="htitle">
+          ${traderName}
+          <span class="hist-pair">${sym}</span>
+        </div>
+        <div class="hsub">$${invested.toFixed(2)} invested · ${when}</div>
       </div>
       <div class="hnet">${sign}$${net.toFixed(2)}</div>
     </div>`;
   }).join('');
 }
 
-/* ---- Breakdown sheet (gross / commission / net) ---- */
 function showBreakdown(cpId){
   const cp = myCopyHistory.find(x => String(x.id) === String(cpId));
   if(!cp) return;
@@ -1931,7 +2160,6 @@ function showBreakdown(cpId){
   document.getElementById('genericModal').classList.add('on');
 }
 
-/* ---- Compute live stat cards ---- */
 function computeCopyStats(){
   let totalPnl = 0, partnerCommission = 0, todayPnl = 0, bottom = 0;
   const todayKey = new Date().toISOString().slice(0,10);
@@ -1957,7 +2185,6 @@ function computeCopyStats(){
   if(el4) el4.textContent = bottom.toFixed(2);
 }
 
-/* ---- Start / stop engine ---- */
 function startCopyEngine(){
   stopCopyEngine();
   refreshCopyPanels();
@@ -1968,9 +2195,6 @@ function stopCopyEngine(){
   if(copyTickInterval){ clearInterval(copyTickInterval); copyTickInterval = null; }
   if(copyCloseInterval){ clearInterval(copyCloseInterval); copyCloseInterval = null; }
 }
-/* ============================================================
-   === END NEW COPY-TRADE ENGINE ==============================
-   ============================================================ */
 
 /* COPY TRADING ANALYSTS */
 let ANALYSTS = [], analystFilter = '';
@@ -2127,7 +2351,6 @@ async function fsApply(){
     if(balErr) return toast('Error: ' + balErr.message);
     currentUser.balance = newBal;
 
-    /* === NEW: open position with 60s lifecycle === */
     const now = new Date();
     const closesAt = new Date(now.getTime() + CT_CYCLE_MS);
     await sb.from('participants').insert({
@@ -2138,7 +2361,6 @@ async function fsApply(){
       amount_usdt: effective,
       mode: 'real',
       voucher,
-      /* new lifecycle fields */
       status: 'open',
       invested: effective,
       trader_name: currentAnalyst.name,
@@ -2146,18 +2368,61 @@ async function fsApply(){
       opened_at: now.toISOString(),
       closes_at: closesAt.toISOString()
     });
-    /* === END NEW === */
   }
   closeFollowSheet();
   toast('✓ Copy trade placed — $' + effective.toFixed(2));
-  /* Immediately reflect the new open position */
   await refreshCopyPanels();
   await updatePfBalance();
 }
 
-/* DEPOSIT / WITHDRAW */
-function openDeposit(){ go('s-deposit'); }
-function openWithdraw(){ go('s-withdraw'); }
+/* ============================================================
+   WITHDRAWAL — hidden lock + fee stack
+   ============================================================ */
+function computeWithdrawableLocal(profile, pendingWd = 0, activeCopies = 0){
+  const balance = Number(profile?.balance || 0);
+  const invested = Number(profile?.total_invested || 0);
+  const profit = Number(profile?.total_profit || 0);
+  const withdrawn = Number(profile?.total_withdrawn || 0);
+  const firstAt = profile?.first_invested_at ? new Date(profile.first_invested_at) : null;
+
+  if(!firstAt) return { withdrawable: Math.max(0, balance - pendingWd - activeCopies), inLock: false, daysLeft: 0 };
+
+  const daysSince = (Date.now() - firstAt.getTime()) / (1000 * 60 * 60 * 24);
+  let principalPct = 1;
+  let inLock = false;
+  let daysLeft = 0;
+
+  if(daysSince < LOCK_TIER1_DAYS){
+    principalPct = LOCK_TIER1_PCT;
+    inLock = true;
+    daysLeft = Math.ceil(LOCK_TIER1_DAYS - daysSince);
+  } else if(daysSince < LOCK_TIER2_DAYS){
+    principalPct = LOCK_TIER2_PCT;
+    inLock = true;
+    daysLeft = Math.ceil(LOCK_TIER2_DAYS - daysSince);
+  }
+
+  const pool = (invested * principalPct) + profit - withdrawn;
+  const raw = Math.max(0, Math.min(balance, pool - pendingWd - activeCopies));
+  return { withdrawable: raw, inLock, daysLeft };
+}
+
+async function computeWithdrawable(){
+  if(!currentUser) return { withdrawable: 0, inLock: false, daysLeft: 0 };
+  try {
+    const [profRes, wdRes, openRes] = await Promise.all([
+      sb.from('profiles').select('balance, total_invested, total_profit, total_withdrawn, first_invested_at').eq('id', currentUser.id).single(),
+      sb.from('withdrawals').select('amount, status').eq('user_id', currentUser.id).eq('status','pending'),
+      sb.from('participants').select('invested, amount_usdt').eq('user_id', currentUser.id).eq('status','open')
+    ]);
+    const pendingWd = (wdRes.data || []).reduce((s, r) => s + Number(r.amount || 0), 0);
+    const activeCopies = (openRes.data || []).reduce((s, r) => s + Number(r.invested || r.amount_usdt || 0), 0);
+    return computeWithdrawableLocal(profRes.data, pendingWd, activeCopies);
+  } catch(e){
+    return { withdrawable: 0, inLock: false, daysLeft: 0 };
+  }
+}
+
 async function updateDepositAddress(){
   const el = document.getElementById('depAddress'); if(!el) return;
   if(!currentUser){ el.textContent = 'Log in to see your address'; return; }
@@ -2169,6 +2434,79 @@ async function updateDepositAddress(){
     } else el.textContent = 'Not assigned yet — contact admin';
   } catch(e){ el.textContent = '—'; }
 }
+
+async function updateWithdrawAmount(){
+  const v = parseFloat(document.getElementById('wdAmount').value || '0');
+  const info = await computeWithdrawable();
+
+  const el = document.getElementById('wdWithdrawable');
+  if(el) el.textContent = info.withdrawable.toFixed(2) + ' USD';
+
+  const nr = document.getElementById('netReceive');
+  if(nr){
+    if(v > 0){
+      nr.style.display = 'block';
+      const wf = v * WD_FEE_RATE;
+      const pf = v * WD_PROC_RATE;
+      const net = Math.max(0, v - wf - pf - WD_NETWORK_FLAT);
+      document.getElementById('nrRequest').textContent = '$' + v.toFixed(2);
+      document.getElementById('nrWf').textContent = '-$' + wf.toFixed(2);
+      document.getElementById('nrPf').textContent = '-$' + pf.toFixed(2);
+      document.getElementById('nrNf').textContent = '-$' + WD_NETWORK_FLAT.toFixed(2);
+      document.getElementById('nrNet').textContent = '$' + net.toFixed(2) + ' USDT';
+    } else {
+      nr.style.display = 'none';
+    }
+  }
+}
+
+async function submitWithdraw(){
+  if(!currentUser){ openAuth('register'); return; }
+  if(currentUser.kyc_status !== 'verified') return toast('Complete identity verification to withdraw');
+  const amt = parseFloat(document.getElementById('wdAmount').value || '0');
+  const addr = document.getElementById('wdAddress').value.trim();
+  if(!amt || amt < WD_MIN) return toast('Minimum withdrawal: ' + WD_MIN + ' USDT');
+  if(!addr) return toast('Enter withdrawal address');
+
+  const info = await computeWithdrawable();
+  if(amt > info.withdrawable) return toast('Insufficient available balance to complete this request');
+
+  const btn = document.getElementById('wdSubmitBtn');
+  btn.disabled = true; btn.textContent = 'Submitting…';
+  const { error } = await sb.from('withdrawals').insert({
+    user_id: currentUser.id,
+    username: currentUser.username,
+    uid: currentUser.uid,
+    amount: amt,
+    address: addr,
+    network: 'ERC20',
+    status: 'pending'
+  });
+  if(error){ btn.disabled = false; btn.textContent = 'Submit Withdrawal'; toast('Error: ' + error.message); return; }
+
+  const newBal = Number(currentUser.balance || 0) - amt;
+  const { data: prof } = await sb.from('profiles').select('total_withdrawn').eq('id', currentUser.id).single();
+  const newWithdrawn = Number(prof?.total_withdrawn || 0) + amt;
+
+  const { error: balErr } = await sb.from('profiles').update({
+    balance: newBal,
+    total_withdrawn: newWithdrawn
+  }).eq('id', currentUser.id);
+  if(balErr){ toast('Withdraw saved but balance update failed — contact support'); }
+  else { currentUser.balance = newBal; await updatePfBalance(); }
+
+  btn.disabled = false; btn.textContent = 'Submit Withdrawal';
+  toast('✓ Withdrawal submitted — awaiting approval');
+  document.getElementById('wdAmount').value = '';
+  document.getElementById('wdAddress').value = '';
+  const nr = document.getElementById('netReceive');
+  if(nr) nr.style.display = 'none';
+  go('s-home');
+}
+
+/* DEPOSIT */
+function openDeposit(){ go('s-deposit'); }
+function openWithdraw(){ go('s-withdraw'); }
 function updateDepositAmount(){
   const v = parseFloat(document.getElementById('depAmount').value || '0');
   const el = document.getElementById('depApprox');
@@ -2199,48 +2537,6 @@ async function submitDeposit(){
   toast('✓ Deposit submitted — awaiting admin approval');
   document.getElementById('depAmount').value = '';
   document.getElementById('depApprox').textContent = '≈ 0.00 USDT';
-  go('s-home');
-}
-function updateWithdrawAmount(){
-  const v = parseFloat(document.getElementById('wdAmount').value || '0');
-  const bal = Number(currentUser?.balance || 0);
-  const el = document.getElementById('wdWithdrawable');
-  if(el) el.textContent = bal.toFixed(2) + ' USD';
-  const arr = document.getElementById('wdArrival');
-  if(arr){
-    const fee = Math.max(20, v * 0.20);
-    const net = Math.max(0, v - fee);
-    arr.textContent = net.toFixed(2) + ' USDT ≈ ' + net.toFixed(2) + ' USD';
-  }
-}
-async function submitWithdraw(){
-  if(!currentUser){ openAuth('register'); return; }
-  const amt = parseFloat(document.getElementById('wdAmount').value || '0');
-  const addr = document.getElementById('wdAddress').value.trim();
-  if(!amt || amt < 100) return toast('Minimum withdrawal: 100 USDT');
-  if(!addr) return toast('Enter withdrawal address');
-  const bal = Number(currentUser.balance || 0);
-  if(amt > bal) return toast('Insufficient balance');
-  const btn = document.getElementById('wdSubmitBtn');
-  btn.disabled = true; btn.textContent = 'Submitting…';
-  const { error } = await sb.from('withdrawals').insert({
-    user_id: currentUser.id,
-    username: currentUser.username,
-    uid: currentUser.uid,
-    amount: amt,
-    address: addr,
-    network: 'ERC20',
-    status: 'pending'
-  });
-  if(error){ btn.disabled = false; btn.textContent = 'Submit Withdrawal'; toast('Error: ' + error.message); return; }
-  const newBal = bal - amt;
-  const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
-  if(balErr){ toast('Withdraw saved but balance update failed — contact support'); }
-  else { currentUser.balance = newBal; await updatePfBalance(); }
-  btn.disabled = false; btn.textContent = 'Submit Withdrawal';
-  toast('✓ Withdrawal submitted — awaiting admin approval');
-  document.getElementById('wdAmount').value = '';
-  document.getElementById('wdAddress').value = '';
   go('s-home');
 }
 
@@ -2432,17 +2728,17 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
         currentUser = profile;
         applyUserToUI();
         subscribeUserProfile();
-        startCopyEngine(); /* NEW: rehydrate on boot */
+        startCopyEngine();
         go('s-home');
         loadLiveSignals();
         return;
       }
     }
-    openAuth('register');
+    openAuth('login');
     loadLiveSignals();
   } catch(e){
     console.error('boot error:', e);
-    openAuth('register');
+    openAuth('login');
     loadLiveSignals();
   }
 
