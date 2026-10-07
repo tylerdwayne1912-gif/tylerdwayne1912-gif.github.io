@@ -192,6 +192,18 @@ tr:hover td{background:#FAFBFC;}
   .stats-grid{grid-template-columns:1fr;}
   .content{padding:16px;}
 }
+
+/* === NEW: Copy Trades summary row === */
+.ct-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+.ct-sum{background:#fff;border-radius:8px;padding:18px 20px;border-left:4px solid var(--green);}
+.ct-sum.comm{border-left-color:var(--red);}
+.ct-sum.user{border-left-color:var(--blue);}
+.ct-sum .k{font-size:12px;color:var(--text2);}
+.ct-sum .v{font-size:24px;font-weight:800;color:var(--text);margin-top:4px;
+  font-variant-numeric:tabular-nums;letter-spacing:-.5px;}
+.ct-sum.comm .v{color:var(--red);}
+.ct-sum.user .v{color:var(--blue);}
+@media(max-width:820px){.ct-summary{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -260,6 +272,13 @@ tr:hover td{background:#FAFBFC;}
       <span>Copy Trade Signals</span>
       <span class="badge" id="ctBadge">0</span>
     </div>
+    <!-- === NEW: Copy Trades panel item === -->
+    <div class="item" data-panel="copytrades">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="19" cy="18" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+      <span>Copy Trades</span>
+      <span class="badge" id="copytradesBadge">0</span>
+    </div>
+    <!-- === END NEW === -->
     <div class="item" data-panel="banners">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.8"/></svg>
       <span>Home Banners</span>
@@ -510,6 +529,72 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <!-- === NEW: Copy Trades Panel === -->
+    <div class="panel" id="panel-copytrades">
+      <div class="warn info">
+        <b>Copy Trade lifecycle.</b> Every user position opens for 60 seconds, then closes automatically.
+        Gross profit = 1.5% of invested. Commission (25%) = platform's cut. Net profit = user's cut.
+      </div>
+
+      <div class="ct-summary">
+        <div class="ct-sum">
+          <div class="k">Total Gross Profit</div>
+          <div class="v" id="ctSumGross">$0.00</div>
+        </div>
+        <div class="ct-sum comm">
+          <div class="k">Partner Commission (25%)</div>
+          <div class="v" id="ctSumComm">$0.00</div>
+        </div>
+        <div class="ct-sum user">
+          <div class="k">Total Paid to Users</div>
+          <div class="v" id="ctSumNet">$0.00</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Open Positions <span class="tag orange" id="ctOpenCount">0</span></h2>
+        <div class="sub">Positions currently running. They auto-close 60 seconds after opening.</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Analyst</th>
+                <th>Coin</th>
+                <th class="right">Invested</th>
+                <th>Opened</th>
+                <th>Closes in</th>
+              </tr>
+            </thead>
+            <tbody id="ctOpenTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Closed Trades <span class="tag green" id="ctClosedCount">0</span></h2>
+        <div class="sub">Complete history with gross / commission / net breakdown.</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Analyst</th>
+                <th>Coin</th>
+                <th class="right">Invested</th>
+                <th class="right">Gross profit</th>
+                <th class="right">Commission (25%)</th>
+                <th class="right">User profit</th>
+                <th>Closed at</th>
+              </tr>
+            </thead>
+            <tbody id="ctClosedTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- === END NEW === -->
+
     <div class="panel" id="panel-banners">
       <div class="card">
         <h2>Upload Home Banner</h2>
@@ -596,6 +681,11 @@ let deposits = [];
 let withdrawals = [];
 let kycFilter = 'all';
 
+/* === NEW: Copy-trade state === */
+let copyTrades = [];        // participants with status='closed' or 'open'
+let copyProfits = [];       // copy_profits rows
+let ctTickTimer = null;
+
 /* AUTH */
 async function doLogin(){
   const email = document.getElementById('loginEmail').value.trim();
@@ -621,6 +711,7 @@ async function doLogout(){
   await sb.auth.signOut();
   adminUser = null;
   if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel = null; }
+  if(ctTickTimer){ clearInterval(ctTickTimer); ctTickTimer = null; }
   document.getElementById('appLayout').style.display = 'none';
   document.getElementById('loginWrap').style.display = 'flex';
 }
@@ -635,6 +726,7 @@ function showApp(){
   loadBanners();
   loadDeposits();
   loadWithdrawals();
+  loadCopyTrades(); /* NEW */
   subscribeRealtime();
 }
 
@@ -642,8 +734,8 @@ function showApp(){
 const PANEL_TITLES = {
   dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
   kyc:'KYC Queue', deposits:'Deposits', withdrawals:'Withdrawals',
-  copytrade:'Copy Trade Signals', banners:'Home Banners',
-  stats:'App Stats', settings:'Settings'
+  copytrade:'Copy Trade Signals', copytrades:'Copy Trades',
+  banners:'Home Banners', stats:'App Stats', settings:'Settings'
 };
 document.querySelectorAll('.item').forEach(it => {
   it.addEventListener('click', () => { if(it.dataset.panel) navTo(it.dataset.panel); });
@@ -661,6 +753,7 @@ function navTo(panel){
   if(panel === 'deposits') loadDeposits();
   if(panel === 'withdrawals') loadWithdrawals();
   if(panel === 'copytrade') renderCopyTradePanel();
+  if(panel === 'copytrades') loadCopyTrades(); /* NEW */
   if(panel === 'banners') loadBanners();
   if(panel === 'stats') loadAppStatsAdmin();
 }
@@ -716,6 +809,10 @@ function subscribeRealtime(){
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'participants' }, () => {
       loadParticipants().then(() => { updateStats(); renderCopyTradePanel(); });
+      loadCopyTrades(); /* NEW: refresh Copy Trades panel */
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'copy_profits' }, () => {
+      loadCopyTrades(); /* NEW */
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
       loadUsers().then(() => { renderUserWallets(); renderKyc(); });
@@ -1049,6 +1146,139 @@ function openParticipants(signalId){
   document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
   document.getElementById('modal').classList.add('on');
 }
+
+/* ============================================================
+   === NEW: COPY TRADES PANEL ===============================
+   ============================================================ */
+async function loadCopyTrades(){
+  try {
+    const [tradesRes, profitsRes] = await Promise.all([
+      sb.from('participants')
+        .select('id, user_id, username, uid, trader_name, sym, invested, amount_usdt, status, opened_at, closes_at, closed_at, gross_profit, net_profit, commission')
+        .order('opened_at', { ascending: false })
+        .limit(500),
+      sb.from('copy_profits')
+        .select('id, user_id, trader_name, sym, invested, gross_profit, net_profit, profit, commission, created_at')
+        .order('created_at', { ascending: false })
+        .limit(500)
+    ]);
+    copyTrades = tradesRes.data || [];
+    copyProfits = profitsRes.data || [];
+  } catch(e){
+    copyTrades = [];
+    copyProfits = [];
+  }
+  renderCopyTradesPanel();
+  startCtTicker();
+}
+
+function renderCopyTradesPanel(){
+  const open = copyTrades.filter(t => t.status === 'open');
+  const closed = copyTrades.filter(t => t.status === 'closed');
+
+  // Badge = open count
+  const badge = document.getElementById('copytradesBadge');
+  if(badge) badge.textContent = open.length;
+
+  const openCountEl = document.getElementById('ctOpenCount');
+  const closedCountEl = document.getElementById('ctClosedCount');
+  if(openCountEl) openCountEl.textContent = open.length;
+  if(closedCountEl) closedCountEl.textContent = closed.length;
+
+  // --- Summary cards (based on copy_profits for accuracy) ---
+  let sumGross = 0, sumComm = 0, sumNet = 0;
+  copyProfits.forEach(cp => {
+    sumGross += Number(cp.gross_profit || 0);
+    sumComm += Number(cp.commission || 0);
+    sumNet += Number(cp.net_profit || cp.profit || 0);
+  });
+  const gEl = document.getElementById('ctSumGross');
+  const cEl = document.getElementById('ctSumComm');
+  const nEl = document.getElementById('ctSumNet');
+  if(gEl) gEl.textContent = '$' + sumGross.toFixed(2);
+  if(cEl) cEl.textContent = '$' + sumComm.toFixed(2);
+  if(nEl) nEl.textContent = '$' + sumNet.toFixed(2);
+
+  // --- Open table ---
+  const openBody = document.getElementById('ctOpenTable');
+  if(openBody){
+    if(!open.length){
+      openBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3);">No open positions right now.</td></tr>';
+    } else {
+      openBody.innerHTML = open.map(t => {
+        const initial = (t.username || '?').charAt(0).toUpperCase();
+        const invested = Number(t.invested || t.amount_usdt || 0);
+        const closesAt = t.closes_at ? new Date(t.closes_at).getTime() : (new Date(t.opened_at).getTime() + 60000);
+        const remain = Math.max(0, Math.ceil((closesAt - Date.now()) / 1000));
+        return `<tr>
+          <td><div class="user-cell">
+            <div class="user-av">${initial}</div>
+            <div class="user-info">
+              <div class="user-name">${t.username || '—'}</div>
+              <div class="user-uid">${t.uid || ''}</div>
+            </div>
+          </div></td>
+          <td>${t.trader_name || '—'}</td>
+          <td><span class="tag gray">${t.sym || '—'}</span></td>
+          <td class="right"><b>$${invested.toFixed(2)}</b></td>
+          <td>${t.opened_at ? new Date(t.opened_at).toLocaleTimeString() : '—'}</td>
+          <td><span class="tag orange" data-closes-at="${closesAt}">${remain}s</span></td>
+        </tr>`;
+      }).join('');
+    }
+  }
+
+  // --- Closed table (source of truth = copy_profits for breakdown, enriched by participants) ---
+  const closedBody = document.getElementById('ctClosedTable');
+  if(closedBody){
+    if(!copyProfits.length){
+      closedBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text3);">No closed trades yet.</td></tr>';
+    } else {
+      closedBody.innerHTML = copyProfits.map(cp => {
+        const user = allUsers.find(u => u.id === cp.user_id);
+        const uname = user?.username || '—';
+        const uuid = user?.uid || '';
+        const initial = (uname || '?').charAt(0).toUpperCase();
+        const invested = Number(cp.invested || 0);
+        const gross = Number(cp.gross_profit || 0);
+        const comm = Number(cp.commission || 0);
+        const net = Number(cp.net_profit || cp.profit || 0);
+        return `<tr>
+          <td><div class="user-cell">
+            <div class="user-av">${initial}</div>
+            <div class="user-info">
+              <div class="user-name">${uname}</div>
+              <div class="user-uid">${uuid}</div>
+            </div>
+          </div></td>
+          <td>${cp.trader_name || '—'}</td>
+          <td><span class="tag gray">${cp.sym || '—'}</span></td>
+          <td class="right">$${invested.toFixed(2)}</td>
+          <td class="right" style="color:var(--green);font-weight:700;">+$${gross.toFixed(2)}</td>
+          <td class="right" style="color:var(--red);font-weight:700;">-$${comm.toFixed(2)}</td>
+          <td class="right" style="color:var(--blue);font-weight:800;">+$${net.toFixed(2)}</td>
+          <td>${cp.created_at ? new Date(cp.created_at).toLocaleString() : '—'}</td>
+        </tr>`;
+      }).join('');
+    }
+  }
+}
+
+/* Local ticker: update "Xs" countdown on open rows every second */
+function startCtTicker(){
+  if(ctTickTimer) return;
+  ctTickTimer = setInterval(() => {
+    document.querySelectorAll('#ctOpenTable [data-closes-at]').forEach(el => {
+      const t = Number(el.dataset.closesAt);
+      const remain = Math.max(0, Math.ceil((t - Date.now()) / 1000));
+      el.textContent = remain + 's';
+      if(remain === 0){ el.classList.remove('orange'); el.classList.add('green'); el.textContent = 'closing…'; }
+    });
+  }, 1000);
+}
+/* ============================================================
+   === END NEW COPY TRADES PANEL =============================
+   ============================================================ */
 
 /* BANNERS */
 async function loadBanners(){
@@ -1496,7 +1726,6 @@ function viewKycDocs(userId){
   document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
   document.getElementById('modal').classList.add('on');
 
-  // Extract path from URL and generate signed URLs
   async function loadSignedKycUrls(){
     try {
       const parsePath = (url) => {
