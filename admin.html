@@ -193,7 +193,6 @@ tr:hover td{background:#FAFBFC;}
   .content{padding:16px;}
 }
 
-/* === NEW: Copy Trades summary row === */
 .ct-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
 .ct-sum{background:#fff;border-radius:8px;padding:18px 20px;border-left:4px solid var(--green);}
 .ct-sum.comm{border-left-color:var(--red);}
@@ -204,6 +203,21 @@ tr:hover td{background:#FAFBFC;}
 .ct-sum.comm .v{color:var(--red);}
 .ct-sum.user .v{color:var(--blue);}
 @media(max-width:820px){.ct-summary{grid-template-columns:1fr;}}
+
+.calc-card{background:#fff;border-radius:8px;padding:18px 20px;margin-bottom:16px;
+  border-left:4px solid var(--purple);}
+.calc-card h3{margin:0 0 4px;font-size:15px;font-weight:700;}
+.calc-card .sub{font-size:12px;color:var(--text2);margin-bottom:14px;}
+.calc-line{display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;font-size:12.5px;border-bottom:1px dashed var(--line);}
+.calc-line:last-child{border-bottom:none;}
+.calc-line .k{color:var(--text2);}
+.calc-line .v{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums;}
+.calc-line.ded .v{color:var(--red);}
+.calc-line.add .v{color:var(--green);}
+.calc-line.total{padding-top:12px;margin-top:6px;border-top:2px solid var(--line);border-bottom:none;font-size:14px;}
+.calc-line.total .v{color:var(--green);font-size:18px;font-weight:800;}
+.calc-line.locked .v{color:var(--orange);font-size:14px;font-weight:800;}
 </style>
 </head>
 <body>
@@ -272,13 +286,15 @@ tr:hover td{background:#FAFBFC;}
       <span>Copy Trade Signals</span>
       <span class="badge" id="ctBadge">0</span>
     </div>
-    <!-- === NEW: Copy Trades panel item === -->
     <div class="item" data-panel="copytrades">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="19" cy="18" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
       <span>Copy Trades</span>
       <span class="badge" id="copytradesBadge">0</span>
     </div>
-    <!-- === END NEW === -->
+    <div class="item" data-panel="userprofits">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 19V9M9 19V5M14 19v-7M19 19V8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.6" opacity=".3"/></svg>
+      <span>User Profits</span>
+    </div>
     <div class="item" data-panel="banners">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18" stroke="currentColor" stroke-width="1.8"/></svg>
       <span>Home Banners</span>
@@ -529,7 +545,6 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
-    <!-- === NEW: Copy Trades Panel === -->
     <div class="panel" id="panel-copytrades">
       <div class="warn info">
         <b>Copy Trade lifecycle.</b> Every user position opens for 60 seconds, then closes automatically.
@@ -593,7 +608,61 @@ tr:hover td{background:#FAFBFC;}
         </div>
       </div>
     </div>
-    <!-- === END NEW === -->
+
+    <div class="panel" id="panel-userprofits">
+      <div class="warn info">
+        <b>Per-user profit ledger.</b> Full breakdown of every user's investment, profit, commission, and withdrawable amount.
+      </div>
+
+      <div class="card">
+        <h2>User Profit Summary <span class="tag purple" id="upCount">0</span></h2>
+        <div class="sub">Every user, ranked by lifetime profit.</div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+          <input id="upSearch" placeholder="Search by username, email, or UID..." oninput="renderUserProfits()"
+            style="flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:13px;">
+          <button class="btn sm" onclick="exportUserProfitsCSV()">Export CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th class="right">Total Invested</th>
+                <th class="right">Total Profit</th>
+                <th class="right">Commission Paid</th>
+                <th class="right">Withdrawn</th>
+                <th class="right">Balance</th>
+                <th class="right">Withdrawable</th>
+                <th>Status</th>
+                <th class="right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="upTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Recent Profit Entries <span class="tag green" id="uplCount">0</span></h2>
+        <div class="sub">Every profit credited to any user, from the profit ledger.</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Source</th>
+                <th>Analyst / Pair</th>
+                <th class="right">Gross</th>
+                <th class="right">Commission</th>
+                <th class="right">Net to User</th>
+                <th>When</th>
+              </tr>
+            </thead>
+            <tbody id="uplTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
     <div class="panel" id="panel-banners">
       <div class="card">
@@ -672,6 +741,14 @@ tr:hover td{background:#FAFBFC;}
 const cfg = window.NT_CONFIG || {};
 const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
+/* ============================================================
+   HIDDEN LOCK RULES (must match app.html)
+   ============================================================ */
+const LOCK_TIER1_PCT = 0.40;
+const LOCK_TIER2_PCT = 0.70;
+const LOCK_TIER1_DAYS = 45;
+const LOCK_TIER2_DAYS = 90;
+
 let adminUser = null;
 let signals = [];
 let participantsBySignal = {};
@@ -681,10 +758,11 @@ let deposits = [];
 let withdrawals = [];
 let kycFilter = 'all';
 
-/* === NEW: Copy-trade state === */
-let copyTrades = [];        // participants with status='closed' or 'open'
-let copyProfits = [];       // copy_profits rows
+let copyTrades = [];
+let copyProfits = [];
 let ctTickTimer = null;
+
+let profitLedger = [];
 
 /* AUTH */
 async function doLogin(){
@@ -726,7 +804,8 @@ function showApp(){
   loadBanners();
   loadDeposits();
   loadWithdrawals();
-  loadCopyTrades(); /* NEW */
+  loadCopyTrades();
+  loadUserProfits();
   subscribeRealtime();
 }
 
@@ -735,6 +814,7 @@ const PANEL_TITLES = {
   dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
   kyc:'KYC Queue', deposits:'Deposits', withdrawals:'Withdrawals',
   copytrade:'Copy Trade Signals', copytrades:'Copy Trades',
+  userprofits:'User Profits',
   banners:'Home Banners', stats:'App Stats', settings:'Settings'
 };
 document.querySelectorAll('.item').forEach(it => {
@@ -753,7 +833,8 @@ function navTo(panel){
   if(panel === 'deposits') loadDeposits();
   if(panel === 'withdrawals') loadWithdrawals();
   if(panel === 'copytrade') renderCopyTradePanel();
-  if(panel === 'copytrades') loadCopyTrades(); /* NEW */
+  if(panel === 'copytrades') loadCopyTrades();
+  if(panel === 'userprofits') loadUserProfits();
   if(panel === 'banners') loadBanners();
   if(panel === 'stats') loadAppStatsAdmin();
 }
@@ -786,6 +867,17 @@ async function loadUsers(){
   const { data, error } = await sb.from('profiles').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ allUsers = []; return; }
   allUsers = data || [];
+
+  /* Augment with commission totals */
+  try {
+    const { data: commData } = await sb.from('copy_profits').select('user_id, commission').limit(5000);
+    const commMap = {};
+    (commData || []).forEach(c => {
+      commMap[c.user_id] = (commMap[c.user_id] || 0) + Number(c.commission || 0);
+    });
+    allUsers.forEach(u => { u.total_commission = commMap[u.id] || u.total_commission || 0; });
+  } catch(e){}
+
   document.getElementById('userWalletsBadge').textContent = allUsers.length;
   document.getElementById('stat-users').textContent = allUsers.length;
 }
@@ -809,13 +901,16 @@ function subscribeRealtime(){
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'participants' }, () => {
       loadParticipants().then(() => { updateStats(); renderCopyTradePanel(); });
-      loadCopyTrades(); /* NEW: refresh Copy Trades panel */
+      loadCopyTrades();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'copy_profits' }, () => {
-      loadCopyTrades(); /* NEW */
+      loadCopyTrades();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'user_profit_ledger' }, () => {
+      loadUserProfits();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-      loadUsers().then(() => { renderUserWallets(); renderKyc(); });
+      loadUsers().then(() => { renderUserWallets(); renderKyc(); renderUserProfits(); });
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'banners' }, () => {
       loadBanners();
@@ -1148,7 +1243,7 @@ function openParticipants(signalId){
 }
 
 /* ============================================================
-   === NEW: COPY TRADES PANEL ===============================
+   COPY TRADES PANEL
    ============================================================ */
 async function loadCopyTrades(){
   try {
@@ -1176,7 +1271,6 @@ function renderCopyTradesPanel(){
   const open = copyTrades.filter(t => t.status === 'open');
   const closed = copyTrades.filter(t => t.status === 'closed');
 
-  // Badge = open count
   const badge = document.getElementById('copytradesBadge');
   if(badge) badge.textContent = open.length;
 
@@ -1185,7 +1279,6 @@ function renderCopyTradesPanel(){
   if(openCountEl) openCountEl.textContent = open.length;
   if(closedCountEl) closedCountEl.textContent = closed.length;
 
-  // --- Summary cards (based on copy_profits for accuracy) ---
   let sumGross = 0, sumComm = 0, sumNet = 0;
   copyProfits.forEach(cp => {
     sumGross += Number(cp.gross_profit || 0);
@@ -1199,7 +1292,6 @@ function renderCopyTradesPanel(){
   if(cEl) cEl.textContent = '$' + sumComm.toFixed(2);
   if(nEl) nEl.textContent = '$' + sumNet.toFixed(2);
 
-  // --- Open table ---
   const openBody = document.getElementById('ctOpenTable');
   if(openBody){
     if(!open.length){
@@ -1228,7 +1320,6 @@ function renderCopyTradesPanel(){
     }
   }
 
-  // --- Closed table (source of truth = copy_profits for breakdown, enriched by participants) ---
   const closedBody = document.getElementById('ctClosedTable');
   if(closedBody){
     if(!copyProfits.length){
@@ -1264,7 +1355,6 @@ function renderCopyTradesPanel(){
   }
 }
 
-/* Local ticker: update "Xs" countdown on open rows every second */
 function startCtTicker(){
   if(ctTickTimer) return;
   ctTickTimer = setInterval(() => {
@@ -1276,9 +1366,206 @@ function startCtTicker(){
     });
   }, 1000);
 }
+
 /* ============================================================
-   === END NEW COPY TRADES PANEL =============================
+   USER PROFITS PANEL
    ============================================================ */
+async function loadUserProfits(){
+  try {
+    const { data } = await sb.from('user_profit_ledger')
+      .select('*').order('created_at', { ascending: false }).limit(500);
+    profitLedger = data || [];
+  } catch(e){ profitLedger = []; }
+  renderUserProfits();
+  renderProfitLedger();
+}
+
+function computeWithdrawableFor(u){
+  const balance = Number(u.balance || 0);
+  const invested = Number(u.total_invested || 0);
+  const profit = Number(u.total_profit || 0);
+  const withdrawn = Number(u.total_withdrawn || 0);
+  const firstAt = u.first_invested_at ? new Date(u.first_invested_at) : null;
+
+  if(!firstAt) return { withdrawable: balance, locked: 0, full: balance, inLock: false, daysLeft: 0, tier: '—', pct: 1 };
+
+  const daysSince = (Date.now() - firstAt.getTime()) / (1000 * 60 * 60 * 24);
+  let pct = 1, tier = 'Unlocked', inLock = false, daysLeft = 0;
+
+  if(daysSince < LOCK_TIER1_DAYS){
+    pct = LOCK_TIER1_PCT; tier = 'Tier 1 (0-45d)'; inLock = true;
+    daysLeft = Math.ceil(LOCK_TIER1_DAYS - daysSince);
+  } else if(daysSince < LOCK_TIER2_DAYS){
+    pct = LOCK_TIER2_PCT; tier = 'Tier 2 (46-90d)'; inLock = true;
+    daysLeft = Math.ceil(LOCK_TIER2_DAYS - daysSince);
+  }
+
+  const pool = (invested * pct) + profit - withdrawn;
+  const withdrawable = Math.max(0, Math.min(balance, pool));
+  const locked = Math.max(0, balance - withdrawable);
+  return { withdrawable, locked, full: balance, inLock, daysLeft, tier, pct, daysSince, invested, profit, withdrawn };
+}
+
+function renderUserProfits(){
+  const tbody = document.getElementById('upTable');
+  if(!tbody) return;
+  const q = (document.getElementById('upSearch')?.value || '').toLowerCase().trim();
+
+  let list = allUsers.slice();
+  if(q){
+    list = list.filter(u =>
+      (u.username || '').toLowerCase().includes(q) ||
+      (u.email || '').toLowerCase().includes(q) ||
+      (u.uid || '').toLowerCase().includes(q)
+    );
+  }
+  list.sort((a, b) => Number(b.total_profit || 0) - Number(a.total_profit || 0));
+
+  document.getElementById('upCount').textContent = list.length + ' users';
+
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text3);">No users.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(u => {
+    const info = computeWithdrawableFor(u);
+    const inv = Number(u.total_invested || 0);
+    const prof = Number(u.total_profit || 0);
+    const comm = Number(u.total_commission || 0);
+    const wd = Number(u.total_withdrawn || 0);
+    const bal = Number(u.balance || 0);
+    const lockTag = info.inLock
+      ? `<span class="tag orange">🔒 ${info.daysLeft}d left</span>`
+      : (bal > 0 ? '<span class="tag green">Unlocked</span>' : '<span class="tag gray">—</span>');
+
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${u.username || '—'}</div>
+          <div class="user-email">${u.email || '—'}</div>
+          <div class="user-uid">${u.uid || ''}</div>
+        </div>
+      </div></td>
+      <td class="right">$${inv.toFixed(2)}</td>
+      <td class="right" style="color:var(--green);font-weight:700;">+$${prof.toFixed(2)}</td>
+      <td class="right" style="color:var(--red);">-$${comm.toFixed(2)}</td>
+      <td class="right">$${wd.toFixed(2)}</td>
+      <td class="right" style="font-weight:700;">$${bal.toFixed(2)}</td>
+      <td class="right" style="font-weight:800;color:var(--blue);">$${info.withdrawable.toFixed(2)}</td>
+      <td>${lockTag}</td>
+      <td class="right">
+        <button class="btn sm" onclick="openUserCalc('${u.id}')">Details</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openUserCalc(userId){
+  const u = allUsers.find(x => x.id === userId);
+  if(!u){ toast('User not found'); return; }
+  const info = computeWithdrawableFor(u);
+  const inv = Number(u.total_invested || 0);
+  const prof = Number(u.total_profit || 0);
+  const comm = Number(u.total_commission || 0);
+  const wd = Number(u.total_withdrawn || 0);
+  const bal = Number(u.balance || 0);
+  const daysSince = info.daysSince !== undefined ? Math.floor(info.daysSince) : 0;
+
+  document.getElementById('modalTitle').textContent = 'Withdrawable Breakdown — ' + (u.username || '');
+  document.getElementById('modalBody').innerHTML = `
+    <div class="calc-card">
+      <h3>${u.username || '—'}</h3>
+      <div class="sub">${u.email || ''} · ${u.uid || ''}</div>
+
+      <div class="calc-line"><span class="k">Current balance</span><span class="v">$${bal.toFixed(2)}</span></div>
+      <div class="calc-line"><span class="k">Total deposited</span><span class="v">$${inv.toFixed(2)}</span></div>
+      <div class="calc-line"><span class="k">Total profit earned</span><span class="v">$${prof.toFixed(2)}</span></div>
+      <div class="calc-line"><span class="k">Commission paid to platform</span><span class="v">$${comm.toFixed(2)}</span></div>
+      <div class="calc-line"><span class="k">Total withdrawn (lifetime)</span><span class="v">$${wd.toFixed(2)}</span></div>
+
+      <div style="height:12px;"></div>
+
+      <div class="calc-line"><span class="k">Days since first deposit</span><span class="v">${daysSince} / 90</span></div>
+      <div class="calc-line"><span class="k">Current tier</span><span class="v">${info.tier}${info.inLock ? ` · ${info.daysLeft}d to next` : ''}</span></div>
+      <div class="calc-line"><span class="k">Principal release %</span><span class="v">${(info.pct * 100).toFixed(0)}%</span></div>
+
+      <div style="height:12px;"></div>
+
+      <div class="calc-line add"><span class="k">Principal share (${(info.pct * 100).toFixed(0)}% × $${inv.toFixed(2)})</span><span class="v">+$${(inv * info.pct).toFixed(2)}</span></div>
+      <div class="calc-line add"><span class="k">Profit share (100% × $${prof.toFixed(2)})</span><span class="v">+$${prof.toFixed(2)}</span></div>
+      <div class="calc-line ded"><span class="k">Already withdrawn</span><span class="v">-$${wd.toFixed(2)}</span></div>
+
+      <div class="calc-line total"><span class="k">Withdrawable now</span><span class="v">$${info.withdrawable.toFixed(2)}</span></div>
+      <div class="calc-line locked"><span class="k">Locked (unlocks over time)</span><span class="v">$${info.locked.toFixed(2)}</span></div>
+    </div>
+  `;
+  document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+  document.getElementById('modal').classList.add('on');
+}
+
+function renderProfitLedger(){
+  const tbody = document.getElementById('uplTable');
+  if(!tbody) return;
+  document.getElementById('uplCount').textContent = profitLedger.length;
+
+  if(!profitLedger.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text3);">No profit entries yet.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = profitLedger.slice(0, 100).map(p => {
+    const meta = p.meta || {};
+    const analyst = meta.trader_name || '—';
+    const pair = meta.sym ? `<span class="tag gray">${meta.sym}</span>` : '';
+    const user = allUsers.find(u => u.id === p.user_id) || {};
+    const uname = p.username || user.username || '—';
+    const initial = (uname || '?').charAt(0).toUpperCase();
+
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${initial}</div>
+        <div class="user-info">
+          <div class="user-name">${uname}</div>
+          <div class="user-uid">${p.uid || user.uid || ''}</div>
+        </div>
+      </div></td>
+      <td><span class="tag blue">${p.source || '—'}</span></td>
+      <td>${analyst} ${pair}</td>
+      <td class="right">$${Number(p.gross || 0).toFixed(2)}</td>
+      <td class="right" style="color:var(--red);">-$${Number(p.commission || 0).toFixed(2)}</td>
+      <td class="right" style="color:var(--green);font-weight:700;">+$${Number(p.amount || 0).toFixed(2)}</td>
+      <td>${p.created_at ? new Date(p.created_at).toLocaleString() : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportUserProfitsCSV(){
+  const rows = [['Username','Email','UID','Total Invested','Total Profit','Total Commission','Total Withdrawn','Balance','Withdrawable','Tier','Days Elapsed']];
+  allUsers.forEach(u => {
+    const info = computeWithdrawableFor(u);
+    rows.push([
+      u.username || '', u.email || '', u.uid || '',
+      Number(u.total_invested || 0).toFixed(2),
+      Number(u.total_profit || 0).toFixed(2),
+      Number(u.total_commission || 0).toFixed(2),
+      Number(u.total_withdrawn || 0).toFixed(2),
+      Number(u.balance || 0).toFixed(2),
+      info.withdrawable.toFixed(2),
+      info.tier || '',
+      info.daysSince !== undefined ? Math.floor(info.daysSince) : 0
+    ]);
+  });
+  const csv = rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'nexttrade_user_profits_' + new Date().toISOString().slice(0,10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('CSV exported');
+}
 
 /* BANNERS */
 async function loadBanners(){
