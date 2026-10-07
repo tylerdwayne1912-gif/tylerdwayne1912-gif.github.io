@@ -4,18 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <title>NextTrade — App</title>
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0B0E11">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NextTrade">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <script>
 (function(){
+  /* ---------- Theme ---------- */
   try{
     var saved = localStorage.getItem('nt_theme');
     var theme = (saved === 'light') ? 'light' : 'dark';
@@ -28,6 +29,7 @@
     document.documentElement.setAttribute('data-theme','dark');
   }
 
+  /* ---------- Universal device detection ---------- */
   var ua = navigator.userAgent || '';
   var platform = navigator.platform || '';
   var isIOS = /iPhone|iPad|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -42,16 +44,31 @@
   if(isIOS)    html.classList.add('is-ios');
   if(isAndroid) html.classList.add('is-android');
 
-  function setVH(){
-    var vh = window.innerHeight * 0.01;
-    html.style.setProperty('--vh', vh + 'px');
+  /* ---------- THE CRITICAL FIX: dynamic viewport height ---------- */
+  function setAppHeight(){
+    var h = window.innerHeight
+         || document.documentElement.clientHeight
+         || window.screen.height;
+    html.style.setProperty('--app-height', h + 'px');
+    html.style.setProperty('--vh', (h * 0.01) + 'px');
   }
-  setVH();
-  window.addEventListener('resize', setVH, { passive: true });
-  window.addEventListener('orientationchange', function(){ setTimeout(setVH, 120); }, { passive: true });
+  setAppHeight();
+
+  window.addEventListener('resize', setAppHeight, { passive: true });
+  window.addEventListener('orientationchange', function(){
+    setAppHeight();
+    setTimeout(setAppHeight, 100);
+    setTimeout(setAppHeight, 300);
+    setTimeout(setAppHeight, 600);
+  }, { passive: true });
+
   if(window.visualViewport){
-    window.visualViewport.addEventListener('resize', setVH, { passive: true });
+    window.visualViewport.addEventListener('resize', setAppHeight, { passive: true });
+    window.visualViewport.addEventListener('scroll', setAppHeight, { passive: true });
   }
+
+  setTimeout(setAppHeight, 100);
+  setTimeout(setAppHeight, 500);
 
   try{
     if(CSS && CSS.supports && CSS.supports('padding-top: env(safe-area-inset-top)')){
@@ -66,6 +83,7 @@
   }
   setOrientation();
   window.addEventListener('resize', setOrientation, { passive: true });
+  window.addEventListener('orientationchange', function(){ setTimeout(setOrientation, 200); }, { passive: true });
 })();
 </script>
 <style>
@@ -114,21 +132,53 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
   color:var(--text);display:flex;align-items:center;justify-content:center;min-height:100dvh;overflow:hidden;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
   transition:background-color .25s ease, color .25s ease;}
-.phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
-  position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);}
+
+.phone{
+  width:390px;height:844px;max-height:100dvh;background:var(--bg);
+  position:relative;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
 
 html.is-mobile,html.is-mobile body{
-  background:var(--bg);overflow:hidden;overscroll-behavior:none;
-  height:100%;height:100dvh;height:100svh;height:-webkit-fill-available;
-  position:fixed;inset:0;width:100%;
+  background:var(--bg);
+  overflow:hidden;
+  overscroll-behavior:none;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  height:var(--app-height, 100dvh);
+  height:var(--app-height, 100vh);
+  max-height:var(--app-height, 100dvh);
 }
-html.is-mobile body{display:block;min-height:0;padding:0;margin:0;touch-action:manipulation;}
+html.is-mobile body{
+  display:block;
+  min-height:0;
+  padding:0;
+  margin:0;
+  touch-action:manipulation;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+
 html.is-mobile .phone{
-  position:fixed;inset:0;width:100vw;width:100dvw;
-  height:100vh;height:calc(var(--vh, 1vh) * 100);height:100dvh;height:100svh;height:-webkit-fill-available;
-  max-height:none;min-height:0;box-shadow:none;border-radius:0;
-  box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;
+  position:fixed;
+  inset:0;
+  top:0;left:0;right:0;bottom:0;
+  width:100%;
+  width:100dvw;
+  height:var(--app-height, 100dvh);
+  max-height:var(--app-height, 100dvh);
+  min-height:0;
+  box-shadow:none;
+  border-radius:0;
+  box-sizing:border-box;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
+
 html.is-mobile .screen,
 html.is-mobile .scroll,
 html.is-mobile .bottomnav,
@@ -136,8 +186,22 @@ html.is-mobile .topbar,
 html.is-mobile .pf-scroll,
 html.is-mobile .dw-scroll,
 html.is-mobile .details-wrap,
-html.is-mobile .kyc-scroll{min-height:0;min-width:0;}
-html.is-mobile .scroll{-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+html.is-mobile .kyc-scroll,
+html.is-mobile .auth-body,
+html.is-mobile .auth-screen{
+  min-height:0;
+  min-width:0;
+}
+html.is-mobile .scroll,
+html.is-mobile .pf-scroll,
+html.is-mobile .dw-scroll,
+html.is-mobile .details-wrap,
+html.is-mobile .kyc-scroll,
+html.is-mobile .auth-body{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+
 html.is-mobile .topbar{
   padding-top:max(10px, env(safe-area-inset-top));
   padding-left:max(14px, env(safe-area-inset-left));
@@ -150,19 +214,26 @@ html.is-mobile .bottomnav{
   padding-right:env(safe-area-inset-right);
 }
 html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
+
 html.is-mobile .pf-top-icons,
 html.is-mobile .home-greet,
 html.is-mobile .dw-back,
 html.is-mobile .kyc-scroll > :first-child,
-html.is-mobile .pf-scroll > :first-child{padding-top:max(12px, env(safe-area-inset-top));}
-html.is-mobile .overlay .ov-head,
-html.is-mobile .auth-header{padding-top:max(16px, env(safe-area-inset-top));}
+html.is-mobile .pf-scroll > :first-child,
+html.is-mobile .auth-header{
+  padding-top:max(12px, env(safe-area-inset-top));
+}
+html.is-mobile .overlay .ov-head{
+  padding-top:max(14px, env(safe-area-inset-top));
+}
+
 html.is-mobile.is-landscape .topbar{padding-top:max(6px, env(safe-area-inset-top));padding-bottom:6px;}
 html.is-mobile.is-landscape .home-greet{padding:4px 16px 2px;}
 html.is-mobile.is-landscape .bottomnav{min-height:calc(48px + env(safe-area-inset-bottom, 0px));padding-bottom:max(4px, env(safe-area-inset-bottom));}
 html.is-mobile.is-landscape .bottomnav .nb{padding:5px 0 4px;font-size:10px;}
 html.is-mobile.is-landscape .welcome-card{padding:12px 16px;}
 html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-size:22px;}
+
 @media (max-height:700px){
   html.is-mobile .topbar{padding-top:max(6px, env(safe-area-inset-top));padding-bottom:6px;}
   html.is-mobile .home-greet h1{font-size:19px;}
@@ -173,23 +244,38 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
   html.is-mobile .bottomnav .nb{padding:6px 0 5px;font-size:10.5px;}
   html.is-mobile .bottomnav .nb svg{width:20px;height:20px;}
 }
+
 @media (min-width:430px) and (max-width:820px){
   html.is-mobile .scroll,
   html.is-mobile .pf-scroll,
   html.is-mobile .dw-scroll,
   html.is-mobile .details-wrap{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);}
 }
+
 @media (min-width:821px) and (max-width:1180px) and (pointer:coarse){
-  html.is-mobile .phone{max-width:560px;margin:0 auto;border-radius:20px;
-    padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);}
+  html.is-mobile .phone{
+    max-width:560px;margin:0 auto;border-radius:20px;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) 0 env(safe-area-inset-left);
+  }
 }
-@supports not (height: 100dvh){html.is-mobile .phone{height:calc(var(--vh, 1vh) * 100);}}
+
+@supports not (height: 100dvh){
+  html.is-mobile .phone{height:var(--app-height, calc(var(--vh, 1vh) * 100));}
+}
+
 @media(max-width:820px){
   body{display:block;min-height:0;height:100%;overflow:hidden;background:var(--bg);}
-  .phone{width:100vw;width:100dvw;height:100vh;height:calc(var(--vh, 1vh) * 100);height:100dvh;
-    max-height:none;min-height:0;box-shadow:none;border-radius:0;box-sizing:border-box;
-    display:flex;flex-direction:column;}
-  .screen,.scroll,.bottomnav,.topbar,.pf-scroll,.dw-scroll,.details-wrap,.kyc-scroll{min-height:0;min-width:0;}
+  .phone{
+    width:100vw;width:100dvw;
+    height:var(--app-height, 100vh);
+    max-height:var(--app-height, 100vh);
+    max-width:none;min-height:0;
+    box-shadow:none;border-radius:0;
+    box-sizing:border-box;display:flex;flex-direction:column;
+  }
+  .screen,.scroll,.bottomnav,.topbar,.pf-scroll,.dw-scroll,.details-wrap,.kyc-scroll,.auth-body,.auth-screen{
+    min-height:0;min-width:0;
+  }
 }
 
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
@@ -1903,62 +1989,19 @@ async function closeExpiredTrades(){
 
   for(const p of due){
     try {
-      const { data: check } = await sb.from('participants').select('status').eq('id', p.id).single();
-      if(!check || check.status !== 'open') continue;
-
-      const invested = Number(p.invested || p.amount_usdt || 0);
-      const gross = +(invested * CT_PROFIT_RATE).toFixed(6);
-      const commission = +(gross * CT_COMMISSION_RATE).toFixed(6);
-      const net = +(gross - commission).toFixed(6);
-
-      const { data: prof } = await sb.from('profiles')
-        .select('balance, total_invested, total_profit, total_commission, first_invested_at')
-        .eq('id', currentUser.id).single();
-
-      const prevInvested = Number(prof?.total_invested || 0);
-      const prevProfit = Number(prof?.total_profit || 0);
-      const prevComm = Number(prof?.total_commission || 0);
-
-      const newBal = Number(prof?.balance || 0) + invested + net;
-      const newInvested = prevInvested + invested;
-      const newProfit = prevProfit + net;
-      const newComm = prevComm + commission;
-
-      await sb.from('profiles').update({
-        balance: newBal,
-        total_invested: newInvested,
-        total_profit: newProfit,
-        total_commission: newComm,
-        first_invested_at: prof?.first_invested_at || new Date().toISOString()
-      }).eq('id', currentUser.id);
-      currentUser.balance = newBal;
-
-      await sb.from('copy_profits').insert({
-        user_id: currentUser.id,
-        trader_name: p.trader_name || null,
-        sym: p.sym || null,
-        invested, gross_profit: gross, net_profit: net, profit: net, commission
+      const { data: res, error } = await sb.rpc('close_copy_trade', {
+        p_participant_id: p.id
       });
-
-      await sb.from('user_profit_ledger').insert({
-        user_id: currentUser.id,
-        username: currentUser.username,
-        uid: currentUser.uid,
-        source: 'copy_trade',
-        amount: net,
-        commission, gross,
-        meta: { trader_name: p.trader_name, sym: p.sym, invested }
-      });
-
-      await sb.from('participants').update({
-        status: 'closed',
-        gross_profit: gross, net_profit: net, commission,
-        closed_at: new Date().toISOString()
-      }).eq('id', p.id);
-
+      if(error){
+        console.warn('close RPC error:', error.message);
+        continue;
+      }
+      const net = Number(res?.net || 0);
       const sign = net >= 0 ? '+' : '';
-      toast(`✓ ${p.trader_name || 'Trade'} closed — ${sign}$${net.toFixed(2)} profit`);
-    } catch(e){ console.warn('closeExpiredTrades', e); }
+      toast(`✓ ${res?.trader_name || 'Trade'} closed — ${sign}$${net.toFixed(2)} profit`);
+    } catch(e){
+      console.warn('closeExpiredTrades', e);
+    }
   }
 
   await refreshCopyPanels();
@@ -2292,35 +2335,35 @@ async function updateWithdrawAmount(){
 }
 async function submitWithdraw(){
   if(!currentUser){ openAuth('register'); return; }
-  if(currentUser.kyc_status !== 'verified') return toast('Complete identity verification to withdraw');
   const amt = parseFloat(document.getElementById('wdAmount').value || '0');
   const addr = document.getElementById('wdAddress').value.trim();
   if(!amt || amt < WD_MIN) return toast('Minimum withdrawal: ' + WD_MIN + ' USDT');
   if(!addr) return toast('Enter withdrawal address');
-  const info = await computeWithdrawable();
-  if(amt > info.withdrawable) return toast('Insufficient available balance to complete this request');
+  if(!/^0x[a-fA-F0-9]{40}$/.test(addr)) return toast('Invalid ERC20 address');
+
   const btn = document.getElementById('wdSubmitBtn');
   btn.disabled = true; btn.textContent = 'Submitting…';
-  const { error } = await sb.from('withdrawals').insert({
-    user_id: currentUser.id,
-    username: currentUser.username,
-    uid: currentUser.uid,
-    amount: amt, address: addr, network: 'ERC20', status: 'pending'
+
+  const { data, error } = await sb.rpc('request_withdrawal', {
+    p_amount: amt,
+    p_address: addr
   });
-  if(error){ btn.disabled = false; btn.textContent = 'Submit Withdrawal'; toast('Error: ' + error.message); return; }
-  const newBal = Number(currentUser.balance || 0) - amt;
-  const { data: prof } = await sb.from('profiles').select('total_withdrawn').eq('id', currentUser.id).single();
-  const newWithdrawn = Number(prof?.total_withdrawn || 0) + amt;
-  const { error: balErr } = await sb.from('profiles').update({ balance: newBal, total_withdrawn: newWithdrawn }).eq('id', currentUser.id);
-  if(balErr){ toast('Withdraw saved but balance update failed — contact support'); }
-  else { currentUser.balance = newBal; await updatePfBalance(); }
+
   btn.disabled = false; btn.textContent = 'Submit Withdrawal';
+
+  if(error){
+    return toast(error.message || 'Withdrawal failed');
+  }
+
+  await updatePfBalance();
   toast('✓ Withdrawal submitted — awaiting approval');
   document.getElementById('wdAmount').value = '';
   document.getElementById('wdAddress').value = '';
   const nr = document.getElementById('netReceive'); if(nr) nr.style.display = 'none';
   go('s-home');
 }
+
+/* DEPOSIT */
 function openDeposit(){ go('s-deposit'); }
 function openWithdraw(){ go('s-withdraw'); }
 function updateDepositAmount(){
@@ -2507,9 +2550,9 @@ function showCopyTradingInfo(){
 }
 function closeDocModal(){ document.getElementById('docModal').classList.remove('on'); }
 
-/* DOWNLOAD — redirect to /download.html */
+/* DOWNLOAD */
 function downloadFor(platform){
-  window.location.href = '/download.html';
+  window.location.href = 'download.html';
 }
 
 /* RENDER LOOP */
