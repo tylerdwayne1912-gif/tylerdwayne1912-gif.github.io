@@ -219,7 +219,6 @@ tr:hover td{background:#FAFBFC;}
 .calc-line.total .v{color:var(--green);font-size:18px;font-weight:800;}
 .calc-line.locked .v{color:var(--orange);font-size:14px;font-weight:800;}
 
-/* === Analytics Dashboard === */
 .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 @media(max-width:900px){.chart-row{grid-template-columns:1fr;}}
 .chart-card{background:#fff;border-radius:8px;padding:20px;}
@@ -362,7 +361,6 @@ tr:hover td{background:#FAFBFC;}
         <div class="stat"><div class="ic r"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><div class="k">Pending Withdrawals</div><div class="v" id="stat-pending-withdrawals">0</div></div></div>
       </div>
 
-      <!-- === ANALYTICS === -->
       <div class="chart-row">
         <div class="chart-card">
           <h3>📈 7-Day Signups</h3>
@@ -496,7 +494,7 @@ tr:hover td{background:#FAFBFC;}
     <div class="panel" id="panel-withdrawals">
       <div class="card">
         <h2>Pending Withdrawals <span class="tag orange" id="pendingWdCount">0</span></h2>
-        <div class="sub">Users who requested a withdrawal. Balance was already held. Send USDT to the address, then approve.</div>
+        <div class="sub">Users who requested a withdrawal. Balance was already deducted at request time. Send USDT to the address, then approve.</div>
         <div class="table-wrap">
           <table>
             <thead><tr><th>User</th><th class="right">Amount</th><th>Address</th><th>Submitted</th><th class="right">Actions</th></tr></thead>
@@ -982,11 +980,8 @@ function subscribeRealtime(){
     .subscribe();
 }
 
-/* ============================================================
-   ANALYTICS DASHBOARD
-   ============================================================ */
+/* ANALYTICS DASHBOARD */
 async function renderDashboardCharts(){
-  /* ---- 7-day signups ---- */
   const days = [];
   for(let i = 6; i >= 0; i--){
     const d = new Date();
@@ -1004,7 +999,6 @@ async function renderDashboardCharts(){
   });
   drawBarChart('chartSignups', days.map(d => d.toLocaleDateString('en-US',{weekday:'short'})), signups, '#1890FF');
 
-  /* ---- Deposit vs Withdrawal (approved amounts, last 7 days) ---- */
   const depArr = days.map(day => {
     const next = new Date(day); next.setDate(next.getDate() + 1);
     return deposits.filter(d => d.status === 'approved' && d.approved_at && new Date(d.approved_at) >= day && new Date(d.approved_at) < next)
@@ -1017,7 +1011,6 @@ async function renderDashboardCharts(){
   });
   drawDualBarChart('chartDepWd', days.map(d => d.toLocaleDateString('en-US',{weekday:'short'})), depArr, wdArr);
 
-  /* ---- Top 5 users by profit ---- */
   const top5 = allUsers.slice().sort((a,b) => Number(b.total_profit || 0) - Number(a.total_profit || 0)).slice(0, 5);
   const topEl = document.getElementById('topUsersList');
   if(topEl){
@@ -1036,7 +1029,6 @@ async function renderDashboardCharts(){
     }
   }
 
-  /* ---- Platform overview stats ---- */
   const aum = allUsers.reduce((s, u) => s + Number(u.balance || 0), 0);
   const commission = copyProfits.reduce((s, c) => s + Number(c.commission || 0), 0);
   const paid = copyProfits.reduce((s, c) => s + Number(c.net_profit || c.profit || 0), 0);
@@ -1068,7 +1060,6 @@ function drawBarChart(canvasId, labels, values, color){
   const gap = chartW / values.length;
   const barW = Math.max(6, gap * 0.55);
 
-  /* grid + y labels */
   ctx.font = '10px -apple-system, sans-serif';
   ctx.strokeStyle = '#F0F0F0'; ctx.fillStyle = '#B7BDC6'; ctx.lineWidth = 1;
   for(let i = 0; i <= 4; i++){
@@ -1078,7 +1069,6 @@ function drawBarChart(canvasId, labels, values, color){
     ctx.fillText(String(v), 6, y + 3);
   }
 
-  /* bars */
   values.forEach((v, i) => {
     const x = padL + gap * i + (gap - barW) / 2;
     const bh = (v / max) * chartH;
@@ -1103,7 +1093,6 @@ function drawBarChart(canvasId, labels, values, color){
     }
   });
 
-  /* x labels */
   ctx.fillStyle = '#B7BDC6';
   labels.forEach((lbl, i) => {
     const x = padL + gap * i + gap / 2;
@@ -1144,18 +1133,14 @@ function drawDualBarChart(canvasId, labels, arr1, arr2){
     const x2 = baseX + 2;
     const h1 = (arr1[i] / max) * chartH;
     const h2 = (arr2[i] / max) * chartH;
-
     ctx.fillStyle = '#0ECB81';
     ctx.fillRect(x1, padT + chartH - h1, barW, h1);
-
     ctx.fillStyle = '#F6465D';
     ctx.fillRect(x2, padT + chartH - h2, barW, h2);
-
     ctx.fillStyle = '#B7BDC6';
     ctx.fillText(lbl, baseX - 10, h - 8);
   });
 
-  /* legend */
   ctx.fillStyle = '#0ECB81';
   ctx.fillRect(w - 90, 4, 8, 8);
   ctx.fillStyle = '#1E2329';
@@ -1983,7 +1968,7 @@ async function rejectDeposit(id){
   loadDeposits();
 }
 
-/* WITHDRAWALS */
+/* WITHDRAWALS — balance deducted at REQUEST time via RPC */
 async function loadWithdrawals(){
   const { data, error } = await sb.from('withdrawals').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ withdrawals = []; }
@@ -2046,7 +2031,7 @@ function renderWithdrawals(){
 async function approveWithdraw(id){
   const w = withdrawals.find(x => x.id === id);
   if(!w) return toast('Not found');
-  if(!confirm(`Approve withdrawal of $${Number(w.amount).toFixed(2)}?\n\nMake sure you've sent USDT to:\n${w.address}`)) return;
+  if(!confirm(`Approve withdrawal of $${Number(w.amount).toFixed(2)}?\n\nMake sure you've sent USDT to:\n${w.address}\n\n(Balance was already deducted at request time.)`)) return;
   const { error } = await sb.from('withdrawals').update({
     status: 'approved', approved_at: new Date().toISOString(), approved_by: adminUser?.email || 'admin'
   }).eq('id', id);
@@ -2059,10 +2044,12 @@ async function rejectWithdraw(id){
   if(!w) return toast('Not found');
   if(!confirm(`Reject and REFUND $${Number(w.amount).toFixed(2)} to ${w.username}?`)) return;
 
-  const { data: prof } = await sb.from('profiles').select('balance').eq('id', w.user_id).single();
-  const refunded = Number(prof?.balance || 0) + Number(w.amount);
+  const { data: prof } = await sb.from('profiles').select('balance, total_withdrawn').eq('id', w.user_id).single();
+  const newBal = Number(prof?.balance || 0) + Number(w.amount);
+  const newWithdrawn = Math.max(0, Number(prof?.total_withdrawn || 0) - Number(w.amount));
+
   const { data: upd, error: bErr } = await sb.from('profiles')
-    .update({ balance: refunded }).eq('id', w.user_id).select('id, balance');
+    .update({ balance: newBal, total_withdrawn: newWithdrawn }).eq('id', w.user_id).select('id, balance');
   if(bErr) return toast('Refund error: ' + bErr.message);
   if(!upd || !upd.length) return toast('❌ Refund blocked — check RLS on profiles');
 
