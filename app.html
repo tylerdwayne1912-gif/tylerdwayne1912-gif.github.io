@@ -81,13 +81,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
   transition:background-color .25s ease, color .25s ease;}
 .phone{width:390px;height:844px;max-height:100dvh;background:var(--bg);
   position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6);}
-
-/* ============================================================
-   MOBILE / iOS FULLSCREEN — safe area + layout lock
-   ============================================================ */
 html.is-mobile,html.is-mobile body{background:var(--bg);overflow:hidden;height:100%;position:fixed;inset:0;width:100%;}
 html.is-mobile body{display:block;min-height:0;padding:0;margin:0;}
-
 html.is-mobile .phone{
   position:fixed;inset:0;width:100vw;width:100dvw;
   height:100vh;height:100dvh;height:-webkit-fill-available;
@@ -95,25 +90,18 @@ html.is-mobile .phone{
   padding-top:env(safe-area-inset-top);
   padding-left:env(safe-area-inset-left);
   padding-right:env(safe-area-inset-right);
-  padding-bottom:0;
-  box-sizing:border-box;overflow:hidden;
+  padding-bottom:0;box-sizing:border-box;overflow:hidden;
 }
-
 html.is-mobile .bottomnav{min-height:calc(58px + env(safe-area-inset-bottom, 0px));
   padding-bottom:max(9px, env(safe-area-inset-bottom));}
-
 html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
-
 @media(max-width:820px){
   body{display:block;min-height:0;overflow:hidden;background:var(--bg);}
   .phone{width:100vw;width:100dvw;height:100vh;height:100dvh;height:-webkit-fill-available;
     max-height:none;box-shadow:none;border-radius:0;
-    padding-top:env(safe-area-inset-top);
-    padding-left:env(safe-area-inset-left);
-    padding-right:env(safe-area-inset-right);
-    box-sizing:border-box;}
+    padding-top:env(safe-area-inset-top);padding-left:env(safe-area-inset-left);
+    padding-right:env(safe-area-inset-right);box-sizing:border-box;}
 }
-
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;
   opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease;}
 .screen.active{opacity:1;visibility:visible;pointer-events:auto;}
@@ -429,6 +417,46 @@ html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
 .no-more-data{display:flex;align-items:center;gap:12px;padding:22px 16px 30px;color:var(--text3);font-size:12.5px;}
 .no-more-data::before,.no-more-data::after{content:"";height:1px;background:var(--line);flex:1;}
 
+/* === NEW: Active copies + history rows === */
+.ac-wrap{display:flex;flex-direction:column;gap:10px;padding:0 16px 14px;}
+.ac-row{background:var(--card);border-radius:14px;border:1px solid var(--line);
+  padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;}
+.ac-row .ac-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0ECB81,#0a9e63);
+  color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;flex-shrink:0;
+  background-size:cover;background-position:center;}
+.ac-row .ac-body{flex:1;min-width:0;}
+.ac-row .ac-title{font-size:14px;font-weight:800;color:var(--text);letter-spacing:-.2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ac-row .ac-sub{font-size:12px;color:var(--text2);margin-top:3px;font-variant-numeric:tabular-nums;}
+.ac-row .ac-right{text-align:right;flex-shrink:0;}
+.ac-row .ac-amount{font-size:14px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+.ac-row .ac-count{font-size:11.5px;color:var(--orange);font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums;}
+.ac-row .ac-running{font-size:11.5px;color:var(--orange);font-weight:700;margin-top:3px;display:flex;align-items:center;gap:5px;justify-content:flex-end;}
+.ac-row .ac-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);animation:pulse 1.2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.ac-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--green);transition:width .95s linear;}
+
+.hist-row{background:var(--card);border-radius:12px;border:1px solid var(--line);
+  padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:.15s;}
+.hist-row:active{background:var(--bg3);}
+.hist-row .hchk{width:26px;height:26px;border-radius:50%;background:var(--green-lt);
+  color:var(--green-dk);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:14px;flex-shrink:0;}
+.hist-row .hbody{flex:1;min-width:0;}
+.hist-row .htitle{font-size:13.5px;font-weight:700;color:var(--text);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hist-row .hsub{font-size:11px;color:var(--text3);margin-top:3px;}
+.hist-row .hnet{font-size:14px;font-weight:800;color:var(--green);font-variant-numeric:tabular-nums;text-align:right;}
+.hist-empty{text-align:center;color:var(--text3);font-size:12.5px;padding:20px 16px;}
+
+/* Breakdown sheet */
+.bd-grid{display:flex;flex-direction:column;gap:10px;padding:4px 0 4px;}
+.bd-row{display:flex;align-items:center;justify-content:space-between;font-size:14px;padding:10px 0;border-bottom:1px solid var(--line);}
+.bd-row:last-child{border-bottom:none;}
+.bd-row .bd-k{color:var(--text2);}
+.bd-row .bd-v{color:var(--text);font-weight:800;font-variant-numeric:tabular-nums;}
+.bd-row.total .bd-v{color:var(--green);font-size:18px;}
+.bd-row.comm .bd-v{color:var(--red);}
+
 .fs-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:2000;display:none;
   align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
 .fs-backdrop.on{display:flex;}
@@ -637,7 +665,6 @@ html.is-mobile .scroll{padding-bottom:max(8px, env(safe-area-inset-bottom));}
 .tx-row .tx-status.approved{background:var(--green-lt);color:var(--green-dk);}
 .tx-row .tx-status.rejected{background:var(--red-lt);color:var(--red);}
 
-/* Prevent iOS auto-zoom on input focus */
 html.is-mobile input,
 html.is-mobile select,
 html.is-mobile textarea{font-size:16px !important;}
@@ -880,6 +907,15 @@ html.is-mobile textarea{font-size:16px !important;}
       <div class="ct-stat tint"><div class="lbl">Today's Profit and Loss</div><div class="val" id="statTodayPnl">0.00</div><div class="unit">USD</div></div>
       <div class="ct-stat"><div class="lbl">Keep the bottom position</div><div class="val" id="statBottom">0.00</div><div class="unit">USD</div></div>
     </div>
+
+    <!-- NEW: My Active Copies -->
+    <div class="ct-sec-head" id="activeCopiesHead" style="display:none;"><h2>My Active Copies</h2></div>
+    <div class="ac-wrap" id="activeCopiesList"></div>
+
+    <!-- NEW: Copy History -->
+    <div class="ct-sec-head" id="copyHistoryHead" style="display:none;"><h2>Copy History</h2></div>
+    <div class="ac-wrap" id="copyHistoryList"></div>
+
     <div class="ct-sec-head"><h2>Copy Trading Analyst</h2></div>
     <div class="ct-search-row">
       <div class="ct-search">
@@ -1036,12 +1072,25 @@ html.is-mobile textarea{font-size:16px !important;}
 const cfg = window.NT_CONFIG || {};
 const sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY);
 
+/* ============================================================
+   COPY-TRADE CONFIG (locked decisions)
+   ============================================================ */
+const CT_PROFIT_RATE = 0.015;      // 1.5% per cycle
+const CT_COMMISSION_RATE = 0.25;   // 25% of gross
+const CT_CYCLE_MS = 60 * 1000;     // 60 seconds
+
 let currentUser = null;
 let liveNews = [];
 let appStats = { totalPnl: 0, partner: 0, todayPnl: 0, bottom: 0 };
 const kycUploads = { front: null, selfie: null };
 let kycBannerTimer = null;
 let userRealtimeChannel = null;
+
+/* === NEW: copy-trade state === */
+let myOpenCopies = [];       // participants rows with status='open'
+let myCopyHistory = [];      // copy_profits rows
+let copyTickInterval = null; // UI countdown ticker
+let copyCloseInterval = null;// backend close loop
 
 /* THEME */
 (function(){
@@ -1255,14 +1304,18 @@ async function doLogin(){
   currentUser = profile;
   applyUserToUI();
   subscribeUserProfile();
+  startCopyEngine(); /* NEW */
   closeAuth();
   go('s-home');
   toast('Welcome back!');
 }
 async function doLogout(){
   if(userRealtimeChannel){ sb.removeChannel(userRealtimeChannel); userRealtimeChannel = null; }
+  stopCopyEngine(); /* NEW */
   await sb.auth.signOut();
   currentUser = null;
+  myOpenCopies = [];
+  myCopyHistory = [];
   applyUserToUI();
   go('s-home');
   toast('Logged out');
@@ -1680,28 +1733,244 @@ function go(id){
   buildNav(document.getElementById('homeNav'), id);
   document.querySelectorAll('.overlay').forEach(o => o.classList.remove('active'));
   document.querySelectorAll('.generic-modal').forEach(o => o.classList.remove('on'));
-  if(id === 's-trade'){ loadLiveSignals(); loadAppStats(); }
+  if(id === 's-trade'){ loadLiveSignals(); refreshCopyPanels(); }
   if(id === 's-deposit') updateDepositAddress();
   if(id === 's-markets') renderMarketsTable();
   if(id === 's-profile'){ updatePfBalance(); renderKycState(); }
   if(id !== 's-details') currentDetailSym = null;
 }
 
-/* APP STATS */
-async function loadAppStats(){
+/* ============================================================
+   === NEW: COPY-TRADE ENGINE ================================
+   ============================================================ */
+
+/* ---- Load open positions + history for current user ---- */
+async function refreshCopyPanels(){
+  if(!currentUser) return;
   try {
-    const { data } = await sb.from('config').select('value').eq('key', 'app_stats').maybeSingle();
-    if(data && data.value){ try { appStats = JSON.parse(data.value); } catch(e){} }
-    const el1 = document.getElementById('statTotalPnl');
-    const el2 = document.getElementById('statPartner');
-    const el3 = document.getElementById('statTodayPnl');
-    const el4 = document.getElementById('statBottom');
-    if(el1) el1.textContent = Number(appStats.totalPnl || 0).toFixed(2);
-    if(el2) el2.textContent = Number(appStats.partner || 0).toFixed(2);
-    if(el3) el3.textContent = Number(appStats.todayPnl || 0).toFixed(2);
-    if(el4) el4.textContent = Number(appStats.bottom || 0).toFixed(2);
-  } catch(e){}
+    const [openRes, histRes] = await Promise.all([
+      sb.from('participants').select('*')
+        .eq('user_id', currentUser.id).eq('status','open')
+        .order('opened_at', { ascending: true }),
+      sb.from('copy_profits').select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false }).limit(50)
+    ]);
+    myOpenCopies = openRes.data || [];
+    myCopyHistory = histRes.data || [];
+    renderActiveCopies();
+    renderCopyHistory();
+    computeCopyStats();
+  } catch(e){ console.warn('refreshCopyPanels', e); }
 }
+
+/* ---- Render "My Active Copies" ---- */
+function renderActiveCopies(){
+  const head = document.getElementById('activeCopiesHead');
+  const list = document.getElementById('activeCopiesList');
+  if(!list) return;
+  if(!myOpenCopies.length){
+    if(head) head.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+  if(head) head.style.display = 'block';
+  const now = Date.now();
+  list.innerHTML = myOpenCopies.map(p => {
+    const opensAt = new Date(p.opened_at || Date.now()).getTime();
+    const closesAt = p.closes_at ? new Date(p.closes_at).getTime() : opensAt + CT_CYCLE_MS;
+    const total = Math.max(1, closesAt - opensAt);
+    const elapsed = Math.max(0, now - opensAt);
+    const pct = Math.min(100, (elapsed / total) * 100);
+    const remain = Math.max(0, Math.ceil((closesAt - now) / 1000));
+    const initial = (p.trader_name || 'A').charAt(0).toUpperCase();
+    const invested = Number(p.invested || p.amount_usdt || 0);
+    const sym = p.sym || '';
+    return `<div class="ac-row" data-close-at="${closesAt}">
+      <div class="ac-av">${initial}</div>
+      <div class="ac-body">
+        <div class="ac-title">${p.trader_name || 'Analyst'}${sym ? ' · ' + sym : ''}</div>
+        <div class="ac-sub">$${invested.toFixed(2)} invested</div>
+      </div>
+      <div class="ac-right">
+        <div class="ac-amount">$${invested.toFixed(2)}</div>
+        <div class="ac-running"><span class="ac-dot"></span><span class="ac-count" data-remain>${remain}s remaining</span></div>
+      </div>
+      <div class="ac-progress" style="width:${pct}%"></div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- UI countdown tick (fast, no DB) ---- */
+function tickCopyCountdowns(){
+  const now = Date.now();
+  document.querySelectorAll('.ac-row[data-close-at]').forEach(row => {
+    const closesAt = Number(row.dataset.closeAt);
+    const remain = Math.max(0, Math.ceil((closesAt - now) / 1000));
+    const span = row.querySelector('[data-remain]');
+    if(span) span.textContent = remain + 's remaining';
+    if(remain === 0){
+      const prog = row.querySelector('.ac-progress');
+      if(prog) prog.style.width = '100%';
+    }
+  });
+}
+
+/* ---- Backend close loop: every 2s check for expired open trades ---- */
+async function closeExpiredTrades(){
+  if(!currentUser) return;
+  const now = Date.now();
+  const due = myOpenCopies.filter(p => {
+    const closesAt = p.closes_at ? new Date(p.closes_at).getTime() : (new Date(p.opened_at).getTime() + CT_CYCLE_MS);
+    return closesAt <= now;
+  });
+  if(!due.length) return;
+
+  for(const p of due){
+    try {
+      // Guard: re-fetch to ensure still open
+      const { data: check } = await sb.from('participants').select('status')
+        .eq('id', p.id).single();
+      if(!check || check.status !== 'open') continue;
+
+      const invested = Number(p.invested || p.amount_usdt || 0);
+      const gross = +(invested * CT_PROFIT_RATE).toFixed(6);
+      const commission = +(gross * CT_COMMISSION_RATE).toFixed(6);
+      const net = +(gross - commission).toFixed(6);
+
+      // 1. Credit user: principal + net profit
+      const { data: prof } = await sb.from('profiles').select('balance')
+        .eq('id', currentUser.id).single();
+      const newBal = Number(prof?.balance || 0) + invested + net;
+      await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
+      currentUser.balance = newBal;
+
+      // 2. Insert copy_profits row
+      await sb.from('copy_profits').insert({
+        user_id: currentUser.id,
+        trader_name: p.trader_name || null,
+        sym: p.sym || null,
+        invested: invested,
+        gross_profit: gross,
+        net_profit: net,
+        profit: net,          // legacy column
+        commission: commission
+      });
+
+      // 3. Mark participant closed
+      await sb.from('participants').update({
+        status: 'closed',
+        gross_profit: gross,
+        net_profit: net,
+        commission: commission,
+        closed_at: new Date().toISOString()
+      }).eq('id', p.id);
+
+      // 4. Toast (net only)
+      const sign = net >= 0 ? '+' : '';
+      toast(`✓ ${p.trader_name || 'Trade'} closed — ${sign}$${net.toFixed(2)} profit`);
+    } catch(e){
+      console.warn('closeExpiredTrades', e);
+    }
+  }
+
+  // Refresh from server
+  await refreshCopyPanels();
+  await updatePfBalance();
+}
+
+/* ---- Render "Copy History" ---- */
+function renderCopyHistory(){
+  const head = document.getElementById('copyHistoryHead');
+  const list = document.getElementById('copyHistoryList');
+  if(!list) return;
+  if(!myCopyHistory.length){
+    if(head) head.style.display = 'none';
+    list.innerHTML = '';
+    return;
+  }
+  if(head) head.style.display = 'block';
+  list.innerHTML = myCopyHistory.map(cp => {
+    const net = Number(cp.net_profit || cp.profit || 0);
+    const sign = net >= 0 ? '+' : '';
+    const initial = (cp.trader_name || 'A').charAt(0).toUpperCase();
+    const when = cp.created_at ? new Date(cp.created_at).toLocaleString() : '';
+    const sym = cp.sym || '';
+    return `<div class="hist-row" onclick="showBreakdown('${cp.id}')">
+      <div class="hchk">✓</div>
+      <div class="hbody">
+        <div class="htitle">${cp.trader_name || 'Analyst'}${sym ? ' · ' + sym : ''}</div>
+        <div class="hsub">${when}</div>
+      </div>
+      <div class="hnet">${sign}$${net.toFixed(2)}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ---- Breakdown sheet (gross / commission / net) ---- */
+function showBreakdown(cpId){
+  const cp = myCopyHistory.find(x => String(x.id) === String(cpId));
+  if(!cp) return;
+  const invested = Number(cp.invested || 0);
+  const gross = Number(cp.gross_profit || 0);
+  const commission = Number(cp.commission || 0);
+  const net = Number(cp.net_profit || cp.profit || 0);
+  const signNet = net >= 0 ? '+' : '';
+
+  document.getElementById('genericTitle').textContent = (cp.trader_name || 'Trade') + (cp.sym ? ' · ' + cp.sym : '');
+  document.getElementById('genericBody').innerHTML = `
+    <div class="bd-grid">
+      <div class="bd-row"><span class="bd-k">Invested</span><span class="bd-v">$${invested.toFixed(2)}</span></div>
+      <div class="bd-row"><span class="bd-k">Gross profit (1.5%)</span><span class="bd-v">$${gross.toFixed(2)}</span></div>
+      <div class="bd-row comm"><span class="bd-k">Commission (25%)</span><span class="bd-v">-$${commission.toFixed(2)}</span></div>
+      <div class="bd-row total"><span class="bd-k">Net profit</span><span class="bd-v">${signNet}$${net.toFixed(2)}</span></div>
+    </div>
+    <div style="font-size:11.5px;color:var(--text3);line-height:1.6;margin-top:14px;text-align:center;">
+      Principal returned in full. Commission is charged on profit only.
+    </div>`;
+  document.getElementById('genericModal').classList.add('on');
+}
+
+/* ---- Compute live stat cards ---- */
+function computeCopyStats(){
+  let totalPnl = 0, partnerCommission = 0, todayPnl = 0, bottom = 0;
+  const todayKey = new Date().toISOString().slice(0,10);
+
+  myCopyHistory.forEach(cp => {
+    const net = Number(cp.net_profit || cp.profit || 0);
+    const comm = Number(cp.commission || 0);
+    totalPnl += net;
+    partnerCommission += comm;
+    if(cp.created_at && new Date(cp.created_at).toISOString().slice(0,10) === todayKey){
+      todayPnl += net;
+    }
+  });
+  myOpenCopies.forEach(p => { bottom += Number(p.invested || p.amount_usdt || 0); });
+
+  const el1 = document.getElementById('statTotalPnl');
+  const el2 = document.getElementById('statPartner');
+  const el3 = document.getElementById('statTodayPnl');
+  const el4 = document.getElementById('statBottom');
+  if(el1) el1.textContent = totalPnl.toFixed(2);
+  if(el2) el2.textContent = partnerCommission.toFixed(2);
+  if(el3) el3.textContent = todayPnl.toFixed(2);
+  if(el4) el4.textContent = bottom.toFixed(2);
+}
+
+/* ---- Start / stop engine ---- */
+function startCopyEngine(){
+  stopCopyEngine();
+  refreshCopyPanels();
+  copyTickInterval = setInterval(tickCopyCountdowns, 1000);
+  copyCloseInterval = setInterval(closeExpiredTrades, 2000);
+}
+function stopCopyEngine(){
+  if(copyTickInterval){ clearInterval(copyTickInterval); copyTickInterval = null; }
+  if(copyCloseInterval){ clearInterval(copyCloseInterval); copyCloseInterval = null; }
+}
+/* ============================================================
+   === END NEW COPY-TRADE ENGINE ==============================
+   ============================================================ */
 
 /* COPY TRADING ANALYSTS */
 let ANALYSTS = [], analystFilter = '';
@@ -1857,14 +2126,33 @@ async function fsApply(){
     const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
     if(balErr) return toast('Error: ' + balErr.message);
     currentUser.balance = newBal;
+
+    /* === NEW: open position with 60s lifecycle === */
+    const now = new Date();
+    const closesAt = new Date(now.getTime() + CT_CYCLE_MS);
     await sb.from('participants').insert({
-      signal_id: currentAnalyst.id, user_id: currentUser.id,
-      username: currentUser.username, uid: currentUser.uid,
-      amount_usdt: effective, mode: 'real', voucher
+      signal_id: currentAnalyst.id,
+      user_id: currentUser.id,
+      username: currentUser.username,
+      uid: currentUser.uid,
+      amount_usdt: effective,
+      mode: 'real',
+      voucher,
+      /* new lifecycle fields */
+      status: 'open',
+      invested: effective,
+      trader_name: currentAnalyst.name,
+      sym: currentAnalyst.sym,
+      opened_at: now.toISOString(),
+      closes_at: closesAt.toISOString()
     });
+    /* === END NEW === */
   }
   closeFollowSheet();
   toast('✓ Copy trade placed — $' + effective.toFixed(2));
+  /* Immediately reflect the new open position */
+  await refreshCopyPanels();
+  await updatePfBalance();
 }
 
 /* DEPOSIT / WITHDRAW */
@@ -2131,7 +2419,6 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   renderHomeCoinGrid();
   renderMarketsTable();
   loadBanners();
-  loadAppStats();
   attachBannerSwipe();
   refreshNewsStrip();
   fetchLiveNews().then(() => refreshNewsStrip());
@@ -2145,6 +2432,7 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
         currentUser = profile;
         applyUserToUI();
         subscribeUserProfile();
+        startCopyEngine(); /* NEW: rehydrate on boot */
         go('s-home');
         loadLiveSignals();
         return;
