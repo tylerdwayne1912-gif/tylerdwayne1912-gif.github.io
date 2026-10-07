@@ -235,6 +235,16 @@ tr:hover td{background:#FAFBFC;}
 .top-user-row .name{font-size:13px;font-weight:700;}
 .top-user-row .email{font-size:11px;color:var(--text2);}
 .top-user-row .amt{font-size:14px;font-weight:800;color:var(--green);}
+
+/* ============ SUPPORT ============ */
+.sup-bubble{max-width:80%;padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;margin-bottom:10px;word-wrap:break-word;}
+.sup-bubble.user{margin-left:auto;background:#0ECB81;color:#fff;border-bottom-right-radius:4px;}
+.sup-bubble.admin{background:#F0F2F5;color:#1E2329;border-bottom-left-radius:4px;}
+.sup-bubble .meta{font-size:10.5px;opacity:.75;margin-top:6px;}
+.sup-thread-box{max-height:60vh;overflow-y:auto;padding:4px 2px;margin-bottom:14px;}
+.sup-reply-row{display:flex;gap:8px;align-items:stretch;}
+.sup-reply-row textarea{flex:1;min-height:80px;border:1.5px solid var(--line);border-radius:10px;
+  padding:12px 14px;font-family:inherit;font-size:13.5px;outline:none;resize:vertical;}
 </style>
 </head>
 <body>
@@ -321,6 +331,11 @@ tr:hover td{background:#FAFBFC;}
 
   <div class="group">
     <div class="group-title">System</div>
+    <div class="item" data-panel="support">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+      <span>Support</span>
+      <span class="badge" id="supportBadge">0</span>
+    </div>
     <div class="item" data-panel="stats">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 19V9M9 19V5M14 19v-7M19 19V8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       <span>App Stats</span>
@@ -474,7 +489,7 @@ tr:hover td{background:#FAFBFC;}
         <div class="sub">Users who submitted a deposit request. Verify the USDT has arrived on-chain, then approve to credit their balance.</div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>User</th><th class="right">Amount (USDT)</th><th>Network</th><th>Submitted</th><th class="right">Actions</th></tr></thead>
+            <thead><tr><th>User</th><th class="right">Amount (USDT)</th><th>Network</th><th>Deposit Address</th><th>Submitted</th><th class="right">Actions</th></tr></thead>
             <tbody id="depositsPendingTable"></tbody>
           </table>
         </div>
@@ -484,7 +499,7 @@ tr:hover td{background:#FAFBFC;}
         <div class="sub">Complete history of every deposit request.</div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>User</th><th class="right">Amount</th><th>Status</th><th>Submitted</th><th>Approved</th></tr></thead>
+            <thead><tr><th>User</th><th class="right">Amount</th><th>Network</th><th>Deposit Address</th><th>Status</th><th>Submitted</th><th>Approved</th></tr></thead>
             <tbody id="depositsAllTable"></tbody>
           </table>
         </div>
@@ -633,12 +648,8 @@ tr:hover td{background:#FAFBFC;}
           <table>
             <thead>
               <tr>
-                <th>User</th>
-                <th>Analyst</th>
-                <th>Coin</th>
-                <th class="right">Invested</th>
-                <th>Opened</th>
-                <th>Closes in</th>
+                <th>User</th><th>Analyst</th><th>Coin</th>
+                <th class="right">Invested</th><th>Opened</th><th>Closes in</th>
               </tr>
             </thead>
             <tbody id="ctOpenTable"></tbody>
@@ -653,14 +664,9 @@ tr:hover td{background:#FAFBFC;}
           <table>
             <thead>
               <tr>
-                <th>User</th>
-                <th>Analyst</th>
-                <th>Coin</th>
-                <th class="right">Invested</th>
-                <th class="right">Gross profit</th>
-                <th class="right">Commission (25%)</th>
-                <th class="right">User profit</th>
-                <th>Closed at</th>
+                <th>User</th><th>Analyst</th><th>Coin</th>
+                <th class="right">Invested</th><th class="right">Gross profit</th>
+                <th class="right">Commission (25%)</th><th class="right">User profit</th><th>Closed at</th>
               </tr>
             </thead>
             <tbody id="ctClosedTable"></tbody>
@@ -687,14 +693,10 @@ tr:hover td{background:#FAFBFC;}
             <thead>
               <tr>
                 <th>User</th>
-                <th class="right">Total Invested</th>
-                <th class="right">Total Profit</th>
-                <th class="right">Commission Paid</th>
-                <th class="right">Withdrawn</th>
-                <th class="right">Balance</th>
-                <th class="right">Withdrawable</th>
-                <th>Status</th>
-                <th class="right">Actions</th>
+                <th class="right">Total Invested</th><th class="right">Total Profit</th>
+                <th class="right">Commission Paid</th><th class="right">Withdrawn</th>
+                <th class="right">Balance</th><th class="right">Withdrawable</th>
+                <th>Status</th><th class="right">Actions</th>
               </tr>
             </thead>
             <tbody id="upTable"></tbody>
@@ -709,13 +711,9 @@ tr:hover td{background:#FAFBFC;}
           <table>
             <thead>
               <tr>
-                <th>User</th>
-                <th>Source</th>
-                <th>Analyst / Pair</th>
-                <th class="right">Gross</th>
-                <th class="right">Commission</th>
-                <th class="right">Net to User</th>
-                <th>When</th>
+                <th>User</th><th>Source</th><th>Analyst / Pair</th>
+                <th class="right">Gross</th><th class="right">Commission</th>
+                <th class="right">Net to User</th><th>When</th>
               </tr>
             </thead>
             <tbody id="uplTable"></tbody>
@@ -755,6 +753,34 @@ tr:hover td{background:#FAFBFC;}
         <h2>Active Banners <span class="tag purple" id="bannerCount">0</span></h2>
         <div class="sub">These are what users see sliding on the Home screen. Toggle off to hide without deleting.</div>
         <div id="bannerList"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-support">
+      <div class="warn info">
+        <b>Support Tickets.</b> Every user message appears here. Reply, then mark the ticket resolved when done.
+      </div>
+
+      <div class="card">
+        <h2>Support Tickets <span class="tag purple" id="supCount">0</span></h2>
+        <div class="sub">Click any ticket to view the full thread and reply.</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+          <button class="btn sm primary" id="supFilterAll" onclick="setSupFilter('all')">All</button>
+          <button class="btn sm" id="supFilterOpen" onclick="setSupFilter('open')">Open</button>
+          <button class="btn sm" id="supFilterPending" onclick="setSupFilter('pending')">Pending</button>
+          <button class="btn sm" id="supFilterResolved" onclick="setSupFilter('resolved')">Resolved</button>
+          <button class="btn sm" id="supFilterClosed" onclick="setSupFilter('closed')">Closed</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th><th>Subject</th><th>Status</th><th>Last reply</th><th class="right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="supTable"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -821,6 +847,9 @@ let ctTickTimer = null;
 
 let profitLedger = [];
 
+let supTickets = [];
+let supFilter = 'all';
+
 /* AUTH */
 async function doLogin(){
   const email = document.getElementById('loginEmail').value.trim();
@@ -863,6 +892,7 @@ function showApp(){
   loadWithdrawals();
   loadCopyTrades();
   loadUserProfits();
+  loadSupportTickets();
   subscribeRealtime();
 }
 
@@ -871,8 +901,8 @@ const PANEL_TITLES = {
   dashboard:'Dashboard', xpubs:'XPUB Config', userwallets:'User Wallets',
   kyc:'KYC Queue', deposits:'Deposits', withdrawals:'Withdrawals',
   copytrade:'Copy Trade Signals', copytrades:'Copy Trades',
-  userprofits:'User Profits',
-  banners:'Home Banners', stats:'App Stats', settings:'Settings'
+  userprofits:'User Profits', banners:'Home Banners',
+  support:'Support', stats:'App Stats', settings:'Settings'
 };
 document.querySelectorAll('.item').forEach(it => {
   it.addEventListener('click', () => { if(it.dataset.panel) navTo(it.dataset.panel); });
@@ -893,6 +923,7 @@ function navTo(panel){
   if(panel === 'copytrades') loadCopyTrades();
   if(panel === 'userprofits') loadUserProfits();
   if(panel === 'banners') loadBanners();
+  if(panel === 'support') loadSupportTickets();
   if(panel === 'stats') loadAppStatsAdmin();
   if(panel === 'dashboard') renderDashboardCharts();
 }
@@ -976,6 +1007,12 @@ function subscribeRealtime(){
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'withdrawals' }, () => {
       loadWithdrawals();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'support_tickets' }, () => {
+      loadSupportTickets();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'support_messages' }, () => {
+      loadSupportTickets();
     })
     .subscribe();
 }
@@ -1791,6 +1828,136 @@ function exportUserProfitsCSV(){
   toast('CSV exported');
 }
 
+/* SUPPORT */
+async function loadSupportTickets(){
+  try {
+    const { data, error } = await sb.from('support_tickets')
+      .select('*').order('last_reply_at', { ascending: false }).limit(500);
+    if(error) throw error;
+    supTickets = data || [];
+  } catch(e){ supTickets = []; }
+  renderSupportTable();
+  updateSupportBadge();
+}
+function updateSupportBadge(){
+  const open = supTickets.filter(t => t.unread_for_admin).length;
+  const el = document.getElementById('supportBadge');
+  if(el) el.textContent = open;
+}
+function setSupFilter(f){
+  supFilter = f;
+  ['All','Open','Pending','Resolved','Closed'].forEach(x => {
+    const btn = document.getElementById('supFilter' + x);
+    if(btn) btn.classList.toggle('primary', x.toLowerCase() === f);
+  });
+  renderSupportTable();
+}
+function escapeHtmlSup(s){
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+function renderSupportTable(){
+  const tbody = document.getElementById('supTable');
+  if(!tbody) return;
+  let list = supTickets.slice();
+  if(supFilter !== 'all') list = list.filter(t => t.status === supFilter);
+  document.getElementById('supCount').textContent = list.length;
+
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No tickets.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = list.map(t => {
+    const u = allUsers.find(x => x.id === t.user_id) || {};
+    const initial = (t.username || u.username || '?').charAt(0).toUpperCase();
+    const unread = t.unread_for_admin ? ' <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#F6465D;margin-left:6px;vertical-align:middle;"></span>' : '';
+    const cls = t.status === 'open' ? 'green' : t.status === 'pending' ? 'orange' : t.status === 'resolved' ? 'blue' : 'gray';
+    const when = t.last_reply_at ? new Date(t.last_reply_at).toLocaleString() : '—';
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${initial}</div>
+        <div class="user-info">
+          <div class="user-name">${t.username || '—'}${unread}</div>
+          <div class="user-uid">${t.uid || ''}</div>
+        </div>
+      </div></td>
+      <td><b>${escapeHtmlSup(t.subject)}</b></td>
+      <td><span class="tag ${cls}">${t.status}</span></td>
+      <td>${when}</td>
+      <td class="right">
+        <button class="btn sm primary" onclick="openAdminTicket('${t.id}')">View & Reply</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function openAdminTicket(ticketId){
+  const t = supTickets.find(x => x.id === ticketId);
+  if(!t) return;
+  await sb.from('support_tickets').update({ unread_for_admin: false }).eq('id', ticketId);
+  const { data: msgs } = await sb.from('support_messages')
+    .select('*').eq('ticket_id', ticketId).order('created_at', { ascending: true });
+
+  document.getElementById('modalTitle').textContent = 'Ticket — ' + t.subject;
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:#F9FAFB;border-radius:8px;padding:12px 14px;margin-bottom:14px;font-size:12.5px;">
+      <div><b>${t.username || '—'}</b> · ${t.uid || ''}</div>
+      <div style="color:var(--text2);margin-top:4px;">Created ${new Date(t.created_at).toLocaleString()}</div>
+    </div>
+    <div class="sup-thread-box" id="supAdminThread">
+      ${(msgs || []).map(m => {
+        const cls = m.sender_type === 'admin' ? 'admin' : 'user';
+        return `<div class="sup-bubble ${cls}">
+          <div>${escapeHtmlSup(m.body).replace(/\n/g, '<br>')}</div>
+          <div class="meta">${cls === 'admin' ? 'You (Admin)' : (m.sender_name || 'User')} · ${new Date(m.created_at).toLocaleString()}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="sup-reply-row">
+      <textarea id="supAdminReply" placeholder="Type your reply…"></textarea>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+      <button class="btn primary" onclick="sendAdminReply('${t.id}')">Send Reply</button>
+      <button class="btn success" onclick="setTicketStatus('${t.id}','resolved')">Mark Resolved</button>
+      <button class="btn" onclick="setTicketStatus('${t.id}','closed')">Close Ticket</button>
+    </div>
+  `;
+  document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+  document.getElementById('modal').classList.add('on');
+  setTimeout(() => {
+    const box = document.getElementById('supAdminThread');
+    if(box) box.scrollTop = box.scrollHeight;
+  }, 50);
+  await loadSupportTickets();
+}
+
+async function sendAdminReply(ticketId){
+  const input = document.getElementById('supAdminReply');
+  const body = input.value.trim();
+  if(!body) return toast('Type a message');
+  input.value = '';
+  const { error } = await sb.from('support_messages').insert({
+    ticket_id: ticketId,
+    sender_type: 'admin',
+    sender_name: adminUser?.email || 'Admin',
+    body
+  });
+  if(error) return toast('Error: ' + error.message);
+  toast('Reply sent');
+  closeModal();
+  await loadSupportTickets();
+}
+
+async function setTicketStatus(ticketId, status){
+  const { error } = await sb.from('support_tickets').update({ status, unread_for_admin: false }).eq('id', ticketId);
+  if(error) return toast('Error: ' + error.message);
+  toast('Ticket ' + status);
+  closeModal();
+  await loadSupportTickets();
+}
+
 /* BANNERS */
 async function loadBanners(){
   const { data, error } = await sb.from('banners').select('*')
@@ -1885,6 +2052,12 @@ async function loadDeposits(){
   updateStats();
   renderDashboardCharts();
 }
+
+function getDepAddrFor(uid){
+  const u = allUsers.find(x => x.id === uid);
+  return (u && u.derived_eth_address) ? u.derived_eth_address : '';
+}
+
 function renderDeposits(){
   const pending = deposits.filter(d => d.status === 'pending');
   document.getElementById('pendingDepCount').textContent = pending.length;
@@ -1893,10 +2066,14 @@ function renderDeposits(){
   if(!pendingBody || !allBody) return;
 
   if(!pending.length){
-    pendingBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No pending deposits.</td></tr>';
+    pendingBody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3);">No pending deposits.</td></tr>';
   } else {
-    pendingBody.innerHTML = pending.map(d => `
-      <tr>
+    pendingBody.innerHTML = pending.map(d => {
+      const addr = getDepAddrFor(d.user_id);
+      const addrBtn = addr
+        ? `<button class="btn sm" onclick="showDepositAddress('${addr}', '${(d.username || '').replace(/'/g,"\\'")}', ${Number(d.amount||0)})">View Address</button>`
+        : '<span style="color:var(--text3);font-size:11px;">Not assigned</span>';
+      return `<tr>
         <td><div class="user-cell">
           <div class="user-av">${(d.username || '?')[0].toUpperCase()}</div>
           <div class="user-info">
@@ -1906,33 +2083,72 @@ function renderDeposits(){
         </div></td>
         <td class="right"><b>$${Number(d.amount || 0).toFixed(2)}</b></td>
         <td><span class="tag gray">${d.network || 'ERC20'}</span></td>
+        <td>${addrBtn}</td>
         <td>${new Date(d.created_at).toLocaleString()}</td>
         <td class="right">
           <button class="btn sm success" onclick="approveDeposit('${d.id}')">Approve</button>
           <button class="btn sm danger" onclick="rejectDeposit('${d.id}')">Reject</button>
         </td>
-      </tr>
-    `).join('');
+      </tr>`;
+    }).join('');
   }
 
   if(!deposits.length){
-    allBody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No deposits yet.</td></tr>';
+    allBody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text3);">No deposits yet.</td></tr>';
     return;
   }
   allBody.innerHTML = deposits.map(d => {
     const cls = d.status === 'approved' ? 'green' : d.status === 'rejected' ? 'red' : 'orange';
+    const addr = getDepAddrFor(d.user_id);
+    const addrBtn = addr
+      ? `<button class="btn sm" onclick="showDepositAddress('${addr}', '${(d.username || '').replace(/'/g,"\\'")}', ${Number(d.amount||0)})">View</button>`
+      : '<span style="color:var(--text3);font-size:11px;">—</span>';
     return `<tr>
       <td><div class="user-cell">
         <div class="user-av">${(d.username || '?')[0].toUpperCase()}</div>
         <div class="user-info"><div class="user-name">${d.username || '—'}</div><div class="user-uid">${d.uid || ''}</div></div>
       </div></td>
       <td class="right"><b>$${Number(d.amount || 0).toFixed(2)}</b></td>
+      <td><span class="tag gray">${d.network || 'ERC20'}</span></td>
+      <td>${addrBtn}</td>
       <td><span class="tag ${cls}">${d.status}</span></td>
       <td>${new Date(d.created_at).toLocaleString()}</td>
       <td>${d.approved_at ? new Date(d.approved_at).toLocaleString() : '—'}</td>
     </tr>`;
   }).join('');
 }
+
+function showDepositAddress(addr, username, amount){
+  document.getElementById('modalTitle').textContent = 'Deposit Address';
+  document.getElementById('modalBody').innerHTML = `
+    <div style="background:#F9FAFB;border-radius:8px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:11px;color:var(--text2);font-weight:600;">User</div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:10px;">${username || '—'}</div>
+      <div style="font-size:11px;color:var(--text2);font-weight:600;">Amount requested</div>
+      <div style="font-weight:700;font-size:14px;">$${Number(amount || 0).toFixed(2)} USDT</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:14px;">
+      <img id="depQr" src="" width="200" height="200"
+        style="border-radius:12px;border:4px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.1);background:#fff;">
+    </div>
+    <div style="font-size:11px;color:var(--text2);font-weight:600;margin-bottom:6px;">ERC20 Address</div>
+    <div style="background:#F9FAFB;border-radius:8px;padding:12px 14px;
+      font-family:'Courier New',monospace;font-size:12px;color:var(--blue);word-break:break-all;
+      cursor:pointer;" onclick="copyText('${addr}')" title="Click to copy">
+      ${addr}
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <button class="btn primary" onclick="copyText('${addr}')">Copy Address</button>
+      <a class="btn" style="margin-left:8px;" target="_blank"
+        href="https://etherscan.io/address/${addr}">View on Etherscan</a>
+    </div>
+  `;
+  document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
+  document.getElementById('modal').classList.add('on');
+  const qr = document.getElementById('depQr');
+  if(qr) qr.src = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(addr);
+}
+
 async function approveDeposit(id){
   const d = deposits.find(x => x.id === id);
   if(!d) return toast('Deposit not found');
@@ -1968,7 +2184,7 @@ async function rejectDeposit(id){
   loadDeposits();
 }
 
-/* WITHDRAWALS — balance deducted at REQUEST time via RPC */
+/* WITHDRAWALS */
 async function loadWithdrawals(){
   const { data, error } = await sb.from('withdrawals').select('*').order('created_at', { ascending: false }).limit(500);
   if(error){ withdrawals = []; }
