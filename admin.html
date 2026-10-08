@@ -236,7 +236,7 @@ tr:hover td{background:#FAFBFC;}
 .top-user-row .email{font-size:11px;color:var(--text2);}
 .top-user-row .amt{font-size:14px;font-weight:800;color:var(--green);}
 
-/* ============ SUPPORT ============ */
+/* SUPPORT */
 .sup-bubble{max-width:80%;padding:11px 14px;border-radius:14px;font-size:13.5px;line-height:1.5;margin-bottom:10px;word-wrap:break-word;}
 .sup-bubble.user{margin-left:auto;background:#0ECB81;color:#fff;border-bottom-right-radius:4px;}
 .sup-bubble.admin{background:#F0F2F5;color:#1E2329;border-bottom-left-radius:4px;}
@@ -1893,12 +1893,27 @@ function renderSupportTable(){
   }).join('');
 }
 
+/* ============================================================
+   FIXED — openAdminTicket
+   - Removed the await loadSupportTickets() at the end (was closing modal early)
+   - Uses try/catch on mark-as-read so it never blocks
+   ============================================================ */
 async function openAdminTicket(ticketId){
   const t = supTickets.find(x => x.id === ticketId);
   if(!t) return;
-  await sb.from('support_tickets').update({ unread_for_admin: false }).eq('id', ticketId);
-  const { data: msgs } = await sb.from('support_messages')
+
+  // Mark read for admin (best-effort, never blocks modal open)
+  try {
+    await sb.from('support_tickets').update({ unread_for_admin: false }).eq('id', ticketId);
+    t.unread_for_admin = false;
+  } catch(e){ /* silent */ }
+
+  const { data: msgs, error: msgErr } = await sb.from('support_messages')
     .select('*').eq('ticket_id', ticketId).order('created_at', { ascending: true });
+
+  if(msgErr){
+    console.error('[Support] admin load failed:', msgErr);
+  }
 
   document.getElementById('modalTitle').textContent = 'Ticket — ' + t.subject;
   document.getElementById('modalBody').innerHTML = `
@@ -1907,13 +1922,16 @@ async function openAdminTicket(ticketId){
       <div style="color:var(--text2);margin-top:4px;">Created ${new Date(t.created_at).toLocaleString()}</div>
     </div>
     <div class="sup-thread-box" id="supAdminThread">
-      ${(msgs || []).map(m => {
-        const cls = m.sender_type === 'admin' ? 'admin' : 'user';
-        return `<div class="sup-bubble ${cls}">
-          <div>${escapeHtmlSup(m.body).replace(/\n/g, '<br>')}</div>
-          <div class="meta">${cls === 'admin' ? 'You (Admin)' : (m.sender_name || 'User')} · ${new Date(m.created_at).toLocaleString()}</div>
-        </div>`;
-      }).join('')}
+      ${(msgs || []).length
+        ? msgs.map(m => {
+            const cls = m.sender_type === 'admin' ? 'admin' : 'user';
+            return `<div class="sup-bubble ${cls}">
+              <div>${escapeHtmlSup(m.body).replace(/\n/g, '<br>')}</div>
+              <div class="meta">${cls === 'admin' ? 'You (Admin)' : (m.sender_name || 'User')} · ${new Date(m.created_at).toLocaleString()}</div>
+            </div>`;
+          }).join('')
+        : '<div style="text-align:center;color:var(--text3);padding:20px;font-size:12px;">No messages yet.</div>'
+      }
     </div>
     <div class="sup-reply-row">
       <textarea id="supAdminReply" placeholder="Type your reply…"></textarea>
@@ -1926,11 +1944,11 @@ async function openAdminTicket(ticketId){
   `;
   document.getElementById('modalFoot').innerHTML = '<button class="btn" onclick="closeModal()">Close</button>';
   document.getElementById('modal').classList.add('on');
+
   setTimeout(() => {
     const box = document.getElementById('supAdminThread');
     if(box) box.scrollTop = box.scrollHeight;
   }, 50);
-  await loadSupportTickets();
 }
 
 async function sendAdminReply(ticketId){
@@ -1938,13 +1956,15 @@ async function sendAdminReply(ticketId){
   const body = input.value.trim();
   if(!body) return toast('Type a message');
   input.value = '';
+  input.disabled = true;
   const { error } = await sb.from('support_messages').insert({
     ticket_id: ticketId,
     sender_type: 'admin',
     sender_name: adminUser?.email || 'Admin',
     body
   });
-  if(error) return toast('Error: ' + error.message);
+  input.disabled = false;
+  if(error){ input.value = body; return toast('Error: ' + error.message); }
   toast('Reply sent');
   closeModal();
   await loadSupportTickets();
