@@ -1,6 +1,3 @@
-Here is the complete, fully updated `app.html` with the sticky, always-visible header and **both** the back arrow and the `✕` close buttons added to the Terms/Copy Trading document modals.
-
-```html
 <!DOCTYPE html>
 <html lang="en" id="htmlRoot" data-theme="dark">
 <head>
@@ -1393,22 +1390,25 @@ async function doRegisterStep1(){
   const username = document.getElementById('suUsername').value.trim();
   const inviteCode = document.getElementById('suInviteCode').value.trim().toUpperCase();
   const terms = document.getElementById('suTerms').checked;
+  
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
   if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars');
+  
   if(!inviteCode) {
     showErr('suInviteCode','suInviteCodeErr','Invitation code required — get an invitation code from an existing member or support');
     return toast('⚠️ Invitation code required — please get an invitation code');
   }
   if(inviteCode.length < 4) return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code');
+  
   if(!terms) return toast('Please agree to the Terms of Service');
 
   const btn = document.getElementById('registerBtn');
   btn.disabled = true; btn.textContent = 'Verifying code...';
 
   const { data: inviter, error: invErr } = await sb.from('profiles')
-    .select('id, username, referral_code, referral_count')
+    .select('id, username, referral_code')
     .eq('referral_code', inviteCode)
     .maybeSingle();
 
@@ -1419,24 +1419,41 @@ async function doRegisterStep1(){
 
   btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
-  if(authErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr', authErr.message); }
-  if(!authData.user){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr','Signup failed'); }
+  
+  if(authErr){ 
+    btn.disabled = false; btn.textContent = 'Register →'; 
+    return showErr('suEmail','suEmailErr', authErr.message); 
+  }
+  if(!authData.user){ 
+    btn.disabled = false; btn.textContent = 'Register →'; 
+    return showErr('suEmail','suEmailErr','Signup failed'); 
+  }
+
   const uid = genUID();
   const profileRow = {
-    id: authData.user.id, username, email, uid, referral_code: genRef(),
-    referred_by: inviter.id, referred_by_code: inviteCode,
-    kyc_status: 'none', mode: 'real', balance: 0, funding: 0, spot: 0,
-    user_level: 1, referral_count: 0
+    id: authData.user.id, 
+    username, 
+    email, 
+    uid, 
+    referral_code: genRef(),
+    referred_by: inviter.id, 
+    referred_by_code: inviteCode,
+    kyc_status: 'none', 
+    mode: 'real', 
+    balance: 0, 
+    funding: 0, 
+    spot: 0,
+    user_level: 1, 
+    referral_count: 0
   };
+  
   const { error: profErr } = await sb.from('profiles').insert(profileRow);
-  if(profErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suUsername','suUsernameErr', profErr.message); }
-
-  try {
-    await sb.rpc('increment_referral_count', { p_user_id: inviter.id });
-  } catch(e){
-    const { data: cur } = await sb.from('profiles').select('referral_count').eq('id', inviter.id).single();
-    await sb.from('profiles').update({ referral_count: Number(cur?.referral_count || 0) + 1 }).eq('id', inviter.id);
+  if(profErr){ 
+    btn.disabled = false; btn.textContent = 'Register →'; 
+    return showErr('suUsername','suUsernameErr', profErr.message); 
   }
+
+  // The Supabase Trigger handles incrementing the inviter's count and level
 
   currentUser = profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
