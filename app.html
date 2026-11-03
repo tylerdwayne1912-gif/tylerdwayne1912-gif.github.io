@@ -409,7 +409,7 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 .bottomnav .nb.on{color:var(--green);}
 .logo{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;
   justify-content:center;color:#fff;font-size:11px;font-weight:800;flex-shrink:0;}
-.generic-modal{position:fixed;inset:0;background:var(--modal-bg);z-index:1700;
+.generic-modal{position:fixed;inset:0;background:var(--modal-bg);z-index:3000;
   display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(3px);}
 .generic-modal.on{display:flex;}
 .generic-sheet{background:var(--sheet-bg);color:var(--text);width:100%;max-width:430px;border-radius:20px 20px 0 0;max-height:88%;overflow-y:auto;animation:slideUp .28s ease-out;}
@@ -437,7 +437,7 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 .doc-body strong{color:var(--text);font-weight:800;}
 #toast{position:absolute;left:50%;bottom:110px;transform:translate(-50%,10px);
   background:rgba(30,35,41,.94);color:#fff;font-size:13px;padding:10px 18px;border-radius:20px;
-  opacity:0;transition:.25s;pointer-events:none;z-index:2500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
+  opacity:0;transition:.25s;pointer-events:none;z-index:3500;white-space:nowrap;max-width:80%;overflow:hidden;text-overflow:ellipsis;}
 #toast.on{opacity:1;transform:translate(-50%,0);}
 .ct-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px;}
 .ct-stat{background:var(--card);border-radius:14px;padding:14px;border:1px solid var(--line);
@@ -2181,7 +2181,6 @@ function renderDetailsChart(sym, range){
     const bodyH = Math.max(1, Math.abs(yClose - yOpen));
     ctx.fillRect(x - candleW/2, Math.min(yOpen, yClose), candleW, bodyH);
   });
-  // Draw trade-close markers
   const closedForPair = (myCopyHistory || []).filter(cp => (cp.sym || '') === sym);
   if(closedForPair.length && candles.length){
     closedForPair.slice(0, 10).forEach((cp) => {
@@ -3007,6 +3006,14 @@ function downloadFor(platform){
 /* RENDER LOOP */
 setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
 
+/* BACKDROP-CLICK CLOSE FOR MODALS */
+document.getElementById('docModal').addEventListener('click', e => {
+  if(e.target.id === 'docModal') closeDocModal();
+});
+document.getElementById('genericModal').addEventListener('click', e => {
+  if(e.target.id === 'genericModal') closeGeneric();
+});
+
 /* BOOT */
 (async function boot(){
   startSimulation();
@@ -3018,7 +3025,6 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   fetchLiveNews().then(() => refreshNewsStrip());
   setInterval(() => fetchLiveNews().then(() => refreshNewsStrip()), 60000);
 
-  // Handle password-reset landing
   if(new URLSearchParams(location.search).get('reset') === '1'){
     try {
       const newPw = prompt('Enter your new password (8+ chars):');
