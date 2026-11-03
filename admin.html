@@ -331,6 +331,10 @@ tr:hover td{background:#FAFBFC;}
 
   <div class="group">
     <div class="group-title">System</div>
+    <div class="item" data-panel="users">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/><path d="M2 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 11v6M13 14h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <span>User Levels</span>
+    </div>
     <div class="item" data-panel="support">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
       <span>Support</span>
@@ -756,6 +760,28 @@ tr:hover td{background:#FAFBFC;}
       </div>
     </div>
 
+    <div class="panel" id="panel-users">
+      <div class="card">
+        <h2>User Levels & Referrals</h2>
+        <div class="sub">Levels are based on number of successful referrals. L1 = 0-2, L2 = 3-9, L3 = 10-24, L4 = 25-49, L5 = 50+. Override manually below.</div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center;">
+          <input id="usrSearch" placeholder="Search username / email / UID" oninput="renderUserLevels()"
+            style="flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:8px;padding:10px 14px;font-family:inherit;font-size:13px;">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>User</th><th>Referral Code</th><th class="right">Referrals</th>
+                <th class="right">Level</th><th class="right">Referred By</th><th class="right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usrLevelTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     <div class="panel" id="panel-support">
       <div class="warn info">
         <b>Support Tickets.</b> Every user message appears here. Reply, then mark the ticket resolved when done.
@@ -902,6 +928,7 @@ const PANEL_TITLES = {
   kyc:'KYC Queue', deposits:'Deposits', withdrawals:'Withdrawals',
   copytrade:'Copy Trade Signals', copytrades:'Copy Trades',
   userprofits:'User Profits', banners:'Home Banners',
+  users:'User Levels',
   support:'Support', stats:'App Stats', settings:'Settings'
 };
 document.querySelectorAll('.item').forEach(it => {
@@ -923,6 +950,7 @@ function navTo(panel){
   if(panel === 'copytrades') loadCopyTrades();
   if(panel === 'userprofits') loadUserProfits();
   if(panel === 'banners') loadBanners();
+  if(panel === 'users') renderUserLevels();
   if(panel === 'support') loadSupportTickets();
   if(panel === 'stats') loadAppStatsAdmin();
   if(panel === 'dashboard') renderDashboardCharts();
@@ -997,7 +1025,7 @@ function subscribeRealtime(){
       loadUserProfits();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'profiles' }, () => {
-      loadUsers().then(() => { renderUserWallets(); renderKyc(); renderUserProfits(); renderDashboardCharts(); });
+      loadUsers().then(() => { renderUserWallets(); renderKyc(); renderUserProfits(); renderDashboardCharts(); renderUserLevels(); });
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'banners' }, () => {
       loadBanners();
@@ -1828,6 +1856,55 @@ function exportUserProfitsCSV(){
   toast('CSV exported');
 }
 
+/* USER LEVELS */
+function renderUserLevels(){
+  const tbody = document.getElementById('usrLevelTable');
+  if(!tbody) return;
+  const q = (document.getElementById('usrSearch')?.value || '').toLowerCase().trim();
+  let list = allUsers.slice();
+  if(q){
+    list = list.filter(u =>
+      (u.username || '').toLowerCase().includes(q) ||
+      (u.email || '').toLowerCase().includes(q) ||
+      (u.uid || '').toLowerCase().includes(q));
+  }
+  if(!list.length){
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3);">No users.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(u => {
+    const inviter = allUsers.find(x => x.id === u.referred_by);
+    return `<tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.username || '?')[0].toUpperCase()}</div>
+        <div class="user-info">
+          <div class="user-name">${u.username || '—'}</div>
+          <div class="user-email">${u.email || '—'}</div>
+          <div class="user-uid">${u.uid || ''}</div>
+        </div>
+      </div></td>
+      <td><span class="mono">${u.referral_code || '—'}</span></td>
+      <td class="right"><b>${Number(u.referral_count || 0)}</b></td>
+      <td class="right"><span class="tag blue">L${u.user_level || 1}</span></td>
+      <td class="right">${inviter ? (inviter.username || '—') : '—'}</td>
+      <td class="right">
+        <select onchange="setUserLevel('${u.id}', this.value)" style="padding:6px 10px;border-radius:6px;border:1.5px solid var(--line);font-family:inherit;font-size:12px;">
+          ${[1,2,3,4,5].map(n => `<option value="${n}" ${Number(u.user_level || 1) === n ? 'selected' : ''}>Level ${n}</option>`).join('')}
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
+}
+async function setUserLevel(userId, level){
+  const u = allUsers.find(x => x.id === userId);
+  const { data, error } = await sb.from('profiles').update({ user_level: Number(level) }).eq('id', userId).select('id, user_level');
+  if(error){ return toast('Error: ' + error.message); }
+  if(!data || !data.length){ return toast('❌ Update blocked — check RLS'); }
+  toast('✓ ' + (u?.username || 'User') + ' set to Level ' + level);
+  await loadUsers();
+  renderUserLevels();
+}
+
 /* SUPPORT */
 async function loadSupportTickets(){
   try {
@@ -1893,16 +1970,10 @@ function renderSupportTable(){
   }).join('');
 }
 
-/* ============================================================
-   FIXED — openAdminTicket
-   - Removed the await loadSupportTickets() at the end (was closing modal early)
-   - Uses try/catch on mark-as-read so it never blocks
-   ============================================================ */
 async function openAdminTicket(ticketId){
   const t = supTickets.find(x => x.id === ticketId);
   if(!t) return;
 
-  // Mark read for admin (best-effort, never blocks modal open)
   try {
     await sb.from('support_tickets').update({ unread_for_admin: false }).eq('id', ticketId);
     t.unread_for_admin = false;
