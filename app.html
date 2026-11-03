@@ -241,7 +241,7 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 .pw-strength .seg.on-3{background:#F5C542;}
 .pw-strength .seg.on-4{background:var(--green);}
 .auth-check{display:flex;align-items:flex-start;gap:10px;margin:16px 0;}
-.auth-check input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
+.auth-check input[type=checkbox]{margin-top:3px;width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
 .auth-check label{font-size:12.5px;color:var(--text2);line-height:1.55;cursor:pointer;}
 .auth-check a{color:var(--green-dk);font-weight:600;}
 .auth-submit{width:100%;height:52px;border-radius:12px;background:var(--green);color:#fff;
@@ -792,7 +792,8 @@ html.is-mobile textarea{font-size:16px !important;}
     <div class="auth-field"><label>Set password</label><div class="wrap"><input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()"></div><div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div><div class="err" id="suPwErr"></div></div>
     <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
     <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
-    <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I agree to the <a onclick="toast('Terms')">Terms of Service</a> and <a onclick="toast('Privacy')">Privacy Policy</a></label></div>
+    <div class="auth-field"><label>Invitation Code <span style="color:var(--red);">*</span></label><div class="wrap"><input id="suInviteCode" type="text" placeholder="Enter your invitation code" maxlength="20" style="text-transform:uppercase;font-family:'Courier New',monospace;letter-spacing:2px;"></div><div class="err" id="suInviteCodeErr"></div><div style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">An invitation code is required to join NextTrade. Ask an existing member or contact support.</div></div>
+    <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I have read and agree to the <a onclick="event.preventDefault();showTermsModal()">NextTrade Terms of Service</a>, <a onclick="event.preventDefault();showPrivacyModal()">Privacy Policy</a>, <a onclick="event.preventDefault();showRiskModal()">Risk Disclosure</a>, and confirm I am 18+ and accept the copy-trading fee schedule.</label></div>
     <button class="auth-submit" id="registerBtn" onclick="doRegisterStep1()">Register →</button>
     <div class="auth-switch">Already have an account? <a onclick="openAuth('login')">Log In</a></div>
   </div>
@@ -877,8 +878,21 @@ html.is-mobile textarea{font-size:16px !important;}
     <p class="auth-sub">Sign in to access your account and start trading.</p>
     <div class="auth-field"><label>Email or Username</label><div class="wrap"><input id="loginEmail" type="text" placeholder="you@example.com"></div><div class="err" id="loginEmailErr"></div></div>
     <div class="auth-field"><label>Password</label><div class="wrap"><input id="loginPw" type="password" placeholder="••••••••"></div><div class="err" id="loginPwErr"></div></div>
+    <div style="text-align:right;margin-top:-6px;margin-bottom:16px;"><a onclick="openForgotPassword()" style="font-size:12.5px;color:var(--green-dk);font-weight:700;cursor:pointer;">Forgot password?</a></div>
     <button class="auth-submit" onclick="doLogin()">Log In</button>
     <div class="auth-switch">Don't have an account? <a onclick="openAuth('register')">Sign Up</a></div>
+  </div>
+</section>
+
+<!-- FORGOT PASSWORD -->
+<section class="auth-screen" id="authForgot">
+  <div class="auth-header"><div class="back" onclick="openAuth('login')">‹</div><div class="logo-mini" style="flex:1;text-align:center;justify-content:center;"><span style="font-size:17px;font-weight:800;">Reset Password</span></div><div style="width:36px;"></div></div>
+  <div class="auth-body">
+    <h1 class="auth-title">Forgot password?</h1>
+    <p class="auth-sub">Enter your account email and we'll send you a secure reset link. The link expires in 1 hour.</p>
+    <div class="auth-field"><label>Email</label><div class="wrap"><input id="forgotEmail" type="email" placeholder="you@example.com" autocomplete="email"></div><div class="err" id="forgotEmailErr"></div></div>
+    <button class="auth-submit" id="forgotBtn" onclick="doForgotPassword()">Send Reset Link</button>
+    <div class="auth-switch">Remembered it? <a onclick="openAuth('login')">Back to Log In</a></div>
   </div>
 </section>
 
@@ -1068,6 +1082,25 @@ html.is-mobile textarea{font-size:16px !important;}
       </div>
     </div>
 
+    <div style="padding:0 16px 14px;">
+      <div class="pf-assets-card" style="flex-direction:column;align-items:stretch;gap:12px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div class="l" style="font-size:12.5px;color:var(--text2);">Invited Users</div>
+            <div class="v" id="pfReferralCount" style="font-size:24px;font-weight:800;color:var(--text);margin-top:4px;">0</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="l" style="font-size:12.5px;color:var(--text2);">Level</div>
+            <div class="v" id="pfUserLevel" style="font-size:22px;font-weight:800;color:var(--green);margin-top:4px;">L1</div>
+          </div>
+        </div>
+        <div style="height:6px;background:var(--input-bg);border-radius:3px;overflow:hidden;">
+          <div id="pfLevelProgress" style="height:100%;background:linear-gradient(90deg,#0ECB81,#0BB574);width:0%;transition:width .3s;"></div>
+        </div>
+        <div id="pfLevelHint" style="font-size:11.5px;color:var(--text2);">Invite 3 users to reach Level 2</div>
+      </div>
+    </div>
+
     <div class="pf-assets-card">
       <div>
         <div class="l"><span>Total Assets</span><svg class="eye" viewBox="0 0 24 24" fill="none" onclick="togglePfBalance()"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/></svg></div>
@@ -1207,6 +1240,12 @@ html.is-mobile textarea{font-size:16px !important;}
   <div class="scroll" id="newsList" style="padding:0 14px 20px;"></div>
 </div>
 
+<!-- FULLSCREEN HISTORY OVERLAY -->
+<div class="overlay" id="historyPanel">
+  <div class="ov-head"><div class="x" onclick="closeHistory()">✕</div><div class="title">Transaction History</div></div>
+  <div class="scroll" id="historyList" style="padding:0 14px 20px;"></div>
+</div>
+
 <div id="toast"></div>
 </div>
 
@@ -1225,6 +1264,7 @@ const LOCK_TIER1_PCT = 0.40;
 const LOCK_TIER2_PCT = 0.70;
 const LOCK_TIER1_DAYS = 45;
 const LOCK_TIER2_DAYS = 90;
+const LEVEL_THRESHOLDS = [0, 3, 10, 25, 50];
 
 let currentUser = null;
 let liveNews = [];
@@ -1235,6 +1275,7 @@ let myOpenCopies = [];
 let myCopyHistory = [];
 let copyTickInterval = null;
 let copyCloseInterval = null;
+let usedSignalIds = new Set();
 
 /* THEME */
 (function(){
@@ -1314,8 +1355,11 @@ function subscribeUserProfile(){
         currentUser.kyc_status = payload.new.kyc_status;
         currentUser.balance = payload.new.balance;
         currentUser.kyc_data = payload.new.kyc_data;
+        currentUser.referral_count = payload.new.referral_count ?? currentUser.referral_count;
+        currentUser.user_level = payload.new.user_level ?? currentUser.user_level;
         renderKycState();
         updatePfBalance();
+        updateReferralUI();
         if(oldStatus !== 'verified' && payload.new.kyc_status === 'verified') toast('✅ Your identity has been verified');
         if(oldStatus !== 'rejected' && payload.new.kyc_status === 'rejected') toast('❌ Your verification was rejected');
       }
@@ -1329,26 +1373,59 @@ async function loadProfile(userId){
   if(error) return null;
   return data;
 }
+
 async function doRegisterStep1(){
   const email = document.getElementById('suEmail').value.trim().toLowerCase();
   const pw = document.getElementById('suPw').value;
   const pw2 = document.getElementById('suPw2').value;
   const username = document.getElementById('suUsername').value.trim();
+  const inviteCode = document.getElementById('suInviteCode').value.trim().toUpperCase();
   const terms = document.getElementById('suTerms').checked;
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
   if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars');
+  if(!inviteCode) {
+    showErr('suInviteCode','suInviteCodeErr','Invitation code required — get an invitation code from an existing member or support');
+    return toast('⚠️ Invitation code required — please get an invitation code');
+  }
+  if(inviteCode.length < 4) return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code');
   if(!terms) return toast('Please agree to the Terms of Service');
+
   const btn = document.getElementById('registerBtn');
-  btn.disabled = true; btn.textContent = 'Creating account...';
+  btn.disabled = true; btn.textContent = 'Verifying code...';
+
+  const { data: inviter, error: invErr } = await sb.from('profiles')
+    .select('id, username, referral_code, referral_count')
+    .eq('referral_code', inviteCode)
+    .maybeSingle();
+
+  if(invErr || !inviter){
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
+  }
+
+  btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
   if(authErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr', authErr.message); }
   if(!authData.user){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suEmail','suEmailErr','Signup failed'); }
   const uid = genUID();
-  const profileRow = { id: authData.user.id, username, email, uid, referral_code: genRef(), kyc_status: 'none', mode: 'real', balance: 0, funding: 0, spot: 0 };
+  const profileRow = {
+    id: authData.user.id, username, email, uid, referral_code: genRef(),
+    referred_by: inviter.id, referred_by_code: inviteCode,
+    kyc_status: 'none', mode: 'real', balance: 0, funding: 0, spot: 0,
+    user_level: 1, referral_count: 0
+  };
   const { error: profErr } = await sb.from('profiles').insert(profileRow);
   if(profErr){ btn.disabled = false; btn.textContent = 'Register →'; return showErr('suUsername','suUsernameErr', profErr.message); }
+
+  try {
+    await sb.rpc('increment_referral_count', { p_user_id: inviter.id });
+  } catch(e){
+    const { data: cur } = await sb.from('profiles').select('referral_count').eq('id', inviter.id).single();
+    await sb.from('profiles').update({ referral_count: Number(cur?.referral_count || 0) + 1 }).eq('id', inviter.id);
+  }
+
   currentUser = profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
   toast('Account created!');
@@ -1356,6 +1433,7 @@ async function doRegisterStep1(){
   subscribeUserProfile();
   openAuth('kyc');
 }
+
 function handleKycUpload(input, kind){
   const file = input.files && input.files[0];
   if(!file) return;
@@ -1372,6 +1450,7 @@ function handleKycUpload(input, kind){
   };
   reader.readAsDataURL(file);
 }
+
 async function submitKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   const country = document.getElementById('kycCountry').value;
@@ -1413,12 +1492,14 @@ async function submitKycStep2(){
     btn.disabled = false; btn.textContent = 'Submit for Review →';
   }
 }
+
 function skipKycStep2(){
   if(!currentUser){ openAuth('register'); return; }
   toast('You can verify later from Profile');
   closeAuth();
   go('s-home');
 }
+
 async function doLogin(){
   const id = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pw = document.getElementById('loginPw').value;
@@ -1436,6 +1517,7 @@ async function doLogin(){
   go('s-home');
   toast('Welcome back!');
 }
+
 async function doLogout(){
   if(userRealtimeChannel){ sb.removeChannel(userRealtimeChannel); userRealtimeChannel = null; }
   stopCopyEngine();
@@ -1443,13 +1525,15 @@ async function doLogout(){
   currentUser = null;
   myOpenCopies = [];
   myCopyHistory = [];
+  usedSignalIds = new Set();
   applyUserToUI();
   go('s-home');
   toast('Logged out');
 }
+
 function openAuth(mode){
   document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
-  const target = mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : 'authLogin';
+  const target = mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : mode === 'forgot' ? 'authForgot' : 'authLogin';
   document.getElementById(target).classList.add('active');
   if(mode === 'kyc'){
     kycUploads.front = null; kycUploads.selfie = null;
@@ -1458,8 +1542,32 @@ function openAuth(mode){
     const fc = document.getElementById('kycFrontCap'); if(fc) fc.textContent = 'Please upload the front side of your identity document';
     const sc = document.getElementById('kycSelfieCap'); if(sc) sc.textContent = 'Please upload a photo of yourself holding your ID';
   }
+  if(mode === 'forgot'){
+    const fe = document.getElementById('forgotEmail'); if(fe) fe.value = '';
+    const ferr = document.getElementById('forgotEmailErr'); if(ferr) ferr.classList.remove('show');
+  }
 }
+
 function closeAuth(){ document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active')); }
+
+function openForgotPassword(){
+  openAuth('forgot');
+}
+
+async function doForgotPassword(){
+  const email = document.getElementById('forgotEmail').value.trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('forgotEmail','forgotEmailErr','Enter a valid email');
+  const btn = document.getElementById('forgotBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/app.html?reset=1'
+  });
+  btn.disabled = false; btn.textContent = 'Send Reset Link';
+  if(error) return showErr('forgotEmail','forgotEmailErr', error.message);
+  toast('✓ Reset link sent — check your email');
+  setTimeout(() => openAuth('login'), 1500);
+}
+
 function scorePw(){
   const v = document.getElementById('suPw').value;
   const segs = document.querySelectorAll('#pwStrength .seg');
@@ -1470,6 +1578,7 @@ function scorePw(){
   if(/[^a-zA-Z0-9]/.test(v)) s++;
   segs.forEach((seg,i)=>{ seg.className='seg'; if(i<s) seg.classList.add('on-'+s); });
 }
+
 function showErr(f,e,m){
   const fel = document.getElementById(f); if(fel) fel.style.borderColor = 'var(--red)';
   const eel = document.getElementById(e); if(eel){ eel.textContent = m; eel.classList.add('show'); }
@@ -1488,9 +1597,38 @@ function applyUserToUI(){
     const pi = document.getElementById('pfInviteCode'); if(pi) pi.textContent = currentUser.referral_code || '—';
     const pu = document.getElementById('pfUid'); if(pu) pu.textContent = currentUser.uid || '—';
     updatePfBalance();
+    updateReferralUI();
   }
   renderKycState();
 }
+
+function updateReferralUI(){
+  const rc = Number(currentUser?.referral_count || 0);
+  const lvl = Number(currentUser?.user_level || levelFromCount(rc));
+  const el1 = document.getElementById('pfReferralCount');
+  const el2 = document.getElementById('pfUserLevel');
+  const el3 = document.getElementById('pfLevelProgress');
+  const el4 = document.getElementById('pfLevelHint');
+  if(el1) el1.textContent = rc;
+  if(el2) el2.textContent = 'L' + lvl;
+  const nextThresh = LEVEL_THRESHOLDS[lvl] || LEVEL_THRESHOLDS[4];
+  const prevThresh = LEVEL_THRESHOLDS[lvl - 1] || 0;
+  const pct = lvl >= 5 ? 100 : Math.min(100, Math.max(0, ((rc - prevThresh) / (nextThresh - prevThresh)) * 100));
+  if(el3) el3.style.width = pct + '%';
+  if(el4){
+    if(lvl >= 5) el4.textContent = '🎉 Maximum level reached';
+    else el4.textContent = `Invite ${nextThresh - rc} more to reach Level ${lvl + 1}`;
+  }
+}
+
+function levelFromCount(n){
+  if(n >= 50) return 5;
+  if(n >= 25) return 4;
+  if(n >= 10) return 3;
+  if(n >= 3) return 2;
+  return 1;
+}
+
 async function updatePfBalance(){
   const pb = document.getElementById('pfBalance'); if(!pb) return;
   if(!currentUser){ pb.textContent = '0 USD'; return; }
@@ -1501,12 +1639,14 @@ async function updatePfBalance(){
     pb.textContent = bal.toFixed(2) + ' USD';
   } catch(e){ pb.textContent = '0 USD'; }
 }
+
 function togglePfBalance(){
   const pb = document.getElementById('pfBalance'); if(!pb) return;
   const bal = Number(currentUser?.balance || 0);
   if(pb.dataset.hidden === '1'){ pb.textContent = bal.toFixed(2) + ' USD'; pb.dataset.hidden = '0'; }
   else { pb.textContent = '****'; pb.dataset.hidden = '1'; }
 }
+
 function copyPf(kind){
   let v = '';
   if(kind === 'invite') v = currentUser?.referral_code || '';
@@ -1515,6 +1655,7 @@ function copyPf(kind){
   if(navigator.clipboard) navigator.clipboard.writeText(v);
   toast('Copied');
 }
+
 function openKycFromProfile(){
   if(!currentUser){ openAuth('register'); return; }
   openAuth('kyc');
@@ -1574,6 +1715,7 @@ function escapeHtml(s){
     '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
   })[c]);
 }
+
 function timeAgo(d){
   const s = Math.floor((Date.now() - d.getTime()) / 1000);
   if(s < 60) return s + 's ago';
@@ -1623,26 +1765,20 @@ async function submitNewTicket(){
   await loadMyTickets();
 }
 
-/* ============================================================
-   FIXED — openTicketThread
-   ============================================================ */
 async function openTicketThread(ticketId){
   const t = supTickets.find(x => x.id === ticketId);
   if(!t) return;
   supCurrentTicket = t;
 
-  // Fully reset the modal body so stale input bars never stack
   const body = document.getElementById('genericBody');
   body.innerHTML = '';
   document.getElementById('genericTitle').textContent = t.subject;
 
-  // Thread container
   const thread = document.createElement('div');
   thread.className = 'sup-thread';
   thread.id = 'supThread';
   body.appendChild(thread);
 
-  // Input bar
   const bar = document.createElement('div');
   bar.className = 'sup-input-bar';
   bar.innerHTML = `
@@ -1652,22 +1788,16 @@ async function openTicketThread(ticketId){
     </button>`;
   body.appendChild(bar);
 
-  // Show modal FIRST so user sees it while loading
   document.getElementById('genericModal').classList.add('on');
 
-  // Load messages
   await loadThreadMessages(ticketId);
 
-  // Mark read for user (best-effort)
   try {
     await sb.from('support_tickets').update({ unread_for_user: false }).eq('id', ticketId);
     t.unread_for_user = false;
   } catch(e){ /* silent */ }
 }
 
-/* ============================================================
-   FIXED — loadThreadMessages
-   ============================================================ */
 async function loadThreadMessages(ticketId){
   const el = document.getElementById('supThread');
   if(!el) return;
@@ -1700,9 +1830,6 @@ async function loadThreadMessages(ticketId){
   setTimeout(() => { el.scrollTop = el.scrollHeight; }, 30);
 }
 
-/* ============================================================
-   FIXED — sendTicketReply
-   ============================================================ */
 async function sendTicketReply(){
   if(!supCurrentTicket) return;
   const input = document.getElementById('supReplyInput');
@@ -1741,6 +1868,7 @@ async function sendTicketReply(){
 /* BANNER CAROUSEL */
 let banners = [], bannerIndex = 0, bannerTimer = null, bannerPaused = false;
 const BANNER_INTERVAL_MS = 4000;
+
 async function loadBanners(){
   try {
     const { data, error } = await sb.from('banners').select('*').eq('active', true)
@@ -1750,6 +1878,7 @@ async function loadBanners(){
     renderBannerCarousel();
   } catch(e){}
 }
+
 function renderBannerCarousel(){
   const wrap = document.getElementById('bannerWrap');
   const track = document.getElementById('bannerTrack');
@@ -1765,6 +1894,7 @@ function renderBannerCarousel(){
   startBannerAuto();
   banners.forEach(b => { const img = new Image(); img.src = b.image_url; });
 }
+
 function sizeBannerWrap(){
   const wrap = document.getElementById('bannerWrap');
   if(!wrap || !banners.length) return;
@@ -1781,6 +1911,7 @@ function sizeBannerWrap(){
   };
   img.src = current.image_url;
 }
+
 function setBannerPosition(animate = true){
   const track = document.getElementById('bannerTrack'); if(!track) return;
   if(!animate) track.style.transition = 'none';
@@ -1791,6 +1922,7 @@ function setBannerPosition(animate = true){
 }
 function nextBanner(){ if(!banners.length) return; bannerIndex = (bannerIndex + 1) % banners.length; setBannerPosition(true); }
 function startBannerAuto(){ if(bannerTimer) clearInterval(bannerTimer); bannerTimer = setInterval(() => { if(!bannerPaused) nextBanner(); }, BANNER_INTERVAL_MS); }
+
 function attachBannerSwipe(){
   const wrap = document.getElementById('bannerWrap'); if(!wrap) return;
   let startX = 0, dragging = false, dx = 0;
@@ -1872,6 +2004,7 @@ function sparklineSVG(up, width=52, height=28){
   const areaPath = `${path} L${width},${height} L0,${height} Z`;
   return `<svg class="spark" viewBox="0 0 ${width} ${height}" preserveAspectRatio="none"><path d="${areaPath}" fill="${fill}" stroke="none"/><path d="${path}" fill="none" stroke="${color}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 }
+
 let simTimer = null;
 function startSimulation(){
   if(simTimer) return;
@@ -1888,6 +2021,7 @@ function startSimulation(){
     }
   }, 1500);
 }
+
 const HOME_GRID_COINS = ['AAPL','TSLA','HSBA','BP'];
 function renderHomeCoinGrid(){
   const el = document.getElementById('homeCoinGrid'); if(!el) return;
@@ -1902,6 +2036,7 @@ function renderHomeCoinGrid(){
       </div></div>`;
   }).join('');
 }
+
 let mktTab = 'gainers', mkFilter = '';
 function renderMarketsTable(){
   const el = document.getElementById('mkTable'); if(!el) return;
@@ -1960,35 +2095,42 @@ document.getElementById('dtTabs')?.addEventListener('click', e => {
   detailCandles = generateCandles(currentDetailSym, currentDetailRange);
   renderDetailsChart(currentDetailSym, currentDetailRange);
 });
+
 function generateCandles(sym, range){
-  const m = findMarket(sym); const basePrice = m ? m.price : 100;
-  const count = 40;
-  const volatility = range === '1m' ? 0.0008 : range === '1h' ? 0.0035 : 0.012;
+  const m = findMarket(sym);
+  const basePrice = m ? m.price : 100;
+  const count = 60;
+  const volatility = range === '1m' ? 0.0015 : range === '1h' ? 0.006 : 0.02;
   const candles = [];
-  let p = basePrice * (1 + (Math.random() - 0.5) * volatility * 4);
+  let p = basePrice * (1 + (Math.random() - 0.5) * volatility * 6);
   for(let i = 0; i < count - 1; i++){
     const open = p;
-    const move = (Math.random() - 0.48) * basePrice * volatility;
-    const close = Math.max(open * 0.97, Math.min(open * 1.03, open + move));
-    const high = Math.max(open, close) + Math.random() * basePrice * volatility * 0.5;
-    const low = Math.min(open, close) - Math.random() * basePrice * volatility * 0.5;
-    const volume = Math.round(50000 + Math.random() * 400000);
-    candles.push({ open, high, low, close, volume });
+    const drift = (Math.random() - 0.5) * basePrice * volatility * 0.3;
+    const noise = (Math.random() - 0.5) * basePrice * volatility * 1.8;
+    let close = open + drift + noise;
+    if(Math.random() < 0.08) close += (Math.random() - 0.5) * basePrice * volatility * 4;
+    close = Math.max(open * 0.96, Math.min(open * 1.04, close));
+    const hi = Math.max(open, close) + Math.random() * basePrice * volatility * (0.4 + Math.random() * 0.9);
+    const lo = Math.min(open, close) - Math.random() * basePrice * volatility * (0.4 + Math.random() * 0.9);
+    const volume = Math.round((80000 + Math.random() * 600000) * (1 + Math.abs(close - open) / (basePrice * volatility)));
+    candles.push({ open, high: hi, low: lo, close, volume });
     p = close;
   }
   const lastOpen = p;
   const lastClose = basePrice;
-  const lastHigh = Math.max(lastOpen, lastClose) + Math.random() * basePrice * volatility * 0.4;
-  const lastLow = Math.min(lastOpen, lastClose) - Math.random() * basePrice * volatility * 0.4;
-  candles.push({ open: lastOpen, high: lastHigh, low: lastLow, close: lastClose, volume: Math.round(50000 + Math.random() * 400000) });
+  const lastHigh = Math.max(lastOpen, lastClose) + Math.random() * basePrice * volatility * 0.6;
+  const lastLow = Math.min(lastOpen, lastClose) - Math.random() * basePrice * volatility * 0.6;
+  candles.push({ open: lastOpen, high: lastHigh, low: lastLow, close: lastClose, volume: Math.round(100000 + Math.random() * 500000) });
   return candles;
 }
 function tickCandles(sym){
   const m = findMarket(sym); if(!m || !detailCandles.length) return;
   const last = detailCandles[detailCandles.length - 1];
+  const prevClose = last.close;
   last.close = m.price;
-  last.high = Math.max(last.high, m.price);
-  last.low = Math.min(last.low, m.price);
+  last.high = Math.max(last.high, m.price, last.open, prevClose);
+  last.low  = Math.min(last.low,  m.price, last.open, prevClose);
+  last.volume += Math.round(1000 + Math.random() * 8000);
 }
 function renderDetailsChart(sym, range){
   const m = findMarket(sym); if(!m) return;
@@ -2008,13 +2150,13 @@ function renderDetailsChart(sym, range){
   const highs = candles.map(c => c.high);
   const lows = candles.map(c => c.low);
   let maxP = Math.max(...highs), minP = Math.min(...lows);
-  const pad = (maxP - minP) * 0.05 || 1;
+  const pad = (maxP - minP) * 0.06 || 1;
   maxP += pad; minP -= pad;
   const rangeP = maxP - minP || 1;
-  const padding = { top: 8, right: 48, bottom: 24, left: 8 };
+  const padding = { top: 8, right: 52, bottom: 24, left: 8 };
   const chartW = cssW - padding.left - padding.right;
   const chartH = cssH - padding.top - padding.bottom;
-  const candleW = Math.max(2, Math.floor(chartW / candles.length * 0.7));
+  const candleW = Math.max(2, Math.floor(chartW / candles.length * 0.65));
   const gap = chartW / candles.length;
   const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   const textColor = theme === 'light' ? '#707A8A' : '#8B95A5';
@@ -2036,8 +2178,44 @@ function renderDetailsChart(sym, range){
     ctx.strokeStyle = color; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x, yHigh); ctx.lineTo(x, yLow); ctx.stroke();
     ctx.fillStyle = color;
-    ctx.fillRect(x - candleW/2, Math.min(yOpen, yClose), candleW, Math.max(1, Math.abs(yClose - yOpen)));
+    const bodyH = Math.max(1, Math.abs(yClose - yOpen));
+    ctx.fillRect(x - candleW/2, Math.min(yOpen, yClose), candleW, bodyH);
   });
+  // Draw trade-close markers
+  const closedForPair = (myCopyHistory || []).filter(cp => (cp.sym || '') === sym);
+  if(closedForPair.length && candles.length){
+    closedForPair.slice(0, 10).forEach((cp) => {
+      const t = new Date(cp.created_at || Date.now()).getTime();
+      const spanMs = 60 * 60 * 1000;
+      const frac = ((t % spanMs) / spanMs);
+      const i = Math.min(candles.length - 1, Math.max(0, Math.floor(frac * candles.length)));
+      const c = candles[i];
+      const x = padding.left + gap * i + gap / 2;
+      const net = Number(cp.net_profit || cp.profit || 0);
+      const y = padding.top + (1 - (c.close - minP) / rangeP) * chartH;
+      const up = net >= 0;
+      const col = up ? '#0ECB81' : '#F6465D';
+      ctx.fillStyle = col;
+      ctx.beginPath();
+      if(up){
+        ctx.moveTo(x, y - 12);
+        ctx.lineTo(x - 6, y - 22);
+        ctx.lineTo(x + 6, y - 22);
+      } else {
+        ctx.moveTo(x, y + 12);
+        ctx.lineTo(x - 6, y + 22);
+        ctx.lineTo(x + 6, y + 22);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = col;
+      ctx.font = 'bold 9px -apple-system, sans-serif';
+      const lbl = (up ? '+' : '') + '$' + Math.abs(net).toFixed(2);
+      const tw = ctx.measureText(lbl).width;
+      ctx.fillText(lbl, x - tw / 2, up ? y - 26 : y + 34);
+      ctx.font = '10px -apple-system, sans-serif';
+    });
+  }
   const last = candles[candles.length - 1];
   const timeLabel = new Date().toISOString().slice(0,10) + ' ' + new Date().toTimeString().slice(0,5);
   stats.innerHTML = `
@@ -2079,7 +2257,7 @@ function go(id){
   if(id === 's-trade'){ loadLiveSignals(); refreshCopyPanels(); }
   if(id === 's-deposit') updateDepositAddress();
   if(id === 's-markets') renderMarketsTable();
-  if(id === 's-profile'){ updatePfBalance(); renderKycState(); }
+  if(id === 's-profile'){ updatePfBalance(); renderKycState(); updateReferralUI(); }
   if(id === 's-withdraw'){ updateWithdrawAmount(); }
   if(id === 's-support'){ loadMyTickets(); }
   if(id !== 's-details') currentDetailSym = null;
@@ -2160,6 +2338,9 @@ async function closeExpiredTrades(){
   }
   await refreshCopyPanels();
   await updatePfBalance();
+  if(currentDetailSym && document.getElementById('s-details').classList.contains('active')){
+    renderDetailsChart(currentDetailSym, currentDetailRange);
+  }
 }
 function renderCopyHistory(){
   const head = document.getElementById('copyHistoryHead');
@@ -2247,7 +2428,16 @@ function stopCopyEngine(){
 
 /* ANALYSTS */
 let ANALYSTS = [], analystFilter = '';
+async function loadUsedSignals(){
+  usedSignalIds = new Set();
+  if(!currentUser) return;
+  try {
+    const { data } = await sb.from('participants').select('signal_id').eq('user_id', currentUser.id);
+    (data || []).forEach(p => usedSignalIds.add(p.signal_id));
+  } catch(e){}
+}
 async function loadLiveSignals(){
+  await loadUsedSignals();
   let data = null;
   try {
     const res = await sb.from('signals').select('*')
@@ -2256,7 +2446,7 @@ async function loadLiveSignals(){
     data = res.data;
   } catch(e){}
   if(data && data.length){
-    ANALYSTS = data.map(s => ({
+    ANALYSTS = data.filter(s => !usedSignalIds.has(s.id)).map(s => ({
       id: s.id, name: s.trader_name, role: s.role || 'Senior Analyst',
       day: Number(s.day_return || 1.5), week: Number(s.week_return || 10.5),
       intro: s.message || '', code: s.code, sym: s.sym, amount: Number(s.amount || 100),
@@ -2342,8 +2532,9 @@ function openFollowSheet(signalId){
   const bal = Number(currentUser.balance || 0);
   document.getElementById('fsBody').innerHTML = `
     <div class="fs-field">
-      <div class="lbl-row"><label>Signal Code</label></div>
-      <input class="fs-input" id="fsCode" type="text" inputmode="numeric" maxlength="4" placeholder="Please Enter Signal Code" autocomplete="off">
+      <div class="lbl-row"><label>Signal Code</label><span class="avail" style="color:var(--green-dk);font-weight:700;">Single-use</span></div>
+      <input class="fs-input" id="fsCode" type="text" inputmode="numeric" maxlength="4" placeholder="Please Enter Signal Code" autocomplete="off" style="background:var(--green-lt);font-weight:800;letter-spacing:6px;color:var(--green-dk);">
+      <div style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">Each code may be used once. You'll need a new code for a new trade.</div>
     </div>
     <div class="fs-field">
       <div class="lbl-row"><label>Follow Amount</label><span class="avail">Available <b>${bal.toFixed(2)} USD</b></span></div>
@@ -2392,16 +2583,31 @@ async function fsApply(){
   let bonus = 0;
   if(voucher === 'welcome10') bonus = 10; else if(voucher === 'referral5') bonus = 5;
   const effective = amt + bonus;
+
   if(currentAnalyst.id && currentAnalyst.id !== 'default'){
+    if(String(code) !== String(currentAnalyst.code || code)){
+      return toast('Code does not match this signal');
+    }
+    const { data: existing, error: existErr } = await sb.from('participants')
+      .select('id')
+      .eq('user_id', currentUser.id)
+      .eq('signal_id', currentAnalyst.id)
+      .limit(1);
+    if(existErr){ return toast('Error: ' + existErr.message); }
+    if(existing && existing.length){
+      return toast('⚠️ You have already used this signal code — a new code is required for another trade');
+    }
+
     const bal = Number(currentUser.balance || 0);
     if(amt > bal) return toast('Insufficient balance');
     const newBal = bal - amt;
     const { error: balErr } = await sb.from('profiles').update({ balance: newBal }).eq('id', currentUser.id);
     if(balErr) return toast('Error: ' + balErr.message);
     currentUser.balance = newBal;
+
     const now = new Date();
     const closesAt = new Date(now.getTime() + CT_CYCLE_MS);
-    await sb.from('participants').insert({
+    const { error: insErr } = await sb.from('participants').insert({
       signal_id: currentAnalyst.id,
       user_id: currentUser.id,
       username: currentUser.username,
@@ -2416,11 +2622,13 @@ async function fsApply(){
       opened_at: now.toISOString(),
       closes_at: closesAt.toISOString()
     });
+    if(insErr) return toast('Error: ' + insErr.message);
   }
   closeFollowSheet();
   toast('✓ Copy trade placed — $' + effective.toFixed(2));
   await refreshCopyPanels();
   await updatePfBalance();
+  await loadLiveSignals();
 }
 
 /* WITHDRAWAL */
@@ -2538,9 +2746,9 @@ async function submitDeposit(){
 /* TX HISTORY */
 async function openTxHistory(){
   if(!currentUser){ openAuth('register'); return; }
-  document.getElementById('genericTitle').textContent = 'Transaction History';
-  document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">Loading…</div>';
-  document.getElementById('genericModal').classList.add('on');
+  const el = document.getElementById('historyList');
+  el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px 20px;font-size:13px;">Loading your history…</div>';
+  document.getElementById('historyPanel').classList.add('active');
   try {
     const [depRes, wdRes, cpRes] = await Promise.all([
       sb.from('deposits').select('*').eq('user_id', currentUser.id).order('created_at', { ascending: false }),
@@ -2560,36 +2768,70 @@ async function openTxHistory(){
     }));
     (cpRes.data || []).forEach(p => rows.push({
       kind:'copyprofit', ts: new Date(p.created_at).getTime(),
-      title:'Copy Profit', sub: `${p.trader_name || ''} · ${new Date(p.created_at).toLocaleString()}`,
-      amt: Number(p.profit || 0), sign:'+', status:'approved'
+      title:`Copy Profit — ${p.trader_name || 'Analyst'}${p.sym ? ' · ' + p.sym : ''}`,
+      sub: `${p.sym || ''} · ${new Date(p.created_at).toLocaleString()}`,
+      amt: Number(p.net_profit || p.profit || 0), sign:'+', status:'approved'
     }));
     rows.sort((a,b) => b.ts - a.ts);
     if(!rows.length){
-      document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--text3);padding:40px;">No transactions yet.</div>';
+      el.innerHTML = '<div style="text-align:center;color:var(--text3);padding:60px 20px;font-size:13px;">No transactions yet.<br><br>Deposits, withdrawals, and copy-trade profits will appear here.</div>';
       return;
     }
-    document.getElementById('genericBody').innerHTML = rows.map(r => {
-      const cls = r.sign === '+' ? 'pos' : 'neg';
-      const st = r.status === 'approved' ? 'approved' : r.status === 'rejected' ? 'rejected' : 'pending';
-      const stLabel = r.status === 'approved' ? 'Approved' : r.status === 'rejected' ? 'Rejected' : 'Pending';
-      return `<div class="tx-row">
-        <div class="tx-ic" style="background:${cls==='pos'?'var(--green-lt)':'var(--red-lt)'};color:${cls==='pos'?'var(--green-dk)':'var(--red)'};">
-          ${r.kind === 'deposit' ? '⬇' : r.kind === 'withdraw' ? '⬆' : '★'}
+    let totalIn = 0, totalOut = 0, totalProfit = 0;
+    rows.forEach(r => {
+      if(r.kind === 'deposit' && r.status === 'approved') totalIn += r.amt;
+      if(r.kind === 'withdraw' && r.status === 'approved') totalOut += r.amt;
+      if(r.kind === 'copyprofit') totalProfit += r.amt;
+    });
+    let html = `
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;">
+          <div style="font-size:10.5px;color:var(--text2);font-weight:600;">Deposited</div>
+          <div style="font-size:14px;font-weight:800;color:var(--green);margin-top:4px;font-variant-numeric:tabular-nums;">$${totalIn.toFixed(2)}</div>
         </div>
-        <div class="tx-info">
-          <div class="tx-title">${r.title}</div>
-          <div class="tx-sub">${r.sub}</div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;">
+          <div style="font-size:10.5px;color:var(--text2);font-weight:600;">Withdrawn</div>
+          <div style="font-size:14px;font-weight:800;color:var(--red);margin-top:4px;font-variant-numeric:tabular-nums;">$${totalOut.toFixed(2)}</div>
         </div>
-        <div class="tx-right">
-          <div class="tx-amt ${cls}">${r.sign}$${r.amt.toFixed(2)}</div>
-          <div class="tx-status ${st}">${stLabel}</div>
+        <div style="background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 10px;text-align:center;">
+          <div style="font-size:10.5px;color:var(--text2);font-weight:600;">Profit</div>
+          <div style="font-size:14px;font-weight:800;color:var(--green-dk);margin-top:4px;font-variant-numeric:tabular-nums;">+$${totalProfit.toFixed(2)}</div>
         </div>
       </div>`;
-    }).join('');
+    const grouped = {};
+    rows.forEach(r => {
+      const d = new Date(r.ts);
+      const key = d.toLocaleDateString('en-US', { weekday:'long', month:'short', day:'numeric', year:'numeric' });
+      if(!grouped[key]) grouped[key] = [];
+      grouped[key].push(r);
+    });
+    Object.entries(grouped).forEach(([day, items]) => {
+      html += `<div style="font-size:11.5px;font-weight:700;color:var(--text2);letter-spacing:.3px;text-transform:uppercase;padding:14px 4px 8px;">${day}</div>`;
+      html += items.map(r => {
+        const cls = r.sign === '+' ? 'pos' : 'neg';
+        const st = r.status === 'approved' ? 'approved' : r.status === 'rejected' ? 'rejected' : 'pending';
+        const stLabel = r.status === 'approved' ? 'Approved' : r.status === 'rejected' ? 'Rejected' : 'Pending';
+        return `<div class="tx-row" style="border-radius:12px;margin-bottom:8px;border:1px solid var(--line);">
+          <div class="tx-ic" style="background:${cls==='pos'?'var(--green-lt)':'var(--red-lt)'};color:${cls==='pos'?'var(--green-dk)':'var(--red)'};">
+            ${r.kind === 'deposit' ? '⬇' : r.kind === 'withdraw' ? '⬆' : '★'}
+          </div>
+          <div class="tx-info">
+            <div class="tx-title">${r.title}</div>
+            <div class="tx-sub">${r.sub}</div>
+          </div>
+          <div class="tx-right">
+            <div class="tx-amt ${cls}">${r.sign}$${r.amt.toFixed(2)}</div>
+            <div class="tx-status ${st}">${stLabel}</div>
+          </div>
+        </div>`;
+      }).join('');
+    });
+    el.innerHTML = html;
   } catch(e){
-    document.getElementById('genericBody').innerHTML = '<div style="text-align:center;color:var(--red);padding:40px;">Error: ' + e.message + '</div>';
+    el.innerHTML = '<div style="text-align:center;color:var(--red);padding:60px 20px;font-size:13px;">Error: ' + e.message + '</div>';
   }
 }
+function closeHistory(){ document.getElementById('historyPanel').classList.remove('active'); }
 
 /* MISC */
 function openInvite(){
@@ -2659,6 +2901,7 @@ function refreshNewsStrip(){
 
 /* INFO MODAL */
 function showCopyTradingInfo(){
+  closeFollowSheet();
   document.getElementById('docTitle').textContent = 'What is Copy Trading?';
   document.getElementById('docBody').innerHTML = `
     <h2>✅ What is Copy Trading?</h2>
@@ -2690,6 +2933,72 @@ function showCopyTradingInfo(){
 }
 function closeDocModal(){ document.getElementById('docModal').classList.remove('on'); }
 
+function showTermsModal(){
+  document.getElementById('docTitle').textContent = 'NextTrade — Terms of Service';
+  document.getElementById('docBody').innerHTML = `
+    <h2>1. Acceptance of Terms</h2>
+    <p>By creating an account on NextTrade ("the Platform") you agree to be bound by these Terms of Service, our Privacy Policy, and Risk Disclosure. If you do not agree, do not register.</p>
+    <h2>2. Eligibility</h2>
+    <p>You must be at least 18 years old and legally capable of entering into binding contracts in your jurisdiction. Citizens or residents of restricted jurisdictions may not use the Platform.</p>
+    <h2>3. Account & Invitation Codes</h2>
+    <p>Registration requires a valid, single-use invitation code issued by an existing NextTrade member. Each invitation code may be used for one account only. Sharing or reselling codes outside the Platform is prohibited.</p>
+    <h2>4. Copy Trading</h2>
+    <p>Each copy-trading signal code (4 digits) may be used <strong>only once per user per signal</strong>. Re-use of the same signal code from the same account is prohibited. All positions auto-close 60 seconds after opening, with gross profit fixed at 1.5% of the invested amount and a 25% platform commission on profits only.</p>
+    <h2>5. Deposits & Withdrawals</h2>
+    <p>Deposits are credited after on-chain verification. Withdrawals are subject to a 20% withdrawal fee, 2% processing fee, and a $5 network fee, with a $100 minimum. Withdrawal principal is released in tiers: 40% for the first 45 days, 70% for days 46–90, and 100% after 90 days.</p>
+    <h2>6. Identity Verification (KYC)</h2>
+    <p>Deposits and withdrawals require successful identity verification. You consent to our processing of submitted identity documents solely for KYC/AML compliance.</p>
+    <h2>7. Prohibited Conduct</h2>
+    <ul>
+      <li>Money laundering, fraud, or funding of illegal activity</li>
+      <li>Multiple accounts, account sharing, or invitation-code abuse</li>
+      <li>Any attempt to reverse-engineer, attack, or circumvent Platform safeguards</li>
+    </ul>
+    <h2>8. Fees</h2>
+    <p>Copy-trading commission (25% of gross profits), withdrawal fees (20% + 2% + $5), and any network fees are displayed transparently before any action is confirmed.</p>
+    <h2>9. Disclaimer</h2>
+    <p>Trading involves substantial risk. Past performance does not guarantee future results. NextTrade provides technology only, does not give investment advice, and is not liable for market losses.</p>
+    <h2>10. Changes</h2>
+    <p>We may update these Terms. Continued use of the Platform constitutes acceptance of the updated Terms.</p>
+  `;
+  document.getElementById('docModal').classList.add('on');
+  document.getElementById('docBody').scrollTop = 0;
+}
+function showPrivacyModal(){
+  document.getElementById('docTitle').textContent = 'NextTrade — Privacy Policy';
+  document.getElementById('docBody').innerHTML = `
+    <h2>Data We Collect</h2>
+    <p>Email, username, hashed password, UID, KYC documents (ID + selfie), transaction history, copy-trade activity, and IP/device metadata.</p>
+    <h2>How We Use It</h2>
+    <p>To operate your account, comply with KYC/AML obligations, process deposits/withdrawals, prevent fraud, and improve the Platform.</p>
+    <h2>Sharing</h2>
+    <p>We never sell personal data. We share data only with our secure cloud storage provider (Supabase) and where legally required.</p>
+    <h2>Your Rights</h2>
+    <p>You may request access, correction, or deletion of your data by contacting support. Deletion is subject to AML record-keeping requirements.</p>
+    <h2>Security</h2>
+    <p>Passwords are hashed, KYC documents stored encrypted, and database access is row-level security enforced.</p>
+  `;
+  document.getElementById('docModal').classList.add('on');
+  document.getElementById('docBody').scrollTop = 0;
+}
+function showRiskModal(){
+  document.getElementById('docTitle').textContent = 'Risk Disclosure';
+  document.getElementById('docBody').innerHTML = `
+    <h2>1. Market Risk</h2>
+    <p>Financial market investments (stocks, crypto, forex, commodities) carry high risk and may result in total loss of capital.</p>
+    <h2>2. Copy-Trading Specific Risks</h2>
+    <p>Strategies of copied traders may become ineffective. Execution deviations may occur due to latency, platform rules, or market gaps.</p>
+    <h2>3. Fee Disclosures</h2>
+    <p>Copy-trading: 1.5% gross profit per 60s cycle, 25% commission on gross profit. Withdrawals: 20% + 2% + $5 network. Principal is released in tiers (40/70/100%) over 90 days.</p>
+    <h2>4. No Guarantee</h2>
+    <p>NextTrade does not guarantee profits. Displayed returns are for reference and do not constitute advice.</p>
+    <h2>5. Investor Responsibility</h2>
+    <p>You are solely responsible for your investment decisions. Only allocate funds you can afford to lose.</p>
+  `;
+  document.getElementById('docModal').classList.add('on');
+  document.getElementById('docBody').scrollTop = 0;
+}
+
 /* DOWNLOAD */
 function downloadFor(platform){
   window.location.href = 'download.html';
@@ -2708,6 +3017,21 @@ setInterval(() => { renderHomeCoinGrid(); renderMarketsTable(); }, 2000);
   refreshNewsStrip();
   fetchLiveNews().then(() => refreshNewsStrip());
   setInterval(() => fetchLiveNews().then(() => refreshNewsStrip()), 60000);
+
+  // Handle password-reset landing
+  if(new URLSearchParams(location.search).get('reset') === '1'){
+    try {
+      const newPw = prompt('Enter your new password (8+ chars):');
+      if(newPw && newPw.length >= 8){
+        const { error } = await sb.auth.updateUser({ password: newPw });
+        if(error) toast('Reset failed: ' + error.message);
+        else toast('✓ Password updated — please log in');
+      }
+    } catch(e){}
+    history.replaceState(null, '', location.pathname);
+    openAuth('login');
+    return;
+  }
 
   try {
     const { data } = await sb.auth.getSession();
