@@ -1506,7 +1506,8 @@ async function doRegisterStep1(){
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
   
-  if(investorPw.length !== 6 || !/^\d{6}$/.test(investorPw)) {
+  // FIX: Strictly check if it's 6 numbers (ignores any hidden trailing spaces)
+  if(!/^\d{6}$/.test(investorPw)) {
     return showErr('suInvestorPw','suInvestorPwErr','Investor password must be exactly 6 digits');
   }
 
@@ -1532,7 +1533,7 @@ async function doRegisterStep1(){
     return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
   }
 
-  // 3. Auto-generate Username from Email (since input field was removed)
+  // 3. Auto-generate Username from Email
   let baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
   if (baseUsername.length < 3) baseUsername = 'user' + baseUsername;
   baseUsername = baseUsername.slice(0, 15);
