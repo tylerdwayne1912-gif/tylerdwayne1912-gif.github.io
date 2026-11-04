@@ -1533,11 +1533,9 @@ async function doRegisterStep1(){
     return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
   }
 
-  // 3. Auto-generate Username from Email
-  let baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
-  if (baseUsername.length < 3) baseUsername = 'user' + baseUsername;
-  baseUsername = baseUsername.slice(0, 15);
-  const generatedUsername = baseUsername + Math.floor(1000 + Math.random() * 9000);
+  // 3. Auto-generate completely unique Username to avoid any collision
+  const randomString = Math.random().toString(36).slice(2, 8);
+  const generatedUsername = 'user_' + randomString;
 
   btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
@@ -1554,7 +1552,7 @@ async function doRegisterStep1(){
   const uid = genUID();
   const profileRow = {
     id: authData.user.id, 
-    username: generatedUsername, // Auto-generated
+    username: generatedUsername, // Always unique random string
     email, 
     uid, 
     investor_password: investorPw, // Saved 6-digit PIN
