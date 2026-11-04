@@ -373,6 +373,9 @@ tr:hover td{background:#FAFBFC;}
       <div class="warn info">
         <b>Supabase connected.</b> Signals, participants, profits, user profiles, deposits, withdrawals, and home banners are stored in the cloud.
       </div>
+      <div style="margin-bottom:14px;">
+        <span class="tag gray" id="founderBadge" style="display:none;">—</span>
+      </div>
       <div class="stats-grid">
         <div class="stat"><div class="ic g"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/><path d="M5 20c1.2-3.5 4-5.2 7-5.2s5.8 1.7 7 5.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div><div><div class="k">Total Users</div><div class="v" id="stat-users">0</div></div></div>
         <div class="stat"><div class="ic b"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 10a6 6 0 1112 0v4l1.5 2.5h-15L6 14v-4z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div><div><div class="k">Active Signals</div><div class="v" id="stat-signals">0</div></div></div>
@@ -995,7 +998,27 @@ async function loadUsers(){
   } catch(e){}
   document.getElementById('userWalletsBadge').textContent = allUsers.length;
   document.getElementById('stat-users').textContent = allUsers.length;
+  refreshFounderBadge();
 }
+
+async function refreshFounderBadge(){
+  const el = document.getElementById('founderBadge');
+  if(!el) return;
+  try {
+    const { data } = await sb.rpc('nt_profile_count');
+    const count = Number(data || 0);
+    const left = Math.max(0, 5 - count);
+    el.style.display = 'inline-block';
+    if(left > 0){
+      el.className = 'tag green';
+      el.textContent = `Founders: ${left} slot${left === 1 ? '' : 's'} left`;
+    } else {
+      el.className = 'tag gray';
+      el.textContent = 'Founder window closed';
+    }
+  } catch(e){ /* silent */ }
+}
+
 async function updateStats(){
   const now = Date.now();
   const active = signals.filter(s => !s.expires_at || new Date(s.expires_at).getTime() > now);
