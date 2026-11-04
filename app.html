@@ -809,6 +809,29 @@ html.is-mobile textarea{font-size:16px !important;}
   height: 100%;
   overflow-y: auto;
 }
+
+/* Eye Icon CSS */
+.eye-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+.eye-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 </style>
 </head>
 <body>
@@ -820,12 +843,59 @@ html.is-mobile textarea{font-size:16px !important;}
   <div class="auth-body">
     <h1 class="auth-title">Create Account</h1>
     <p class="auth-sub">Join NextTrade in less than a minute.</p>
-    <div class="auth-field"><label>E-mail</label><div class="wrap"><input id="suEmail" type="email" placeholder="Please enter your email address"></div><div class="err" id="suEmailErr"></div></div>
-    <div class="auth-field"><label>Set password</label><div class="wrap"><input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()"></div><div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div><div class="err" id="suPwErr"></div></div>
-    <div class="auth-field"><label>Confirm password</label><div class="wrap"><input id="suPw2" type="password" placeholder="Please re-enter your password"></div><div class="err" id="suPw2Err"></div></div>
-    <div class="auth-field"><label>Username</label><div class="wrap"><input id="suUsername" type="text" placeholder="Choose a username"></div><div class="err" id="suUsernameErr"></div></div>
-    <div class="auth-field"><label>Invitation Code <span style="color:var(--red);">*</span></label><div class="wrap"><input id="suInviteCode" type="text" placeholder="Enter your invitation code" maxlength="20" style="text-transform:uppercase;font-family:'Courier New',monospace;letter-spacing:2px;"></div><div class="err" id="suInviteCodeErr"></div><div style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">An invitation code is required to join NextTrade. Ask an existing member or contact support.</div></div>
-    <div class="auth-check"><input type="checkbox" id="suTerms"><label for="suTerms">I have read and agree to the <a onclick="event.preventDefault();showTermsModal()">NextTrade Terms of Service</a>, <a onclick="event.preventDefault();showPrivacyModal()">Privacy Policy</a>, <a onclick="event.preventDefault();showRiskModal()">Risk Disclosure</a>, and confirm I am 18+ and accept the copy-trading fee schedule.</label></div>
+    
+    <div class="auth-field">
+      <label>E-mail</label>
+      <div class="wrap">
+        <input id="suEmail" type="email" placeholder="Please enter your email address">
+      </div>
+      <div class="err" id="suEmailErr"></div>
+    </div>
+
+    <div class="auth-field">
+      <label>Set password</label>
+      <div class="wrap">
+        <input id="suPw" type="password" placeholder="Please enter a password (8+ characters)" oninput="scorePw()" style="padding-right: 44px;">
+        <div class="eye-icon" onclick="togglePassword('suPw', this)">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </div>
+      </div>
+      <div class="pw-strength" id="pwStrength"><div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div></div>
+      <div class="err" id="suPwErr"></div>
+    </div>
+
+    <div class="auth-field">
+      <label>Confirm password</label>
+      <div class="wrap">
+        <input id="suPw2" type="password" placeholder="Please re-enter your password" style="padding-right: 44px;">
+        <div class="eye-icon" onclick="togglePassword('suPw2', this)">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+        </div>
+      </div>
+      <div class="err" id="suPw2Err"></div>
+    </div>
+
+    <div class="auth-field">
+      <label>Investor Password <span style="color:var(--text3);font-size:11px;font-weight:400;">(6 digits)</span></label>
+      <div class="wrap">
+        <input id="suInvestorPw" type="text" inputmode="numeric" maxlength="6" placeholder="Enter 6-digit PIN" style="letter-spacing: 2px;">
+      </div>
+      <div class="err" id="suInvestorPwErr"></div>
+    </div>
+
+    <div class="auth-field">
+      <label>Invitation Code <span style="color:var(--red);">*</span></label>
+      <div class="wrap">
+        <input id="suInviteCode" type="text" placeholder="Enter your invitation code" maxlength="20" style="text-transform:uppercase;font-family:'Courier New',monospace;letter-spacing:2px;">
+      </div>
+      <div class="err" id="suInviteCodeErr"></div>
+      <div style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">An invitation code is required to join NextTrade. Ask an existing member or contact support.</div>
+    </div>
+
+    <div class="auth-check">
+      <input type="checkbox" id="suTerms">
+      <label for="suTerms">I have read and agree to the <a onclick="event.preventDefault();showTermsModal()">NextTrade Terms of Service</a>, <a onclick="event.preventDefault();showPrivacyModal()">Privacy Policy</a>, <a onclick="event.preventDefault();showRiskModal()">Risk Disclosure</a>, and confirm I am 18+ and accept the copy-trading fee schedule.</label>
+    </div>
     <button class="auth-submit" id="registerBtn" onclick="doRegisterStep1()">Register →</button>
     <div class="auth-switch">Already have an account? <a onclick="openAuth('login')">Log In</a></div>
   </div>
@@ -1341,6 +1411,19 @@ function toast(msg){
   toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
 }
 
+/* EYE ICON TOGGLE */
+function togglePassword(inputId, iconEl) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    iconEl.innerHTML = `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+  } else {
+    input.type = 'password';
+    iconEl.innerHTML = `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+  }
+}
+
 function renderKycState(){
   const banner = document.getElementById('kycBanner');
   const badge = document.getElementById('pfKycBadgeLarge');
@@ -1414,7 +1497,7 @@ async function doRegisterStep1(){
   const email = document.getElementById('suEmail').value.trim().toLowerCase();
   const pw = document.getElementById('suPw').value;
   const pw2 = document.getElementById('suPw2').value;
-  const username = document.getElementById('suUsername').value.trim();
+  const investorPw = document.getElementById('suInvestorPw').value.trim();
   const inviteCode = document.getElementById('suInviteCode').value.trim().toUpperCase();
   const terms = document.getElementById('suTerms').checked;
   
@@ -1422,8 +1505,11 @@ async function doRegisterStep1(){
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters and numbers only');
   
+  if(investorPw.length !== 6 || !/^\d{6}$/.test(investorPw)) {
+    return showErr('suInvestorPw','suInvestorPwErr','Investor password must be exactly 6 digits');
+  }
+
   if(!inviteCode) {
     showErr('suInviteCode','suInviteCodeErr','Invitation code required — get an invitation code from an existing member or support');
     return toast('⚠️ Invitation code required — please get an invitation code');
@@ -1435,7 +1521,7 @@ async function doRegisterStep1(){
   const btn = document.getElementById('registerBtn');
   btn.disabled = true; btn.textContent = 'Verifying...';
 
-  // 2. Check if Invitation Code exists (Check against referral_code, NOT id)
+  // 2. Check if Invitation Code exists
   const { data: inviter, error: invErr } = await sb.from('profiles')
     .select('id, username, referral_code')
     .eq('referral_code', inviteCode)
@@ -1446,21 +1532,11 @@ async function doRegisterStep1(){
     return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
   }
 
-  // 3. Check if Username is already taken (Check against username, NOT id)
-  const { data: existingUser, error: userErr } = await sb.from('profiles')
-    .select('username')
-    .eq('username', username)
-    .maybeSingle();
-
-  if (userErr) {
-    btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suUsername','suUsernameErr', 'Check failed: ' + userErr.message);
-  }
-
-  if (existingUser) {
-    btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suUsername','suUsernameErr','This username is already taken. Please choose another.');
-  }
+  // 3. Auto-generate Username from Email (since input field was removed)
+  let baseUsername = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '');
+  if (baseUsername.length < 3) baseUsername = 'user' + baseUsername;
+  baseUsername = baseUsername.slice(0, 15);
+  const generatedUsername = baseUsername + Math.floor(1000 + Math.random() * 9000);
 
   btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
@@ -1477,9 +1553,10 @@ async function doRegisterStep1(){
   const uid = genUID();
   const profileRow = {
     id: authData.user.id, 
-    username, 
+    username: generatedUsername, // Auto-generated
     email, 
     uid, 
+    investor_password: investorPw, // Saved 6-digit PIN
     referral_code: genRef(),
     referred_by: inviter.id, 
     referred_by_code: inviteCode,
@@ -1496,15 +1573,12 @@ async function doRegisterStep1(){
   
   if(profErr){ 
     btn.disabled = false; btn.textContent = 'Register →'; 
-    // Catch database errors and show a friendly message
     if (profErr.code === '23505') { 
-      if (profErr.message.includes('username')) {
-        return showErr('suUsername','suUsernameErr','This username is already taken.');
-      } else if (profErr.message.includes('email')) {
+      if (profErr.message.includes('email')) {
         return showErr('suEmail','suEmailErr','An account with this email already exists.');
       }
     }
-    return showErr('suUsername','suUsernameErr', 'Error: ' + profErr.message); 
+    return toast('Error: ' + profErr.message); 
   }
 
   // Success!
