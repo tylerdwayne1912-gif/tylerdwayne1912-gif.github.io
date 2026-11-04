@@ -1435,7 +1435,7 @@ async function doRegisterStep1(){
   const btn = document.getElementById('registerBtn');
   btn.disabled = true; btn.textContent = 'Verifying...';
 
-  // 2. Check if Invitation Code exists
+  // 2. Check if Invitation Code exists (Check against referral_code, NOT id)
   const { data: inviter, error: invErr } = await sb.from('profiles')
     .select('id, username, referral_code')
     .eq('referral_code', inviteCode)
@@ -1446,11 +1446,16 @@ async function doRegisterStep1(){
     return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
   }
 
-  // 3. Check if Username is already taken BEFORE creating the auth user
-  const { data: existingUser } = await sb.from('profiles')
-    .select('id')
+  // 3. Check if Username is already taken (Check against username, NOT id)
+  const { data: existingUser, error: userErr } = await sb.from('profiles')
+    .select('username')
     .eq('username', username)
     .maybeSingle();
+
+  if (userErr) {
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suUsername','suUsernameErr', 'Check failed: ' + userErr.message);
+  }
 
   if (existingUser) {
     btn.disabled = false; btn.textContent = 'Register →';
@@ -1491,8 +1496,8 @@ async function doRegisterStep1(){
   
   if(profErr){ 
     btn.disabled = false; btn.textContent = 'Register →'; 
-    // Catch database errors and show a friendly message on the username field
-    if (profErr.code === '23505') { // Unique constraint violation
+    // Catch database errors and show a friendly message
+    if (profErr.code === '23505') { 
       if (profErr.message.includes('username')) {
         return showErr('suUsername','suUsernameErr','This username is already taken.');
       } else if (profErr.message.includes('email')) {
