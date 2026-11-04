@@ -1453,7 +1453,7 @@ async function doRegisterStep1(){
     return showErr('suUsername','suUsernameErr', profErr.message); 
   }
 
-  // The Supabase Trigger handles incrementing the inviter's count and level
+  // The Supabase Trigger (from Step 1) now automatically updates the inviter's count and level!
 
   currentUser = profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
