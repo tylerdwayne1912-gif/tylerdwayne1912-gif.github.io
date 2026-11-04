@@ -1418,10 +1418,11 @@ async function doRegisterStep1(){
   const inviteCode = document.getElementById('suInviteCode').value.trim().toUpperCase();
   const terms = document.getElementById('suTerms').checked;
   
+  // 1. Basic Validations
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
   if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars');
+  if(!/^[a-zA-Z0-9_]{3,20}$/.test(username)) return showErr('suUsername','suUsernameErr','3–20 chars, letters and numbers only');
   
   if(!inviteCode) {
     showErr('suInviteCode','suInviteCodeErr','Invitation code required — get an invitation code from an existing member or support');
@@ -1432,8 +1433,9 @@ async function doRegisterStep1(){
   if(!terms) return toast('Please agree to the Terms of Service');
 
   const btn = document.getElementById('registerBtn');
-  btn.disabled = true; btn.textContent = 'Verifying code...';
+  btn.disabled = true; btn.textContent = 'Verifying...';
 
+  // 2. Check if Invitation Code exists
   const { data: inviter, error: invErr } = await sb.from('profiles')
     .select('id, username, referral_code')
     .eq('referral_code', inviteCode)
@@ -1442,6 +1444,17 @@ async function doRegisterStep1(){
   if(invErr || !inviter){
     btn.disabled = false; btn.textContent = 'Register →';
     return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
+  }
+
+  // 3. Check if Username is already taken BEFORE creating the auth user
+  const { data: existingUser } = await sb.from('profiles')
+    .select('id')
+    .eq('username', username)
+    .maybeSingle();
+
+  if (existingUser) {
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suUsername','suUsernameErr','This username is already taken. Please choose another.');
   }
 
   btn.textContent = 'Creating account...';
@@ -1475,13 +1488,21 @@ async function doRegisterStep1(){
   };
   
   const { error: profErr } = await sb.from('profiles').insert(profileRow);
+  
   if(profErr){ 
     btn.disabled = false; btn.textContent = 'Register →'; 
-    return showErr('suUsername','suUsernameErr', profErr.message); 
+    // Catch database errors and show a friendly message on the username field
+    if (profErr.code === '23505') { // Unique constraint violation
+      if (profErr.message.includes('username')) {
+        return showErr('suUsername','suUsernameErr','This username is already taken.');
+      } else if (profErr.message.includes('email')) {
+        return showErr('suEmail','suEmailErr','An account with this email already exists.');
+      }
+    }
+    return showErr('suUsername','suUsernameErr', 'Error: ' + profErr.message); 
   }
 
-  // The Supabase Trigger (from Step 1) now automatically updates the inviter's count and level!
-
+  // Success!
   currentUser = profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
   toast('Account created!');
