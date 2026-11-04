@@ -782,6 +782,33 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 html.is-mobile input,
 html.is-mobile select,
 html.is-mobile textarea{font-size:16px !important;}
+
+/* CRITICAL FIX: Force the doc modal to be a full-screen fixed overlay */
+#docModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+#docModal .doc-sheet {
+  height: 100%;
+  max-height: 100%;
+  border-radius: 0;
+}
+#docModal .doc-head {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding-top: max(14px, env(safe-area-inset-top));
+  padding-bottom: 14px;
+  z-index: 10000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+#docModal .doc-body {
+  padding-top: calc(max(14px, env(safe-area-inset-top)) + 70px);
+  height: 100%;
+  overflow-y: auto;
+}
 </style>
 </head>
 <body>
