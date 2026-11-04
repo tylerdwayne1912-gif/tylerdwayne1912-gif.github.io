@@ -27,7 +27,6 @@
   }catch(e){
     document.documentElement.setAttribute('data-theme','dark');
   }
-
   var ua = navigator.userAgent || '';
   var platform = navigator.platform || '';
   var isIOS = /iPhone|iPad|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -36,12 +35,10 @@
   var coarse = window.matchMedia('(pointer: coarse)').matches;
   var smallViewport = Math.min(window.innerWidth, window.innerHeight) < 900;
   var isMobile = isMobileUA || (coarse && smallViewport);
-
   var html = document.documentElement;
   if(isMobile) html.classList.add('is-mobile');
   if(isIOS)    html.classList.add('is-ios');
   if(isAndroid) html.classList.add('is-android');
-
   function setAppHeight(){
     var h = window.innerHeight || document.documentElement.clientHeight || window.screen.height;
     html.style.setProperty('--app-height', h + 'px');
@@ -58,13 +55,11 @@
   }
   setTimeout(setAppHeight, 100);
   setTimeout(setAppHeight, 500);
-
   try{
     if(CSS && CSS.supports && CSS.supports('padding-top: env(safe-area-inset-top)')){
       html.classList.add('has-safe-area');
     }
   }catch(e){}
-
   function setOrientation(){
     var isLandscape = window.innerWidth > window.innerHeight;
     html.classList.toggle('is-landscape', isLandscape);
@@ -742,7 +737,6 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 .tx-row .tx-status.pending{background:var(--orange-lt);color:var(--orange);}
 .tx-row .tx-status.approved{background:var(--green-lt);color:var(--green-dk);}
 .tx-row .tx-status.rejected{background:var(--red-lt);color:var(--red);}
-/* SUPPORT */
 .sup-wrap{padding:0 16px 20px;}
 .sup-empty{text-align:center;color:var(--text3);font-size:13px;padding:50px 20px;line-height:1.7;}
 .sup-new-btn{display:flex;align-items:center;justify-content:center;gap:8px;
@@ -782,56 +776,18 @@ html.is-mobile.is-landscape .welcome-card .wc-badge{width:64px;height:64px;font-
 html.is-mobile input,
 html.is-mobile select,
 html.is-mobile textarea{font-size:16px !important;}
-
-/* CRITICAL FIX: Force the doc modal to be a full-screen fixed overlay */
-#docModal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-}
-#docModal .doc-sheet {
-  height: 100%;
-  max-height: 100%;
-  border-radius: 0;
-}
-#docModal .doc-head {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  padding-top: max(14px, env(safe-area-inset-top));
-  padding-bottom: 14px;
-  z-index: 10000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-#docModal .doc-body {
-  padding-top: calc(max(14px, env(safe-area-inset-top)) + 70px);
-  height: 100%;
-  overflow-y: auto;
-}
-
-/* Eye Icon CSS */
-.eye-icon {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: var(--text3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-}
-.eye-icon svg {
-  width: 20px;
-  height: 20px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
+#docModal { position: fixed; inset: 0; z-index: 9999; }
+#docModal .doc-sheet { height: 100%; max-height: 100%; border-radius: 0; }
+#docModal .doc-head { position: fixed; top: 0; left: 0; right: 0;
+  padding-top: max(14px, env(safe-area-inset-top)); padding-bottom: 14px;
+  z-index: 10000; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+#docModal .doc-body { padding-top: calc(max(14px, env(safe-area-inset-top)) + 70px);
+  height: 100%; overflow-y: auto; }
+.eye-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+  cursor: pointer; color: var(--text3); display: flex; align-items: center;
+  justify-content: center; padding: 4px; }
+.eye-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 </head>
 <body>
@@ -843,7 +799,7 @@ html.is-mobile textarea{font-size:16px !important;}
   <div class="auth-body">
     <h1 class="auth-title">Create Account</h1>
     <p class="auth-sub">Join NextTrade in less than a minute.</p>
-    
+
     <div class="auth-field">
       <label>E-mail</label>
       <div class="wrap">
@@ -884,12 +840,12 @@ html.is-mobile textarea{font-size:16px !important;}
     </div>
 
     <div class="auth-field">
-      <label>Invitation Code <span style="color:var(--red);">*</span></label>
+      <label>Invitation Code <span id="suInviteRequired" style="color:var(--red);">*</span></label>
       <div class="wrap">
         <input id="suInviteCode" type="text" placeholder="Enter your invitation code" maxlength="20" style="text-transform:uppercase;font-family:'Courier New',monospace;letter-spacing:2px;">
       </div>
       <div class="err" id="suInviteCodeErr"></div>
-      <div style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">An invitation code is required to join NextTrade. Ask an existing member or contact support.</div>
+      <div id="suInviteHint" style="font-size:11.5px;color:var(--text2);margin-top:6px;line-height:1.5;">An invitation code is required to join NextTrade. Ask an existing member or contact support.</div>
     </div>
 
     <div class="auth-check">
@@ -1411,7 +1367,6 @@ function toast(msg){
   toastTimer = setTimeout(() => el.classList.remove('on'), 2200);
 }
 
-/* EYE ICON TOGGLE */
 function togglePassword(inputId, iconEl) {
   const input = document.getElementById(inputId);
   if (!input) return;
@@ -1485,8 +1440,40 @@ function subscribeUserProfile(){
     ).subscribe();
 }
 
-function genUID(){ return 'UID' + Math.floor(100000 + Math.random()*900000); }
-function genRef(){ return 'NT' + Math.floor(100000 + Math.random()*900000); }
+function genUID(){ return 'UID' + Math.floor(1000000 + Math.random()*9000000); }
+function genRef(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s = '';
+  for(let i=0;i<8;i++) s += chars[Math.floor(Math.random()*chars.length)];
+  return 'NT' + s;
+}
+
+async function refreshFounderSlot(){
+  try {
+    const { data, error } = await sb.rpc('nt_profile_count');
+    if (error) throw error;
+    const count = Number(data || 0);
+    const foundersLeft = Math.max(0, 5 - count);
+    const reqEl  = document.getElementById('suInviteRequired');
+    const hintEl = document.getElementById('suInviteHint');
+    const inputEl= document.getElementById('suInviteCode');
+    if (!hintEl) return;
+    if (foundersLeft > 0) {
+      if (reqEl) reqEl.style.display = 'none';
+      hintEl.innerHTML =
+        `<b style="color:var(--green-dk);">🎉 Founder signup open</b> — the first 5 accounts don't need an invite code ` +
+        `(${foundersLeft} slot${foundersLeft === 1 ? '' : 's'} left).`;
+      if (inputEl) inputEl.placeholder = 'Optional for founders';
+    } else {
+      if (reqEl) reqEl.style.display = 'inline';
+      hintEl.innerHTML = 'An invitation code is required to join NextTrade. Ask an existing member or contact support.';
+      if (inputEl) inputEl.placeholder = 'Enter your invitation code';
+    }
+  } catch (e) {
+    console.warn('[founder slot] check failed:', e);
+  }
+}
+
 async function loadProfile(userId){
   const { data, error } = await sb.from('profiles').select('*').eq('id', userId).single();
   if(error) return null;
@@ -1498,92 +1485,125 @@ async function doRegisterStep1(){
   const pw = document.getElementById('suPw').value;
   const pw2 = document.getElementById('suPw2').value;
   const investorPw = document.getElementById('suInvestorPw').value.trim();
-  const inviteCode = document.getElementById('suInviteCode').value.trim().toUpperCase();
+  const inviteCode = (document.getElementById('suInviteCode').value || '').trim().toUpperCase();
   const terms = document.getElementById('suTerms').checked;
-  
-  // 1. Basic Validations
+
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return showErr('suEmail','suEmailErr','Invalid email');
   if(pw.length < 8) return showErr('suPw','suPwErr','Min 8 characters');
-  if(pw !== pw2) return showErr('suPw2','suPw2Err','Passwords don\'t match');
-  
-  // FIX: Strictly check if it's 6 numbers (ignores any hidden trailing spaces)
-  if(!/^\d{6}$/.test(investorPw)) {
-    return showErr('suInvestorPw','suInvestorPwErr','Investor password must be exactly 6 digits');
-  }
-
-  if(!inviteCode) {
-    showErr('suInviteCode','suInviteCodeErr','Invitation code required — get an invitation code from an existing member or support');
-    return toast('⚠️ Invitation code required — please get an invitation code');
-  }
-  if(inviteCode.length < 4) return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code');
-  
+  if(pw !== pw2) return showErr('suPw2','suPw2Err',"Passwords don't match");
+  if(!/^\d{6}$/.test(investorPw)) return showErr('suInvestorPw','suInvestorPwErr','Investor password must be exactly 6 digits');
   if(!terms) return toast('Please agree to the Terms of Service');
 
   const btn = document.getElementById('registerBtn');
-  btn.disabled = true; btn.textContent = 'Verifying...';
+  btn.disabled = true; btn.textContent = 'Checking slot...';
 
-  // 2. Check if Invitation Code exists
-  const { data: inviter, error: invErr } = await sb.from('profiles')
-    .select('id, username, referral_code')
-    .eq('referral_code', inviteCode)
-    .maybeSingle();
-
-  if(invErr || !inviter){
+  let count = 0;
+  try {
+    const { data, error } = await sb.rpc('nt_profile_count');
+    if (error) throw error;
+    count = Number(data || 0);
+  } catch(e){
     btn.disabled = false; btn.textContent = 'Register →';
-    return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
+    console.error('[signup] count RPC failed:', e);
+    return showErr('suEmail','suEmailErr','Could not verify signup slots — try again');
   }
 
-  // 3. Auto-generate completely unique Username to avoid any collision
-  const randomString = Math.random().toString(36).slice(2, 8);
+  const isFounderSlot = count < 5;
+  let inviter = null;
+
+  if (isFounderSlot) {
+    inviter = null;
+  } else {
+    if(!inviteCode){
+      btn.disabled = false; btn.textContent = 'Register →';
+      return showErr('suInviteCode','suInviteCodeErr','Invitation code required — ask an existing member or support');
+    }
+    if(inviteCode.length < 4){
+      btn.disabled = false; btn.textContent = 'Register →';
+      return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code');
+    }
+    const { data: inv, error: invErr } = await sb.from('profiles')
+      .select('id, username, referral_code')
+      .eq('referral_code', inviteCode)
+      .maybeSingle();
+    if(invErr || !inv){
+      btn.disabled = false; btn.textContent = 'Register →';
+      return showErr('suInviteCode','suInviteCodeErr','Invalid invitation code — please check and try again');
+    }
+    inviter = inv;
+  }
+
+  const randomString = Math.random().toString(36).slice(2, 10);
   const generatedUsername = 'user_' + randomString;
 
   btn.textContent = 'Creating account...';
   const { data: authData, error: authErr } = await sb.auth.signUp({ email, password: pw });
-  
-  if(authErr){ 
-    btn.disabled = false; btn.textContent = 'Register →'; 
-    return showErr('suEmail','suEmailErr', authErr.message); 
+
+  if(authErr){
+    btn.disabled = false; btn.textContent = 'Register →';
+    console.error('[signup] auth.signUp failed:', authErr);
+    return showErr('suEmail','suEmailErr', authErr.message);
   }
-  if(!authData.user){ 
-    btn.disabled = false; btn.textContent = 'Register →'; 
-    return showErr('suEmail','suEmailErr','Signup failed'); 
+  if(!authData.user){
+    btn.disabled = false; btn.textContent = 'Register →';
+    return showErr('suEmail','suEmailErr','Signup failed — no user returned');
   }
 
-  const uid = genUID();
   const profileRow = {
-    id: authData.user.id, 
-    username: generatedUsername, // Always unique random string
-    email, 
-    uid, 
-    investor_password: investorPw, // Saved 6-digit PIN
+    id: authData.user.id,
+    username: generatedUsername,
+    email,
+    uid: genUID(),
+    investor_password: investorPw,
     referral_code: genRef(),
-    referred_by: inviter.id, 
-    referred_by_code: inviteCode,
-    kyc_status: 'none', 
-    mode: 'real', 
-    balance: 0, 
-    funding: 0, 
+    referred_by: inviter ? inviter.id : null,
+    referred_by_code: inviter ? inviteCode : null,
+    kyc_status: 'none',
+    mode: 'real',
+    balance: 0,
+    funding: 0,
     spot: 0,
-    user_level: 1, 
-    referral_count: 0
+    user_level: 1,
+    referral_count: 0,
+    total_invested: 0,
+    total_profit: 0,
+    total_commission: 0,
+    total_withdrawn: 0
   };
-  
-  const { error: profErr } = await sb.from('profiles').insert(profileRow);
-  
-  if(profErr){ 
-    btn.disabled = false; btn.textContent = 'Register →'; 
-    if (profErr.code === '23505') { 
-      if (profErr.message.includes('email')) {
-        return showErr('suEmail','suEmailErr','An account with this email already exists.');
-      }
+
+  let profErr = null;
+  let insertedProfile = null;
+  for(let attempt = 0; attempt < 6; attempt++){
+    if(attempt > 0){
+      profileRow.uid = genUID();
+      profileRow.referral_code = genRef();
+      profileRow.username = 'user_' + Math.random().toString(36).slice(2, 10);
     }
-    return toast('Error: ' + profErr.message); 
+    const res = await sb.from('profiles').insert(profileRow).select('*').single();
+    profErr = res.error;
+    if(!profErr){ insertedProfile = res.data; break; }
+    if(profErr.code !== '23505') break;
+    console.warn('[signup] unique collision, retrying:', profErr.message);
   }
 
-  // Success!
-  currentUser = profileRow;
+  if(profErr){
+    btn.disabled = false; btn.textContent = 'Register →';
+    console.error('[signup] profile insert failed:', profErr);
+    try { await sb.auth.signOut(); } catch(e){}
+    return showErr('suEmail','suEmailErr', profErr.message);
+  }
+
+  if(inviter){
+    try {
+      await sb.rpc('nt_bump_referral', { p_referrer: inviter.id });
+    } catch(e){
+      console.warn('[signup] referral bump failed:', e);
+    }
+  }
+
+  currentUser = insertedProfile || profileRow;
   btn.disabled = false; btn.textContent = 'Register →';
-  toast('Account created!');
+  toast(isFounderSlot ? '🎉 Founder account created!' : 'Account created!');
   applyUserToUI();
   subscribeUserProfile();
   openAuth('kyc');
@@ -1690,6 +1710,7 @@ function openAuth(mode){
   document.querySelectorAll('.auth-screen').forEach(s=>s.classList.remove('active'));
   const target = mode === 'register' ? 'authRegister' : mode === 'kyc' ? 'authKyc' : mode === 'forgot' ? 'authForgot' : 'authLogin';
   document.getElementById(target).classList.add('active');
+  if (mode === 'register') refreshFounderSlot();
   if(mode === 'kyc'){
     kycUploads.front = null; kycUploads.selfie = null;
     const fb = document.getElementById('kycFrontBox'); if(fb) fb.classList.remove('has');
